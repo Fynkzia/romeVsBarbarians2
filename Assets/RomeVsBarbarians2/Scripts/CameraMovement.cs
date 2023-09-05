@@ -7,7 +7,7 @@ public class CameraMovement : MonoBehaviour {
 
     [SerializeField] private Camera cam;
     [SerializeField] private float panSpeed = 5f;  // Speed of panning.
-    [SerializeField] private float[] panLimitY; //Limits by Y
+    [SerializeField] private float[] panLimitZ; //Limits by Y
     [SerializeField] private float[] panLimitX; //Limits by X
     [SerializeField] private float zoomSpeed = 5f;
 
@@ -43,14 +43,14 @@ public class CameraMovement : MonoBehaviour {
         // If the left mouse button is held down, pan the camera.
         if (Input.GetMouseButton(0)) {
             Vector3 mouseDelta = Input.mousePosition - lastMousePosition;
-            Vector3 panVector = new Vector3(-mouseDelta.x, -mouseDelta.y, 0) * panSpeed * Time.deltaTime;
+            Vector3 panVector = new Vector3(-mouseDelta.x, 0, -mouseDelta.y) * panSpeed * Time.deltaTime;
 
             // Find new camera position
             Vector3 newPosition = cam.transform.position + panVector;
             
             // Look for boundaries
             newPosition.x = Mathf.Clamp(newPosition.x, panLimitX[0], panLimitX[1]);
-            newPosition.y = Mathf.Clamp(newPosition.y, panLimitY[0], panLimitY[1]);
+            newPosition.z = Mathf.Clamp(newPosition.z, panLimitZ[0], panLimitZ[1]);
             cam.transform.position = newPosition;
 
             // Update the last mouse position for the next frame.
