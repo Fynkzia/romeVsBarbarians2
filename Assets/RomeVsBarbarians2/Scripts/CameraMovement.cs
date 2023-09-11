@@ -27,7 +27,7 @@ public class CameraMovement : MonoBehaviour {
     private void Update() {
         HandleCameraMovement();
         HandleCameraZoom();
-        //HandleCameraZoomTouch(); idk maybe it working
+        HandleCameraZoomTouch(); 
     }
     private void HandleCameraMovement() {
         // Check for mouse button click to start panning.
@@ -73,6 +73,7 @@ public class CameraMovement : MonoBehaviour {
 
     private void HandleCameraZoomTouch() {
         if (Input.touchCount == 2) {
+            Debug.Log("Pitch");
             Touch touch1 = Input.GetTouch(0);
             Touch touch2 = Input.GetTouch(1);
 
