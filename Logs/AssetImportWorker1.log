@@ -1,0 +1,1926 @@
+Unity Editor version:    2022.3.4f1 (35713cd46cd7)
+Branch:                  2022.3/staging
+Build type:              Release
+Batch mode:              YES
+macOS version:           Version 13.2.1 (Build 22D68)
+Darwin version:          22.3.0
+Architecture:            arm64
+Running under Rosetta:   NO
+Available memory:        8192 MB
+Using pre-set license
+Pro License: YES
+
+COMMAND LINE ARGUMENTS:
+/Applications/Unity/Hub/Editor/2022.3.4f1/Unity.app/Contents/MacOS/Unity
+-adb2
+-batchMode
+-noUpm
+-name
+AssetImportWorker1
+-projectPath
+/Users/Maksym/Work/romeVsBarbarians2
+-logFile
+Logs/AssetImportWorker1.log
+-srvPort
+59589
+Successfully changed project path to: /Users/Maksym/Work/romeVsBarbarians2
+/Users/Maksym/Work/romeVsBarbarians2
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gfx=262144"
+Player connection [8536785216] Host "[IP] 192.168.0.100 [Port] 0 [Flags] 2 [Guid] 2115133096 [EditorId] 2115133096 [Version] 1048832 [Id] OSXEditor(0,MacBook-Pro-Maksym.local) [Debug] 1 [PackageName] OSXEditor [ProjectName] Editor" joined multi-casting on [225.0.0.222:54997]...
+
+Player connection [8536785216] Host "[IP] 192.168.0.100 [Port] 0 [Flags] 2 [Guid] 2115133096 [EditorId] 2115133096 [Version] 1048832 [Id] OSXEditor(0,MacBook-Pro-Maksym.local) [Debug] 1 [PackageName] OSXEditor [ProjectName] Editor" joined alternative multi-casting on [225.0.0.222:34997]...
+
+Refreshing native plugins compatible for Editor in 9.75 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 2022.3.4f1 (35713cd46cd7)
+[Subsystems] Discovering subsystems at path /Applications/Unity/Hub/Editor/2022.3.4f1/Unity.app/Contents/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path /Users/Maksym/Work/romeVsBarbarians2/Assets
+GfxDevice: creating device client; threaded=0; jobified=0
+ preferred device: Apple M1 (high power)
+Metal devices available: 1
+0: Apple M1 (high power)
+Forcing user selected device: Apple M1 (high power)
+Initializing Metal device caps: Apple M1
+Initialize mono
+Mono path[0] = '/Applications/Unity/Hub/Editor/2022.3.4f1/Unity.app/Contents/Managed'
+Mono path[1] = '/Applications/Unity/Hub/Editor/2022.3.4f1/Unity.app/Contents/MonoBleedingEdge/lib/mono/unityjit-macos'
+Mono config path = '/Applications/Unity/Hub/Editor/2022.3.4f1/Unity.app/Contents/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56170
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: /Applications/Unity/Hub/Editor/2022.3.4f1/Unity.app/Contents/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll
+Register platform support module: /Applications/Unity/Hub/Editor/2022.3.4f1/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll
+Registered in 0.009574 seconds.
+- Loaded All Assemblies, in  0.379 seconds
+Native extension for Android target not found
+Android Extension - Scanning For ADB Devices 78 ms
+Native extension for OSXStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.315 seconds
+Domain Reload Profiling: 694ms
+	BeginReloadAssembly (163ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (0ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (1ms)
+	RebuildCommonClasses (25ms)
+	RebuildNativeTypeToScriptingClass (8ms)
+	initialDomainReloadingComplete (41ms)
+	LoadAllAssembliesAndSetupDomain (142ms)
+		LoadAssemblies (164ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (136ms)
+			TypeCache.Refresh (136ms)
+				TypeCache.ScanAssembly (126ms)
+			ScanForSourceGeneratedMonoScriptInfo (0ms)
+			ResolveRequiredComponents (0ms)
+	FinalizeReload (315ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (275ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (162ms)
+			SetLoadedEditorAssemblies (3ms)
+			RefreshPlugins (0ms)
+			BeforeProcessingInitializeOnLoad (1ms)
+			ProcessInitializeOnLoadAttributes (56ms)
+			ProcessInitializeOnLoadMethodAttributes (53ms)
+			AfterProcessingInitializeOnLoad (0ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (0ms)
+========================================================================
+Worker process is ready to serve import requests
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory doesn't match image /Users/Maksym/Work/romeVsBarbarians2/Library/PackageCache/com.unity.visualscripting@1.8.0/Editor/VisualScripting.Core/Dependencies/YamlDotNet/Unity.VisualScripting.YamlDotNet.dll
+Symbol file LoadedFromMemory doesn't match image /Users/Maksym/Work/romeVsBarbarians2/Library/PackageCache/com.unity.visualscripting@1.8.0/Editor/VisualScripting.Core/Dependencies/DotNetZip/Unity.VisualScripting.IonicZip.dll
+- Loaded All Assemblies, in  0.644 seconds
+Refreshing native plugins compatible for Editor in 2.96 ms, found 2 plugins.
+Native extension for Android target not found
+Native extension for OSXStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.502 seconds
+Domain Reload Profiling: 1151ms
+	BeginReloadAssembly (74ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (3ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (18ms)
+	RebuildCommonClasses (23ms)
+	RebuildNativeTypeToScriptingClass (8ms)
+	initialDomainReloadingComplete (23ms)
+	LoadAllAssembliesAndSetupDomain (521ms)
+		LoadAssemblies (276ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (271ms)
+			TypeCache.Refresh (259ms)
+				TypeCache.ScanAssembly (248ms)
+			ScanForSourceGeneratedMonoScriptInfo (8ms)
+			ResolveRequiredComponents (3ms)
+	FinalizeReload (502ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (365ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (16ms)
+			SetLoadedEditorAssemblies (4ms)
+			RefreshPlugins (0ms)
+			BeforeProcessingInitializeOnLoad (46ms)
+			ProcessInitializeOnLoadAttributes (285ms)
+			ProcessInitializeOnLoadMethodAttributes (13ms)
+			AfterProcessingInitializeOnLoad (1ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (2ms)
+Launching external process: /Applications/Unity/Hub/Editor/2022.3.4f1/Unity.app/Contents/Tools/UnityShaderCompiler
+Launched and connected shader compiler UnityShaderCompiler after 0.08 seconds
+Refreshing native plugins compatible for Editor in 0.81 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3356 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 61 unused Assets / (6.4 MB). Loaded Objects now: 3827.
+Memory consumption went from 189.2 MB to 182.8 MB.
+Total: 4.581875 ms (FindLiveObjects: 0.142916 ms CreateObjectMapping: 0.042334 ms MarkObjects: 3.236166 ms  DeleteObjects: 1.159500 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:CustomObjectIndexerAttribute: 756ad292c208cfabdd7b50bc23989ffe -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:AudioImporter_EditorPlatform: 3918e3fc78b5a79bad01e8451be0beb8 -> 
+  custom:framework-osx-AVFoundation: e770b220cccbd017edd2c1fefb359320 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 718841.987836 seconds.
+  path: Assets/RomeVsBarbarians2/Prefabs/Squad.prefab
+  artifactKey: Guid(b6c403b6c70894d9c865275cc134541c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/RomeVsBarbarians2/Prefabs/Squad.prefab using Guid(b6c403b6c70894d9c865275cc134541c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '577dcfc133df0472b2e0f6e3b7090c7d') in 0.175818 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 10990
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+Thread 0x2ae787000 may have been prematurely finalized
+Symbol file LoadedFromMemory doesn't match image /Users/Maksym/Work/romeVsBarbarians2/Library/PackageCache/com.unity.visualscripting@1.8.0/Editor/VisualScripting.Core/Dependencies/YamlDotNet/Unity.VisualScripting.YamlDotNet.dll
+Symbol file LoadedFromMemory doesn't match image /Users/Maksym/Work/romeVsBarbarians2/Library/PackageCache/com.unity.visualscripting@1.8.0/Editor/VisualScripting.Core/Dependencies/DotNetZip/Unity.VisualScripting.IonicZip.dll
+- Loaded All Assemblies, in  0.546 seconds
+Refreshing native plugins compatible for Editor in 0.92 ms, found 2 plugins.
+Native extension for Android target not found
+Native extension for OSXStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.833 seconds
+Domain Reload Profiling: 1380ms
+	BeginReloadAssembly (146ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (5ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (71ms)
+	RebuildCommonClasses (28ms)
+	RebuildNativeTypeToScriptingClass (8ms)
+	initialDomainReloadingComplete (15ms)
+	LoadAllAssembliesAndSetupDomain (348ms)
+		LoadAssemblies (179ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (202ms)
+			TypeCache.Refresh (198ms)
+				TypeCache.ScanAssembly (186ms)
+			ScanForSourceGeneratedMonoScriptInfo (0ms)
+			ResolveRequiredComponents (3ms)
+	FinalizeReload (834ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (296ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (12ms)
+			SetLoadedEditorAssemblies (3ms)
+			RefreshPlugins (0ms)
+			BeforeProcessingInitializeOnLoad (37ms)
+			ProcessInitializeOnLoadAttributes (233ms)
+			ProcessInitializeOnLoadMethodAttributes (10ms)
+			AfterProcessingInitializeOnLoad (1ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (2ms)
+Refreshing native plugins compatible for Editor in 0.80 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3287 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 40 unused Assets / (6.4 MB). Loaded Objects now: 3851.
+Memory consumption went from 184.2 MB to 177.8 MB.
+Total: 4.371500 ms (FindLiveObjects: 0.152709 ms CreateObjectMapping: 0.045916 ms MarkObjects: 3.070042 ms  DeleteObjects: 1.102417 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:CustomObjectIndexerAttribute: 756ad292c208cfabdd7b50bc23989ffe -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:AudioImporter_EditorPlatform: 3918e3fc78b5a79bad01e8451be0beb8 -> 
+  custom:framework-osx-AVFoundation: e770b220cccbd017edd2c1fefb359320 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 1217.168072 seconds.
+  path: Assets/RomeVsBarbarians2/Prefabs/Units/Unit_Rome_Plebs.prefab
+  artifactKey: Guid(911aff1f4a62949c9bc02d7b750bf4f7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/RomeVsBarbarians2/Prefabs/Units/Unit_Rome_Plebs.prefab using Guid(911aff1f4a62949c9bc02d7b750bf4f7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0de7bb931e4a2f1c25e065d9bb292334') in 0.127368 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 75
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+Thread 0x287f47000 may have been prematurely finalized
+Symbol file LoadedFromMemory doesn't match image /Users/Maksym/Work/romeVsBarbarians2/Library/PackageCache/com.unity.visualscripting@1.8.0/Editor/VisualScripting.Core/Dependencies/YamlDotNet/Unity.VisualScripting.YamlDotNet.dll
+Symbol file LoadedFromMemory doesn't match image /Users/Maksym/Work/romeVsBarbarians2/Library/PackageCache/com.unity.visualscripting@1.8.0/Editor/VisualScripting.Core/Dependencies/DotNetZip/Unity.VisualScripting.IonicZip.dll
+- Loaded All Assemblies, in  0.528 seconds
+Refreshing native plugins compatible for Editor in 0.80 ms, found 2 plugins.
+Native extension for Android target not found
+Native extension for OSXStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.874 seconds
+Domain Reload Profiling: 1402ms
+	BeginReloadAssembly (134ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (3ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (63ms)
+	RebuildCommonClasses (25ms)
+	RebuildNativeTypeToScriptingClass (9ms)
+	initialDomainReloadingComplete (14ms)
+	LoadAllAssembliesAndSetupDomain (346ms)
+		LoadAssemblies (178ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (206ms)
+			TypeCache.Refresh (202ms)
+				TypeCache.ScanAssembly (190ms)
+			ScanForSourceGeneratedMonoScriptInfo (0ms)
+			ResolveRequiredComponents (3ms)
+	FinalizeReload (874ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (297ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (12ms)
+			SetLoadedEditorAssemblies (4ms)
+			RefreshPlugins (0ms)
+			BeforeProcessingInitializeOnLoad (39ms)
+			ProcessInitializeOnLoadAttributes (229ms)
+			ProcessInitializeOnLoadMethodAttributes (13ms)
+			AfterProcessingInitializeOnLoad (1ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (4ms)
+Refreshing native plugins compatible for Editor in 0.82 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3287 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 40 unused Assets / (6.4 MB). Loaded Objects now: 3866.
+Memory consumption went from 193.0 MB to 186.6 MB.
+Total: 4.367375 ms (FindLiveObjects: 0.157667 ms CreateObjectMapping: 0.044500 ms MarkObjects: 2.952041 ms  DeleteObjects: 1.212458 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:CustomObjectIndexerAttribute: 756ad292c208cfabdd7b50bc23989ffe -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:AudioImporter_EditorPlatform: 3918e3fc78b5a79bad01e8451be0beb8 -> 
+  custom:framework-osx-AVFoundation: e770b220cccbd017edd2c1fefb359320 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 407.711135 seconds.
+  path: Assets/RomeVsBarbarians2/Prefabs/Units/Unit_Rome_Plebs.prefab
+  artifactKey: Guid(911aff1f4a62949c9bc02d7b750bf4f7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/RomeVsBarbarians2/Prefabs/Units/Unit_Rome_Plebs.prefab using Guid(911aff1f4a62949c9bc02d7b750bf4f7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1fd6b30aeb11bf15f49fd986dac65c20') in 0.110299 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 75
+========================================================================
+Received Import Request.
+  Time since last request: 5.092460 seconds.
+  path: Assets/RomeVsBarbarians2/Prefabs/Unit_point.prefab
+  artifactKey: Guid(7cdb9bddbfb42406eac29dca0adfce18) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/RomeVsBarbarians2/Prefabs/Unit_point.prefab using Guid(7cdb9bddbfb42406eac29dca0adfce18) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd7596625e8539cfbe0dfe3413589fae9') in 0.037871 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 1285
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+Thread 0x28333b000 may have been prematurely finalized
+Symbol file LoadedFromMemory doesn't match image /Users/Maksym/Work/romeVsBarbarians2/Library/PackageCache/com.unity.visualscripting@1.8.0/Editor/VisualScripting.Core/Dependencies/YamlDotNet/Unity.VisualScripting.YamlDotNet.dll
+Symbol file LoadedFromMemory doesn't match image /Users/Maksym/Work/romeVsBarbarians2/Library/PackageCache/com.unity.visualscripting@1.8.0/Editor/VisualScripting.Core/Dependencies/DotNetZip/Unity.VisualScripting.IonicZip.dll
+- Loaded All Assemblies, in  0.492 seconds
+Refreshing native plugins compatible for Editor in 0.79 ms, found 2 plugins.
+Native extension for Android target not found
+Native extension for OSXStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.793 seconds
+Domain Reload Profiling: 1285ms
+	BeginReloadAssembly (112ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (4ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (49ms)
+	RebuildCommonClasses (23ms)
+	RebuildNativeTypeToScriptingClass (8ms)
+	initialDomainReloadingComplete (14ms)
+	LoadAllAssembliesAndSetupDomain (335ms)
+		LoadAssemblies (160ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (206ms)
+			TypeCache.Refresh (202ms)
+				TypeCache.ScanAssembly (190ms)
+			ScanForSourceGeneratedMonoScriptInfo (0ms)
+			ResolveRequiredComponents (3ms)
+	FinalizeReload (793ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (293ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (12ms)
+			SetLoadedEditorAssemblies (4ms)
+			RefreshPlugins (0ms)
+			BeforeProcessingInitializeOnLoad (36ms)
+			ProcessInitializeOnLoadAttributes (230ms)
+			ProcessInitializeOnLoadMethodAttributes (10ms)
+			AfterProcessingInitializeOnLoad (1ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (2ms)
+Refreshing native plugins compatible for Editor in 0.79 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3287 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 39 unused Assets / (6.4 MB). Loaded Objects now: 3883.
+Memory consumption went from 203.5 MB to 197.1 MB.
+Total: 4.101875 ms (FindLiveObjects: 0.136958 ms CreateObjectMapping: 0.045000 ms MarkObjects: 2.636250 ms  DeleteObjects: 1.283334 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:CustomObjectIndexerAttribute: 756ad292c208cfabdd7b50bc23989ffe -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:AudioImporter_EditorPlatform: 3918e3fc78b5a79bad01e8451be0beb8 -> 
+  custom:framework-osx-AVFoundation: e770b220cccbd017edd2c1fefb359320 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+Thread 0x28333b000 may have been prematurely finalized
+Symbol file LoadedFromMemory doesn't match image /Users/Maksym/Work/romeVsBarbarians2/Library/PackageCache/com.unity.visualscripting@1.8.0/Editor/VisualScripting.Core/Dependencies/YamlDotNet/Unity.VisualScripting.YamlDotNet.dll
+Symbol file LoadedFromMemory doesn't match image /Users/Maksym/Work/romeVsBarbarians2/Library/PackageCache/com.unity.visualscripting@1.8.0/Editor/VisualScripting.Core/Dependencies/DotNetZip/Unity.VisualScripting.IonicZip.dll
+- Loaded All Assemblies, in  0.512 seconds
+Refreshing native plugins compatible for Editor in 0.81 ms, found 2 plugins.
+Native extension for Android target not found
+Native extension for OSXStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.869 seconds
+Domain Reload Profiling: 1381ms
+	BeginReloadAssembly (109ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (3ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (46ms)
+	RebuildCommonClasses (23ms)
+	RebuildNativeTypeToScriptingClass (8ms)
+	initialDomainReloadingComplete (15ms)
+	LoadAllAssembliesAndSetupDomain (357ms)
+		LoadAssemblies (176ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (213ms)
+			TypeCache.Refresh (210ms)
+				TypeCache.ScanAssembly (188ms)
+			ScanForSourceGeneratedMonoScriptInfo (0ms)
+			ResolveRequiredComponents (3ms)
+	FinalizeReload (869ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (300ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (13ms)
+			SetLoadedEditorAssemblies (4ms)
+			RefreshPlugins (0ms)
+			BeforeProcessingInitializeOnLoad (37ms)
+			ProcessInitializeOnLoadAttributes (236ms)
+			ProcessInitializeOnLoadMethodAttributes (10ms)
+			AfterProcessingInitializeOnLoad (1ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (2ms)
+Refreshing native plugins compatible for Editor in 0.85 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3287 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 39 unused Assets / (6.4 MB). Loaded Objects now: 3898.
+Memory consumption went from 211.8 MB to 205.4 MB.
+Total: 5.114084 ms (FindLiveObjects: 0.169875 ms CreateObjectMapping: 0.046667 ms MarkObjects: 3.547750 ms  DeleteObjects: 1.349542 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:CustomObjectIndexerAttribute: 756ad292c208cfabdd7b50bc23989ffe -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:AudioImporter_EditorPlatform: 3918e3fc78b5a79bad01e8451be0beb8 -> 
+  custom:framework-osx-AVFoundation: e770b220cccbd017edd2c1fefb359320 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+Thread 0x28333b000 may have been prematurely finalized
+Symbol file LoadedFromMemory doesn't match image /Users/Maksym/Work/romeVsBarbarians2/Library/PackageCache/com.unity.visualscripting@1.8.0/Editor/VisualScripting.Core/Dependencies/YamlDotNet/Unity.VisualScripting.YamlDotNet.dll
+Symbol file LoadedFromMemory doesn't match image /Users/Maksym/Work/romeVsBarbarians2/Library/PackageCache/com.unity.visualscripting@1.8.0/Editor/VisualScripting.Core/Dependencies/DotNetZip/Unity.VisualScripting.IonicZip.dll
+- Loaded All Assemblies, in  0.527 seconds
+Refreshing native plugins compatible for Editor in 0.80 ms, found 2 plugins.
+Native extension for Android target not found
+Native extension for OSXStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.770 seconds
+Domain Reload Profiling: 1297ms
+	BeginReloadAssembly (111ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (4ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (49ms)
+	RebuildCommonClasses (23ms)
+	RebuildNativeTypeToScriptingClass (8ms)
+	initialDomainReloadingComplete (14ms)
+	LoadAllAssembliesAndSetupDomain (370ms)
+		LoadAssemblies (205ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (198ms)
+			TypeCache.Refresh (195ms)
+				TypeCache.ScanAssembly (186ms)
+			ScanForSourceGeneratedMonoScriptInfo (0ms)
+			ResolveRequiredComponents (3ms)
+	FinalizeReload (770ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (293ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (12ms)
+			SetLoadedEditorAssemblies (4ms)
+			RefreshPlugins (0ms)
+			BeforeProcessingInitializeOnLoad (36ms)
+			ProcessInitializeOnLoadAttributes (230ms)
+			ProcessInitializeOnLoadMethodAttributes (10ms)
+			AfterProcessingInitializeOnLoad (1ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (2ms)
+Refreshing native plugins compatible for Editor in 0.84 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3287 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 39 unused Assets / (6.4 MB). Loaded Objects now: 3913.
+Memory consumption went from 220.0 MB to 213.6 MB.
+Total: 4.356292 ms (FindLiveObjects: 0.165417 ms CreateObjectMapping: 0.049541 ms MarkObjects: 2.796667 ms  DeleteObjects: 1.344208 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:CustomObjectIndexerAttribute: 756ad292c208cfabdd7b50bc23989ffe -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:AudioImporter_EditorPlatform: 3918e3fc78b5a79bad01e8451be0beb8 -> 
+  custom:framework-osx-AVFoundation: e770b220cccbd017edd2c1fefb359320 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+Thread 0x28333b000 may have been prematurely finalized
+Symbol file LoadedFromMemory doesn't match image /Users/Maksym/Work/romeVsBarbarians2/Library/PackageCache/com.unity.visualscripting@1.8.0/Editor/VisualScripting.Core/Dependencies/YamlDotNet/Unity.VisualScripting.YamlDotNet.dll
+Symbol file LoadedFromMemory doesn't match image /Users/Maksym/Work/romeVsBarbarians2/Library/PackageCache/com.unity.visualscripting@1.8.0/Editor/VisualScripting.Core/Dependencies/DotNetZip/Unity.VisualScripting.IonicZip.dll
+- Loaded All Assemblies, in  0.515 seconds
+Refreshing native plugins compatible for Editor in 0.80 ms, found 2 plugins.
+Native extension for Android target not found
+Native extension for OSXStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.798 seconds
+Domain Reload Profiling: 1313ms
+	BeginReloadAssembly (110ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (3ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (48ms)
+	RebuildCommonClasses (23ms)
+	RebuildNativeTypeToScriptingClass (8ms)
+	initialDomainReloadingComplete (14ms)
+	LoadAllAssembliesAndSetupDomain (360ms)
+		LoadAssemblies (182ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (210ms)
+			TypeCache.Refresh (206ms)
+				TypeCache.ScanAssembly (193ms)
+			ScanForSourceGeneratedMonoScriptInfo (0ms)
+			ResolveRequiredComponents (3ms)
+	FinalizeReload (798ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (294ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (12ms)
+			SetLoadedEditorAssemblies (4ms)
+			RefreshPlugins (0ms)
+			BeforeProcessingInitializeOnLoad (36ms)
+			ProcessInitializeOnLoadAttributes (230ms)
+			ProcessInitializeOnLoadMethodAttributes (10ms)
+			AfterProcessingInitializeOnLoad (1ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (2ms)
+Refreshing native plugins compatible for Editor in 0.82 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3287 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 39 unused Assets / (6.4 MB). Loaded Objects now: 3928.
+Memory consumption went from 228.3 MB to 221.9 MB.
+Total: 4.021708 ms (FindLiveObjects: 0.139500 ms CreateObjectMapping: 0.044542 ms MarkObjects: 2.520791 ms  DeleteObjects: 1.316500 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:CustomObjectIndexerAttribute: 756ad292c208cfabdd7b50bc23989ffe -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:AudioImporter_EditorPlatform: 3918e3fc78b5a79bad01e8451be0beb8 -> 
+  custom:framework-osx-AVFoundation: e770b220cccbd017edd2c1fefb359320 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 803.316098 seconds.
+  path: Assets/RomeVsBarbarians2/Prefabs/Unit_point.prefab
+  artifactKey: Guid(7cdb9bddbfb42406eac29dca0adfce18) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/RomeVsBarbarians2/Prefabs/Unit_point.prefab using Guid(7cdb9bddbfb42406eac29dca0adfce18) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e93003908fc9c582c7c8120767fb0b76') in 0.161463 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 925
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+Thread 0x28333b000 may have been prematurely finalized
+Symbol file LoadedFromMemory doesn't match image /Users/Maksym/Work/romeVsBarbarians2/Library/PackageCache/com.unity.visualscripting@1.8.0/Editor/VisualScripting.Core/Dependencies/YamlDotNet/Unity.VisualScripting.YamlDotNet.dll
+Symbol file LoadedFromMemory doesn't match image /Users/Maksym/Work/romeVsBarbarians2/Library/PackageCache/com.unity.visualscripting@1.8.0/Editor/VisualScripting.Core/Dependencies/DotNetZip/Unity.VisualScripting.IonicZip.dll
+- Loaded All Assemblies, in  0.528 seconds
+Refreshing native plugins compatible for Editor in 0.79 ms, found 2 plugins.
+Native extension for Android target not found
+Native extension for OSXStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.762 seconds
+Domain Reload Profiling: 1290ms
+	BeginReloadAssembly (111ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (3ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (49ms)
+	RebuildCommonClasses (24ms)
+	RebuildNativeTypeToScriptingClass (8ms)
+	initialDomainReloadingComplete (15ms)
+	LoadAllAssembliesAndSetupDomain (371ms)
+		LoadAssemblies (181ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (223ms)
+			TypeCache.Refresh (219ms)
+				TypeCache.ScanAssembly (190ms)
+			ScanForSourceGeneratedMonoScriptInfo (0ms)
+			ResolveRequiredComponents (4ms)
+	FinalizeReload (762ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (293ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (12ms)
+			SetLoadedEditorAssemblies (3ms)
+			RefreshPlugins (0ms)
+			BeforeProcessingInitializeOnLoad (36ms)
+			ProcessInitializeOnLoadAttributes (230ms)
+			ProcessInitializeOnLoadMethodAttributes (11ms)
+			AfterProcessingInitializeOnLoad (1ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (2ms)
+Refreshing native plugins compatible for Editor in 0.81 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3287 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 39 unused Assets / (6.4 MB). Loaded Objects now: 3943.
+Memory consumption went from 237.1 MB to 230.7 MB.
+Total: 4.000208 ms (FindLiveObjects: 0.148708 ms CreateObjectMapping: 0.054209 ms MarkObjects: 2.501416 ms  DeleteObjects: 1.295416 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:CustomObjectIndexerAttribute: 756ad292c208cfabdd7b50bc23989ffe -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:AudioImporter_EditorPlatform: 3918e3fc78b5a79bad01e8451be0beb8 -> 
+  custom:framework-osx-AVFoundation: e770b220cccbd017edd2c1fefb359320 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 347.125861 seconds.
+  path: Assets/Снимок экрана 2023-08-20 в 16.33.51.png
+  artifactKey: Guid(f04ec7b53af424c62a291eecd2e1c5a1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Снимок экрана 2023-08-20 в 16.33.51.png using Guid(f04ec7b53af424c62a291eecd2e1c5a1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c641486de494e21be69d6bcd6c88f2b5') in 0.155975 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 35.997132 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/complet_suits/banker_suit/banker_suit_a.png
+  artifactKey: Guid(bd606bae1909914478167348a702bb29) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/complet_suits/banker_suit/banker_suit_a.png using Guid(bd606bae1909914478167348a702bb29) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd9a300439892426be1bb1b00502d214f') in 0.043127 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000098 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/cap/cap_a.png
+  artifactKey: Guid(bb238aa26ea837a49a211947d5a36121) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/cap/cap_a.png using Guid(bb238aa26ea837a49a211947d5a36121) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e5e231dd45c1e4cccffe218fa2bfe2a9') in 0.005934 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000409 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/cap/cap_d.png
+  artifactKey: Guid(8d0c1f28c2bec7d43baf8a8cdeea05b9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/cap/cap_d.png using Guid(8d0c1f28c2bec7d43baf8a8cdeea05b9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fc4920787ffa02b6e9dfe16f8562156e') in 0.005260 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000326 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/cap2/cap2_l.png
+  artifactKey: Guid(bdc74b0e41c228642badafbbcf76d0c1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/cap2/cap2_l.png using Guid(bdc74b0e41c228642badafbbcf76d0c1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4c2ac475865775e246879f615b317316') in 0.003774 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000228 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/cap2/cap2_g.png
+  artifactKey: Guid(8ad0b3079f4c2d846800680b29c9f681) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/cap2/cap2_g.png using Guid(8ad0b3079f4c2d846800680b29c9f681) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b6beab5f9bcb156cd624d1f4e0a58251') in 0.004436 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000206 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/cap2/cap2_a.png
+  artifactKey: Guid(6c379a0982a0c17489d83e3f9adb6e66) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/cap2/cap2_a.png using Guid(6c379a0982a0c17489d83e3f9adb6e66) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4fcaced3db5744fa58080e430911ce70') in 0.003902 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000096 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/cap/cap_c.png
+  artifactKey: Guid(002323631d77d3a46a85ebcdade466b9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/cap/cap_c.png using Guid(002323631d77d3a46a85ebcdade466b9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1f700a0ef6c625d255cf1e7092e817cb') in 0.004864 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000289 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/cap2/cap2_f.png
+  artifactKey: Guid(087e36d3a133c4541a3ec8e3692bbf7f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/cap2/cap2_f.png using Guid(087e36d3a133c4541a3ec8e3692bbf7f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a95efe63d5b07fff11796dc04670c232') in 0.004686 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000078 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/cap2/cap2_c.png
+  artifactKey: Guid(a5cdc2afcd3f7084cba06f29fe32a38c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/cap2/cap2_c.png using Guid(a5cdc2afcd3f7084cba06f29fe32a38c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '76ee351fafcb65aa45ac32d5820d2eb0') in 0.004752 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000249 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/chain3/chain3_b.png
+  artifactKey: Guid(7ee9e953245d77b4cab5da93094f30a1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/chain3/chain3_b.png using Guid(7ee9e953245d77b4cab5da93094f30a1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b2da6e4aeaeff0dc17fcc9fd80fc51b4') in 0.008352 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.002416 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/chain3/chain3_a.png
+  artifactKey: Guid(1473d6f25c904f34587fbcadd4dff11e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/chain3/chain3_a.png using Guid(1473d6f25c904f34587fbcadd4dff11e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9356ffbb60e3cf233c839930361e36c8') in 0.006374 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000220 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/glasses1/glasses1_a.png
+  artifactKey: Guid(1d8a15c05c192034b89ed65367028e17) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/glasses1/glasses1_a.png using Guid(1d8a15c05c192034b89ed65367028e17) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7daed478ca2c776f6d318b0eb0cd8e4f') in 0.009916 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000281 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/complet_suits/banker_suit/banker_suit_f.png
+  artifactKey: Guid(d546533832fb0cf42bc01eeba02074e3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/complet_suits/banker_suit/banker_suit_f.png using Guid(d546533832fb0cf42bc01eeba02074e3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '019b64ca6ac62354a5659c72806bd5c2') in 0.007999 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000378 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/cap/cap_p.png
+  artifactKey: Guid(b6831fff894d0104aad8361a4e59f651) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/cap/cap_p.png using Guid(b6831fff894d0104aad8361a4e59f651) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fe7fd34bdad0c0f24d1a88935ded6409') in 0.010715 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000233 seconds.
+  path: Assets/simple modular human/texture_materials/beard/beard_c.png
+  artifactKey: Guid(73f6446de9814f249911d127d0921a0c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/beard/beard_c.png using Guid(73f6446de9814f249911d127d0921a0c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5a164e5e9d01f5509585da511c384f74') in 0.005701 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000099 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/cap/cap_f.png
+  artifactKey: Guid(2556ff3db4b4fd24ba6e051d8ed51f9c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/cap/cap_f.png using Guid(2556ff3db4b4fd24ba6e051d8ed51f9c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9ac034c2b09e0c69fbd63191f8ed370c') in 0.005119 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000078 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/complet_suits/cock_suit/cock_suit.png
+  artifactKey: Guid(64c5f91ea221eb9448e860a923e7f1c4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/complet_suits/cock_suit/cock_suit.png using Guid(64c5f91ea221eb9448e860a923e7f1c4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2c36f1b30f2aefaca3ce6e8ad3ae8bbb') in 0.008318 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000084 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/cap3/cap3_d.png
+  artifactKey: Guid(f99048093a8cacd498882bd9a6480657) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/cap3/cap3_d.png using Guid(f99048093a8cacd498882bd9a6480657) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '23493314238e61161d7f94aa66d41a80') in 0.005562 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000047 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/cap3/cap3_a.png
+  artifactKey: Guid(6bd81404756b70f4c8c70515db84c904) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/cap3/cap3_a.png using Guid(6bd81404756b70f4c8c70515db84c904) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '869c9b38c294d3c22cdcb94b3e1e4b78') in 0.004310 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000102 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/cap/cap_k.png
+  artifactKey: Guid(c74fe345a7303e445ba353527eb7a257) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/cap/cap_k.png using Guid(c74fe345a7303e445ba353527eb7a257) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0b8eb69b24ea839426194bbfa0167011') in 0.004962 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000238 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/cap2/cap2_b.png
+  artifactKey: Guid(2922109603887814eb7ec1148facfb88) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/cap2/cap2_b.png using Guid(2922109603887814eb7ec1148facfb88) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd232670d4460f49192a0e5b595b902a7') in 0.005374 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000052 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/cap/cap_l.png
+  artifactKey: Guid(5fa95f510d83af84494746777161746d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/cap/cap_l.png using Guid(5fa95f510d83af84494746777161746d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e2ad4ef7964680e60927a133dc19828b') in 0.005361 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000140 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/chain1/chain1_c.png
+  artifactKey: Guid(125e161a9b8468e4994f78c47ffbaad0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/chain1/chain1_c.png using Guid(125e161a9b8468e4994f78c47ffbaad0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7bed93b176b3e426f1f95a90905eacc1') in 0.004403 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000109 seconds.
+  path: Assets/simple modular human/texture_materials/test_terrain_materials_textures/bin.png
+  artifactKey: Guid(629a975e08230b44686dd03ca38ce52b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/test_terrain_materials_textures/bin.png using Guid(629a975e08230b44686dd03ca38ce52b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '110feba094d599951f18759266d0fac0') in 0.002594 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000133 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/chain2/chain2_b.png
+  artifactKey: Guid(cd7bbce0515f3a7469cf85f945753aa3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/chain2/chain2_b.png using Guid(cd7bbce0515f3a7469cf85f945753aa3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b0845515d189cc1a54f31a01a44be7bf') in 0.004830 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000153 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/complet_suits/banker_suit/banker_suit_b.png
+  artifactKey: Guid(efd0971d536f5344d8a52b2cd3d1028a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/complet_suits/banker_suit/banker_suit_b.png using Guid(efd0971d536f5344d8a52b2cd3d1028a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b1a55d86b8f5dcc6df6095fc65ade8b6') in 0.005175 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000144 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/cap3/cap3_c.png
+  artifactKey: Guid(b8a8770e950a7c4489ff5fea8f5e94db) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/cap3/cap3_c.png using Guid(b8a8770e950a7c4489ff5fea8f5e94db) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '865862b557deca50d5c5b72eec076e46') in 0.004277 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000162 seconds.
+  path: Assets/simple modular human/texture_materials/props/crowbar.png
+  artifactKey: Guid(7ac4f5ed7cdae3a4b9389dbce4854c55) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/props/crowbar.png using Guid(7ac4f5ed7cdae3a4b9389dbce4854c55) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4f67a51911d603fe47d574b5495379d8') in 0.002998 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000154 seconds.
+  path: Assets/!Default/Toony Colors Pro/Editor/Fonts/Roboto/Roboto-Bold.ttf
+  artifactKey: Guid(26a32e627fb084948ad18b8af0f356b7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/!Default/Toony Colors Pro/Editor/Fonts/Roboto/Roboto-Bold.ttf using Guid(26a32e627fb084948ad18b8af0f356b7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '62ac156ca1c65bf6794485c3cd808b07') in 0.063330 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 4
+========================================================================
+Received Import Request.
+  Time since last request: 0.000032 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/complet_suits/banker_suit/banker_suit_c.png
+  artifactKey: Guid(3f9d121a274736e439dd9d3d93470061) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/complet_suits/banker_suit/banker_suit_c.png using Guid(3f9d121a274736e439dd9d3d93470061) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2793bc20177ce6efa50f0db62a0801aa') in 0.005878 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000185 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/cap/cap_i.png
+  artifactKey: Guid(370565c431944fd4684e0e53847792e7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/cap/cap_i.png using Guid(370565c431944fd4684e0e53847792e7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7c97d575aead5c9661203f3906129d45') in 0.005819 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000510 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/cap/cap_e.png
+  artifactKey: Guid(cb9b67af640510c49a9ed579773f5015) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/cap/cap_e.png using Guid(cb9b67af640510c49a9ed579773f5015) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f71233fd7b0d11ea5ad16d147f2e2426') in 0.007059 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000168 seconds.
+  path: Assets/!Default/Toony Colors Pro/Editor/Fonts/Roboto/Roboto-Medium.ttf
+  artifactKey: Guid(fbfe696d18b99b946afae6126b37c025) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/!Default/Toony Colors Pro/Editor/Fonts/Roboto/Roboto-Medium.ttf using Guid(fbfe696d18b99b946afae6126b37c025) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2f86212c19573dc68232d4764ea8114d') in 0.009905 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 4
+========================================================================
+Received Import Request.
+  Time since last request: 0.000307 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/cap/cap_q.png
+  artifactKey: Guid(f8b66003b984bf646a970d33c30db51d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/cap/cap_q.png using Guid(f8b66003b984bf646a970d33c30db51d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0312a4730a573cabc8587c7ecee7a0fd') in 0.004982 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000151 seconds.
+  path: Assets/simple modular human/texture_materials/test_terrain_materials_textures/bench.png
+  artifactKey: Guid(77b277cf32b3db94c85b4fd2053fdff4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/test_terrain_materials_textures/bench.png using Guid(77b277cf32b3db94c85b4fd2053fdff4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fd0d4a32cf0b63bd9c7f8db261773c6c') in 0.002422 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000070 seconds.
+  path: Assets/simple modular human/texture_materials/props/fireaxe.png
+  artifactKey: Guid(efc8af9eefe77d24fa6721436d9822ac) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/props/fireaxe.png using Guid(efc8af9eefe77d24fa6721436d9822ac) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4b70be2c071d7a3e29a6d8f5c25281d3') in 0.003332 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.403645 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/glasses1/glasses1_e.png
+  artifactKey: Guid(c4f2f490a2cc6614f84b7491d769ccd3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/glasses1/glasses1_e.png using Guid(c4f2f490a2cc6614f84b7491d769ccd3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f9c6034ae0233a7ab2953af6e3752497') in 0.005080 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000186 seconds.
+  path: Assets/Tiny Trees All Season/Textures/Ground 1 Spring.png
+  artifactKey: Guid(3214e64d9df51894a8231245fa51d03a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Tiny Trees All Season/Textures/Ground 1 Spring.png using Guid(3214e64d9df51894a8231245fa51d03a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ec14661f856b973a16b5a0c93e9c6f0b') in 0.007160 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000228 seconds.
+  path: Assets/Tiny Trees All Season/Textures/Ground 1 Winter.png
+  artifactKey: Guid(cdfc0d0c3301c8b4ea70c6471823006e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Tiny Trees All Season/Textures/Ground 1 Winter.png using Guid(cdfc0d0c3301c8b4ea70c6471823006e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1ae2db538bd32a5f0bcf97f719d227fc') in 0.009109 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000294 seconds.
+  path: Assets/simple modular human/texture_materials/hair/hair_a/Hair_a_f.png
+  artifactKey: Guid(7c7aa5feefe905944b08b69cb9d73f74) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/hair/hair_a/Hair_a_f.png using Guid(7c7aa5feefe905944b08b69cb9d73f74) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '56cf6438615f6821b4ea4b5fd0815ef1') in 0.007341 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000174 seconds.
+  path: Assets/simple modular human/texture_materials/hair/hair_e/hair_e_a.png
+  artifactKey: Guid(351729d7c080dd145a1c7d69dd9aacb2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/hair/hair_e/hair_e_a.png using Guid(351729d7c080dd145a1c7d69dd9aacb2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7e4915449e548e4fc983eeb0b8ba172f') in 0.006812 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000291 seconds.
+  path: Assets/simple modular human/texture_materials/hair/hair_e/hair_e_b.png
+  artifactKey: Guid(f460e4d8cb740094b90fc448b2db921f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/hair/hair_e/hair_e_b.png using Guid(f460e4d8cb740094b90fc448b2db921f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '89cb76c973dba9fd85f319a784fc6352') in 0.006340 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000184 seconds.
+  path: Assets/simple modular human/texture_materials/hair/hair_d/hair_d_a.png
+  artifactKey: Guid(c58263b56f0fc9349bfeee14adb5e89d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/hair/hair_d/hair_d_a.png using Guid(c58263b56f0fc9349bfeee14adb5e89d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7c1a136bb474175bb4e5d799d695747f') in 0.008815 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000520 seconds.
+  path: Assets/simple modular human/texture_materials/hair/hair_c/hair_c_b.png
+  artifactKey: Guid(169abe628ceeebf45a0662aea0991441) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/hair/hair_c/hair_c_b.png using Guid(169abe628ceeebf45a0662aea0991441) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '03585be99691c2ee071abfb70774991a') in 0.010411 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000089 seconds.
+  path: Assets/simple modular human/Info_a.png
+  artifactKey: Guid(f5a3249918d9333479567375417d9200) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/Info_a.png using Guid(f5a3249918d9333479567375417d9200) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4eab3377b1fb1f439d7d6499be725c48') in 0.004005 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000098 seconds.
+  path: Assets/simple modular human/texture_materials/hair/hair_b/hair_b_e.png
+  artifactKey: Guid(1374c7f779bffc04a965005d54835fd7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/hair/hair_b/hair_b_e.png using Guid(1374c7f779bffc04a965005d54835fd7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e88912dcafccfb95fc0ac5714a1478ca') in 0.006018 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000115 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/jacket/jacket_f.png
+  artifactKey: Guid(b92b47920a20fce4ea8df4a24f1fd0f1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/jacket/jacket_f.png using Guid(b92b47920a20fce4ea8df4a24f1fd0f1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e940feccc8af1cf64c97092bb73bfeb6') in 0.006166 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000180 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/jacket/jacket_d.png
+  artifactKey: Guid(6a6832b030bc2614b8345227168ed033) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/jacket/jacket_d.png using Guid(6a6832b030bc2614b8345227168ed033) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4aa77fe55aff00c39241174b0d1e0a8f') in 0.008115 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000413 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/jacket/jacket_c.png
+  artifactKey: Guid(cb9f19e4e2103254f82cd5753765bcd1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/jacket/jacket_c.png using Guid(cb9f19e4e2103254f82cd5753765bcd1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b6b91f469cc5b41f46a93f5314659421') in 0.011252 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000066 seconds.
+  path: Assets/simple modular human/texture_materials/hair/hair_a/Hair_a_a.png
+  artifactKey: Guid(8719f4fc3096582429bc50c9310e616a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/hair/hair_a/Hair_a_a.png using Guid(8719f4fc3096582429bc50c9310e616a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a04c7429ca672ae3906b7e706f6e3c03') in 0.005177 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000385 seconds.
+  path: Assets/simple modular human/texture_materials/hair/hair_a/Hair_a_e.png
+  artifactKey: Guid(7a7c4108be3f29546968a24915dc7566) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/hair/hair_a/Hair_a_e.png using Guid(7a7c4108be3f29546968a24915dc7566) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '07d1474fd4dd21dedee7b5ca91cfce7a') in 0.004360 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000129 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/shirt/shirt_e.png
+  artifactKey: Guid(0aece1121d447784c884592889fb9547) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/shirt/shirt_e.png using Guid(0aece1121d447784c884592889fb9547) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bc688df345f8b89db61cdf93a14b12c4') in 0.006022 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000045 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/shirt/shirt_a.png
+  artifactKey: Guid(87b6e99a626ef8845ab623958e0ec84a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/shirt/shirt_a.png using Guid(87b6e99a626ef8845ab623958e0ec84a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4bb909b875591bf02577415ca2d51449') in 0.004885 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000232 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/shoes2/shoes2_c.png
+  artifactKey: Guid(bc014324978824a42a3ea127aa1a95c0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/shoes2/shoes2_c.png using Guid(bc014324978824a42a3ea127aa1a95c0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '316962cc681a7cf5ac4ba5d1139648bf') in 0.004646 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000085 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/shirt/shirt_m.png
+  artifactKey: Guid(5bf4b4f1fe2e9e74eb281c7bb696f918) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/shirt/shirt_m.png using Guid(5bf4b4f1fe2e9e74eb281c7bb696f918) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e0b74f68c6775f848698da60ce06964e') in 0.005288 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000362 seconds.
+  path: Assets/simple modular human/texture_materials/skins/skin_Lightbrown_brown.png
+  artifactKey: Guid(333350cce72d80c43886bad96861b7ee) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/skins/skin_Lightbrown_brown.png using Guid(333350cce72d80c43886bad96861b7ee) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7fcf802b9a171cf580e5741edc5c5f6c') in 0.005929 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000153 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/t_shirt/t_shirt_e.png
+  artifactKey: Guid(155aae9c7e6fca742b7e7dfa1392af4e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/t_shirt/t_shirt_e.png using Guid(155aae9c7e6fca742b7e7dfa1392af4e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '24a60027b5af11829a9b407947a667ab') in 0.005183 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000106 seconds.
+  path: Assets/simple modular human/texture_materials/skins/skin_brown_brown.png
+  artifactKey: Guid(1a546b27e2a47c1489b477172c21c6d4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/skins/skin_brown_brown.png using Guid(1a546b27e2a47c1489b477172c21c6d4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8cbb6ee5ae4d028d10acf1e24ae94f6b') in 0.008970 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000102 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/t_shirt/t_shirt_s.png
+  artifactKey: Guid(29d456966c65d8846b052bd6381119d1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/t_shirt/t_shirt_s.png using Guid(29d456966c65d8846b052bd6381119d1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '33e8982919203ddd6d32d30a165757dc') in 0.011715 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000135 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/shirt/shirt_g.png
+  artifactKey: Guid(0f3e63601a189e94d9f187c1b429ee1a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/shirt/shirt_g.png using Guid(0f3e63601a189e94d9f187c1b429ee1a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '118919686e88737463af18173db37d28') in 0.006826 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000159 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/shoes2/shoes2_b.png
+  artifactKey: Guid(83c6e994ab9b1f946bc807d9ef6e3294) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/shoes2/shoes2_b.png using Guid(83c6e994ab9b1f946bc807d9ef6e3294) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '990e734ade6f20b3b1969b2a57a7c0bd') in 0.003841 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000181 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/t_shirt/t_shirt_m.png
+  artifactKey: Guid(b9fa5641bf782324097e673d285defc7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/t_shirt/t_shirt_m.png using Guid(b9fa5641bf782324097e673d285defc7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3b2ca640ff046703d0100a3c077f3ca3') in 0.006191 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000133 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/t_shirt/t_shirt_i.png
+  artifactKey: Guid(ab786ad9ef6e34140958d9309c70fb5d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/t_shirt/t_shirt_i.png using Guid(ab786ad9ef6e34140958d9309c70fb5d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f0fa0f058397ec350ae2fdf739abece2') in 0.007587 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000234 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/tanktop/tanktop_c.png
+  artifactKey: Guid(6a19a9f78cbc21949b875dd52324a21c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/tanktop/tanktop_c.png using Guid(6a19a9f78cbc21949b875dd52324a21c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3d9c1116f2bf83277c4bce88381197d4') in 0.004229 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000109 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/shoes2/shoes2_e.png
+  artifactKey: Guid(bd47382519dcdf4438f87d9951463215) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/shoes2/shoes2_e.png using Guid(bd47382519dcdf4438f87d9951463215) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '88fe03a54c3467f406faf10b2c3c9fd1') in 0.003764 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000060 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/tanktop/tanktop_e.png
+  artifactKey: Guid(d52309f23b9d5524186406e0e242ef17) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/tanktop/tanktop_e.png using Guid(d52309f23b9d5524186406e0e242ef17) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '253295cc4368ee3a99dbbd8fa72eebae') in 0.005468 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000526 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/tanktop/tanktop_a.png
+  artifactKey: Guid(2db567d609a5b55419d9b6cddd3658bb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/tanktop/tanktop_a.png using Guid(2db567d609a5b55419d9b6cddd3658bb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3d98a66321a0104b08154b80db237770') in 0.005816 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000256 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/shoes1/shoes1_a.png
+  artifactKey: Guid(989f70bf829c6dc4daf89b075bafacc1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/shoes1/shoes1_a.png using Guid(989f70bf829c6dc4daf89b075bafacc1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '428951f5277de95e8148e8261eb106bc') in 0.004916 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000644 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/shoes1/shoes1_e.png
+  artifactKey: Guid(f578c5f32f4a1194ea7aa93ecac1c8e7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/shoes1/shoes1_e.png using Guid(f578c5f32f4a1194ea7aa93ecac1c8e7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b61e74bd4d36cfdef74286350113f3bf') in 0.005798 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000124 seconds.
+  path: Assets/simple modular human/texture_materials/skins/skin_white_grey.png
+  artifactKey: Guid(0537cfc3f11c8474b8081eace277fb0f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/skins/skin_white_grey.png using Guid(0537cfc3f11c8474b8081eace277fb0f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '15a51bd5ed3faacf547b02d195087985') in 0.006362 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000147 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/t_shirt/t_shirt_t.png
+  artifactKey: Guid(dec482cd75185da46b5f68bc0e6d3c57) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/t_shirt/t_shirt_t.png using Guid(dec482cd75185da46b5f68bc0e6d3c57) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '569b1d2139fd1f6f2dfd6b191c49763f') in 0.005467 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000154 seconds.
+  path: Assets/!Default/Toony Colors Pro/Editor/Icons/TCP2_CogIcon.png
+  artifactKey: Guid(936423d97fbdd3c40bd47377240f5c64) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/!Default/Toony Colors Pro/Editor/Icons/TCP2_CogIcon.png using Guid(936423d97fbdd3c40bd47377240f5c64) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ed5918150d749938d9a1e05abf680383') in 0.003354 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000053 seconds.
+  path: Assets/!Default/Toony Colors Pro/Editor/Icons/TCP2_ContextualHelpBoxHover_Pro.png
+  artifactKey: Guid(a865634860db9e54ea5e2373e13900f7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/!Default/Toony Colors Pro/Editor/Icons/TCP2_ContextualHelpBoxHover_Pro.png using Guid(a865634860db9e54ea5e2373e13900f7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8cca7ad0826fb6deff4cca85f21d067b') in 0.002702 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000131 seconds.
+  path: Assets/!Default/Toony Colors Pro/Demo TCP2/TCP2 Demo Assets/Robot Kyle/Textures/TCP2_Demo Robot_Thickness.png
+  artifactKey: Guid(2fb9975c379e44e44b7abcf981468c32) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/!Default/Toony Colors Pro/Demo TCP2/TCP2 Demo Assets/Robot Kyle/Textures/TCP2_Demo Robot_Thickness.png using Guid(2fb9975c379e44e44b7abcf981468c32) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9b684f4be5a9b943d72e6e6d3272a6ff') in 0.003861 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000058 seconds.
+  path: Assets/!Default/Toony Colors Pro/Demo TCP2/SG2 Demo Assets/_Misc/TCP2_Demo Small Rocks Normal.png
+  artifactKey: Guid(8d95929314ce653489a6fa3be328f373) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/!Default/Toony Colors Pro/Demo TCP2/SG2 Demo Assets/_Misc/TCP2_Demo Small Rocks Normal.png using Guid(8d95929314ce653489a6fa3be328f373) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '32a952e0af1bf0d289e91921ad53975c') in 0.026705 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000034 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/t_shirt/t_shirt_d.png
+  artifactKey: Guid(0be92f1a9ced4974fa37b4b1a259ffeb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/t_shirt/t_shirt_d.png using Guid(0be92f1a9ced4974fa37b4b1a259ffeb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '10f6a4e0d89682f03364fd2554945c2a') in 0.005430 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000117 seconds.
+  path: Assets/!Default/Toony Colors Pro/Demo TCP2/SG Demo Assets/_Misc Assets/TCP2_Demo_Lava.png
+  artifactKey: Guid(929f2fb0e4fa033409d770aa87bea9b9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/!Default/Toony Colors Pro/Demo TCP2/SG Demo Assets/_Misc Assets/TCP2_Demo_Lava.png using Guid(929f2fb0e4fa033409d770aa87bea9b9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd6593f06950e65fea1d76075b6d32627') in 0.007547 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000044 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/t_shirt/t_shirt_q.png
+  artifactKey: Guid(5a77650a66d969c43af0cb09b220a796) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/t_shirt/t_shirt_q.png using Guid(5a77650a66d969c43af0cb09b220a796) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '86a73c00f699eedd1386a7ab87f291bb') in 0.004289 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000129 seconds.
+  path: Assets/!Default/Toony Colors Pro/Demo TCP2/Cat Demo Assets/Textures/TCP2_Demo_Poster1.png
+  artifactKey: Guid(d8f76b712098b754dafbe140ac26ece8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/!Default/Toony Colors Pro/Demo TCP2/Cat Demo Assets/Textures/TCP2_Demo_Poster1.png using Guid(d8f76b712098b754dafbe140ac26ece8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '19a7eb31425a20275c53c521a0da362a') in 0.004254 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000120 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/t_shirt/t_shirt_n.png
+  artifactKey: Guid(3fa785fa2f90cf24abd1628f6bb2f4c1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/t_shirt/t_shirt_n.png using Guid(3fa785fa2f90cf24abd1628f6bb2f4c1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '90a6d9e6771856b4d87f473d13ff27cc') in 0.008540 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000106 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/t_shirt/t_shirt_g.png
+  artifactKey: Guid(6ab9a3aeb2158494397f0e01fb1104ff) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/t_shirt/t_shirt_g.png using Guid(6ab9a3aeb2158494397f0e01fb1104ff) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9ae0f69ad48e719b0d2e21179ed80aab') in 0.004558 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000073 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/tanktop/tanktop_d.png
+  artifactKey: Guid(36e5eda62c3dc91468f2eeb2b61d7ed7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/tanktop/tanktop_d.png using Guid(36e5eda62c3dc91468f2eeb2b61d7ed7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '557b71cb65f3b54a36acd6a7de35175d') in 0.005124 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000066 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/shoes1/shoes1_d.png
+  artifactKey: Guid(1bcf803ae376b8846a9a7bcce4d91790) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/shoes1/shoes1_d.png using Guid(1bcf803ae376b8846a9a7bcce4d91790) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '597e3ecfcd9fa6ef85070d2eccbff33b') in 0.006915 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.001207 seconds.
+  path: Assets/!Default/Toony Colors Pro/Demo TCP2/SG Demo Assets/_Misc Assets/TCP2_Demo_LavaCartoon.png
+  artifactKey: Guid(8d928a03c9a6d8445a56096a84efd563) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/!Default/Toony Colors Pro/Demo TCP2/SG Demo Assets/_Misc Assets/TCP2_Demo_LavaCartoon.png using Guid(8d928a03c9a6d8445a56096a84efd563) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fa1e8006b1179d3160e667a91f12a22c') in 0.008978 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000586 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/shirt/shirt_k.png
+  artifactKey: Guid(e116b079cd7b44f4181f1e8331e0e4ef) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/shirt/shirt_k.png using Guid(e116b079cd7b44f4181f1e8331e0e4ef) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e97216a478ccdbf28fb94d43fbde09fe') in 0.006939 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000111 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/shoes2/shoes2_g.png
+  artifactKey: Guid(d9ee2b5a9c9943043840c54b76e23e14) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/shoes2/shoes2_g.png using Guid(d9ee2b5a9c9943043840c54b76e23e14) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'cc0b8a1c216899be70ffdcb841eae229') in 0.003897 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000177 seconds.
+  path: Assets/!Default/Toony Colors Pro/Demo TCP2/Cat Demo Assets/Textures/TCP2_Demo_CubemapDay.png
+  artifactKey: Guid(0dad96dccfd8a344492d4cd202ff059b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/!Default/Toony Colors Pro/Demo TCP2/Cat Demo Assets/Textures/TCP2_Demo_CubemapDay.png using Guid(0dad96dccfd8a344492d4cd202ff059b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6503b4f88c31a059fea989b4af054a30') in 0.202229 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 1
+========================================================================
+Received Import Request.
+  Time since last request: 0.000070 seconds.
+  path: Assets/!Default/Toony Colors Pro/Textures/Sketch/TCP2_SketchGradient_Halftone2.png
+  artifactKey: Guid(7c9d6cd16e51c834b8a063ea54bd0edb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/!Default/Toony Colors Pro/Textures/Sketch/TCP2_SketchGradient_Halftone2.png using Guid(7c9d6cd16e51c834b8a063ea54bd0edb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8ffa3288ac78932068708ae157b7a6c9') in 0.021298 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000152 seconds.
+  path: Assets/!Default/Toony Colors Pro/Editor/Icons/TCP2_Tab.png
+  artifactKey: Guid(e2718433029a50343bf18392fecba9b7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/!Default/Toony Colors Pro/Editor/Icons/TCP2_Tab.png using Guid(e2718433029a50343bf18392fecba9b7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2f9c76fd6ee7d87292c8d9e10be1b338') in 0.020791 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000161 seconds.
+  path: Assets/!Default/Toony Colors Pro/Textures/Sketch/TCP2_SketchF.png
+  artifactKey: Guid(7ce84a691ceda8444a6e82d3cbc88f79) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/!Default/Toony Colors Pro/Textures/Sketch/TCP2_SketchF.png using Guid(7ce84a691ceda8444a6e82d3cbc88f79) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '587929db2fe589dacc6d91f5e71b705e') in 0.019589 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000149 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/short_pants/trousers_b.png
+  artifactKey: Guid(2d1d8f9b15dbec641893c573b8b4928e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/short_pants/trousers_b.png using Guid(2d1d8f9b15dbec641893c573b8b4928e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2f999313b165f23b2907b49e07d62c42') in 0.015963 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000081 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/short_pants/trousers_e.png
+  artifactKey: Guid(7bf7e63dce814864096934f444218b8f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/short_pants/trousers_e.png using Guid(7bf7e63dce814864096934f444218b8f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '72dda0eb4917ce99e8354bf188e7c833') in 0.010110 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000182 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/trousers/trousers_f.png
+  artifactKey: Guid(73da8863b12b4c1488d04232c221621d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/trousers/trousers_f.png using Guid(73da8863b12b4c1488d04232c221621d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '64e03c820192259e1126a386bc10d242') in 0.054340 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000138 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/trousers/trousers_i.png
+  artifactKey: Guid(5d3d637dfe116b24d8fd8f0ad3a6e704) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/trousers/trousers_i.png using Guid(5d3d637dfe116b24d8fd8f0ad3a6e704) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '98075381dde1244656a87cb2082b7065') in 0.025740 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000171 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/complet_suits/worker/worker_suit.png
+  artifactKey: Guid(32da9051ec515dc43b543c1823d458c9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/complet_suits/worker/worker_suit.png using Guid(32da9051ec515dc43b543c1823d458c9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fdf6d8ef88dba515269f6f21f243526f') in 0.098490 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000161 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/short_pants/trousers_j.png
+  artifactKey: Guid(410a917300d339045a4d9a013d0ab718) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/short_pants/trousers_j.png using Guid(410a917300d339045a4d9a013d0ab718) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9c7c2b74e883f70c515ff56885b61164') in 0.198381 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000087 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/trousers/trousers_o.png
+  artifactKey: Guid(4a35a1bacc4f6ce43ba1e205018b24c2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/trousers/trousers_o.png using Guid(4a35a1bacc4f6ce43ba1e205018b24c2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '01c10afc49e611765072ee64a0fb256e') in 0.306100 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000056 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/trousers/trousers_k.png
+  artifactKey: Guid(5702174086e1b3049af7da98b0307789) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/trousers/trousers_k.png using Guid(5702174086e1b3049af7da98b0307789) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0efed95144592e714930ed94f005b27c') in 0.074319 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000143 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/trousers/trousers_m.png
+  artifactKey: Guid(996bfd217498369448ef837f1a7b7c48) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/trousers/trousers_m.png using Guid(996bfd217498369448ef837f1a7b7c48) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'be1d0fe3b459d288797718af2f265246') in 0.006648 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000324 seconds.
+  path: Assets/!Default/Toony Colors Pro/Textures/Threshold/TCP2_ThresholdTex_Handpaint.png
+  artifactKey: Guid(608c8f119ceafdc439c32f936e29b63c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/!Default/Toony Colors Pro/Textures/Threshold/TCP2_ThresholdTex_Handpaint.png using Guid(608c8f119ceafdc439c32f936e29b63c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '625a85299af531d19ae74696a024197c') in 0.004761 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000113 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/trousers/trousers_l.png
+  artifactKey: Guid(91ed36703f9c8d143a369f29cf34b90a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/trousers/trousers_l.png using Guid(91ed36703f9c8d143a369f29cf34b90a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c5a26b134ae0c364214e443413e5ed4b') in 0.006010 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000243 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/short_pants/trousers_a.png
+  artifactKey: Guid(fbcbdfe8a0370cd43b915eee2dfef487) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/short_pants/trousers_a.png using Guid(fbcbdfe8a0370cd43b915eee2dfef487) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '72f2a405b5e67c8e408c62f338ffd355') in 0.006101 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000410 seconds.
+  path: Assets/!Default/Toony Colors Pro/Textures/Sketch/TCP2_SketchGradient_Square.png
+  artifactKey: Guid(048b8ea8f34ab8c48bc154e893d11b62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/!Default/Toony Colors Pro/Textures/Sketch/TCP2_SketchGradient_Square.png using Guid(048b8ea8f34ab8c48bc154e893d11b62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '91fb9fb3aea652a2591ecef6b319e424') in 0.005812 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000371 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/trousers/trousers_d.png
+  artifactKey: Guid(fccbd6405e3ed5947a867e442509d93e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/trousers/trousers_d.png using Guid(fccbd6405e3ed5947a867e442509d93e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6c2c01e22cfd64d6d3f5f7c91721ec82') in 0.008509 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.002081 seconds.
+  path: Assets/simple modular human/texture_materials/skins/skin_white_blue.png
+  artifactKey: Guid(4d9d136347a3d9e48b1e59a2e36ae2a1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/skins/skin_white_blue.png using Guid(4d9d136347a3d9e48b1e59a2e36ae2a1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2c4c98aefe006776d90846d5db711e99') in 0.007904 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000252 seconds.
+  path: Assets/simple modular human/texture_materials/hair/hair_b/hair_b_b.png
+  artifactKey: Guid(70fe3647d07c32e4d871b7f5d1ae9ab9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/hair/hair_b/hair_b_b.png using Guid(70fe3647d07c32e4d871b7f5d1ae9ab9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '38d6e1a656e620aea334f73e2bbed2c1') in 0.007157 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000418 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/tanktop/tanktop_g.png
+  artifactKey: Guid(f4eacb1700723774cbd333038044c0ea) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/tanktop/tanktop_g.png using Guid(f4eacb1700723774cbd333038044c0ea) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4c857963ffafddd43cc81592907446b0') in 0.006561 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000258 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/tanktop/tanktop_k.png
+  artifactKey: Guid(176876181269b6c41a40a362094fa5a1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/tanktop/tanktop_k.png using Guid(176876181269b6c41a40a362094fa5a1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0abb03b657a1a6a0676bf9404a13fd60') in 0.006173 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000328 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/shirt/shirt_i.png
+  artifactKey: Guid(bb426e44879a7d64a939b3c35d01ba20) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/shirt/shirt_i.png using Guid(bb426e44879a7d64a939b3c35d01ba20) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd8d5864d75f0d8c48d6258d2225c52d5') in 0.005658 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000133 seconds.
+  path: Assets/!Default/Toony Colors Pro/Demo TCP2/Cat Demo Assets/Textures/TCP2_Demo_Car_Flat.png
+  artifactKey: Guid(9bc88dd8bdc49804a9296afcebb0c28b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/!Default/Toony Colors Pro/Demo TCP2/Cat Demo Assets/Textures/TCP2_Demo_Car_Flat.png using Guid(9bc88dd8bdc49804a9296afcebb0c28b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ae6e58535eebad0dbe6b5542de490271') in 0.005058 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000568 seconds.
+  path: Assets/!Default/Toony Colors Pro/Demo TCP2/TCP2 Demo Assets/Cubemaps/TCP2_Demo_Cubemap_Lycksele.jpg
+  artifactKey: Guid(2393ffd69be40c94ba5523c7b0b84e84) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/!Default/Toony Colors Pro/Demo TCP2/TCP2 Demo Assets/Cubemaps/TCP2_Demo_Cubemap_Lycksele.jpg using Guid(2393ffd69be40c94ba5523c7b0b84e84) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1fb3459038565923e20628e13083f72e') in 0.038554 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 1
+========================================================================
+Received Import Request.
+  Time since last request: 0.000115 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/short_pants/trousers_f.png
+  artifactKey: Guid(964def01d83393342958b9586ff5f681) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/short_pants/trousers_f.png using Guid(964def01d83393342958b9586ff5f681) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9cc8657638e4fb83a61973bebdcff5f8') in 0.007439 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000739 seconds.
+  path: Assets/!Default/Toony Colors Pro/Demo TCP2/Cat Demo Assets/Textures/TCP2_Demo_Logo.png
+  artifactKey: Guid(22db3d1683e49874c9321c2887146b94) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/!Default/Toony Colors Pro/Demo TCP2/Cat Demo Assets/Textures/TCP2_Demo_Logo.png using Guid(22db3d1683e49874c9321c2887146b94) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2911138bd126eda4ebbb05673037bc4c') in 0.008373 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000119 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/tanktop/tanktop_h.png
+  artifactKey: Guid(7573501c378a97c4a81d465062ff540a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/tanktop/tanktop_h.png using Guid(7573501c378a97c4a81d465062ff540a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ce70fc2c3d93e616be2e513d1dfda047') in 0.005577 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000353 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/tanktop/tanktop_b.png
+  artifactKey: Guid(0165e38839a9c734aa23a21439915327) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/tanktop/tanktop_b.png using Guid(0165e38839a9c734aa23a21439915327) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '924ad319c8aeb7ba8c9d1a2a5d2ba81b') in 0.007559 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.001131 seconds.
+  path: Assets/!Default/Toony Colors Pro/Demo TCP2/Cat Demo Assets/Textures/TCP2_Demo_Cat_Flat.png
+  artifactKey: Guid(af02dda8ae75a334e9d41087d4a9a7fd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/!Default/Toony Colors Pro/Demo TCP2/Cat Demo Assets/Textures/TCP2_Demo_Cat_Flat.png using Guid(af02dda8ae75a334e9d41087d4a9a7fd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e85a71dc2f404f6f52c919c9b09d56ac') in 0.005621 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000231 seconds.
+  path: Assets/!Default/Toony Colors Pro/Demo TCP2/SG2 Demo Assets/_Misc/TCP2_Demo Small Rocks.png
+  artifactKey: Guid(2e7f49d39e4fb284eb26ddf4da1611ae) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/!Default/Toony Colors Pro/Demo TCP2/SG2 Demo Assets/_Misc/TCP2_Demo Small Rocks.png using Guid(2e7f49d39e4fb284eb26ddf4da1611ae) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '755937af39172a9f4d91d84f6622ee53') in 0.004577 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000244 seconds.
+  path: Assets/!Default/Toony Colors Pro/Textures/Sketch/TCP2_SketchGradient_Halftone.png
+  artifactKey: Guid(74f40e2117b2f334083f0f1bbbe11df1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/!Default/Toony Colors Pro/Textures/Sketch/TCP2_SketchGradient_Halftone.png using Guid(74f40e2117b2f334083f0f1bbbe11df1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3b133ac175334cddb32e349fb4532b93') in 0.004819 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000226 seconds.
+  path: Assets/!Default/Toony Colors Pro/Demo TCP2/TCP2 Demo Assets/Robot Kyle/Textures/TCP2_Demo Robot_Color.png
+  artifactKey: Guid(90f5c2a59e018304bb00979205857f25) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/!Default/Toony Colors Pro/Demo TCP2/TCP2 Demo Assets/Robot Kyle/Textures/TCP2_Demo Robot_Color.png using Guid(90f5c2a59e018304bb00979205857f25) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1eda649645d1581fbae9137e58edf507') in 0.005566 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000405 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/trousers/trousers_c.png
+  artifactKey: Guid(8977fa83223173e47be893f7113183f1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/trousers/trousers_c.png using Guid(8977fa83223173e47be893f7113183f1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0b807060b69c55030634b731780108d5') in 0.006675 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000230 seconds.
+  path: Assets/!Default/Toony Colors Pro/Demo TCP2/SG2 Demo Assets/_Misc/TCP2_Demo Scanlines.png
+  artifactKey: Guid(d3a84e60412339a45838ef70b6b87839) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/!Default/Toony Colors Pro/Demo TCP2/SG2 Demo Assets/_Misc/TCP2_Demo Scanlines.png using Guid(d3a84e60412339a45838ef70b6b87839) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '301f1e9b2f0cfd0cc8baeb2f30c055a7') in 0.003608 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000423 seconds.
+  path: Assets/!Default/Toony Colors Pro/Demo TCP2/Cat Demo Assets/Textures/TCP2_Demo_Car.png
+  artifactKey: Guid(2aa8a45cbd95e7843a5a908a6464f25e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/!Default/Toony Colors Pro/Demo TCP2/Cat Demo Assets/Textures/TCP2_Demo_Car.png using Guid(2aa8a45cbd95e7843a5a908a6464f25e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f2a70143241e7bf46808e304331efeef') in 0.015123 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.008341 seconds.
+  path: Assets/!Default/Toony Colors Pro/Textures/Threshold/TCP2_ThresholdTex_Handpaint_2.png
+  artifactKey: Guid(ebbb2bec16a72fe48b8463e62d47d076) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/!Default/Toony Colors Pro/Textures/Threshold/TCP2_ThresholdTex_Handpaint_2.png using Guid(ebbb2bec16a72fe48b8463e62d47d076) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5f663fec667fa447023ab6dd4d227bf8') in 0.011860 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.002238 seconds.
+  path: Assets/!Default/Toony Colors Pro/Demo TCP2/Cat Demo Assets/Textures/TCP2_Demo_CubemapNight.png
+  artifactKey: Guid(5ba058c8d7e86e648b63592545e021cb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/!Default/Toony Colors Pro/Demo TCP2/Cat Demo Assets/Textures/TCP2_Demo_CubemapNight.png using Guid(5ba058c8d7e86e648b63592545e021cb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c0ab94b0920d5c98d8b7736bb8f63b78') in 0.041629 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 1
+========================================================================
+Received Import Request.
+  Time since last request: 0.000493 seconds.
+  path: Assets/simple modular human/texture_materials/test_terrain_materials_textures/sweet_machine.png
+  artifactKey: Guid(17e21bb0d80971b4595584c1a737a332) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/test_terrain_materials_textures/sweet_machine.png using Guid(17e21bb0d80971b4595584c1a737a332) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7068daa1f13cdd1e83d10d97d6d2f083') in 0.007209 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000273 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/t_shirt/t_shirt_f.png
+  artifactKey: Guid(2ab7336ba61f91248bf0afbbdf07fb11) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/t_shirt/t_shirt_f.png using Guid(2ab7336ba61f91248bf0afbbdf07fb11) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ea64487194fa8033e4e341a5b2005d05') in 0.007931 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000143 seconds.
+  path: Assets/simple modular human/texture_materials/skins/skin_white_green.png
+  artifactKey: Guid(e7a209c30ebd76d42ae49d88620e5004) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/skins/skin_white_green.png using Guid(e7a209c30ebd76d42ae49d88620e5004) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2bbaafbbc3aa596cb4856fec44b3785c') in 0.004611 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000084 seconds.
+  path: Assets/simple modular human/skybox/skyboxTex.png
+  artifactKey: Guid(277c7d0581c4a94449b664bf53c99a42) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/skybox/skyboxTex.png using Guid(277c7d0581c4a94449b664bf53c99a42) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'cb99435a65cb1b5a123856d2050f92a6') in 0.036932 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 1
+========================================================================
+Received Import Request.
+  Time since last request: 0.000129 seconds.
+  path: Assets/!Default/Toony Colors Pro/Demo TCP2/SG2 Demo Assets/_Misc/TCP2_Demo Ivy.png
+  artifactKey: Guid(ef289baa268d5e845ba3ea469005baeb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/!Default/Toony Colors Pro/Demo TCP2/SG2 Demo Assets/_Misc/TCP2_Demo Ivy.png using Guid(ef289baa268d5e845ba3ea469005baeb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '13f7d847e9a7f51c5544675ceb96ec43') in 0.010038 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000249 seconds.
+  path: Assets/!Default/Toony Colors Pro/Editor/Icons/TCP2_Context.png
+  artifactKey: Guid(b2af956d7a27a9e4fb81807fdf023727) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/!Default/Toony Colors Pro/Editor/Icons/TCP2_Context.png using Guid(b2af956d7a27a9e4fb81807fdf023727) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '76ca257f27e8993f8685aa5541873cff') in 0.004493 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000053 seconds.
+  path: Assets/!Default/Toony Colors Pro/Editor/Icons/TCP2_CogIcon2_Pro.png
+  artifactKey: Guid(293cb35a75aa70b43ad10ae8b045d268) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/!Default/Toony Colors Pro/Editor/Icons/TCP2_CogIcon2_Pro.png using Guid(293cb35a75aa70b43ad10ae8b045d268) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '18e723b0f0c0e9ae0f20027095b6d2fc') in 0.002705 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000083 seconds.
+  path: Assets/!Default/Toony Colors Pro/Editor/Icons/TCP2_ContextualHelpBox.png
+  artifactKey: Guid(e9b4e5ce012646f4396bbda4e7300375) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/!Default/Toony Colors Pro/Editor/Icons/TCP2_ContextualHelpBox.png using Guid(e9b4e5ce012646f4396bbda4e7300375) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '951eb8cd3ab1769f793f7d59e3b294c1') in 0.007893 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000090 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/trousers/trousers_h.png
+  artifactKey: Guid(324555ded99675840878b4440f07a18c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/trousers/trousers_h.png using Guid(324555ded99675840878b4440f07a18c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f894d35992f0d7109a973546fe60e3ed') in 0.006113 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000145 seconds.
+  path: Assets/!Default/Toony Colors Pro/Editor/Icons/TCP2_WarningIcon.png
+  artifactKey: Guid(8ef1aa6ddf6d8aa41b22f62497ceb9f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/!Default/Toony Colors Pro/Editor/Icons/TCP2_WarningIcon.png using Guid(8ef1aa6ddf6d8aa41b22f62497ceb9f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bf34016868c7aea73d2be3d634fa73a3') in 0.002981 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000305 seconds.
+  path: Assets/!Default/Toony Colors Pro/Demo TCP2/SG Demo Assets/_Misc Assets/TCP2_Water Foam Sponge.png
+  artifactKey: Guid(869319dead08c3b4a9c074af06b585f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/!Default/Toony Colors Pro/Demo TCP2/SG Demo Assets/_Misc Assets/TCP2_Water Foam Sponge.png using Guid(869319dead08c3b4a9c074af06b585f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd73ef901218a652f4060ee5e8527c107') in 0.003608 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000145 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/shoes1/shoes1_c.png
+  artifactKey: Guid(dcab1b6c6a6504c4fa482ee039692435) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/shoes1/shoes1_c.png using Guid(dcab1b6c6a6504c4fa482ee039692435) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '63c8fde21481e9ac1dc3ec2a92d0eba3') in 0.004376 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000130 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/t_shirt/t_shirt_p.png
+  artifactKey: Guid(37e3aeb442ab6f94b80e66f124e41e97) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/t_shirt/t_shirt_p.png using Guid(37e3aeb442ab6f94b80e66f124e41e97) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2c4a820eb654dd1a49bb8b30a625c15f') in 0.006144 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000092 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/complet_suits/securityguard_suit/secureityguard_suit.png
+  artifactKey: Guid(58b165d45b7f6ec449d25ed05c26c59b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/complet_suits/securityguard_suit/secureityguard_suit.png using Guid(58b165d45b7f6ec449d25ed05c26c59b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2b8e4e7e714c8234d2adbc29459d2a74') in 0.006680 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000512 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/t_shirt/t_shirt_u.png
+  artifactKey: Guid(d12294f1958a6d34094ced455ee0fe26) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/t_shirt/t_shirt_u.png using Guid(d12294f1958a6d34094ced455ee0fe26) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ea2cdcd6aef88c873824b4d75b146797') in 0.005405 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000913 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/shoes3/shoes3_d.png
+  artifactKey: Guid(22970075f27e84a4087aee30488b15bc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/shoes3/shoes3_d.png using Guid(22970075f27e84a4087aee30488b15bc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ecd2a7da28bd8610d36f7a3cd601268c') in 0.004950 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000262 seconds.
+  path: Assets/!Default/Toony Colors Pro/Editor/Icons/TCP2_CogIcon_Down.png
+  artifactKey: Guid(dfc2218fdd8f9ac42adc5a1f6f775fbc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/!Default/Toony Colors Pro/Editor/Icons/TCP2_CogIcon_Down.png using Guid(dfc2218fdd8f9ac42adc5a1f6f775fbc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3a8c62f1622142217a80a9818772acbc') in 0.003784 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000117 seconds.
+  path: Assets/!Default/Toony Colors Pro/Demo TCP2/SG Demo Assets/_Misc Assets/TCP2_Demo_GradientRamp.png
+  artifactKey: Guid(ee2c1625f8801df4ea984bc0de5e5f6e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/!Default/Toony Colors Pro/Demo TCP2/SG Demo Assets/_Misc Assets/TCP2_Demo_GradientRamp.png using Guid(ee2c1625f8801df4ea984bc0de5e5f6e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '86bc1768e15f94a5f6c8be6e3145f604') in 0.005300 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000311 seconds.
+  path: Assets/!Default/Toony Colors Pro/Demo TCP2/Cat Demo Assets/Textures/TCP2_Demo_BrickWall_Flat.png
+  artifactKey: Guid(6d727a66cb0b12c4bad4faf8bdff458c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/!Default/Toony Colors Pro/Demo TCP2/Cat Demo Assets/Textures/TCP2_Demo_BrickWall_Flat.png using Guid(6d727a66cb0b12c4bad4faf8bdff458c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8f08e1907af7bef5f3f0330c46fb4e78') in 0.006651 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000161 seconds.
+  path: Assets/Tiny Trees All Season/Textures/Ground 1 Summer.png
+  artifactKey: Guid(ada9bec9478955848ae1104aa5c4133e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Tiny Trees All Season/Textures/Ground 1 Summer.png using Guid(ada9bec9478955848ae1104aa5c4133e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4c1455943d5768f2ba69ea3822468a99') in 0.005482 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000285 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/scarf/scarf_k.png
+  artifactKey: Guid(c0e156d8974242249879b2efa8883593) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/scarf/scarf_k.png using Guid(c0e156d8974242249879b2efa8883593) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3a7b537f057a53edaac88f92b9caaf40') in 0.006743 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000085 seconds.
+  path: Assets/!Default/Toony Colors Pro/Editor/Icons/TCP2_ContextualHelpBox_Pro.png
+  artifactKey: Guid(738c239888a0d6142a8d22c35c323a52) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/!Default/Toony Colors Pro/Editor/Icons/TCP2_ContextualHelpBox_Pro.png using Guid(738c239888a0d6142a8d22c35c323a52) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7a80062e56eac400bdd52fd3723fb422') in 0.003988 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000262 seconds.
+  path: Assets/simple modular human/texture_materials/test_terrain_materials_textures/table.png
+  artifactKey: Guid(d6372d05dbaa5284abd27d3459d880ff) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/test_terrain_materials_textures/table.png using Guid(d6372d05dbaa5284abd27d3459d880ff) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2020016cd5f5a3ee48d371aa31fe814b') in 0.002802 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000179 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/shoes3/shoes3_b.png
+  artifactKey: Guid(5a49cfb47c5a85f46a79c97b3c15c665) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/shoes3/shoes3_b.png using Guid(5a49cfb47c5a85f46a79c97b3c15c665) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8650ae6970918b90008b8f3954642fe4') in 0.004823 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000123 seconds.
+  path: Assets/!Default/Toony Colors Pro/Demo TCP2/SG2 Demo Assets/_Misc/TCP2_Demo Small Rocks Height.png
+  artifactKey: Guid(0a56ed8b745db3846972e3345f656b91) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/!Default/Toony Colors Pro/Demo TCP2/SG2 Demo Assets/_Misc/TCP2_Demo Small Rocks Height.png using Guid(0a56ed8b745db3846972e3345f656b91) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a0e402e83dd2309a65da3d0b9b9159ef') in 0.003141 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.001721 seconds.
+  path: Assets/Tiny Trees All Season/Textures/Water.png
+  artifactKey: Guid(0041211ffdb15654483620bda563bf7d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Tiny Trees All Season/Textures/Water.png using Guid(0041211ffdb15654483620bda563bf7d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '341bb88e89c562bc91c91ac93aa30155') in 0.003722 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000085 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/t_shirt/t_shirt_a.png
+  artifactKey: Guid(07024ea85c62e0b4b91f561ca7de3ae5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/t_shirt/t_shirt_a.png using Guid(07024ea85c62e0b4b91f561ca7de3ae5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f213ca22a30cd536cf6c7f439add5488') in 0.004538 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000100 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/trousers/trousers_j.png
+  artifactKey: Guid(a71721af18752f146a9c41aae12362ce) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/trousers/trousers_j.png using Guid(a71721af18752f146a9c41aae12362ce) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd0884d9a8ef4e1ee1758fb4488a2718a') in 0.007424 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000489 seconds.
+  path: Assets/simple modular human/texture_materials/cloth/short_pants/trousers_d.png
+  artifactKey: Guid(4fc3435f206261a4ea3c7cf850f3bdab) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/cloth/short_pants/trousers_d.png using Guid(4fc3435f206261a4ea3c7cf850f3bdab) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd433599e552dfb71d5981e1bccdcf8b8') in 0.014829 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000853 seconds.
+  path: Assets/simple modular human/texture_materials/hair/hair_b/hair_b_d.png
+  artifactKey: Guid(17595e7d3a38db243b425ab2917988d4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/simple modular human/texture_materials/hair/hair_b/hair_b_d.png using Guid(17595e7d3a38db243b425ab2917988d4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '691ea4f43438e02403d22f63bdd274b8') in 0.006554 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+Editor requested this worker to shutdown with reason: Scaling down because of idle timeout
+TcpMessagingSession - receive error: operation aborted. errorcode: 89, details: Operation aborted.
+AssetImportWorker is now disconnected from the server
+Process exiting
