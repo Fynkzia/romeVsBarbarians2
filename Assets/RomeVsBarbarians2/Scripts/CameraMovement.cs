@@ -129,8 +129,8 @@ public class CameraMovement : MonoBehaviour {
     private void CamZoom() {
        
         cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, fieldsOfView[targetFOVIndex], Time.deltaTime * zoomSpeed);
-        //cam.targetTexture = cameraTextures[targetFOVIndex];
-        //mainRenderTexture.texture = cam.targetTexture;
+        cam.targetTexture = cameraTextures[targetFOVIndex];
+        mainRenderTexture.texture = cam.targetTexture;
         
     }
 }
