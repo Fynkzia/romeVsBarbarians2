@@ -6,6 +6,7 @@ public class SquadControlManager : MonoBehaviour
 {
     [SerializeField] private Camera cam;
     [SerializeField] private GameObject drawingPrefab;
+    [SerializeField] private float offset;
 
     public static SquadControlManager Instance { get; private set; }
 
@@ -24,8 +25,8 @@ public class SquadControlManager : MonoBehaviour
     }
 
     private void HandleSquadTouch() {
-        if (Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Began) {
-            Ray ray = cam.ScreenPointToRay(Input.touches[0].position);
+        if (Input.GetMouseButtonDown(0)) {
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit)) {
                 if (hit.collider.gameObject.tag == SQUAD_TAG) {
@@ -36,24 +37,25 @@ public class SquadControlManager : MonoBehaviour
             }
         }
 
-        if (Input.touchCount > 0 && (Input.touches[0].phase == TouchPhase.Moved || Input.touches[0].phase == TouchPhase.Stationary)) {
+        if (Input.GetMouseButton(0) && hitSquad) {
             DrawLine();
         }
 
-        if (Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Ended) {
+        if (Input.GetMouseButtonUp(0)) {
             hitSquad = false;
         }
     }
 
     private void DrawLine() {
         
-        Ray ray = cam.ScreenPointToRay(Input.touches[0].position);
+        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit)) {
             if (hit.collider != null) {
                 mousePos = new Vector3(hit.point.x, hit.point.y, hit.point.z);
+                Vector3 pos = cam.ScreenToWorldPoint(Input.mousePosition);
+                Debug.Log("mousePos: " + mousePos + "position: " +pos);
                 if(mousePrevPos != mousePos) {
-                   
                     lineRenderer.positionCount++;
                     lineRenderer.SetPosition(lineRenderer.positionCount - 1,mousePos);
                     mousePrevPos = mousePos;
