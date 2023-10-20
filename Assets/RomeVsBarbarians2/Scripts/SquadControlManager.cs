@@ -53,7 +53,7 @@ public class SquadControlManager : MonoBehaviour
                         hitSquad = true;
                         GameObject drawing = Instantiate(drawingPrefab);
                         lineRenderer = drawing.GetComponent<LineRenderer>();
-                        squadController = hit.collider.transform.parent.GetComponent<SquadController>();
+                        squadController = hit.collider.transform.GetComponent<SquadController>();
                         squadController.lineRenderer = lineRenderer;
                     }
                     if(hitSquad && isSquadMoving && startTapTime> 0 && startTapTime<maxTimeWait) {
