@@ -6,7 +6,8 @@ using UnityEngine.UI;
 
 public class CameraMovement : MonoBehaviour {
 
-    [SerializeField] private Camera cam;
+    [SerializeField] private Camera gameCamera;
+    [SerializeField] private Camera renderTextureCamera;
     [SerializeField] private float[] panSpeed;  // Speed of panning.
     [SerializeField] private float[] panLimitZ; //Limits by Y
     [SerializeField] private float[] panLimitX; //Limits by X
@@ -34,7 +35,11 @@ public class CameraMovement : MonoBehaviour {
     private void Awake() {
         //mainFOVIndex = (int)Mathf.Ceil((fieldsOfView.Length - 1) / 2);
         targetFOVIndex = mainFOVIndex;
-        cam.fieldOfView = fieldsOfView[mainFOVIndex];
+        gameCamera.fieldOfView = fieldsOfView[mainFOVIndex];
+        renderTextureCamera.fieldOfView = fieldsOfView[mainFOVIndex];
+
+        renderTextureCamera.targetTexture = cameraTextures[targetFOVIndex];
+
     }
 
     private void Update() {
@@ -65,12 +70,12 @@ public class CameraMovement : MonoBehaviour {
             Vector3 panVector = new Vector3(-mouseDelta.x / screenWidth, 0, -mouseDelta.y / screenHeight) * panSpeed[targetFOVIndex] * Time.deltaTime;
 
             // Find new camera position
-            Vector3 newPosition = cam.transform.position + panVector;
+            Vector3 newPosition = gameCamera.transform.position + panVector;
             
             // Look for boundaries
             newPosition.x = Mathf.Clamp(newPosition.x, panLimitX[0], panLimitX[1]);
             newPosition.z = Mathf.Clamp(newPosition.z, panLimitZ[0], panLimitZ[1]);
-            cam.transform.position = newPosition;
+            gameCamera.transform.position = newPosition;
 
             // Update the last mouse position for the next frame.
             lastMousePosition = Input.mousePosition;
@@ -128,9 +133,11 @@ public class CameraMovement : MonoBehaviour {
 
     private void CamZoom() {
        
-        cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, fieldsOfView[targetFOVIndex], Time.deltaTime * zoomSpeed);
-        cam.targetTexture = cameraTextures[targetFOVIndex];
-        mainRenderTexture.texture = cam.targetTexture;
+        gameCamera.fieldOfView = Mathf.Lerp(gameCamera.fieldOfView, fieldsOfView[targetFOVIndex], Time.deltaTime * zoomSpeed);
+        renderTextureCamera.fieldOfView = Mathf.Lerp(renderTextureCamera.fieldOfView, fieldsOfView[targetFOVIndex], Time.deltaTime * zoomSpeed);
+
+        renderTextureCamera.targetTexture = cameraTextures[targetFOVIndex];
+        mainRenderTexture.texture = renderTextureCamera.targetTexture;
         
     }
 }
