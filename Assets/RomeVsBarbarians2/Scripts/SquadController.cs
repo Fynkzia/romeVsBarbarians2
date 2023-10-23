@@ -37,14 +37,21 @@ public class SquadController : MonoBehaviour
     [SerializeField] private bool playerSquad;
     [SerializeField] private bool inBattle;
     [SerializeField] private float levelSquad;
-    [SerializeField] private float amountUnits;
+    [SerializeField] public float amountUnits;
     [SerializeField] public float powerSquad;
     [SerializeField] public float defenceSquad;
-    [SerializeField] private float moraleSquad;
+    [SerializeField] public float moraleSquad;
     [SerializeField] private float actionTime;
-    [SerializeField] private int actionUnits;
-    [SerializeField] private bool attack;
-    [SerializeField] private bool defence;
+    [SerializeField] public int actionUnits;
+    [SerializeField] public bool attack;
+    [SerializeField] public bool defence;
+
+    [SerializeField] public float attackCoef;
+    [SerializeField] public float defenceCoef;
+
+    [Header("Animation Settings")]
+    [Space(10)]
+    [SerializeField] private int maxFightingUnity;
 
     private Rigidbody rb;
     private GameObject enemySquad;
@@ -98,8 +105,9 @@ public class SquadController : MonoBehaviour
             } else {
                 if (battleTime >= actionTime) {
                     battleTime = 0f;
-                    UnitKick(enemySquad.transform);
                     EnemyDamage();
+                    UnitKick(enemySquad.transform);
+                    
                 }
             
             }
@@ -249,22 +257,52 @@ public class SquadController : MonoBehaviour
         for (int i = 0; i < actionUnits; i++) {
             //int index = Random.Range(0, unitArray.Count - 1);
             int index = 0;
+            if(unitArray.Count > maxFightingUnity){
+                index = Random.Range(0, maxFightingUnity);
+            }else{
+                 index = Random.Range(0, unitArray.Count);
+            }
+
+            
             Transform currentUnit = unitArray[index].transform;
             Vector3 startPosition = currentUnit.position;
             animators[index].SetTrigger(ATTACK);
 
-            await currentUnit.DOMove(enemyTransform.position + new Vector3(0, (int)Random.Range(-1, 2), 0), actionTime / 2).AsyncWaitForCompletion();
+        
+            
+
+            await currentUnit.DOMove(((enemyTransform.position + transform.position)/2) + currentUnit.localPosition, actionTime / 2).AsyncWaitForCompletion();
             await currentUnit.DOMove(startPosition, actionTime / 2).AsyncWaitForCompletion();
         }
     }
 
     private void EnemyDamage() {
-        //float attack = powerSquad * (currentStamina/maxStamina);
-        //float defence = enemyController.defenceSquad;
-        //float minDamage = 
-        if (Random.Range(0, 11) % 2 == 0) {
-            //int index = Random.Range(0, enemyController.unitArray.Count - 1);
-            int index = 0;
+        float attack = powerSquad * (currentStamina/maxStamina);
+        float defence = enemyController.defenceSquad * (enemyController.currentStamina/enemyController.maxStamina);
+        
+        
+        float min = (attack/defence)+ attackCoef;
+
+        if (enemyController.defence)
+        {
+            min-=(((float)enemyController.actionUnits)/10f);
+        }
+
+        float max = enemyController.defenceSquad+(actionUnits/10f)+enemyController.defenceCoef;
+
+        Debug.Log("attack = " + attack);
+         Debug.Log("defence = " + defence);
+          Debug.Log("min = " + min);
+           Debug.Log("max = " + max);
+
+        if (Random.Range(min, max) > enemyController.defenceSquad) {
+            if(enemyController.unitArray.Count > enemyController.maxFightingUnity){
+                 int index = Random.Range(0, enemyController.maxFightingUnity);
+            }else{
+                  int index = Random.Range(0, enemyController.unitArray.Count);
+            }
+           
+            //int index = 0;
             GameObject currentUnit = enemyController.unitArray[index];
             Transform currentModel = currentUnit.transform.GetChild(0);
             currentModel.parent = null;
@@ -274,5 +312,7 @@ public class SquadController : MonoBehaviour
             Destroy(currentModel.gameObject, deadTime);
         
         }
+        currentStamina -= 0.05f;
     }
+    
 }

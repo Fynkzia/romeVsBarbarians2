@@ -11,6 +11,7 @@ public class SquadControlManager : MonoBehaviour
     [SerializeField]private int maxRoundIndex = 3;
 
     [SerializeField] private Transform pointDebug;
+    [SerializeField] private LayerMask rayDrawLayer ;
 
     public static SquadControlManager Instance { get; private set; }
 
@@ -87,7 +88,7 @@ public class SquadControlManager : MonoBehaviour
     private void DrawLine() {
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit)) {
+        if (Physics.Raycast(ray, out hit,1000f,rayDrawLayer)) {
             if (hit.collider.gameObject.tag == TERRAIN_TAG) {
                 mousePos = new Vector3(hit.point.x, hit.point.y+offset, hit.point.z);
 
