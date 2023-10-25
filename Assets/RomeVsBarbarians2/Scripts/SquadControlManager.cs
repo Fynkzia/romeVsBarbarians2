@@ -25,7 +25,7 @@ public class SquadControlManager : MonoBehaviour
     public bool isSquadMoving = false;
 
     private float currentLineLength = 0;
-    private float maxTimeWait = 1;
+    private float maxTimeWait = 0.5f;
     [SerializeField]private float startTapTime = 0;
     private bool firstTap = false;
 
@@ -80,6 +80,7 @@ public class SquadControlManager : MonoBehaviour
         if (Input.GetMouseButtonUp(0) && hitSquad && !isSquadMoving) {
             currentLineLength = 0;
             squadController.SetMoving(true);
+            squadController.SetBattle(false);
             hitSquad = false;
             firstTap = false;
         }

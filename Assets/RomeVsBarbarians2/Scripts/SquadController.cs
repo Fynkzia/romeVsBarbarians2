@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using DG.Tweening;
+using System.Linq;
 
 public class SquadController : MonoBehaviour
 {
@@ -34,6 +35,7 @@ public class SquadController : MonoBehaviour
     [Header("Fighting Settings")]
     [Space(10)]
     [SerializeField] private float deadTime;
+    [SerializeField] private float maxEscapeTime;
     [SerializeField] private bool playerSquad;
     [SerializeField] private bool inBattle;
     [SerializeField] private float levelSquad;
@@ -57,14 +59,18 @@ public class SquadController : MonoBehaviour
     private GameObject enemySquad;
     private SquadController enemyController;
     private Vector3[] positions;
+    private List<Transform> fightingUnitList = new List<Transform>();
 
     private int index = 0;
     private float currentSpeed = 0f;
     private float battleTime = 0f;
     private bool battleRot = false;
+    private bool escape=false;
+    private float escapeTime = 0f;
 
     private const string IS_MOVING = "Moving";
     private const string IS_BATTLE = "Battle";
+    private const string IS_ROTATION = "Rotation";
     private const string ATTACK = "Attack";
     private const string DIE = "Die";
     private const string RANDOM_SPEED = "RandomSpeed";
@@ -94,7 +100,7 @@ public class SquadController : MonoBehaviour
         if (isMoved) {
             SquadMovement();
             if (currentStamina > 0) { currentStamina -= consumptionStamina * Time.fixedDeltaTime; }
-        } else if(currentStamina < maxStamina) {
+        } else if(currentStamina < maxStamina && !inBattle) {
             currentStamina += recoveryStamina * Time.fixedDeltaTime;
         }
 
@@ -114,6 +120,14 @@ public class SquadController : MonoBehaviour
 
         }
 
+        if (escape) {
+            if (escapeTime < maxEscapeTime) { 
+                escapeTime += Time.fixedDeltaTime;
+            } else {
+                escape = false;
+            }
+        }
+
     }
     private void SquadMovement() {
         if (index < lineRenderer.positionCount) {
@@ -130,7 +144,7 @@ public class SquadController : MonoBehaviour
                 if (deltaAngel > maxDeltaAngel && deltaAngel < 360 - maxDeltaAngel) {
                     //transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(new Vector3(0f, y, 0f)), rotationSpeed * Time.fixedDeltaTime);
                     Debug.Log("Stop");
-                    isStopRot = true;
+                    SetRotation(true);
                     currentSpeed = 0;
                     //
                 }
@@ -153,7 +167,7 @@ public class SquadController : MonoBehaviour
                 transform.rotation = Quaternion.LerpUnclamped(transform.rotation, Quaternion.Euler(new Vector3(0f, y, 0f)), rotationSpeed * Time.fixedDeltaTime);
 
                 if(deltaAngel < 4) {
-                    isStopRot = false;
+                    SetRotation(false);
                 }
 
             }
@@ -175,6 +189,13 @@ public class SquadController : MonoBehaviour
         this.inBattle = inBattle;
         for (int i = 0; i < animators.Count; i++) {
             animators[i].SetBool(IS_BATTLE, inBattle);
+        }
+    }
+
+    private void SetRotation(bool isStopRot) {
+        this.isStopRot = isStopRot;
+        for (int i = 0; i < animators.Count; i++) {
+            animators[i].SetBool(IS_ROTATION, isStopRot);
         }
     }
 
@@ -216,16 +237,19 @@ public class SquadController : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider enemyCollider) {
-        enemySquad = enemyCollider.gameObject;
-        if ((tag==SQUAD_TAG && enemySquad.tag == ENEMY_TAG) || (tag == ENEMY_TAG && enemySquad.tag == SQUAD_TAG)) {
-            enemyController = enemyCollider.transform.GetComponent<SquadController>();
-            SetBattle(true);
-            movementSpeed /= 2;
-            rotationSpeed /= 2;
-            boostSpeed /= 2;
-            if(isMoved) {
-                CancelMovement();
-            }
+        if (!escape) { 
+            enemySquad = enemyCollider.gameObject;
+            if ((tag==SQUAD_TAG && enemySquad.tag == ENEMY_TAG) || (tag == ENEMY_TAG && enemySquad.tag == SQUAD_TAG)) {
+                enemyController = enemyCollider.transform.GetComponent<SquadController>();
+                SetBattle(true);
+                movementSpeed /= 2;
+                rotationSpeed /= 2;
+                boostSpeed /= 2;
+                if(isMoved) {
+                    CancelMovement();
+                }
+        }
+        
         }
     }
     private void OnTriggerStay(Collider other) {
@@ -238,6 +262,7 @@ public class SquadController : MonoBehaviour
             movementSpeed *= 2;
             rotationSpeed *= 2;
             boostSpeed *= 2;
+            escape = true;
         }
     }
 
@@ -253,7 +278,7 @@ public class SquadController : MonoBehaviour
     }
 
     async private void UnitKick(Transform enemyTransform) {
-
+        List<int> indexArray = new List<int>();
         for (int i = 0; i < actionUnits; i++) {
             //int index = Random.Range(0, unitArray.Count - 1);
             int index = 0;
@@ -262,18 +287,36 @@ public class SquadController : MonoBehaviour
             }else{
                  index = Random.Range(0, unitArray.Count);
             }
+            //if (tag == SQUAD_TAG) { 
+            //
+            //Debug.Log( "random = "+index);
+            //}
+            if (indexArray.Contains(index)) {
+                i--;
+                //if (tag == SQUAD_TAG) {
+                //
+                //Debug.Log("nahyi = "+index);
+                //}
+            } else {
+                indexArray.Add(index);
+                Transform currentUnit = unitArray[index].transform;
+                //if (tag == SQUAD_TAG) { 
+                //
+                //Debug.Log("adding = " + index);
+                //}
 
-            
-            Transform currentUnit = unitArray[index].transform;
-            Vector3 startPosition = currentUnit.position;
-            animators[index].SetTrigger(ATTACK);
+                Vector3 startPosition = currentUnit.position;
+                animators[index].SetTrigger(ATTACK);
 
-        
-            
 
-            await currentUnit.DOMove(((enemyTransform.position + transform.position)/2) + currentUnit.localPosition, actionTime / 2).AsyncWaitForCompletion();
-            await currentUnit.DOMove(startPosition, actionTime / 2).AsyncWaitForCompletion();
+                await currentUnit.DOMove(((enemyTransform.position + transform.position)/2) + currentUnit.localPosition, actionTime / 2).AsyncWaitForCompletion();
+                await currentUnit.DOMove(startPosition, actionTime / 2).AsyncWaitForCompletion();
+            }
+           
         }
+
+        //Debug.Log("next");
+        //Debug.Log(indexArray[0] + "," + indexArray[1] + "," + indexArray[2]);
     }
 
     private void EnemyDamage() {
@@ -290,10 +333,6 @@ public class SquadController : MonoBehaviour
 
         float max = enemyController.defenceSquad+(actionUnits/10f)+enemyController.defenceCoef;
 
-        Debug.Log("attack = " + attack);
-         Debug.Log("defence = " + defence);
-          Debug.Log("min = " + min);
-           Debug.Log("max = " + max);
 
         if (Random.Range(min, max) > enemyController.defenceSquad) {
             if(enemyController.unitArray.Count > enemyController.maxFightingUnity){
