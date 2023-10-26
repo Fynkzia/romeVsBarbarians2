@@ -9,8 +9,8 @@ using System.Linq;
 public class SquadController : MonoBehaviour
 {
     [SerializeField] public List<GameObject> unitArray;
-    [HideInInspector] public bool isMoved = false;
-    [HideInInspector] public LineRenderer lineRenderer;
+    [HideInInspector]public bool isMoved = false;
+    [HideInInspector]public LineRenderer lineRenderer;
     [HideInInspector] public List<Animator> animators = new List<Animator>();
     //[SerializeField] private GameObject yourPointHeh;
 
