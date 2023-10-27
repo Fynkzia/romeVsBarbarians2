@@ -71,6 +71,7 @@ public class SquadController : MonoBehaviour {
     [Header("Animation Settings")]
     [Space(10)]
     [SerializeField] private int maxFightingUnity;
+    [SerializeField] private ParticleSystem bloodFx;
 
 
     [Header("Morale Settings")]
@@ -367,6 +368,7 @@ public class SquadController : MonoBehaviour {
             //int index = 0;
             GameObject currentUnit = enemyController.unitArray[index];
             Transform currentModel = currentUnit.transform.GetChild(0);
+            Instantiate(bloodFx, currentModel);
             currentModel.parent = null;
             enemyController.unitArray.RemoveAt(index);
             enemyController.animators[index].SetTrigger(DIE);
