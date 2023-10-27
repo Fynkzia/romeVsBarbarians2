@@ -6,12 +6,31 @@ using Random = UnityEngine.Random;
 using DG.Tweening;
 using System.Linq;
 
-public class SquadController : MonoBehaviour
-{
+public enum SquadType { 
+    Swordsman,
+    Spearman,
+    Horseman
+}
+
+[System.Serializable]
+public class Coef {
+    public SquadType type;
+    public float attack;
+    public float defence;
+};
+public class SquadController : MonoBehaviour {
     [SerializeField] public List<GameObject> unitArray;
+    [SerializeField] public float amountUnits;
+    [SerializeField] public SquadType type;
+    [SerializeField] public Coef[] coef;
+
+    
+
     [HideInInspector]public bool isMoved = false;
     [HideInInspector]public LineRenderer lineRenderer;
     [HideInInspector] public List<Animator> animators = new List<Animator>();
+    [HideInInspector] public float currentStamina;
+    [HideInInspector] public float currentMorale;
     //[SerializeField] private GameObject yourPointHeh;
 
 
@@ -29,7 +48,6 @@ public class SquadController : MonoBehaviour
     [SerializeField] private float recoveryStamina;
     [SerializeField] private float consumptionStamina;
     [SerializeField] private float pointsDistance; 
-    [SerializeField] public float currentStamina;
     [SerializeField] private float maxDeltaAngel;
 
     [Header("Fighting Settings")]
@@ -39,7 +57,6 @@ public class SquadController : MonoBehaviour
     [SerializeField] private bool playerSquad;
     [SerializeField] private bool inBattle;
     [SerializeField] private float levelSquad;
-    [SerializeField] public float amountUnits;
     [SerializeField] public float powerSquad;
     [SerializeField] public float defenceSquad;
     [SerializeField] public float moraleSquad;
@@ -54,6 +71,13 @@ public class SquadController : MonoBehaviour
     [Header("Animation Settings")]
     [Space(10)]
     [SerializeField] private int maxFightingUnity;
+
+
+    [Header("Morale Settings")]
+    [Space(10)]
+    [SerializeField] private float lostMoraleThenDie;
+    [SerializeField] private float lostMoraleThenAttack;
+    [SerializeField] private float recoveryMoraleSpeed;
 
     private Rigidbody rb;
     private GameObject enemySquad;
@@ -117,7 +141,10 @@ public class SquadController : MonoBehaviour
                 }
             
             }
+        }
 
+        if (!inBattle && currentMorale < moraleSquad) {
+            currentMorale += recoveryMoraleSpeed * (unitArray.Count/amountUnits) * Time.fixedDeltaTime;
         }
 
         if (escape) {
@@ -178,7 +205,6 @@ public class SquadController : MonoBehaviour
     }
 
     public void SetMoving(bool isMoved) {
-        SquadControlManager.Instance.isSquadMoving = isMoved;
         this.isMoved = isMoved;
         for (int i = 0; i < animators.Count; i++) {
             animators[i].SetBool(IS_MOVING, isMoved);
@@ -242,6 +268,7 @@ public class SquadController : MonoBehaviour
             if ((tag==SQUAD_TAG && enemySquad.tag == ENEMY_TAG) || (tag == ENEMY_TAG && enemySquad.tag == SQUAD_TAG)) {
                 enemyController = enemyCollider.transform.GetComponent<SquadController>();
                 SetBattle(true);
+                currentMorale -= lostMoraleThenAttack * enemyController.unitArray.Count;
                 movementSpeed /= 2;
                 rotationSpeed /= 2;
                 boostSpeed /= 2;
@@ -252,10 +279,6 @@ public class SquadController : MonoBehaviour
         
         }
     }
-    private void OnTriggerStay(Collider other) {
-        
-    }
-
     private void OnTriggerExit(Collider other) {
         if ((tag == SQUAD_TAG && enemySquad.tag == ENEMY_TAG) || (tag == ENEMY_TAG && enemySquad.tag == SQUAD_TAG)) {
             SetBattle(false);
@@ -340,7 +363,7 @@ public class SquadController : MonoBehaviour
             }else{
                   int index = Random.Range(0, enemyController.unitArray.Count);
             }
-           
+            currentMorale -= lostMoraleThenDie;
             //int index = 0;
             GameObject currentUnit = enemyController.unitArray[index];
             Transform currentModel = currentUnit.transform.GetChild(0);

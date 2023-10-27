@@ -7,6 +7,7 @@ public class SquadControlManager : MonoBehaviour
     [SerializeField] private Camera cam;
     [SerializeField] private GameObject drawingPrefab;
     [SerializeField] private float offset;
+    [SerializeField] private Color attackColor;
 
     [SerializeField]private int maxRoundIndex = 3;
 
@@ -23,7 +24,6 @@ public class SquadControlManager : MonoBehaviour
     private Vector3 mousePrevPos = Vector3.zero;
     private Vector3 mousePosSum = Vector3.zero;
     private int roundIndex = 0;
-    public bool isSquadMoving = false;
 
     private float currentLineLength = 0;
     private float maxTimeWait = 0.5f;
@@ -58,22 +58,23 @@ public class SquadControlManager : MonoBehaviour
             if (Physics.Raycast(ray, out hit)) {
                 pointDebug.position = hit.point;
                 if (hit.collider.gameObject.tag == SQUAD_TAG) {
-                    if (!hitSquad && !isSquadMoving) {//squad don't hitted before and squad don't moving
+                    squadController = hit.collider.transform.GetComponent<SquadController>();
+                    if (!hitSquad && !squadController.isMoved) {//squad don't hitted before and squad don't moving
                         hitSquad = true;
                         GameObject drawing = Instantiate(drawingPrefab);
                         lineRenderer = drawing.GetComponent<LineRenderer>();
-                        squadController = hit.collider.transform.GetComponent<SquadController>();
+                        
                         squadController.lineRenderer = lineRenderer;
                         
                     }
-                    if(hitSquad && isSquadMoving && startTapTime> 0 && startTapTime<maxTimeWait) {
+                    if(hitSquad && squadController.isMoved && startTapTime> 0 && startTapTime<maxTimeWait) {
                         firstTap = false;
                         startTapTime = 0;
                         squadController.CancelMovement();
                         currentLineLength = 0;
                         hitSquad = false;
                     }
-                    if (isSquadMoving) {
+                    if (squadController.isMoved) {
                         firstTap = true;
                         hitSquad = true;
                     }
@@ -81,7 +82,7 @@ public class SquadControlManager : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButton(0) && hitSquad && !isSquadMoving) {
+        if (Input.GetMouseButton(0) && hitSquad && !squadController.isMoved) {
             firstTap = false;
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -90,11 +91,11 @@ public class SquadControlManager : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonUp(0) && hitSquad && !isSquadMoving) {
+        if (Input.GetMouseButtonUp(0) && hitSquad && !squadController.isMoved) {
             currentLineLength = 0;
             squadController.SetMoving(true);
             squadController.SetBattle(false);
-            TryChangeColorToRed();
+            TryChangeColor();
             hitSquad = false;
             firstTap = false;
         }
@@ -130,14 +131,16 @@ public class SquadControlManager : MonoBehaviour
         
     }
 
-    private void TryChangeColorToRed() {
+    private void TryChangeColor() {
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit,1000f,unitLayer)) {
             if (hit.collider.gameObject.tag == ENEMY_TAG) {
-                lineRenderer.startColor = Color.red;
-                lineRenderer.endColor = Color.red;
+                lineRenderer.positionCount++;
+                lineRenderer.SetPosition(lineRenderer.positionCount - 1,hit.collider.gameObject.transform.position);
+                lineRenderer.startColor = attackColor;
+                lineRenderer.endColor = attackColor;
             }
         }
     }
