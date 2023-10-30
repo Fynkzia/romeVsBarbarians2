@@ -24,6 +24,9 @@ public class SquadController : MonoBehaviour {
     [SerializeField] public SquadType type;
     [SerializeField] public Coef[] coef;
 
+     [HideInInspector] public List<GameObject> nowAttacked;// массив юнитов которые уже находятся в атаке
+
+
     
 
     [HideInInspector]public bool isMoved = false;
@@ -70,7 +73,7 @@ public class SquadController : MonoBehaviour {
 
     [Header("Animation Settings")]
     [Space(10)]
-    [SerializeField] private int maxFightingUnity;
+    [SerializeField] private int maxFightingUnit;
     [SerializeField] private ParticleSystem bloodFx;
 
 
@@ -89,6 +92,7 @@ public class SquadController : MonoBehaviour {
     private int index = 0;
     private float currentSpeed = 0f;
     private float battleTime = 0f;
+    private float animationAttackTime = 0f;
     private bool battleRot = false;
     private bool escape=false;
     private float escapeTime = 0f;
@@ -131,14 +135,19 @@ public class SquadController : MonoBehaviour {
 
         if (inBattle) {
             battleTime += Time.fixedDeltaTime;
+            animationAttackTime += Time.fixedDeltaTime + (Random.Range(-0.1f,0.1f)*Time.fixedDeltaTime);
             if (!battleRot) { 
                 LookOnEnemy(); 
             } else {
-                if (battleTime >= actionTime) {
+                if (battleTime >= actionTime) { // только нанесение урона
                     battleTime = 0f;
                     EnemyDamage();
-                    UnitKick(enemySquad.transform);
+                   // UnitKick(enemySquad.transform);
                     
+                }
+                if (animationAttackTime >= actionTime/actionUnits) {// только анимация атаки юнитов
+                    animationAttackTime = 0f; 
+                    UnitKickOnce();
                 }
             
             }
@@ -192,7 +201,8 @@ public class SquadController : MonoBehaviour {
             }
 
             if (isStopRot) {
-                transform.rotation = Quaternion.LerpUnclamped(transform.rotation, Quaternion.Euler(new Vector3(0f, y, 0f)), rotationSpeed * Time.fixedDeltaTime);
+                //transform.rotation = Quaternion.LerpUnclamped(transform.rotation, Quaternion.Euler(new Vector3(0f, y, 0f)), rotationSpeed * Time.fixedDeltaTime);
+                  transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(new Vector3(0f, y, 0f)), rotationSpeed * Time.fixedDeltaTime);
 
                 if(deltaAngel < 4) {
                     SetRotation(false);
@@ -293,7 +303,8 @@ public class SquadController : MonoBehaviour {
     private void LookOnEnemy() {
         float y = AngleBetweenTwoPoints(transform.position, enemySquad.transform.position);
         //float b = AngleBetweenTwoPoints(enemySquad.transform.position, transform.position);
-            transform.rotation = Quaternion.LerpUnclamped(transform.rotation, Quaternion.Euler(new Vector3(0f, y, 0f)), rotationSpeed * Time.fixedDeltaTime);
+            //transform.rotation = Quaternion.LerpUnclamped(transform.rotation, Quaternion.Euler(new Vector3(0f, y, 0f)), rotationSpeed * Time.fixedDeltaTime);
+             transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(new Vector3(0f, y, 0f)), rotationSpeed * Time.fixedDeltaTime);
             //enemySquad.transform.rotation = Quaternion.LerpUnclamped(enemySquad.transform.rotation, Quaternion.Euler(new Vector3(0f, b, 0f)), rotationSpeed * Time.fixedDeltaTime);
 
         if (Mathf.Abs(transform.rotation.eulerAngles.y  - y) < 3) {
@@ -306,8 +317,8 @@ public class SquadController : MonoBehaviour {
         for (int i = 0; i < actionUnits; i++) {
             //int index = Random.Range(0, unitArray.Count - 1);
             int index = 0;
-            if(unitArray.Count > maxFightingUnity){
-                index = Random.Range(0, maxFightingUnity);
+            if(unitArray.Count > maxFightingUnit){
+                index = Random.Range(0, maxFightingUnit);
             }else{
                  index = Random.Range(0, unitArray.Count);
             }
@@ -333,7 +344,16 @@ public class SquadController : MonoBehaviour {
                 animators[index].SetTrigger(ATTACK);
 
 
-                await currentUnit.DOMove(((enemyTransform.position + transform.position)/2) + currentUnit.localPosition, actionTime / 2).AsyncWaitForCompletion();
+               
+                Transform atackedEnemy;
+
+                if(enemyController.unitArray.Count > enemyController.maxFightingUnit){
+                atackedEnemy = enemyController.unitArray[Random.Range(0, enemyController.maxFightingUnit)].transform;
+                }else{
+                    atackedEnemy = enemyController.unitArray[ Random.Range(0, enemyController.unitArray.Count)].transform;
+                }
+
+                await currentUnit.DOMove(atackedEnemy.position, actionTime / 2).AsyncWaitForCompletion();
                 await currentUnit.DOMove(startPosition, actionTime / 2).AsyncWaitForCompletion();
             }
            
@@ -342,6 +362,55 @@ public class SquadController : MonoBehaviour {
         //Debug.Log("next");
         //Debug.Log(indexArray[0] + "," + indexArray[1] + "," + indexArray[2]);
     }
+async private void UnitKickOnce() {
+
+    int index = 0;
+     if(unitArray.Count > maxFightingUnit){
+                index = Random.Range(0, maxFightingUnit);
+            }else{
+                 index = Random.Range(0, unitArray.Count);
+            }
+             Transform currentUnit = unitArray[index].transform;
+
+            if(nowAttacked.Contains(currentUnit.gameObject)){
+                
+//UnitKickOnce();
+                
+
+
+            }else{
+                nowAttacked.Add(currentUnit.gameObject);
+               
+            
+                //if (tag == SQUAD_TAG) { 
+                //
+                //Debug.Log("adding = " + index);
+                //}
+
+                Vector3 startPosition = currentUnit.position;
+                animators[index].SetTrigger(ATTACK);
+
+
+               
+                Transform atackedEnemy;
+
+                if(enemyController.unitArray.Count > enemyController.maxFightingUnit){
+                atackedEnemy = enemyController.unitArray[Random.Range(0, enemyController.maxFightingUnit)].transform;
+                }else{
+                    atackedEnemy = enemyController.unitArray[ Random.Range(0, enemyController.unitArray.Count)].transform;
+                }
+                
+                Vector3 halfPosition = new Vector3 ((currentUnit.position.x + atackedEnemy.position.x)/2,(currentUnit.position.y + atackedEnemy.position.y)/2,(currentUnit.position.z + atackedEnemy.position.z)/2);
+
+                await currentUnit.DOMove(halfPosition, actionTime / 2f).AsyncWaitForCompletion();
+                await currentUnit.DOMove(startPosition, actionTime/2f).AsyncWaitForCompletion();
+                nowAttacked.Remove(currentUnit.gameObject);
+
+            }
+            
+
+}
+
 
     private void EnemyDamage() {
         float attack = powerSquad * (currentStamina/maxStamina);
@@ -358,9 +427,10 @@ public class SquadController : MonoBehaviour {
         float max = enemyController.defenceSquad+(actionUnits/10f)+enemyController.defenceCoef;
 
 
+        for (int i = 0; i < actionUnits; i++) {
         if (Random.Range(min, max) > enemyController.defenceSquad) {
-            if(enemyController.unitArray.Count > enemyController.maxFightingUnity){
-                 int index = Random.Range(0, enemyController.maxFightingUnity);
+            if(enemyController.unitArray.Count > enemyController.maxFightingUnit){
+                 int index = Random.Range(0, enemyController.maxFightingUnit);
             }else{
                   int index = Random.Range(0, enemyController.unitArray.Count);
             }
@@ -376,7 +446,8 @@ public class SquadController : MonoBehaviour {
             Destroy(currentModel.gameObject, deadTime);
         
         }
-        currentStamina -= 0.05f;
+        }
+       // currentStamina -= 0.05f;
     }
     
 }
