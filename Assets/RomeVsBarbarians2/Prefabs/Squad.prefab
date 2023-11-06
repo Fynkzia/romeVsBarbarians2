@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 853336702382789239}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -2.0799942}
+  m_LocalPosition: {x: 0, y: 0, z: -2.52}
   m_LocalScale: {x: 5.2879686, y: 1, z: 0.5625}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -133,7 +133,7 @@ Transform:
   m_GameObject: {fileID: 1758887521870694474}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 2.090004}
+  m_LocalPosition: {x: 0, y: 0, z: 2.55}
   m_LocalScale: {x: 5.2879686, y: 1, z: 0.5625}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -359,9 +359,20 @@ MonoBehaviour:
   - {fileID: 6728022591003069270}
   - {fileID: 5130099820209435691}
   - {fileID: 655877864166345665}
+  amountUnits: 0
+  type: 0
+  coef: []
+  leftTriggerCoef: 0
+  rightTriggerCoef: 0
+  frontTriggerCoef: 0
+  backTriggerCoef: 0
+  offsetRadius: 0.2
+  nowAttacked: []
   isMoved: 0
   lineRenderer: {fileID: 0}
   animators: []
+  currentStamina: 0
+  currentMorale: 0
   isStopRot: 0
   movementSpeed: 20
   rotationSpeed: 10
@@ -370,23 +381,28 @@ MonoBehaviour:
   recoveryStamina: 0.1
   consumptionStamina: 0.2
   pointsDistance: 0.4
-  currentStamina: 0
   maxDeltaAngel: 0
   deadTime: 0
+  maxEscapeTime: 0
   playerSquad: 0
   inBattle: 0
   levelSquad: 0
-  amountUnits: 0
   powerSquad: 2
   defenceSquad: 3
-  moraleSquad: 0
+  maxMorale: 0
   actionTime: 0
   actionUnits: 0
   attack: 0
   defence: 0
+  attackTriggerCoef: 0
   attackCoef: 0
   defenceCoef: 0
-  maxFightingUnity: 0
+  maxFightingUnit: 0
+  bloodFx: {fileID: 0}
+  lostMoraleThenDie: 0
+  lostMoraleThenAttack: 0
+  recoveryMoraleSpeed: 0
+  currentTriggerCoef: 0
 --- !u!135 &605649367756838933
 SphereCollider:
   m_ObjectHideFlags: 0

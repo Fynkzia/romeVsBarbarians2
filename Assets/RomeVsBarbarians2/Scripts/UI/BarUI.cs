@@ -21,7 +21,7 @@ public class BarUI : MonoBehaviour
                 ChangeProgress(squadController.currentStamina, squadController.maxStamina);
             }
             if (barType == BarType.Morale) {
-                ChangeProgress(squadController.currentMorale, squadController.moraleSquad);
+                ChangeProgress(squadController.currentMorale, squadController.maxMorale);
             }
         }
     }
