@@ -1,23 +1,30 @@
+Unity Editor version:    2022.3.5f1 (9674261d40ee)
+Branch:                  2022.3/release
+Build type:              Release
+Batch mode:              YES
+macOS version:           Version 13.2.1 (Build 22D68)
+Darwin version:          22.3.0
+Architecture:            arm64
+Running under Rosetta:   NO
+Available memory:        8192 MB
 Using pre-set license
-Built from '2022.3/release' branch; Version is '2022.3.5f1 (9674261d40ee) revision 9860134'; Using compiler version '192829333'; Build Type 'Release'
-OS: 'Windows 10  (10.0.19045) 64bit Professional' Language: 'ru' Physical Memory: 15771 MB
-BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 1
+Pro License: YES
 
 COMMAND LINE ARGUMENTS:
-C:\Program Files\Unity\Hub\Editor\2022.3.5f1\Editor\Unity.exe
+/Applications/Unity/Hub/Editor/2022.3.5f1/Unity.app/Contents/MacOS/Unity
 -adb2
 -batchMode
 -noUpm
 -name
 AssetImportWorker0
 -projectPath
-C:/Users/black/Desktop/romeVsBarbarians2
+/Users/Maksym/Work/romeVsBarbarians2
 -logFile
 Logs/AssetImportWorker0.log
 -srvPort
-50827
-Successfully changed project path to: C:/Users/black/Desktop/romeVsBarbarians2
-C:/Users/black/Desktop/romeVsBarbarians2
+49352
+Successfully changed project path to: /Users/Maksym/Work/romeVsBarbarians2
+/Users/Maksym/Work/romeVsBarbarians2
 [UnityMemory] Configuration Parameters - Can be set up in boot.config
     "memorysetup-bucket-allocator-granularity=16"
     "memorysetup-bucket-allocator-bucket-count=8"
@@ -49,74 +56,63 @@ C:/Users/black/Desktop/romeVsBarbarians2
     "memorysetup-temp-allocator-size-cloud-worker=32768"
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gfx=262144"
-Player connection [6156] Host "[IP] 192.168.0.130 [Port] 0 [Flags] 2 [Guid] 2333954045 [EditorId] 2333954045 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-T9M29M9) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined multi-casting on [225.0.0.222:54997]...
+Player connection [8821129536] Host "[IP] 192.168.0.100 [Port] 0 [Flags] 2 [Guid] 2680877920 [EditorId] 2680877920 [Version] 1048832 [Id] OSXEditor(0,MacBook-Pro-Maksym.local) [Debug] 1 [PackageName] OSXEditor [ProjectName] Editor" joined multi-casting on [225.0.0.222:54997]...
 
-Player connection [6156] Host "[IP] 192.168.0.130 [Port] 0 [Flags] 2 [Guid] 2333954045 [EditorId] 2333954045 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-T9M29M9) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined alternative multi-casting on [225.0.0.222:34997]...
+Player connection [8821129536] Host "[IP] 192.168.0.100 [Port] 0 [Flags] 2 [Guid] 2680877920 [EditorId] 2680877920 [Version] 1048832 [Id] OSXEditor(0,MacBook-Pro-Maksym.local) [Debug] 1 [PackageName] OSXEditor [ProjectName] Editor" joined alternative multi-casting on [225.0.0.222:34997]...
 
-Refreshing native plugins compatible for Editor in 11.16 ms, found 3 plugins.
+Refreshing native plugins compatible for Editor in 15.27 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2022.3.5f1 (9674261d40ee)
-[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2022.3.5f1/Editor/Data/Resources/UnitySubsystems
-[Subsystems] Discovering subsystems at path C:/Users/black/Desktop/romeVsBarbarians2/Assets
+[Subsystems] Discovering subsystems at path /Applications/Unity/Hub/Editor/2022.3.5f1/Unity.app/Contents/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path /Users/Maksym/Work/romeVsBarbarians2/Assets
 GfxDevice: creating device client; threaded=0; jobified=0
-Direct3D:
-    Version:  Direct3D 11.0 [level 11.1]
-    Renderer: AMD Radeon(TM) Graphics (ID=0x1638)
-    Vendor:   ATI
-    VRAM:     7885 MB
-    Driver:   27.20.14032.8
+ preferred device: Apple M1 (high power)
+Metal devices available: 1
+0: Apple M1 (high power)
+Forcing user selected device: Apple M1 (high power)
+Initializing Metal device caps: Apple M1
 Initialize mono
-Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2022.3.5f1/Editor/Data/Managed'
-Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2022.3.5f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
-Mono config path = 'C:/Program Files/Unity/Hub/Editor/2022.3.5f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56540
+Mono path[0] = '/Applications/Unity/Hub/Editor/2022.3.5f1/Unity.app/Contents/Managed'
+Mono path[1] = '/Applications/Unity/Hub/Editor/2022.3.5f1/Unity.app/Contents/MonoBleedingEdge/lib/mono/unityjit-macos'
+Mono config path = '/Applications/Unity/Hub/Editor/2022.3.5f1/Unity.app/Contents/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56933
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
-Register platform support module: C:/Program Files/Unity/Hub/Editor/2022.3.5f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
-Register platform support module: C:/Program Files/Unity/Hub/Editor/2022.3.5f1/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll
-Register platform support module: C:/Program Files/Unity/Hub/Editor/2022.3.5f1/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.dll
-Register platform support module: C:/Program Files/Unity/Hub/Editor/2022.3.5f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
-Registered in 0.018290 seconds.
-- Loaded All Assemblies, in  0.402 seconds
-Native extension for WindowsStandalone target not found
-[usbmuxd] Start listen thread
-[usbmuxd] Listen thread started
-[usbmuxd] Send listen message
-Native extension for iOS target not found
-Native extension for Android target not found
-Android Extension - Scanning For ADB Devices 283 ms
-Native extension for WebGL target not found
+Register platform support module: /Applications/Unity/Hub/Editor/2022.3.5f1/Unity.app/Contents/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll
+Registered in 0.002685 seconds.
+- Loaded All Assemblies, in  0.411 seconds
+Native extension for OSXStandalone target not found
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.682 seconds
-Domain Reload Profiling: 1082ms
-	BeginReloadAssembly (100ms)
+- Finished resetting the current domain, in  0.198 seconds
+Domain Reload Profiling: 609ms
+	BeginReloadAssembly (161ms)
 		ExecutionOrderSort (0ms)
 		DisableScriptedObjects (0ms)
 		BackupInstance (0ms)
 		ReleaseScriptingObjects (0ms)
 		CreateAndSetChildDomain (1ms)
-	RebuildCommonClasses (42ms)
-	RebuildNativeTypeToScriptingClass (11ms)
-	initialDomainReloadingComplete (83ms)
-	LoadAllAssembliesAndSetupDomain (163ms)
-		LoadAssemblies (99ms)
+	RebuildCommonClasses (33ms)
+	RebuildNativeTypeToScriptingClass (12ms)
+	initialDomainReloadingComplete (55ms)
+	LoadAllAssembliesAndSetupDomain (150ms)
+		LoadAssemblies (160ms)
 		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (155ms)
-			TypeCache.Refresh (154ms)
-				TypeCache.ScanAssembly (141ms)
+		AnalyzeDomain (147ms)
+			TypeCache.Refresh (146ms)
+				TypeCache.ScanAssembly (125ms)
 			ScanForSourceGeneratedMonoScriptInfo (0ms)
 			ResolveRequiredComponents (1ms)
-	FinalizeReload (682ms)
+	FinalizeReload (198ms)
 		ReleaseScriptCaches (0ms)
 		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (617ms)
+		SetupLoadedEditorAssemblies (148ms)
 			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (433ms)
-			SetLoadedEditorAssemblies (4ms)
+			InitializePlatformSupportModulesInManaged (5ms)
+			SetLoadedEditorAssemblies (5ms)
 			RefreshPlugins (0ms)
-			BeforeProcessingInitializeOnLoad (2ms)
-			ProcessInitializeOnLoadAttributes (127ms)
-			ProcessInitializeOnLoadMethodAttributes (51ms)
+			BeforeProcessingInitializeOnLoad (1ms)
+			ProcessInitializeOnLoadAttributes (97ms)
+			ProcessInitializeOnLoadMethodAttributes (39ms)
 			AfterProcessingInitializeOnLoad (0ms)
 			EditorAssembliesLoaded (0ms)
 		ExecutionOrderSort2 (0ms)
@@ -124,446 +120,475 @@ Domain Reload Profiling: 1082ms
 ========================================================================
 Worker process is ready to serve import requests
 Begin MonoManager ReloadAssembly
-Symbol file LoadedFromMemory doesn't match image C:\Users\black\Desktop\romeVsBarbarians2\Library\PackageCache\com.unity.visualscripting@1.8.0\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
-Symbol file LoadedFromMemory doesn't match image C:\Users\black\Desktop\romeVsBarbarians2\Library\PackageCache\com.unity.visualscripting@1.8.0\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
-- Loaded All Assemblies, in  0.851 seconds
-Refreshing native plugins compatible for Editor in 3.16 ms, found 3 plugins.
-Native extension for WindowsStandalone target not found
-Native extension for iOS target not found
-Native extension for Android target not found
-Native extension for WebGL target not found
+Symbol file LoadedFromMemory doesn't match image /Users/Maksym/Work/romeVsBarbarians2/Library/PackageCache/com.unity.visualscripting@1.8.0/Editor/VisualScripting.Core/Dependencies/YamlDotNet/Unity.VisualScripting.YamlDotNet.dll
+Symbol file LoadedFromMemory doesn't match image /Users/Maksym/Work/romeVsBarbarians2/Library/PackageCache/com.unity.visualscripting@1.8.0/Editor/VisualScripting.Core/Dependencies/DotNetZip/Unity.VisualScripting.IonicZip.dll
+- Loaded All Assemblies, in  0.993 seconds
+Refreshing native plugins compatible for Editor in 1.85 ms, found 2 plugins.
+Native extension for OSXStandalone target not found
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.549 seconds
-Domain Reload Profiling: 1396ms
-	BeginReloadAssembly (126ms)
+- Finished resetting the current domain, in  0.615 seconds
+Domain Reload Profiling: 1614ms
+	BeginReloadAssembly (158ms)
 		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (5ms)
+		DisableScriptedObjects (6ms)
 		BackupInstance (0ms)
 		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (22ms)
-	RebuildCommonClasses (31ms)
-	RebuildNativeTypeToScriptingClass (11ms)
-	initialDomainReloadingComplete (59ms)
-	LoadAllAssembliesAndSetupDomain (619ms)
-		LoadAssemblies (397ms)
+		CreateAndSetChildDomain (36ms)
+	RebuildCommonClasses (30ms)
+	RebuildNativeTypeToScriptingClass (10ms)
+	initialDomainReloadingComplete (29ms)
+	LoadAllAssembliesAndSetupDomain (771ms)
+		LoadAssemblies (496ms)
 		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (281ms)
-			TypeCache.Refresh (263ms)
-				TypeCache.ScanAssembly (249ms)
-			ScanForSourceGeneratedMonoScriptInfo (13ms)
-			ResolveRequiredComponents (4ms)
-	FinalizeReload (549ms)
+		AnalyzeDomain (342ms)
+			TypeCache.Refresh (325ms)
+				TypeCache.ScanAssembly (301ms)
+			ScanForSourceGeneratedMonoScriptInfo (12ms)
+			ResolveRequiredComponents (5ms)
+	FinalizeReload (616ms)
 		ReleaseScriptCaches (0ms)
 		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (388ms)
+		SetupLoadedEditorAssemblies (456ms)
 			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (36ms)
+			InitializePlatformSupportModulesInManaged (4ms)
 			SetLoadedEditorAssemblies (3ms)
 			RefreshPlugins (0ms)
-			BeforeProcessingInitializeOnLoad (62ms)
-			ProcessInitializeOnLoadAttributes (262ms)
-			ProcessInitializeOnLoadMethodAttributes (17ms)
-			AfterProcessingInitializeOnLoad (7ms)
+			BeforeProcessingInitializeOnLoad (47ms)
+			ProcessInitializeOnLoadAttributes (374ms)
+			ProcessInitializeOnLoadMethodAttributes (27ms)
+			AfterProcessingInitializeOnLoad (1ms)
 			EditorAssembliesLoaded (0ms)
 		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (5ms)
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.04 seconds
-Refreshing native plugins compatible for Editor in 3.66 ms, found 3 plugins.
+		AwakeInstancesAfterBackupRestoration (3ms)
+Launching external process: /Applications/Unity/Hub/Editor/2022.3.5f1/Unity.app/Contents/Tools/UnityShaderCompiler
+Launched and connected shader compiler UnityShaderCompiler after 0.58 seconds
+Refreshing native plugins compatible for Editor in 1.02 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 3419 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 63 unused Assets / (6.3 MB). Loaded Objects now: 3896.
-Memory consumption went from 261.1 MB to 254.8 MB.
-Total: 4.819300 ms (FindLiveObjects: 0.315400 ms CreateObjectMapping: 0.224300 ms MarkObjects: 2.813100 ms  DeleteObjects: 1.465600 ms)
+Unloading 3455 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 66 unused Assets / (6.4 MB). Loaded Objects now: 3929.
+Memory consumption went from 269.4 MB to 263.0 MB.
+Total: 28.246666 ms (FindLiveObjects: 0.448958 ms CreateObjectMapping: 0.053292 ms MarkObjects: 22.883500 ms  DeleteObjects: 4.856625 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
   custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:CustomObjectIndexerAttribute: 756ad292c208cfabdd7b50bc23989ffe -> 
   custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
   custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
   custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:AudioImporter_EditorPlatform: d09bf68614088b80899f8185d706f6e7 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:scripting/precompiled-assembly-types:Assembly-CSharp: 4db750a35762b73fe32759b32484ac7e -> c2d50aa65228700f1fae4f79c62c9267
-  custom:scripting/monoscript/fileName/OrdersSystem.cs:  -> 3e2bc9654e7f41d68d6a8b1662326d42
-========================================================================
-Received Prepare
-Begin MonoManager ReloadAssembly
-Symbol file LoadedFromMemory doesn't match image C:\Users\black\Desktop\romeVsBarbarians2\Library\PackageCache\com.unity.visualscripting@1.8.0\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
-Symbol file LoadedFromMemory doesn't match image C:\Users\black\Desktop\romeVsBarbarians2\Library\PackageCache\com.unity.visualscripting@1.8.0\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
-- Loaded All Assemblies, in  0.649 seconds
-Refreshing native plugins compatible for Editor in 2.84 ms, found 3 plugins.
-Native extension for WindowsStandalone target not found
-Native extension for iOS target not found
-Native extension for Android target not found
-Native extension for WebGL target not found
-Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.816 seconds
-Domain Reload Profiling: 1463ms
-	BeginReloadAssembly (134ms)
-		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (5ms)
-		BackupInstance (0ms)
-		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (40ms)
-	RebuildCommonClasses (25ms)
-	RebuildNativeTypeToScriptingClass (9ms)
-	initialDomainReloadingComplete (30ms)
-	LoadAllAssembliesAndSetupDomain (447ms)
-		LoadAssemblies (256ms)
-		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (243ms)
-			TypeCache.Refresh (238ms)
-				TypeCache.ScanAssembly (228ms)
-			ScanForSourceGeneratedMonoScriptInfo (0ms)
-			ResolveRequiredComponents (4ms)
-	FinalizeReload (817ms)
-		ReleaseScriptCaches (0ms)
-		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (349ms)
-			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (39ms)
-			SetLoadedEditorAssemblies (4ms)
-			RefreshPlugins (0ms)
-			BeforeProcessingInitializeOnLoad (62ms)
-			ProcessInitializeOnLoadAttributes (217ms)
-			ProcessInitializeOnLoadMethodAttributes (18ms)
-			AfterProcessingInitializeOnLoad (8ms)
-			EditorAssembliesLoaded (0ms)
-		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (6ms)
-Refreshing native plugins compatible for Editor in 4.23 ms, found 3 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 3338 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 42 unused Assets / (6.3 MB). Loaded Objects now: 3911.
-Memory consumption went from 241.6 MB to 235.3 MB.
-Total: 5.072600 ms (FindLiveObjects: 0.351500 ms CreateObjectMapping: 0.108200 ms MarkObjects: 2.785900 ms  DeleteObjects: 1.826300 ms)
-
-Prepare: number of updated asset objects reloaded= 0
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:CustomObjectIndexerAttribute: 756ad292c208cfabdd7b50bc23989ffe -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:AudioImporter_EditorPlatform: d09bf68614088b80899f8185d706f6e7 -> 
+  custom:AudioImporter_EditorPlatform: 3918e3fc78b5a79bad01e8451be0beb8 -> 
+  custom:framework-osx-AVFoundation: e770b220cccbd017edd2c1fefb359320 -> 
   custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
   custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
   custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
 ========================================================================
 Received Import Request.
-  Time since last request: 390154.995404 seconds.
-  path: Assets/RomeVsBarbarians2/Scripts/OrdersSystem.cs
-  artifactKey: Guid(edf38c843b1dcdb44a6d155b726b8c3b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/RomeVsBarbarians2/Scripts/OrdersSystem.cs using Guid(edf38c843b1dcdb44a6d155b726b8c3b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '879a58ace2400d8b80d45549278e6bdb') in 0.001902 seconds
+  Time since last request: 728776.606159 seconds.
+  path: Assets/OldResourses/SpritesOld/Sold Rome/sold1.png
+  artifactKey: Guid(0dc2824917b72af47a3afcf256668977) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/Sold Rome/sold1.png using Guid(0dc2824917b72af47a3afcf256668977) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ec821c25f7e60c82bb6c7ba4abe87a92') in 0.121449 seconds
 Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 0
+Number of asset objects unloaded after import = 3
 ========================================================================
 Received Import Request.
-  Time since last request: 1699.465867 seconds.
-  path: Assets/RomeVsBarbarians2/Scripts/GameOptions.cs
-  artifactKey: Guid(cea6fcf597f3466448c08108e02df098) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/RomeVsBarbarians2/Scripts/GameOptions.cs using Guid(cea6fcf597f3466448c08108e02df098) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4f5379b8e53628a762ad85a6fc39e0c4') in 0.000578 seconds
+  Time since last request: 0.000069 seconds.
+  path: Assets/OldResourses/SpritesOld/anim 2.psd
+  artifactKey: Guid(927eb848dc40f43ed9e6ed997b376c73) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/anim 2.psd using Guid(927eb848dc40f43ed9e6ed997b376c73) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2ebd35e0c0f53e2b6bf53e372044f80f') in 0.007661 seconds
 Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 0
-========================================================================
-Received Prepare
-Begin MonoManager ReloadAssembly
-Symbol file LoadedFromMemory doesn't match image C:\Users\black\Desktop\romeVsBarbarians2\Library\PackageCache\com.unity.visualscripting@1.8.0\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
-Symbol file LoadedFromMemory doesn't match image C:\Users\black\Desktop\romeVsBarbarians2\Library\PackageCache\com.unity.visualscripting@1.8.0\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
-- Loaded All Assemblies, in  0.705 seconds
-Refreshing native plugins compatible for Editor in 2.80 ms, found 3 plugins.
-Native extension for WindowsStandalone target not found
-Native extension for iOS target not found
-Native extension for Android target not found
-Native extension for WebGL target not found
-Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.732 seconds
-Domain Reload Profiling: 1435ms
-	BeginReloadAssembly (136ms)
-		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (5ms)
-		BackupInstance (0ms)
-		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (39ms)
-	RebuildCommonClasses (27ms)
-	RebuildNativeTypeToScriptingClass (9ms)
-	initialDomainReloadingComplete (31ms)
-	LoadAllAssembliesAndSetupDomain (497ms)
-		LoadAssemblies (321ms)
-		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (233ms)
-			TypeCache.Refresh (227ms)
-				TypeCache.ScanAssembly (216ms)
-			ScanForSourceGeneratedMonoScriptInfo (2ms)
-			ResolveRequiredComponents (4ms)
-	FinalizeReload (733ms)
-		ReleaseScriptCaches (0ms)
-		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (319ms)
-			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (37ms)
-			SetLoadedEditorAssemblies (4ms)
-			RefreshPlugins (0ms)
-			BeforeProcessingInitializeOnLoad (63ms)
-			ProcessInitializeOnLoadAttributes (191ms)
-			ProcessInitializeOnLoadMethodAttributes (16ms)
-			AfterProcessingInitializeOnLoad (7ms)
-			EditorAssembliesLoaded (0ms)
-		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (6ms)
-Refreshing native plugins compatible for Editor in 2.83 ms, found 3 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 3337 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 42 unused Assets / (6.3 MB). Loaded Objects now: 3926.
-Memory consumption went from 241.4 MB to 235.1 MB.
-Total: 4.440700 ms (FindLiveObjects: 0.287100 ms CreateObjectMapping: 0.198100 ms MarkObjects: 2.446200 ms  DeleteObjects: 1.508400 ms)
-
-Prepare: number of updated asset objects reloaded= 0
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:CustomObjectIndexerAttribute: 756ad292c208cfabdd7b50bc23989ffe -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:AudioImporter_EditorPlatform: d09bf68614088b80899f8185d706f6e7 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+Number of asset objects unloaded after import = 3
 ========================================================================
 Received Import Request.
-  Time since last request: 1116.002874 seconds.
-  path: Assets/RomeVsBarbarians2/Scripts/GameOptions.cs
-  artifactKey: Guid(cea6fcf597f3466448c08108e02df098) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/RomeVsBarbarians2/Scripts/GameOptions.cs using Guid(cea6fcf597f3466448c08108e02df098) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd1ddda4e1332e29f673a0f59e572c577') in 0.001656 seconds
+  Time since last request: 0.000273 seconds.
+  path: Assets/RomeVsBarbarians2/Textures/RomePlebs.psd
+  artifactKey: Guid(dbbdcdca96b4249ccab44c887a08c072) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/RomeVsBarbarians2/Textures/RomePlebs.psd using Guid(dbbdcdca96b4249ccab44c887a08c072) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '570f85a8c976ec4ab5440082a9a8c4f0') in 0.008545 seconds
 Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 0
-========================================================================
-Received Prepare
-Begin MonoManager ReloadAssembly
-Symbol file LoadedFromMemory doesn't match image C:\Users\black\Desktop\romeVsBarbarians2\Library\PackageCache\com.unity.visualscripting@1.8.0\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
-Symbol file LoadedFromMemory doesn't match image C:\Users\black\Desktop\romeVsBarbarians2\Library\PackageCache\com.unity.visualscripting@1.8.0\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
-- Loaded All Assemblies, in  0.679 seconds
-Refreshing native plugins compatible for Editor in 3.36 ms, found 3 plugins.
-Native extension for WindowsStandalone target not found
-Native extension for iOS target not found
-Native extension for Android target not found
-Native extension for WebGL target not found
-Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.736 seconds
-Domain Reload Profiling: 1413ms
-	BeginReloadAssembly (135ms)
-		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (5ms)
-		BackupInstance (0ms)
-		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (37ms)
-	RebuildCommonClasses (29ms)
-	RebuildNativeTypeToScriptingClass (10ms)
-	initialDomainReloadingComplete (30ms)
-	LoadAllAssembliesAndSetupDomain (472ms)
-		LoadAssemblies (278ms)
-		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (251ms)
-			TypeCache.Refresh (244ms)
-				TypeCache.ScanAssembly (230ms)
-			ScanForSourceGeneratedMonoScriptInfo (2ms)
-			ResolveRequiredComponents (5ms)
-	FinalizeReload (737ms)
-		ReleaseScriptCaches (0ms)
-		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (293ms)
-			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (32ms)
-			SetLoadedEditorAssemblies (4ms)
-			RefreshPlugins (0ms)
-			BeforeProcessingInitializeOnLoad (53ms)
-			ProcessInitializeOnLoadAttributes (182ms)
-			ProcessInitializeOnLoadMethodAttributes (15ms)
-			AfterProcessingInitializeOnLoad (7ms)
-			EditorAssembliesLoaded (0ms)
-		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (5ms)
-Refreshing native plugins compatible for Editor in 3.00 ms, found 3 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 3337 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 42 unused Assets / (6.3 MB). Loaded Objects now: 3941.
-Memory consumption went from 241.4 MB to 235.1 MB.
-Total: 4.649400 ms (FindLiveObjects: 0.352600 ms CreateObjectMapping: 0.238300 ms MarkObjects: 2.530000 ms  DeleteObjects: 1.526400 ms)
-
-Prepare: number of updated asset objects reloaded= 0
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:CustomObjectIndexerAttribute: 756ad292c208cfabdd7b50bc23989ffe -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:AudioImporter_EditorPlatform: d09bf68614088b80899f8185d706f6e7 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+Number of asset objects unloaded after import = 3
 ========================================================================
 Received Import Request.
-  Time since last request: 28.628028 seconds.
-  path: Assets/RomeVsBarbarians2/Scripts/CoinsController.cs
-  artifactKey: Guid(aca70d0020651144c82021041ef75be4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/RomeVsBarbarians2/Scripts/CoinsController.cs using Guid(aca70d0020651144c82021041ef75be4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4578f166922f592461e0eb645eb1dead') in 0.001678 seconds
+  Time since last request: 0.000467 seconds.
+  path: Assets/OldResourses/SpritesOld/Sold Rome/sold Muve.png
+  artifactKey: Guid(2d34f94cc332407438639bed0dd5f351) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/Sold Rome/sold Muve.png using Guid(2d34f94cc332407438639bed0dd5f351) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '61d9d0530d884d5a5c9c229a3cf2f2de') in 0.006943 seconds
 Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 0
-========================================================================
-Received Prepare
-Begin MonoManager ReloadAssembly
-Symbol file LoadedFromMemory doesn't match image C:\Users\black\Desktop\romeVsBarbarians2\Library\PackageCache\com.unity.visualscripting@1.8.0\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
-Symbol file LoadedFromMemory doesn't match image C:\Users\black\Desktop\romeVsBarbarians2\Library\PackageCache\com.unity.visualscripting@1.8.0\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
-- Loaded All Assemblies, in  0.670 seconds
-Refreshing native plugins compatible for Editor in 2.98 ms, found 3 plugins.
-Native extension for WindowsStandalone target not found
-Native extension for iOS target not found
-Native extension for Android target not found
-Native extension for WebGL target not found
-Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.892 seconds
-Domain Reload Profiling: 1560ms
-	BeginReloadAssembly (140ms)
-		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (5ms)
-		BackupInstance (0ms)
-		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (39ms)
-	RebuildCommonClasses (32ms)
-	RebuildNativeTypeToScriptingClass (10ms)
-	initialDomainReloadingComplete (31ms)
-	LoadAllAssembliesAndSetupDomain (454ms)
-		LoadAssemblies (270ms)
-		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (244ms)
-			TypeCache.Refresh (237ms)
-				TypeCache.ScanAssembly (225ms)
-			ScanForSourceGeneratedMonoScriptInfo (2ms)
-			ResolveRequiredComponents (4ms)
-	FinalizeReload (892ms)
-		ReleaseScriptCaches (0ms)
-		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (393ms)
-			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (43ms)
-			SetLoadedEditorAssemblies (4ms)
-			RefreshPlugins (0ms)
-			BeforeProcessingInitializeOnLoad (83ms)
-			ProcessInitializeOnLoadAttributes (231ms)
-			ProcessInitializeOnLoadMethodAttributes (23ms)
-			AfterProcessingInitializeOnLoad (9ms)
-			EditorAssembliesLoaded (0ms)
-		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (6ms)
-Refreshing native plugins compatible for Editor in 3.63 ms, found 3 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 3338 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 42 unused Assets / (6.3 MB). Loaded Objects now: 3957.
-Memory consumption went from 241.5 MB to 235.2 MB.
-Total: 5.130400 ms (FindLiveObjects: 0.314400 ms CreateObjectMapping: 0.114200 ms MarkObjects: 2.779800 ms  DeleteObjects: 1.921000 ms)
-
-Prepare: number of updated asset objects reloaded= 0
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:CustomObjectIndexerAttribute: 756ad292c208cfabdd7b50bc23989ffe -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:AudioImporter_EditorPlatform: d09bf68614088b80899f8185d706f6e7 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+Number of asset objects unloaded after import = 3
 ========================================================================
 Received Import Request.
-  Time since last request: 5.940554 seconds.
-  path: Assets/RomeVsBarbarians2/Scripts/CoinsController.cs
-  artifactKey: Guid(aca70d0020651144c82021041ef75be4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/RomeVsBarbarians2/Scripts/CoinsController.cs using Guid(aca70d0020651144c82021041ef75be4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'eb2d94025e3fb0bc9648f832882917e3') in 0.001762 seconds
+  Time since last request: 0.000139 seconds.
+  path: Assets/OldResourses/SpritesOld/diffd.png
+  artifactKey: Guid(c23c2daa52025428da6fa25d1c027059) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/diffd.png using Guid(c23c2daa52025428da6fa25d1c027059) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '925c294bdf906c2f9e4f2c54a75219b8') in 0.004935 seconds
 Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 0
+Number of asset objects unloaded after import = 3
 ========================================================================
 Received Import Request.
-  Time since last request: 42.401154 seconds.
-  path: Assets/RomeVsBarbarians2/Scripts/CoinsController.cs
-  artifactKey: Guid(aca70d0020651144c82021041ef75be4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/RomeVsBarbarians2/Scripts/CoinsController.cs using Guid(aca70d0020651144c82021041ef75be4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd532484e26b1c697e69c36c70e4f2e3b') in 0.000479 seconds
+  Time since last request: 0.000083 seconds.
+  path: Assets/OldResourses/SpritesOld/Sold Rome/sold_Legat attack.png
+  artifactKey: Guid(4d03504b16536c24bbf3ca8c637e9111) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/Sold Rome/sold_Legat attack.png using Guid(4d03504b16536c24bbf3ca8c637e9111) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2be15797ff067fec76362ef153f26243') in 0.006534 seconds
 Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 0
+Number of asset objects unloaded after import = 3
 ========================================================================
-Received Prepare
-Begin MonoManager ReloadAssembly
-Symbol file LoadedFromMemory doesn't match image C:\Users\black\Desktop\romeVsBarbarians2\Library\PackageCache\com.unity.visualscripting@1.8.0\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
-Symbol file LoadedFromMemory doesn't match image C:\Users\black\Desktop\romeVsBarbarians2\Library\PackageCache\com.unity.visualscripting@1.8.0\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
-- Loaded All Assemblies, in  0.659 seconds
-Refreshing native plugins compatible for Editor in 2.83 ms, found 3 plugins.
-Native extension for WindowsStandalone target not found
-Native extension for iOS target not found
-Native extension for Android target not found
-Native extension for WebGL target not found
-Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.724 seconds
-Domain Reload Profiling: 1380ms
-	BeginReloadAssembly (138ms)
-		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (5ms)
-		BackupInstance (0ms)
-		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (37ms)
-	RebuildCommonClasses (28ms)
-	RebuildNativeTypeToScriptingClass (9ms)
-	initialDomainReloadingComplete (29ms)
-	LoadAllAssembliesAndSetupDomain (452ms)
-		LoadAssemblies (273ms)
-		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (237ms)
-			TypeCache.Refresh (231ms)
-				TypeCache.ScanAssembly (220ms)
-			ScanForSourceGeneratedMonoScriptInfo (2ms)
-			ResolveRequiredComponents (4ms)
-	FinalizeReload (724ms)
-		ReleaseScriptCaches (0ms)
-		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (291ms)
-			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (32ms)
-			SetLoadedEditorAssemblies (4ms)
-			RefreshPlugins (0ms)
-			BeforeProcessingInitializeOnLoad (52ms)
-			ProcessInitializeOnLoadAttributes (181ms)
-			ProcessInitializeOnLoadMethodAttributes (15ms)
-			AfterProcessingInitializeOnLoad (7ms)
-			EditorAssembliesLoaded (0ms)
-		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (5ms)
-Refreshing native plugins compatible for Editor in 2.89 ms, found 3 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 3338 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 42 unused Assets / (6.3 MB). Loaded Objects now: 3972.
-Memory consumption went from 241.5 MB to 235.2 MB.
-Total: 4.672600 ms (FindLiveObjects: 0.283300 ms CreateObjectMapping: 0.222700 ms MarkObjects: 2.546900 ms  DeleteObjects: 1.617800 ms)
-
-Prepare: number of updated asset objects reloaded= 0
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:CustomObjectIndexerAttribute: 756ad292c208cfabdd7b50bc23989ffe -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:AudioImporter_EditorPlatform: d09bf68614088b80899f8185d706f6e7 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+Received Import Request.
+  Time since last request: 0.000101 seconds.
+  path: Assets/OldResourses/SpritesOld/standart_r.png
+  artifactKey: Guid(6d1e235fff5444c3b9ccdd80812e05db) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/standart_r.png using Guid(6d1e235fff5444c3b9ccdd80812e05db) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ab896a841a50ae2dbdbdd4bdc9eff1ef') in 0.005765 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000074 seconds.
+  path: Assets/OldResourses/SpritesOld/Die.png
+  artifactKey: Guid(41faa64b03cd747868099a2e36cf3e8e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/Die.png using Guid(41faa64b03cd747868099a2e36cf3e8e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8049ff618355fdf964da95299762d9e6') in 0.007310 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000801 seconds.
+  path: Assets/OldResourses/SpritesOld/sound 2.png
+  artifactKey: Guid(83b9c1d3d516d42b59151c0168b49bed) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/sound 2.png using Guid(83b9c1d3d516d42b59151c0168b49bed) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5822dc710b53ff3cdd98243279d1bc07') in 0.008143 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000294 seconds.
+  path: Assets/RomeVsBarbarians2/Textures/EquipmentBarbarians.psd
+  artifactKey: Guid(d1e87125630a641c8baf13dd019b0072) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/RomeVsBarbarians2/Textures/EquipmentBarbarians.psd using Guid(d1e87125630a641c8baf13dd019b0072) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c1b0e5a776e9fb8bb597e702fcaf3b1e') in 0.007081 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000294 seconds.
+  path: Assets/OldResourses/SpritesOld/icon_0002_Layer-2.png
+  artifactKey: Guid(aaf32fce026044245b295a4c88d72fca) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/icon_0002_Layer-2.png using Guid(aaf32fce026044245b295a4c88d72fca) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9735a0a21932f0dfdb9374642eb9a9dd') in 0.008323 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000653 seconds.
+  path: Assets/OldResourses/SpritesOld/Sold Rome/sold New Pritorians.png
+  artifactKey: Guid(33e0e6e8f2840404194efdaa31767045) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/Sold Rome/sold New Pritorians.png using Guid(33e0e6e8f2840404194efdaa31767045) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2ef3269f7845f4eafff6ae8969064016') in 0.009821 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000410 seconds.
+  path: Assets/OldResourses/SpritesOld/logo_big.png
+  artifactKey: Guid(3d5be46c3e641457db25702b6ddec51f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/logo_big.png using Guid(3d5be46c3e641457db25702b6ddec51f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '389c4b74f5b6f6af1b323f9a167178e6') in 0.007593 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000252 seconds.
+  path: Assets/OldResourses/SpritesOld/Debuff.png
+  artifactKey: Guid(70f6135d8bbae49ac96f74745abd221e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/Debuff.png using Guid(70f6135d8bbae49ac96f74745abd221e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd10200d191c8d0fe398dfe65f9edf212') in 0.006126 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000790 seconds.
+  path: Assets/OldResourses/SpritesOld/Sold/sold_0 _z Muve.png
+  artifactKey: Guid(0dd9cfbef52c5ca41bba80fc70603fa6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/Sold/sold_0 _z Muve.png using Guid(0dd9cfbef52c5ca41bba80fc70603fa6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4d0ba3fd7b47ddec733d933620e1ded7') in 0.011534 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000580 seconds.
+  path: Assets/OldResourses/SpritesOld/Sold Rome/sold3 Muve.png
+  artifactKey: Guid(3bea4e637583d984e928882f15c04618) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/Sold Rome/sold3 Muve.png using Guid(3bea4e637583d984e928882f15c04618) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6af250b35dea53518819adf72b0a94d8') in 0.010679 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000152 seconds.
+  path: Assets/OldResourses/SpritesOld/Sold/sold_1222.png
+  artifactKey: Guid(a96a8e636e2fcca418428a421e763742) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/Sold/sold_1222.png using Guid(a96a8e636e2fcca418428a421e763742) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7082d556ba719828fd9b7b6be793e936') in 0.008165 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000593 seconds.
+  path: Assets/OldResourses/SpritesOld/Sold Rome/sold_1222.png
+  artifactKey: Guid(499ff65b200f86343bc0bf5b16365baf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/Sold Rome/sold_1222.png using Guid(499ff65b200f86343bc0bf5b16365baf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8af692168286e7da1fd4914d9602e569') in 0.011215 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000118 seconds.
+  path: Assets/OldResourses/SpritesOld/Sold Rome/sold3 hit.png
+  artifactKey: Guid(8630379aaec6cb040a9f4ddde8c40c62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/Sold Rome/sold3 hit.png using Guid(8630379aaec6cb040a9f4ddde8c40c62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '75c16b3d7ebea9d028dc4953c7cd3ede') in 0.007434 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000298 seconds.
+  path: Assets/OldResourses/SpritesOld/Skill 2.png
+  artifactKey: Guid(78777b7a080894b23b1bd987725c651e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/Skill 2.png using Guid(78777b7a080894b23b1bd987725c651e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1c402ac2b29a315afd009d7c736bcc1f') in 0.010099 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000261 seconds.
+  path: Assets/RomeVsBarbarians2/Textures/Horse.psd
+  artifactKey: Guid(5985be74962d8478e9036bbf5d674e37) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/RomeVsBarbarians2/Textures/Horse.psd using Guid(5985be74962d8478e9036bbf5d674e37) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2cd2823a713ac4a4bbe43e042745ff5a') in 0.005422 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000110 seconds.
+  path: Assets/OldResourses/SpritesOld/Sold/b1.png
+  artifactKey: Guid(5f6cc5c1dc171a546936c83a2546372a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/Sold/b1.png using Guid(5f6cc5c1dc171a546936c83a2546372a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8f346ebe58b6804e00b3d6f10e557cf9') in 0.008762 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000269 seconds.
+  path: Assets/OldResourses/SpritesOld/Gl I .png
+  artifactKey: Guid(944d0dc70884e4d8d9809740ea113ce0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/Gl I .png using Guid(944d0dc70884e4d8d9809740ea113ce0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c0ec673c1bcb00f00abb79986ba44cc1') in 0.009489 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000246 seconds.
+  path: Assets/RomeVsBarbarians2/Textures/White_1x1.png
+  artifactKey: Guid(9527641a3679f354ab45db4cd4c75a75) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/RomeVsBarbarians2/Textures/White_1x1.png using Guid(9527641a3679f354ab45db4cd4c75a75) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '185eb6041a5f4a065628e235da63f836') in 0.006665 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000263 seconds.
+  path: Assets/OldResourses/SpritesOld/Sold/sold_1 Skirmishers.png
+  artifactKey: Guid(36f1d29ccf38eb84c8cb7d667a6d59ed) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/Sold/sold_1 Skirmishers.png using Guid(36f1d29ccf38eb84c8cb7d667a6d59ed) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8bd56db509d6c766bee33b48d586bc7a') in 0.005872 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000235 seconds.
+  path: Assets/RomeVsBarbarians2/Textures/grass1.psd
+  artifactKey: Guid(74771190dbeea4ae086cbdafc355d9ca) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/RomeVsBarbarians2/Textures/grass1.psd using Guid(74771190dbeea4ae086cbdafc355d9ca) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '76c2ab3af722364d47f2267472d964b9') in 0.007876 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000419 seconds.
+  path: Assets/OldResourses/SpritesOld/sound_off 1.png
+  artifactKey: Guid(57d55a1aeb0314f0baf4c55f5982ceb3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/sound_off 1.png using Guid(57d55a1aeb0314f0baf4c55f5982ceb3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '58e94de0a0b7c6346ced0a964f55e198') in 0.015331 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000255 seconds.
+  path: Assets/OldResourses/SpritesOld/ui_shield.psd
+  artifactKey: Guid(2d4ab44438cba4f92aa450a09fc36660) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/ui_shield.psd using Guid(2d4ab44438cba4f92aa450a09fc36660) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '42199d4e3f47b369c41f48c9a1bce591') in 0.015243 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000311 seconds.
+  path: Assets/OldResourses/SpritesOld/Sold Rome/sold surv.png
+  artifactKey: Guid(18eea6430654805429091890e68c9af5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/Sold Rome/sold surv.png using Guid(18eea6430654805429091890e68c9af5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e4e1f9a9e183a462d2b23125355c7ab7') in 0.009664 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000442 seconds.
+  path: Assets/!Default/Toony Colors Pro/Demo TCP2/Cat Demo Assets/Textures/TCP2_Demo_Logo.png
+  artifactKey: Guid(22db3d1683e49874c9321c2887146b94) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/!Default/Toony Colors Pro/Demo TCP2/Cat Demo Assets/Textures/TCP2_Demo_Logo.png using Guid(22db3d1683e49874c9321c2887146b94) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3c003f9a6984420568c94c94f586a626') in 0.009962 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000148 seconds.
+  path: Assets/OldResourses/SpritesOld/help.png
+  artifactKey: Guid(7ec06e1b98395443288a692825a51a9f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/help.png using Guid(7ec06e1b98395443288a692825a51a9f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd1a67cdad1b2c82a4f503093dacb3b20') in 0.005204 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000183 seconds.
+  path: Assets/OldResourses/SpritesOld/Sold/sold_0_z Attack.png
+  artifactKey: Guid(4aa86a2989aab26469b31959b088aadf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/Sold/sold_0_z Attack.png using Guid(4aa86a2989aab26469b31959b088aadf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '41227e91ce439e7887172237e1b82e8e') in 0.006453 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000122 seconds.
+  path: Assets/OldResourses/SpritesOld/Sold/sold_0Shieald.png
+  artifactKey: Guid(9fd7ab195006c5e44bfd570484005c62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/Sold/sold_0Shieald.png using Guid(9fd7ab195006c5e44bfd570484005c62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5994b8eb3037f88ed2365f7c9c5b7eb1') in 0.007298 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000156 seconds.
+  path: Assets/OldResourses/SpritesOld/G2best.png
+  artifactKey: Guid(3e0dbffe2c17b487c90a7b67f5e486fe) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/G2best.png using Guid(3e0dbffe2c17b487c90a7b67f5e486fe) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '39ae40aa1cbac646437b20229d026dc1') in 0.006212 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000229 seconds.
+  path: Assets/OldResourses/SpritesOld/standart_en.png
+  artifactKey: Guid(fcebca393738243abb862bfce5efa0c4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/standart_en.png using Guid(fcebca393738243abb862bfce5efa0c4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '58fa025edc1820e61937eaaa9128531b') in 0.006806 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000246 seconds.
+  path: Assets/OldResourses/SpritesOld/Sold Rome/sold_12 Shield.png
+  artifactKey: Guid(a7270addca6770c45bc9a169dfb4b0a7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/Sold Rome/sold_12 Shield.png using Guid(a7270addca6770c45bc9a169dfb4b0a7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7b190fe59bac9fc5d3e768e86fc0df1b') in 0.006778 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000185 seconds.
+  path: Assets/OldResourses/SpritesOld/menu_BG.png
+  artifactKey: Guid(67fc1345a62484a6d94a6de158d7a896) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/menu_BG.png using Guid(67fc1345a62484a6d94a6de158d7a896) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6735c39ce0b195d7ea2622ca0e5aa579') in 0.005755 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000386 seconds.
+  path: Assets/OldResourses/SpritesOld/G4.png
+  artifactKey: Guid(a8cb40449a075402e82e7b684ea3374e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/G4.png using Guid(a8cb40449a075402e82e7b684ea3374e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '02f4a24dafea68e68e04142eb37c12c7') in 0.005742 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000195 seconds.
+  path: Assets/OldResourses/SpritesOld/Gl new.png
+  artifactKey: Guid(b5115680045d641748aeecd5c723d5aa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/Gl new.png using Guid(b5115680045d641748aeecd5c723d5aa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '11c1ce4b93e099207e1473f46d511f0f') in 0.006624 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000374 seconds.
+  path: Assets/OldResourses/SpritesOld/Const_reinformation.png
+  artifactKey: Guid(6c4fb941493124084932a09bbb733061) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/Const_reinformation.png using Guid(6c4fb941493124084932a09bbb733061) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4c88290d77a21c99249351aa4a0d9614') in 0.005552 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000187 seconds.
+  path: Assets/OldResourses/SpritesOld/Gl Add.png
+  artifactKey: Guid(b447b8503c28d4084ad33997dc8639e6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/Gl Add.png using Guid(b447b8503c28d4084ad33997dc8639e6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'df1de776be8b2ecb96861123e870f00d') in 0.006252 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000334 seconds.
+  path: Assets/OldResourses/SpritesOld/Sold Rome/sold_Legat.png
+  artifactKey: Guid(e2b9ffdacbad2f34cb582ed2772d1c4f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/Sold Rome/sold_Legat.png using Guid(e2b9ffdacbad2f34cb582ed2772d1c4f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f8f4895f0b45ea74f29c10389287cdb9') in 0.006174 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000188 seconds.
+  path: Assets/OldResourses/SpritesOld/Sold Rome/sold3 Attack.png
+  artifactKey: Guid(e08be4aa30ca6d2488c9d2fe2e4524e9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/Sold Rome/sold3 Attack.png using Guid(e08be4aa30ca6d2488c9d2fe2e4524e9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3b5e890af2e04632c36b94c8e09e27e8') in 0.007701 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000147 seconds.
+  path: Assets/RomeVsBarbarians2/Textures/ShieldBarbarians.psd
+  artifactKey: Guid(495455cfd0eb048b29ce8e0b3190184b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/RomeVsBarbarians2/Textures/ShieldBarbarians.psd using Guid(495455cfd0eb048b29ce8e0b3190184b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6c10fe0334040338a702a14a631945e1') in 0.006228 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000397 seconds.
+  path: Assets/OldResourses/SpritesOld/Sold Rome/sold_Legat_do.png
+  artifactKey: Guid(79345f195b3614a428e6d23a76a51196) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/Sold Rome/sold_Legat_do.png using Guid(79345f195b3614a428e6d23a76a51196) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1e63544afc52d3e795778f4849c3a2b6') in 0.006958 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000079 seconds.
+  path: Assets/RomeVsBarbarians2/Textures/UnitTextBarbarians.psd
+  artifactKey: Guid(d30269d7d66014379a5a0e9c1531ab48) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/RomeVsBarbarians2/Textures/UnitTextBarbarians.psd using Guid(d30269d7d66014379a5a0e9c1531ab48) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '62a17ba85a6ccec1230172fb3fed43df') in 0.008775 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000681 seconds.
+  path: Assets/OldResourses/SpritesOld/G2.png
+  artifactKey: Guid(427d2b483d7644462a0d7ef63d027a2f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/G2.png using Guid(427d2b483d7644462a0d7ef63d027a2f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0ebca98da5ad28a201cf14414f50453e') in 0.007220 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000251 seconds.
+  path: Assets/OldResourses/SpritesOld/Sold/sold_12 Attack.png
+  artifactKey: Guid(542662f20e3196240b02547f46163ae6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/SpritesOld/Sold/sold_12 Attack.png using Guid(542662f20e3196240b02547f46163ae6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9f5bea199abdfce73b9f89360ee0af6c') in 0.005377 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 141.222005 seconds.
+  path: Assets/TextMesh Pro/Examples & Extras/Resources/Fonts & Materials/Anton SDF.asset
+  artifactKey: Guid(8a89fa14b10d46a99122fd4f73fca9a2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/TextMesh Pro/Examples & Extras/Resources/Fonts & Materials/Anton SDF.asset using Guid(8a89fa14b10d46a99122fd4f73fca9a2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '40b56948df26f7601f60d1e60112c1da') in 0.112241 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 6
+========================================================================
+Received Import Request.
+  Time since last request: 0.000038 seconds.
+  path: Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Fallback.asset
+  artifactKey: Guid(2e498d1c8094910479dc3e1b768306a4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Fallback.asset using Guid(2e498d1c8094910479dc3e1b768306a4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7caefaac32550fdcf4ee3a74bd38c363') in 0.014069 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 6
+========================================================================
+Received Import Request.
+  Time since last request: 0.000179 seconds.
+  path: Assets/OldResourses/Fonts/Pixway SDF.asset
+  artifactKey: Guid(c448ab17e405e42cd9de935bae52844f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/OldResourses/Fonts/Pixway SDF.asset using Guid(c448ab17e405e42cd9de935bae52844f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '12952d1c75f581bb60f0574ed3d60a45') in 0.387340 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 6
+Editor requested this worker to shutdown with reason: Scaling down because of idle timeout
+TcpMessagingSession - receive error: operation aborted. errorcode: 89, details: Operation aborted.
+AssetImportWorker is now disconnected from the server
+Process exiting
