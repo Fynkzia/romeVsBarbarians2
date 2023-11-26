@@ -17,22 +17,14 @@ public class OrdersSystem : MonoBehaviour
 {
     [SerializeField] private Camera cam;
     [SerializeField] CoinsController coinsController;
-    [SerializeField] private SquadController currentUnit;
-    //[SerializeField] private Button attackButton;
-    //[SerializeField] private Button defenceButton;
-    [SerializeField]private OrderType currentOrder;
+    [SerializeField] private Button attackButton;
+    [SerializeField] private Button defenceButton;
+    
     [SerializeField] private int costOfOrder; //For basic implementation
-    [SerializeField] public OrderTimeCoef[] ordersTime;
-    [Space(10)]
-    [SerializeField]private float orderTime = 0;
 
-    [SerializeField]private int amountOfOrders = 0;
-    private OrderType prevOrder;
+
+    private OrderType currentOrder;
     private bool orderSelected = false;
-
-    private void Start() {
-        prevOrder = currentOrder;
-    }
 
     private void Update() {
         if (Input.GetMouseButtonDown(0)) {
@@ -46,60 +38,15 @@ public class OrdersSystem : MonoBehaviour
                 if (Physics.Raycast(ray, out hit)) {
                     
                     if (hit.collider.gameObject.tag == "Squad") {
-                        currentUnit = hit.collider.transform.GetComponent<SquadController>();
-                        DoOrder();
+                        OrderController currentUnit = hit.collider.transform.GetComponent<OrderController>();
+                        currentUnit.DoOrder(currentOrder);
+                        coinsController.coins -= costOfOrder;
+                        orderSelected = false;
                         Debug.Log("Hit");
                     }
                 }
-            }
-        }
-
-        if (amountOfOrders > 0) {
-            OrderTimer();
-        }
-    }
-
-    private void DoOrder() {
-
-        if (prevOrder == OrderType.None) {
-            if (currentOrder == OrderType.Attack) {
-                
-            }
-            if (currentOrder == OrderType.Defence) { 
-            
-            }
-            amountOfOrders = 1;
-        }
-        if (prevOrder == OrderType.Attack) {
-            if (currentOrder == OrderType.Attack) {
-                amountOfOrders++;
-            }
-            if (currentOrder == OrderType.Defence) {
-                amountOfOrders = 1;
-            }
-        }
-        if (prevOrder == OrderType.Defence) {
-            if (currentOrder == OrderType.Attack) {
-                amountOfOrders = 1;
-            }
-            if (currentOrder == OrderType.Defence) {
-                amountOfOrders++;
-            }
-        }
-        prevOrder = currentOrder;
-        coinsController.coins -= costOfOrder;
-        orderSelected = false;
-        orderTime = ordersTime[amountOfOrders - 1].timeOfExpire;
-    }
-
-    private void OrderTimer() {
-        if (orderTime > 0) {
-            orderTime -= Time.deltaTime;
-        }
-        else {
-            amountOfOrders--;
-            if (amountOfOrders == 0) { 
-                orderTime = ordersTime[amountOfOrders - 1].timeOfExpire;
+                attackButton.interactable = true;
+                defenceButton.interactable = true;
             }
         }
     }
@@ -107,9 +54,11 @@ public class OrdersSystem : MonoBehaviour
     public void AttackButtonClick() { 
         currentOrder = OrderType.Attack;
         orderSelected = true;
+        attackButton.interactable = false;
     }
     public void DefenceButtonClick() {
         currentOrder = OrderType.Defence;
         orderSelected = true;
+        defenceButton.interactable = false;
     }
 }

@@ -22,6 +22,8 @@ public class SquadController : MonoBehaviour {
     [SerializeField] public List<GameObject> unitArray;
     [SerializeField] public float amountUnits;
     [SerializeField] public SquadType type;
+    [SerializeField] public CoinsController coinsController;
+    [SerializeField] private int coinsFromDeath;
     [SerializeField] public Coef[] coef;
     [SerializeField] private float leftTriggerCoef;
     [SerializeField] private float rightTriggerCoef;
@@ -30,22 +32,12 @@ public class SquadController : MonoBehaviour {
     [SerializeField] private float offsetRadius = 0.2f;
 
     [HideInInspector] public List<GameObject> nowAttacked;// массив юнитов которые уже находятся в атаке
-
-
-
-
     [HideInInspector] public bool isMoved = false;
     [HideInInspector] public LineRenderer lineRenderer;
     [HideInInspector] public List<Animator> animators = new List<Animator>();
     [HideInInspector] public float currentStamina;
     [HideInInspector] public float currentMorale;
-    //[SerializeField] private GameObject yourPointHeh;
-
-
     [HideInInspector] public bool isStopRot = false;
-
-    // [SerializeField] private float debugAngel;
-
 
     [Header("Movement Settings")]
     [Space(10)]
@@ -68,7 +60,7 @@ public class SquadController : MonoBehaviour {
     [SerializeField] public float powerSquad;
     [SerializeField] public float defenceSquad;
     [SerializeField] public float maxMorale;
-    [SerializeField] private float actionTime;
+    [SerializeField] public float actionTime;
     [SerializeField] public int actionUnits;
     [SerializeField] public bool attack;
     [SerializeField] public bool defence;
@@ -79,7 +71,7 @@ public class SquadController : MonoBehaviour {
 
     [Header("Animation Settings")]
     [Space(10)]
-    [SerializeField] private int maxFightingUnit;
+    [SerializeField] public int maxFightingUnit;
     [SerializeField] private ParticleSystem bloodFx;
 
 
@@ -163,7 +155,6 @@ public class SquadController : MonoBehaviour {
                     animationAttackTime = 0f;
                     UnitKickOnce();
                 }
-
             }
         }
 
@@ -201,8 +192,6 @@ public class SquadController : MonoBehaviour {
                     transform.rotation = Quaternion.Euler(new Vector3(0f, y, 0f));
                     rb.MovePosition(targetPos);
                 }
-
-
             }
             if (Vector3.Distance(rb.position, linePosition) < pointsDistance) {
                 var pointsList = new List<Vector3>(positions);
@@ -327,10 +316,7 @@ public class SquadController : MonoBehaviour {
 
     private void LookOnEnemy() {
         float y = AngleBetweenTwoPoints(transform.position, enemySquad.transform.position);
-        //float b = AngleBetweenTwoPoints(enemySquad.transform.position, transform.position);
-        //transform.rotation = Quaternion.LerpUnclamped(transform.rotation, Quaternion.Euler(new Vector3(0f, y, 0f)), rotationSpeed * Time.fixedDeltaTime);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(new Vector3(0f, y, 0f)), rotationSpeed * Time.fixedDeltaTime);
-        //enemySquad.transform.rotation = Quaternion.LerpUnclamped(enemySquad.transform.rotation, Quaternion.Euler(new Vector3(0f, b, 0f)), rotationSpeed * Time.fixedDeltaTime);
 
         if (Mathf.Abs(transform.rotation.eulerAngles.y - y) < 3) {
             battleRot = true;
@@ -407,8 +393,6 @@ public class SquadController : MonoBehaviour {
             Vector3 startPosition = currentUnit.position;
             animators[index].SetTrigger(ATTACK);
 
-
-
             Transform atackedEnemy;
 
             if (enemyController.unitArray.Count > enemyController.maxFightingUnit) {
@@ -425,8 +409,6 @@ public class SquadController : MonoBehaviour {
             nowAttacked.Remove(currentUnit.gameObject);
 
         }
-
-
     }
 
 
@@ -457,6 +439,7 @@ public class SquadController : MonoBehaviour {
                 
                 //int index = 0;
                 enemyController.DieUnit(index);
+                coinsController.coins += coinsFromDeath;
 
             }
         }

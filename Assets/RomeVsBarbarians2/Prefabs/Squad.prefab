@@ -222,6 +222,7 @@ GameObject:
   - component: {fileID: 3972532368643962967}
   - component: {fileID: 7348095169177516783}
   - component: {fileID: 6367286490639113062}
+  - component: {fileID: 9220945267742692444}
   - component: {fileID: 605649367756838933}
   m_Layer: 0
   m_Name: Squad
@@ -403,6 +404,18 @@ MonoBehaviour:
   lostMoraleThenAttack: 0
   recoveryMoraleSpeed: 0
   currentTriggerCoef: 0
+--- !u!114 &9220945267742692444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4105558031168202130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5569f927d81de3b498f1879d9ff880af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!135 &605649367756838933
 SphereCollider:
   m_ObjectHideFlags: 0

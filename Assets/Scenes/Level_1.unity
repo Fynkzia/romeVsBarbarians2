@@ -8491,22 +8491,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 413516579}
   coinsController: {fileID: 229532050}
-  currentUnit: {fileID: 0}
-  currentOrder: 0
+  attackButton: {fileID: 0}
+  defenceButton: {fileID: 0}
   costOfOrder: 1
-  ordersTime:
-  - numberOfOrders: 1
-    timeOfExpire: 3
-  - numberOfOrders: 2
-    timeOfExpire: 2
-  - numberOfOrders: 3
-    timeOfExpire: 1.5
-  - numberOfOrders: 4
-    timeOfExpire: 1.2
-  - numberOfOrders: 5
-    timeOfExpire: 1
-  orderTime: 0
-  amountOfOrders: 0
 --- !u!114 &563073775
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16082,6 +16069,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneName: 
+  gamePauseUI: {fileID: 2057469051}
 --- !u!4 &1084643573
 Transform:
   m_ObjectHideFlags: 0
