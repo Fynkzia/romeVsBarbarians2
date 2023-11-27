@@ -23,9 +23,11 @@ public class OrderController : MonoBehaviour {
     }
     public void DoOrder(OrderType currentOrder) {
 
+        
         if (prevOrder == OrderType.None) {
             if (currentOrder == OrderType.Attack) {
                 AddAttackOrder();
+                
             }
             if (currentOrder == OrderType.Defence) {
                 AddDefenceOrder();
@@ -74,12 +76,14 @@ public class OrderController : MonoBehaviour {
                 squadController.attack = false;
                 squadController.defence = false;
                 orderTime = 0;
+                return;
             }
+            orderTime = ordersTime[amountOfOrders - 1].timeOfExpire;
         }
     }
 
     private void AddAttackOrder() {
-        if (squadController.unitArray.Count <= squadController.maxFightingUnit + 3) { 
+        if (squadController.unitArray.Count >= squadController.maxFightingUnit + 3) { 
             squadController.actionUnits += 3;
             squadController.maxFightingUnit += 3;
         }
@@ -94,8 +98,9 @@ public class OrderController : MonoBehaviour {
         squadController.powerSquad -= 0.05f;
     }
     private void AddDefenceOrder() {
-        if (squadController.unitArray.Count <= squadController.actionUnits + 3) { 
+        if (squadController.unitArray.Count >= squadController.actionUnits + 3) { 
             squadController.actionUnits += 3;
+            squadController.maxFightingUnit += 3;
         } 
         squadController.defenceSquad += 0.1f;
         squadController.actionTime -= 0.1f;
