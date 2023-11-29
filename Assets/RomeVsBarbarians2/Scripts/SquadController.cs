@@ -22,7 +22,6 @@ public class SquadController : MonoBehaviour {
     [SerializeField] public List<GameObject> unitArray;
     [SerializeField] public float amountUnits;
     [SerializeField] public SquadType type;
-    [SerializeField] public CoinsController coinsController;
     [SerializeField] private int coinsFromDeath;
     [SerializeField] public Coef[] coef;
     [SerializeField] private float leftTriggerCoef;
@@ -94,7 +93,8 @@ public class SquadController : MonoBehaviour {
     private bool battleRot = false;
     private bool escape = false;
     private float escapeTime = 0f;
-    [SerializeField]private float currentTriggerCoef;
+    private float currentTriggerCoef;
+    [SerializeField]private CoinsController coinsController;
     private float colliderRadius;
 
     private const string IS_MOVING = "Moving";
@@ -115,6 +115,7 @@ public class SquadController : MonoBehaviour {
         currentStamina = maxStamina;
         currentMorale = maxMorale;
         battleTime = actionTime;
+        coinsController = GameObject.Find("CoinsController").GetComponent<CoinsController>();
     }
     private void Start() {
         rb = GetComponent<Rigidbody>();
@@ -228,6 +229,9 @@ public class SquadController : MonoBehaviour {
         for (int i = 0; i < animators.Count; i++) {
             animators[i].SetBool(IS_BATTLE, inBattle);
         }
+    }
+    public void SetShield(int i, bool isShield) {
+        animators[i].SetBool("Shield", isShield);
     }
 
     private void SetRotation(bool isStopRot) {
@@ -428,19 +432,20 @@ public class SquadController : MonoBehaviour {
 
 
         for (int i = 0; i < actionUnits; i++) {
-            if (Random.Range(min, max) > enemyController.defenceSquad) {
-                int index;
-                if (enemyController.unitArray.Count > enemyController.maxFightingUnit) {
-                    index = Random.Range(0, enemyController.maxFightingUnit);
-                }
-                else {
-                    index = Random.Range(0, enemyController.unitArray.Count);
-                }
-                
+            int index;
+            if (enemyController.unitArray.Count > enemyController.maxFightingUnit) {
+                index = Random.Range(0, enemyController.maxFightingUnit);
+            } else {
+                index = Random.Range(0, enemyController.unitArray.Count);
+            }
+
+            if (Random.Range(min, max) > enemyController.defenceSquad) {                
                 //int index = 0;
                 enemyController.DieUnit(index);
-                coinsController.coins += coinsFromDeath;
+                coinsController.ChangeAmountOfCoins(coinsFromDeath);
 
+            } else {
+                enemyController.GetDamage(index);
             }
         }
         // currentStamina -= 0.05f;
@@ -456,6 +461,14 @@ public class SquadController : MonoBehaviour {
         animators[index].SetTrigger(DIE);
         animators.RemoveAt(index);
         Destroy(currentModel.gameObject, deadTime);
+    }
+
+    public void GetDamage(int index) {
+        if (Random.Range(1, 11) % 2 == 0) { 
+            animators[index].SetTrigger("GetDamage");
+        } else {
+            animators[index].SetTrigger("GetDamage2");
+        }
     }
     public void CountCoef(SquadType enemyType) {
         foreach (Coef el in coef) {

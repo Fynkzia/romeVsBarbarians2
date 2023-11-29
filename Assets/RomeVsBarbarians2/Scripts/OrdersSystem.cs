@@ -8,15 +8,10 @@ public enum OrderType {
     Attack,
     Defence
 }
-[System.Serializable]
-public class OrderTimeCoef {
-    public int numberOfOrders;
-    public float timeOfExpire;
-}
 public class OrdersSystem : MonoBehaviour
 {
     [SerializeField] private Camera cam;
-    [SerializeField] CoinsController coinsController;
+    [SerializeField] private CoinsController coinsController;
     [SerializeField] private Button attackButton;
     [SerializeField] private Button defenceButton;
     
@@ -28,7 +23,7 @@ public class OrdersSystem : MonoBehaviour
 
     private void Update() {
         if (Input.GetMouseButtonDown(0)) {
-            if (coinsController.coins < costOfOrder) {
+            if (coinsController.AmountOfCoins() < costOfOrder) {
                 Debug.Log("Not enough coins");
                 return;
             }
@@ -40,7 +35,7 @@ public class OrdersSystem : MonoBehaviour
                     if (hit.collider.gameObject.tag == "Squad") {
                         OrderController currentUnit = hit.collider.transform.GetComponent<OrderController>();
                         currentUnit.DoOrder(currentOrder);
-                        coinsController.coins -= costOfOrder;
+                        coinsController.ChangeAmountOfCoins(-costOfOrder);
                         orderSelected = false;
                         Debug.Log("Hit");
                     }

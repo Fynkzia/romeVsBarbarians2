@@ -2,14 +2,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class OrderTimeCoef {
+    public int numberOfOrders;
+    public float timeOfExpire;
+}
+
+[System.Serializable]
+public class AttackOrder {
+    public float defenceSquad;
+    public float powerSquad;
+}
+[System.Serializable]
+public class DefenceOrder {
+    public float defenceSquad;
+    public float actionTime;
+}
+
+
 public class OrderController : MonoBehaviour {
 
     [SerializeField] private int amountOfOrders = 0;
     [SerializeField] public OrderTimeCoef[] ordersTime;
     [Space(10)]
     [SerializeField] private float orderTime = 0;
+    [SerializeField] public AttackOrder attackOrder;
+    [SerializeField] public DefenceOrder defenceOrder;
     private SquadController squadController;
     private OrderType prevOrder;
+    private List<int> shieldUnits = new List<int>();
 
     private void Start () {
         squadController = GetComponent<SquadController>();
@@ -49,7 +70,7 @@ public class OrderController : MonoBehaviour {
         if (prevOrder == OrderType.Defence) {
             if (currentOrder == OrderType.Attack) {
                 RemoveDefenceOrder();
-                squadController.defence = true;
+                squadController.defence = false;
                 AddAttackOrder();
                 amountOfOrders = 1;
             }
@@ -87,28 +108,48 @@ public class OrderController : MonoBehaviour {
             squadController.actionUnits += 3;
             squadController.maxFightingUnit += 3;
         }
-        squadController.defenceSquad -= 0.1f;
-        squadController.powerSquad += 0.05f;
+        squadController.defenceSquad += attackOrder.defenceSquad;
+        squadController.powerSquad += attackOrder.powerSquad;
         squadController.attack = true;
     }
     private void RemoveAttackOrder() {
-        squadController.actionUnits -= 3;
-        squadController.maxFightingUnit -= 3;
-        squadController.defenceSquad += 0.1f;
-        squadController.powerSquad -= 0.05f;
+        if (squadController.actionUnits >= 6) { 
+            squadController.actionUnits -= 3;
+            squadController.maxFightingUnit -= 3;
+        }
+        squadController.defenceSquad -= attackOrder.defenceSquad;
+        squadController.powerSquad -= attackOrder.powerSquad;
     }
     private void AddDefenceOrder() {
         if (squadController.unitArray.Count >= squadController.actionUnits + 3) { 
             squadController.actionUnits += 3;
             squadController.maxFightingUnit += 3;
+            int i = 0;
+            while(i < 3) {
+                int randomUnit = Random.Range(0, squadController.unitArray.Count);
+                if (!shieldUnits.Contains(randomUnit)) { 
+                    shieldUnits.Add(randomUnit);
+                    squadController.SetShield(randomUnit, true);
+                    i++;
+                }
+            }
         } 
-        squadController.defenceSquad += 0.1f;
-        squadController.actionTime -= 0.1f;
+        squadController.defenceSquad += defenceOrder.defenceSquad;
+        squadController.actionTime += defenceOrder.actionTime;
         squadController.defence = true;
     }
     private void RemoveDefenceOrder() {
-        squadController.actionUnits -= 3;
-        squadController.defenceSquad -= 0.1f;
-        squadController.actionTime += 0.1f;
+        if (squadController.actionUnits >= 6) {
+            int i = 0;
+            while (i < 3) {
+                squadController.SetShield(shieldUnits[shieldUnits.Count-1], false);
+                shieldUnits.RemoveAt(shieldUnits.Count-1);
+                i++;
+            }
+            squadController.actionUnits -= 3;
+            squadController.maxFightingUnit -= 3;
+        }
+        squadController.defenceSquad -= defenceOrder.defenceSquad;
+        squadController.actionTime -= defenceOrder.actionTime;
     }
 }
