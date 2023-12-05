@@ -21,7 +21,7 @@ public class SquadControlManager : MonoBehaviour
     private LineRenderer lineRenderer;
     private SquadController squadController;
     private Vector3 mousePos;
-    private Vector3 mousePrevPos = Vector3.zero;
+     private Vector3 mousePrevPos = Vector3.zero;
     private Vector3 mousePosSum = Vector3.zero;
     private int roundIndex = 0;
 
@@ -98,6 +98,11 @@ public class SquadControlManager : MonoBehaviour
             TryChangeColor();
             hitSquad = false;
             firstTap = false;
+
+            mousePrevPos = Vector3.zero;
+            mousePosSum = Vector3.zero;
+            roundIndex = 0;
+
         }
     }
 

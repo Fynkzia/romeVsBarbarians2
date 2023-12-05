@@ -30,6 +30,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Cubemap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -44,6 +48,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
         m_Texture: {fileID: 2800000, guid: fe0b14403b2214efe8e6c1621374b5f1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissiveTex:
+        m_Texture: {fileID: 2800000, guid: 945cdcc95ffc54911bf019417d390794, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -66,17 +74,24 @@ Material:
         m_Texture: {fileID: 2800000, guid: abc83c21d57d4a74cabe12065fa1a8b2, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _ReflectionMap:
+        m_Texture: {fileID: 2800000, guid: 945cdcc95ffc54911bf019417d390794, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - _BumpScale: 1
+    - _CustomDepthOffset: 0
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
+    - _FlatShading: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.666
     - _GlossyReflections: 1
     - _Metallic: 0.429
     - _Mode: 0
+    - _ObjectDithering: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _RampSmooth: 0.834
@@ -90,7 +105,8 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissionColor: {r: 0.6886792, g: 0.6886792, b: 0.6886792, a: 1}
+    - _CubemapColor: {r: 1, g: 1, b: 1, a: 0}
+    - _EmissionColor: {r: 0.754717, g: 0.754717, b: 0.754717, a: 1}
     - _HColor: {r: 0.9811321, g: 0.9468507, b: 0.86543256, a: 1}
     - _SColor: {r: 0.2830189, g: 0.15664367, b: 0.044054832, a: 1}
     - _SpecColor: {r: 0.20754719, g: 0.20489813, b: 0.18503028, a: 1}

@@ -418,8 +418,8 @@ public class SquadController : MonoBehaviour {
 
     private void EnemyDamage() {
         currentTriggerCoef = AttackTriggerCoef();
-        float attack = powerSquad * (currentStamina / maxStamina);
-        float defence = enemyController.defenceSquad * (enemyController.currentStamina / enemyController.maxStamina);
+        float attack = powerSquad * (((currentStamina / maxStamina)/2f) + 0.5f); // стамина влияет на половину
+        float defence = enemyController.defenceSquad * (((enemyController.currentStamina / enemyController.maxStamina)/2f)+ 0.5f);// стамина влияет на половину
 
 
         float min = (attack / defence) + attackCoef + currentTriggerCoef;
@@ -430,6 +430,16 @@ public class SquadController : MonoBehaviour {
 
         float max = enemyController.defenceSquad + (actionUnits / 10f) + enemyController.defenceCoef;
 
+        Debug.Log("Attack "+ gameObject.name +"\n"+ 
+            "Balance:" + "\n"+
+            "attack = " + attack + "; enemy defence = " + defence + "\n"+
+            "attackCoef = " + attackCoef + " enemy defenceCoef = " + enemyController.defenceCoef+ "\n"+
+            "currentTriggerCoef = " + currentTriggerCoef+ "\n"+
+            "min = " +(attack / defence) +" + "+attackCoef+" + " + currentTriggerCoef +" = "+ min + "\n"+
+             " max = " + max + "\n"+
+            " to get damage random > " + enemyController.defenceSquad +
+      
+        "",gameObject);
 
         for (int i = 0; i < actionUnits; i++) {
             int index;
@@ -438,11 +448,20 @@ public class SquadController : MonoBehaviour {
             } else {
                 index = Random.Range(0, enemyController.unitArray.Count);
             }
+            float r = Random.Range(min, max);
 
-            if (Random.Range(min, max) > enemyController.defenceSquad) {                
+              Debug.Log("Attack "+ gameObject.name +"\n"+ 
+"Random = " + r
+              );
+
+            if (r > enemyController.defenceSquad) {                
                 //int index = 0;
                 enemyController.DieUnit(index);
                 coinsController.ChangeAmountOfCoins(coinsFromDeath);
+
+                Debug.Log("Attack "+ gameObject.name +"\n"+ 
+"Die Unit in squad" + enemyController.gameObject.name
+              );
 
             } else {
                 enemyController.GetDamage(index);
