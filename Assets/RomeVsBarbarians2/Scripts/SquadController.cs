@@ -90,6 +90,9 @@ public class SquadController : MonoBehaviour {
     private SquadController enemyController;
     private Vector3[] positions;
     private List<Transform> fightingUnitList = new List<Transform>();
+    [SerializeField] private List<Transform> backUnitList = new List<Transform>();
+   [SerializeField] private List<Transform> rightUnitList = new List<Transform>();
+    [SerializeField] private List<Transform> leftUnitList = new List<Transform>();
 
     private int indexMove = 0;
     private float currentSpeed = 0f;
@@ -133,7 +136,11 @@ public class SquadController : MonoBehaviour {
             }
         }
         colliderRadius = GetComponents<SphereCollider>()[1].radius;
-    }
+
+SidesUnitsListSet();
+               
+
+ }
 
     private void FixedUpdate() {
         if (isMoved) {
@@ -294,9 +301,9 @@ public class SquadController : MonoBehaviour {
                     
                     SetBattle(true);
                     currentMorale -= lostMoraleThenAttack * enemyController.unitArray.Count;
-                    movementSpeed /= 2;
-                    rotationSpeed /= 2;
-                    boostSpeed /= 2;
+                    movementSpeed /= 1.5f;
+                    rotationSpeed /= 1.5f;
+                    boostSpeed /= 1.5f;
 
                     //GetComponents<SphereCollider>()[1].radius = colliderRadius + 0.1f;
                     if (isMoved) {
@@ -313,9 +320,9 @@ public class SquadController : MonoBehaviour {
             if ((tag == SQUAD_TAG && enemySquad.tag == ENEMY_TAG) || (tag == ENEMY_TAG && enemySquad.tag == SQUAD_TAG)) {
                 Debug.Log(gameObject.name+" here",other.gameObject);
                 SetBattle(false);
-                movementSpeed *= 2;
-                rotationSpeed *= 2;
-                boostSpeed *= 2;
+                movementSpeed *= 1.5f;
+                rotationSpeed *= 1.5f;
+                boostSpeed *= 1.5f;
                 escape = true;
 
                 //GetComponents<SphereCollider>()[1].radius = colliderRadius;
@@ -478,6 +485,11 @@ public class SquadController : MonoBehaviour {
     public void DieUnit(int index) {
         currentMorale -= lostMoraleThenDie;
         GameObject currentUnit = unitArray[index];
+
+backUnitList.Remove(currentUnit.transform);
+leftUnitList.Remove(currentUnit.transform);
+rightUnitList.Remove(currentUnit.transform);
+
         Transform currentModel = currentUnit.transform.GetChild(0);
         Instantiate(bloodFx, currentModel);
         currentModel.parent = null;
@@ -485,6 +497,8 @@ public class SquadController : MonoBehaviour {
         animators[index].SetTrigger(DIE);
         animators.RemoveAt(index);
         Destroy(currentModel.gameObject, deadTime);
+
+        
     }
 
     public void GetDamage(int index) {
@@ -525,6 +539,73 @@ public class SquadController : MonoBehaviour {
         }
         return 0;
     }
+     public void SidesUnitsListSet() {
+
+       
+        List<Transform> prewListB = new List<Transform>();
+        List<Transform> prewListR = new List<Transform>();
+        List<Transform> prewListL = new List<Transform>();
+
+
+        for (int i = 0; i < unitArray.Count; i++) {
+                            prewListB.Add(unitArray[i].transform);
+                            prewListR.Add(unitArray[i].transform);
+                            prewListL.Add(unitArray[i].transform);
+                        }
+
+
+     Transform  prewB = prewListB[0];
+        Transform  prewR = prewListR[0];
+        Transform  prewL = prewListL[0];
+
+            for (int j = 0; j < 5; j++) {
+
+        prewB = prewListB[0];
+        prewR = prewListR[0];
+        prewL = prewListL[0];
+
+                for (int i = 0; i < prewListB.Count-1; i++) {
+                    if(prewListB[i+1].localPosition.x < prewB.localPosition.x ){
+                        prewB = prewListB[i+1];
+        
+                    }
+                    
+                }
+
+                prewListB.Remove(prewB);
+                    backUnitList.Add(prewB);
+
+                for (int i = 0; i < prewListR.Count-1; i++) {
+                    if(prewListR[i+1].localPosition.z < prewR.localPosition.z ){
+                        prewR = prewListR[i+1];
+                    }
+                    
+                }
+                prewListR.Remove(prewR);
+                    rightUnitList.Add(prewR);
+
+        for (int i = 0; i < prewListL.Count-1; i++) {
+                    if(prewListL[i+1].localPosition.z > prewL.localPosition.z ){
+                        prewL = prewListL[i+1];
+                        
+                    }
+                    
+        }
+                prewListL.Remove(prewL);
+                    leftUnitList.Add(prewL);    
+                
+                    
+                    
+                
+                
+        
+                
+            
+                
+            
+            }
+            }
 
 }
+
 
