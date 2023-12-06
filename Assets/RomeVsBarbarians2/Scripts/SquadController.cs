@@ -80,6 +80,11 @@ public class SquadController : MonoBehaviour {
     [SerializeField] private float lostMoraleThenAttack;
     [SerializeField] private float recoveryMoraleSpeed;
 
+    [Header("Retreat Settings")]
+    [Space(10)]
+    [SerializeField] private int RetreatCount;
+    [SerializeField] private int RetreatChanceCount;
+
     private Rigidbody rb;
     private GameObject enemySquad;
     private SquadController enemyController;
@@ -94,7 +99,7 @@ public class SquadController : MonoBehaviour {
     private bool escape = false;
     private float escapeTime = 0f;
     private float currentTriggerCoef;
-    [SerializeField]private CoinsController coinsController;
+    private CoinsController coinsController;
     private float colliderRadius;
 
     private const string IS_MOVING = "Moving";

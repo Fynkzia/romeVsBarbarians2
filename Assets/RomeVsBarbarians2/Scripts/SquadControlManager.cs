@@ -91,7 +91,7 @@ public class SquadControlManager : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonUp(0) && hitSquad && !squadController.isMoved) {
+        if (Input.GetMouseButtonUp(0) && hitSquad && !squadController.isMoved && currentLineLength>0) {
             currentLineLength = 0;
             squadController.SetMoving(true);
             squadController.SetBattle(false);
