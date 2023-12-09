@@ -82,8 +82,10 @@ public class SquadController : MonoBehaviour {
 
     [Header("Retreat Settings")]
     [Space(10)]
-    [SerializeField] private int RetreatCount;
-    [SerializeField] private int RetreatChanceCount;
+    [SerializeField] private float retreatCount;
+    [SerializeField] private float retreatChanceCount;
+    [SerializeField] private float retreatChanceDefault;
+    [SerializeField] private float retreatCoef;
 
     private Rigidbody rb;
     private GameObject enemySquad;
@@ -498,7 +500,25 @@ rightUnitList.Remove(currentUnit.transform);
         animators.RemoveAt(index);
         Destroy(currentModel.gameObject, deadTime);
 
-        
+        TryToRetreat();
+    }
+
+    private void TryToRetreat() {
+        retreatChanceCount = retreatChanceDefault + currentMorale / maxMorale;
+        if (unitArray.Count < retreatChanceCount && Random.Range(0, retreatChanceCount) > retreatCount + retreatCoef) {
+            SetBattle(false);
+            if (enemyController) { enemyController.SetBattle(false); }
+            for(int i = 0; i < unitArray.Count;i++) {
+                Transform currentModel = unitArray[i].transform.GetChild(0);
+                currentModel.gameObject.AddComponent<Rigidbody>();
+                currentModel.gameObject.AddComponent<SphereCollider>();
+                currentModel.GetComponent<UnitRetreatController>().enabled = true;
+                currentModel.parent = null;
+            }
+
+            Destroy(gameObject);
+        }
+
     }
 
     public void GetDamage(int index) {
