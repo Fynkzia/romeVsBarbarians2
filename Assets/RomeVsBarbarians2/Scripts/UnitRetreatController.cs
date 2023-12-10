@@ -21,6 +21,9 @@ public class UnitRetreatController : MonoBehaviour {
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         animator.SetBool("Moving", true);
+
+        rb.constraints = RigidbodyConstraints.FreezeRotation;
+        GetComponent<SphereCollider>().center = new Vector3(0f,-0.5f,0f);
     }
 
     private void FixedUpdate() {
@@ -36,6 +39,8 @@ public class UnitRetreatController : MonoBehaviour {
             Destroy(gameObject);
         }
     }
+
+    
 
     private void Flashing() {
         flashTimer += Time.fixedDeltaTime;

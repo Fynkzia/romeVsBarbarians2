@@ -1098,6 +1098,7 @@ GameObject:
   m_Component:
   - component: {fileID: 621941360694497834}
   - component: {fileID: 1124640223900019629}
+  - component: {fileID: -7226855616496670518}
   m_Layer: 0
   m_Name: Unit_Barbarians
   m_TagString: Untagged
@@ -1142,6 +1143,24 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-7226855616496670518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6841524957695133454}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ff55a0ae211b0d47be6dfc2368208aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 3
+  timeToDisappear: 20
+  lastSeconds: 4
+  flashingTime: 0.5
+  randomX: {x: 0, y: 0}
+  randomZ: {x: 0, y: 0}
 --- !u!1 &7157103734815396805
 GameObject:
   m_ObjectHideFlags: 0

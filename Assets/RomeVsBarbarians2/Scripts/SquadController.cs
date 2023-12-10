@@ -31,7 +31,7 @@ public class SquadController : MonoBehaviour {
     [SerializeField] private float offsetRadius = 0.2f;
 
     [HideInInspector] public List<GameObject> nowAttacked;// массив юнитов которые уже находятся в атаке
-    [HideInInspector] public bool isMoved = false;
+    [SerializeField] public bool isMoved = false;
     [HideInInspector] public LineRenderer lineRenderer;
     [HideInInspector] public List<Animator> animators = new List<Animator>();
     [HideInInspector] public float currentStamina;
@@ -54,7 +54,7 @@ public class SquadController : MonoBehaviour {
     [SerializeField] private float deadTime;
     [SerializeField] private float maxEscapeTime;
     [SerializeField] private bool playerSquad;
-    [SerializeField] private bool inBattle;
+    [SerializeField] public bool inBattle;
     [SerializeField] private float levelSquad;
     [SerializeField] public float powerSquad;
     [SerializeField] public float defenceSquad;
@@ -105,6 +105,7 @@ public class SquadController : MonoBehaviour {
     private float escapeTime = 0f;
     private float currentTriggerCoef;
     private CoinsController coinsController;
+    private EnemyAIController aIController;
     private float colliderRadius;
 
     private const string IS_MOVING = "Moving";
@@ -126,6 +127,7 @@ public class SquadController : MonoBehaviour {
         currentMorale = maxMorale;
         battleTime = actionTime;
         coinsController = GameObject.Find("CoinsController").GetComponent<CoinsController>();
+        aIController = GameObject.Find("AIManager").GetComponent<EnemyAIController>();
     }
     private void Start() {
         rb = GetComponent<Rigidbody>();
@@ -139,7 +141,7 @@ public class SquadController : MonoBehaviour {
         }
         colliderRadius = GetComponents<SphereCollider>()[1].radius;
 
-SidesUnitsListSet();
+//SidesUnitsListSet();
                
 
  }
@@ -307,6 +309,8 @@ SidesUnitsListSet();
                     rotationSpeed /= 1.5f;
                     boostSpeed /= 1.5f;
 
+                     aIController.SetBattlePoint(transform.position);
+
                     //GetComponents<SphereCollider>()[1].radius = colliderRadius + 0.1f;
                     if (isMoved) {
                         CancelMovement();
@@ -326,6 +330,8 @@ SidesUnitsListSet();
                 rotationSpeed *= 1.5f;
                 boostSpeed *= 1.5f;
                 escape = true;
+
+               
 
                 //GetComponents<SphereCollider>()[1].radius = colliderRadius;
             }
@@ -444,16 +450,16 @@ SidesUnitsListSet();
 
         float max = enemyController.defenceSquad + (actionUnits / 10f) + enemyController.defenceCoef;
 
-        Debug.Log("Attack "+ gameObject.name +"\n"+ 
-            "Balance:" + "\n"+
-            "attack = " + attack + "; enemy defence = " + defence + "\n"+
-            "attackCoef = " + attackCoef + " enemy defenceCoef = " + enemyController.defenceCoef+ "\n"+
-            "currentTriggerCoef = " + currentTriggerCoef+ "\n"+
-            "min = " +(attack / defence) +" + "+attackCoef+" + " + currentTriggerCoef +" = "+ min + "\n"+
-             " max = " + max + "\n"+
-            " to get damage random > " + enemyController.defenceSquad +
+        // Debug.Log("Attack "+ gameObject.name +"\n"+ 
+        //     "Balance:" + "\n"+
+        //     "attack = " + attack + "; enemy defence = " + defence + "\n"+
+        //     "attackCoef = " + attackCoef + " enemy defenceCoef = " + enemyController.defenceCoef+ "\n"+
+        //     "currentTriggerCoef = " + currentTriggerCoef+ "\n"+
+        //     "min = " +(attack / defence) +" + "+attackCoef+" + " + currentTriggerCoef +" = "+ min + "\n"+
+        //      " max = " + max + "\n"+
+        //     " to get damage random > " + enemyController.defenceSquad +
       
-        "",gameObject);
+        // "",gameObject);
 
         for (int i = 0; i < actionUnits; i++) {
             int index;
@@ -464,18 +470,18 @@ SidesUnitsListSet();
             }
             float r = Random.Range(min, max);
 
-              Debug.Log("Attack "+ gameObject.name +"\n"+ 
-"Random = " + r
-              );
+//               Debug.Log("Attack "+ gameObject.name +"\n"+ 
+// "Random = " + r
+//               );
 
             if (r > enemyController.defenceSquad) {                
                 //int index = 0;
                 enemyController.DieUnit(index);
                 coinsController.ChangeAmountOfCoins(coinsFromDeath);
 
-                Debug.Log("Attack "+ gameObject.name +"\n"+ 
-"Die Unit in squad" + enemyController.gameObject.name
-              );
+//                 Debug.Log("Attack "+ gameObject.name +"\n"+ 
+// "Die Unit in squad" + enemyController.gameObject.name
+//               );
 
             } else {
                 enemyController.GetDamage(index);
@@ -488,9 +494,9 @@ SidesUnitsListSet();
         currentMorale -= lostMoraleThenDie;
         GameObject currentUnit = unitArray[index];
 
-backUnitList.Remove(currentUnit.transform);
-leftUnitList.Remove(currentUnit.transform);
-rightUnitList.Remove(currentUnit.transform);
+// backUnitList.Remove(currentUnit.transform);
+// leftUnitList.Remove(currentUnit.transform);
+// rightUnitList.Remove(currentUnit.transform);
 
         Transform currentModel = currentUnit.transform.GetChild(0);
         Instantiate(bloodFx, currentModel);
@@ -516,6 +522,12 @@ rightUnitList.Remove(currentUnit.transform);
                 currentModel.parent = null;
             }
 
+            if(playerSquad){ // удаляем сквады с ии контролера
+                aIController.DeletePlayerSquad(this);
+            }else{
+                aIController.DeleteEnemySquad(this);
+            }
+            
             Destroy(gameObject);
         }
 
@@ -536,6 +548,8 @@ rightUnitList.Remove(currentUnit.transform);
             }
         }
     }
+
+    
 
     private float AttackTriggerCoef() {
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, colliderRadius+offsetRadius);

@@ -48,7 +48,7 @@ GameObject:
   - component: {fileID: 2053984846188774521}
   - component: {fileID: 4909772278342810401}
   - component: {fileID: 3680862547946731660}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: SquadBarbarians
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -216,7 +216,7 @@ MonoBehaviour:
   recoveryStamina: 0.1
   consumptionStamina: 0.2
   pointsDistance: 0.4
-  maxDeltaAngel: 0
+  maxDeltaAngel: 30
   deadTime: 5
   maxEscapeTime: 4
   playerSquad: 0
@@ -237,8 +237,10 @@ MonoBehaviour:
   lostMoraleThenDie: 0.1
   lostMoraleThenAttack: 0.005
   recoveryMoraleSpeed: 0.05
-  RetreatCount: 0
-  RetreatChanceCount: 0
+  retreatCount: 3
+  retreatChanceCount: 0
+  retreatChanceDefault: 6
+  retreatCoef: 2.5
   backUnitList: []
   rightUnitList: []
   leftUnitList: []
