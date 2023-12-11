@@ -93,7 +93,7 @@ public class SquadController : MonoBehaviour {
     private Vector3[] positions;
     private List<Transform> fightingUnitList = new List<Transform>();
     [SerializeField] private List<Transform> backUnitList = new List<Transform>();
-   [SerializeField] private List<Transform> rightUnitList = new List<Transform>();
+    [SerializeField] private List<Transform> rightUnitList = new List<Transform>();
     [SerializeField] private List<Transform> leftUnitList = new List<Transform>();
 
     private int indexMove = 0;
@@ -107,6 +107,10 @@ public class SquadController : MonoBehaviour {
     private CoinsController coinsController;
     private EnemyAIController aIController;
     private float colliderRadius;
+
+    public int tapCount = 0;
+    private float startTapTime = 0;
+    private float maxTimeWait = 0.5f;
 
     private const string IS_MOVING = "Moving";
     private const string IS_BATTLE = "Battle";
@@ -150,6 +154,19 @@ public class SquadController : MonoBehaviour {
         if (isMoved) {
             SquadMovement();
             if (currentStamina > 0) { currentStamina -= consumptionStamina * Time.fixedDeltaTime; }
+
+            if (tapCount > 0) {
+                startTapTime += Time.fixedDeltaTime;
+
+                if (startTapTime > maxTimeWait) {
+                    tapCount = 0;
+                    startTapTime = 0;
+                }
+
+                if (tapCount == 2) {
+                    CancelMovement();
+                }
+            }
         }
         else if (currentStamina < maxStamina && !inBattle) {
             currentStamina += recoveryStamina * Time.fixedDeltaTime;
@@ -293,6 +310,8 @@ public class SquadController : MonoBehaviour {
         indexMove = 0;
         currentSpeed = 0;
         positions = null;
+        tapCount = 0;
+        startTapTime = 0;
     }
 
     private void OnTriggerEnter(Collider enemyCollider) {
@@ -430,6 +449,7 @@ public class SquadController : MonoBehaviour {
 
             await currentUnit.DOMove(halfPosition, actionTime / 2f).AsyncWaitForCompletion();
             await currentUnit.DOMove(startPosition, actionTime / 2f).AsyncWaitForCompletion();
+
             nowAttacked.Remove(currentUnit.gameObject);
 
         }
@@ -510,9 +530,11 @@ public class SquadController : MonoBehaviour {
     }
 
     private void TryToRetreat() {
-        retreatChanceCount = retreatChanceDefault + currentMorale / maxMorale;
+        retreatChanceCount = retreatChanceDefault + (1 - currentMorale / maxMorale);
         if (unitArray.Count < retreatChanceCount && Random.Range(0, retreatChanceCount) > retreatCount + retreatCoef) {
             SetBattle(false);
+            PlayerPrefs.Save();
+
             if (enemyController) { enemyController.SetBattle(false); }
             for(int i = 0; i < unitArray.Count;i++) {
                 Transform currentModel = unitArray[i].transform.GetChild(0);
@@ -627,16 +649,7 @@ public class SquadController : MonoBehaviour {
         }
                 prewListL.Remove(prewL);
                     leftUnitList.Add(prewL);    
-                
-                    
-                    
-                
-                
-        
-                
-            
-                
-            
+
             }
             }
 

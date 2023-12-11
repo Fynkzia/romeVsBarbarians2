@@ -13,6 +13,7 @@ public class UnitRetreatController : MonoBehaviour {
 
     private Rigidbody rb;
     private Animator animator;
+    private GameObject body;
     private float currentTime;
     private float flashTimer;
     private void Start() {
@@ -20,6 +21,7 @@ public class UnitRetreatController : MonoBehaviour {
         flashTimer = 0;
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
+        body = gameObject.transform.GetChild(0).gameObject;
         animator.SetBool("Moving", true);
 
         rb.constraints = RigidbodyConstraints.FreezeRotation;
@@ -35,21 +37,27 @@ public class UnitRetreatController : MonoBehaviour {
             Vector3 direction = new Vector3(Random.Range(randomX.x,randomX.y), transform.position.y, Random.Range(randomZ.x, randomZ.y));
             Vector3 targetPos = Vector3.MoveTowards(transform.position, direction, speed * Time.fixedDeltaTime);
             rb.MovePosition(targetPos);
+            LookOn(targetPos);
         } else {
             Destroy(gameObject);
         }
     }
+    private void LookOn(Vector3 target) {
+        float y = AngleBetweenTwoPoints(transform.position, target);
+        transform.rotation = Quaternion.Euler(new Vector3(0f, y, 0f));
+    }
 
-    
-
+    private float AngleBetweenTwoPoints(Vector3 a, Vector3 b) {
+        return 180f - Mathf.Atan2(a.z - b.z, a.x - b.x) * Mathf.Rad2Deg;
+    }
     private void Flashing() {
         flashTimer += Time.fixedDeltaTime;
         if(flashTimer>flashingTime) {
             flashTimer -= flashingTime;
-            if(gameObject.activeSelf) { 
-                gameObject.SetActive(false);
+            if(body.activeSelf) { 
+                body.SetActive(false);
             } else {
-                gameObject.SetActive(true);
+                body.SetActive(true);
             }
         }
     }

@@ -17,7 +17,7 @@ public class SquadControlManager : MonoBehaviour
 
     public static SquadControlManager Instance { get; private set; }
 
-    private bool hitSquad = false;
+    [SerializeField]private bool hitSquad = false;
     private LineRenderer lineRenderer;
     private SquadController squadController;
     private Vector3 mousePos;
@@ -26,9 +26,6 @@ public class SquadControlManager : MonoBehaviour
     private int roundIndex = 0;
 
     private float currentLineLength = 0;
-    private float maxTimeWait = 0.5f;
-    private float startTapTime = 0;
-    private bool firstTap = false;
 
     private const string SQUAD_TAG = "Squad";
     private const string TERRAIN_TAG = "Terrain";
@@ -40,15 +37,6 @@ public class SquadControlManager : MonoBehaviour
 
     private void Update() {
         HandleSquadTouch();
-        if (firstTap) {
-            startTapTime += Time.deltaTime;
-
-            if (startTapTime > maxTimeWait) {
-                firstTap = false;
-                startTapTime = 0;
-                hitSquad = false;
-            }
-        }
     }
 
     private void HandleSquadTouch() {
@@ -59,31 +47,24 @@ public class SquadControlManager : MonoBehaviour
                 pointDebug.position = hit.point;
                 if (hit.collider.gameObject.tag == SQUAD_TAG) {
                     squadController = hit.collider.transform.GetComponent<SquadController>();
+
                     if (!hitSquad && !squadController.isMoved) {//squad don't hitted before and squad don't moving
-                        hitSquad = true;
                         GameObject drawing = Instantiate(drawingPrefab);
                         lineRenderer = drawing.GetComponent<LineRenderer>();
                         
                         squadController.lineRenderer = lineRenderer;
                         
                     }
-                    if(hitSquad && squadController.isMoved && startTapTime> 0 && startTapTime<maxTimeWait) {
-                        firstTap = false;
-                        startTapTime = 0;
-                        squadController.CancelMovement();
-                        currentLineLength = 0;
-                        hitSquad = false;
-                    }
                     if (squadController.isMoved) {
-                        firstTap = true;
-                        hitSquad = true;
+                        squadController.tapCount++;
                     }
+
+                    hitSquad = true;
                 }
             }
         }
 
         if (Input.GetMouseButton(0) && hitSquad && !squadController.isMoved) {
-            firstTap = false;
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (!Physics.Raycast(ray, out hit, 1000f, unitLayer)) {
@@ -91,13 +72,14 @@ public class SquadControlManager : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonUp(0) && hitSquad && !squadController.isMoved && currentLineLength>0) {
-            currentLineLength = 0;
-            squadController.SetMoving(true);
-            squadController.SetBattle(false);
-            TryChangeColor();
+        if (Input.GetMouseButtonUp(0) && hitSquad) {
+            if (!squadController.isMoved && currentLineLength > 0) { 
+                currentLineLength = 0;
+                squadController.SetMoving(true);
+                squadController.SetBattle(false);
+                TryChangeColor();
+            }
             hitSquad = false;
-            firstTap = false;
 
             mousePrevPos = Vector3.zero;
             mousePosSum = Vector3.zero;
