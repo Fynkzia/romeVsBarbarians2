@@ -16,6 +16,7 @@ public class UnitRetreatController : MonoBehaviour {
     private GameObject body;
     private float currentTime;
     private float flashTimer;
+    [SerializeField]private Vector3 direction;
     private void Start() {
         currentTime = 0;
         flashTimer = 0;
@@ -26,6 +27,8 @@ public class UnitRetreatController : MonoBehaviour {
 
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         GetComponent<SphereCollider>().center = new Vector3(0f,-0.5f,0f);
+        direction = new Vector3(Random.Range(randomX.x, randomX.y), transform.position.y, Random.Range(randomZ.x, randomZ.y));
+        LookOn(direction);
     }
 
     private void FixedUpdate() {
@@ -34,10 +37,8 @@ public class UnitRetreatController : MonoBehaviour {
             if(currentTime>timeToDisappear-lastSeconds) {
                 Flashing();
             }
-            Vector3 direction = new Vector3(Random.Range(randomX.x,randomX.y), transform.position.y, Random.Range(randomZ.x, randomZ.y));
             Vector3 targetPos = Vector3.MoveTowards(transform.position, direction, speed * Time.fixedDeltaTime);
             rb.MovePosition(targetPos);
-            LookOn(targetPos);
         } else {
             Destroy(gameObject);
         }
