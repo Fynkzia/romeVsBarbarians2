@@ -106,6 +106,7 @@ public class SquadController : MonoBehaviour {
     private float currentTriggerCoef;
     private CoinsController coinsController;
     private EnemyAIController aIController;
+    private WinLoseManager winLoseManager;
     private float colliderRadius;
 
     public int tapCount = 0;
@@ -132,6 +133,7 @@ public class SquadController : MonoBehaviour {
         battleTime = actionTime;
         coinsController = GameObject.Find("CoinsController").GetComponent<CoinsController>();
         aIController = GameObject.Find("AIManager").GetComponent<EnemyAIController>();
+        winLoseManager = GameObject.Find("WinLoseManager").GetComponent<WinLoseManager>();
     }
     private void Start() {
         rb = GetComponent<Rigidbody>();
@@ -536,9 +538,7 @@ public class SquadController : MonoBehaviour {
         retreatChanceCount = retreatChanceDefault + (1 - currentMorale / maxMorale);
         if (unitArray.Count < retreatChanceCount && Random.Range(0, retreatChanceCount) > retreatCount + retreatCoef) {
             SetBattle(false);
-            PlayerPrefs.Save();
-
-            if (enemyController) { enemyController.SetBattle(false); }
+            
             for(int i = 0; i < unitArray.Count;i++) {
                 Transform currentModel = unitArray[i].transform.GetChild(0);
                 currentModel.gameObject.AddComponent<Rigidbody>();
@@ -547,15 +547,28 @@ public class SquadController : MonoBehaviour {
                 currentModel.parent = null;
             }
 
-            if(playerSquad){ // удаляем сквады с ии контролера
-                aIController.DeletePlayerSquad(this);
-            }else{
-                aIController.DeleteEnemySquad(this);
-            }
-            
-            Destroy(gameObject);
+            SquadDie();
+        } else if (unitArray.Count == 0) {
+            SquadDie();
         }
 
+    }
+
+    private void SquadDie() {
+        PlayerPrefs.Save();
+
+        if (enemyController) { enemyController.SetBattle(false); }
+
+        if (playerSquad) { // удаляем сквады с ии контролера
+            aIController.DeletePlayerSquad(this);
+            winLoseManager.playerSquadsCount--;
+        }
+        else {
+            aIController.DeleteEnemySquad(this);
+            winLoseManager.enemySquadsCount--;
+        }
+
+        Destroy(gameObject);
     }
 
     public void GetDamage(int index) {

@@ -6,7 +6,7 @@ using UnityEngine;
 public class GamePauseUI : MonoBehaviour
 {
     [SerializeField] private GameObject gameUI;
-    private bool isPaused = false;
+    public bool isPaused = false;
 
     private void Start() {
         Hide();
