@@ -450,7 +450,10 @@ public class SquadController : MonoBehaviour {
             await currentUnit.DOMove(halfPosition, actionTime / 2f).AsyncWaitForCompletion();
             await currentUnit.DOMove(startPosition, actionTime / 2f).AsyncWaitForCompletion();
 
+
+            if(currentUnit != null){
             nowAttacked.Remove(currentUnit.gameObject);
+            }
 
         }
     }

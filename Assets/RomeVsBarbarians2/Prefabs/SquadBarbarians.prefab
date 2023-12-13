@@ -192,15 +192,15 @@ MonoBehaviour:
     attack: 0.5
     defence: 0.5
   - type: 1
-    attack: 0.5
-    defence: 0.5
+    attack: 1
+    defence: 0.4
   - type: 2
-    attack: 0.5
-    defence: 0.5
-  leftTriggerCoef: 0.1
-  rightTriggerCoef: 0.1
+    attack: 0.3
+    defence: 0.2
+  leftTriggerCoef: 0.25
+  rightTriggerCoef: 0.25
   frontTriggerCoef: 0
-  backTriggerCoef: 0.3
+  backTriggerCoef: 0.35
   offsetRadius: 0.5
   nowAttacked: []
   isMoved: 0
@@ -225,7 +225,7 @@ MonoBehaviour:
   powerSquad: 3
   defenceSquad: 5
   maxMorale: 5
-  actionTime: 1.5
+  actionTime: 2
   actionUnits: 3
   attack: 0
   defence: 0
@@ -244,6 +244,7 @@ MonoBehaviour:
   backUnitList: []
   rightUnitList: []
   leftUnitList: []
+  tapCount: 0
 --- !u!135 &3680862547946731660
 SphereCollider:
   m_ObjectHideFlags: 0

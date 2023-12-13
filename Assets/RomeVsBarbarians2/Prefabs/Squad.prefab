@@ -370,8 +370,8 @@ MonoBehaviour:
     attack: 0.5
     defence: 0.5
   - type: 1
-    attack: 0.4
-    defence: 0.3
+    attack: 1
+    defence: 0.4
   - type: 2
     attack: 0.3
     defence: 0.2
@@ -403,7 +403,7 @@ MonoBehaviour:
   powerSquad: 3
   defenceSquad: 4
   maxMorale: 5
-  actionTime: 1.5
+  actionTime: 2
   actionUnits: 3
   attack: 0
   defence: 0
@@ -422,6 +422,7 @@ MonoBehaviour:
   backUnitList: []
   rightUnitList: []
   leftUnitList: []
+  tapCount: 0
 --- !u!114 &9220945267742692444
 MonoBehaviour:
   m_ObjectHideFlags: 0

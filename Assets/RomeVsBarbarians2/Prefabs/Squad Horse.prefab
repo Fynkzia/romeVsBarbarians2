@@ -139,18 +139,18 @@ MonoBehaviour:
   coinsFromDeath: 1
   coef:
   - type: 0
-    attack: 0.5
+    attack: 1
     defence: 0.5
   - type: 1
-    attack: 0.5
-    defence: 0.5
+    attack: 0.7
+    defence: 0.3
   - type: 2
     attack: 0.5
     defence: 0.5
   leftTriggerCoef: 0.25
   rightTriggerCoef: 0.25
   frontTriggerCoef: 0
-  backTriggerCoef: 0.5
+  backTriggerCoef: 0.4
   offsetRadius: 0.5
   nowAttacked: []
   isMoved: 0
@@ -175,7 +175,7 @@ MonoBehaviour:
   powerSquad: 3
   defenceSquad: 5
   maxMorale: 0
-  actionTime: 1.5
+  actionTime: 1.6
   actionUnits: 3
   attack: 0
   defence: 0
@@ -194,6 +194,7 @@ MonoBehaviour:
   backUnitList: []
   rightUnitList: []
   leftUnitList: []
+  tapCount: 0
 --- !u!114 &2385495583006829144
 MonoBehaviour:
   m_ObjectHideFlags: 0
