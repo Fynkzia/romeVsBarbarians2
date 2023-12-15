@@ -8,12 +8,13 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Terrain
-  m_Shader: {fileID: 4800000, guid: a6da473b89caeb1409bac856668af764, type: 3}
+  m_Shader: {fileID: 4800000, guid: f8d49205b3b0a644195633020367689d, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords:
-  - TCP2_SPEC
+  m_ValidKeywords:
+  - TCP2_DISABLE_WRAPPED_LIGHT
+  - _DETAIL_MULX2
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
@@ -29,7 +30,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: bb1047089009d4c5d9dc5d1df039aa5f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailMask:
@@ -45,8 +46,8 @@ Material:
         m_Scale: {x: 50, y: 50}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 3de934dcef8354f4488efc7c4235f19d, type: 3}
-        m_Scale: {x: 10, y: 8}
+        m_Texture: {fileID: 2800000, guid: 47278689ca5114cc78a8da78b8bc115a, type: 3}
+        m_Scale: {x: 20, y: 25}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
@@ -75,25 +76,35 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _GlossMapScale: 1
-    - _Glossiness: 0.42
+    - _Glossiness: 0.192
     - _GlossyReflections: 1
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _RampSmooth: 0.039
-    - _RampThreshold: 0.894
-    - _Shininess: 0.078
+    - _RampSmooth: 0.3
+    - _RampSmoothAdd: 0.75
+    - _RampThreshold: 0.841
+    - _RimMax: 0.85
+    - _RimMin: 0.6
+    - _RimStrength: 0.5
+    - _Shininess: 0.064
     - _SmoothnessTextureChannel: 0
-    - _SpecSmooth: 0.05
+    - _SpecBlend: 1
+    - _SpecSmooth: 0.616
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _TCP2_DISABLE_WRAPPED_LIGHT: 1
+    - _TCP2_RAMPTEXT: 0
+    - _TCP2_SPEC_TOON: 0
+    - _TCP2_STYLIZED_FRESNEL: 0
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.7022132, g: 0.8018868, b: 0.6543699, a: 1}
+    - _Color: {r: 0.7376342, g: 0.8773585, b: 0.5338644, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _HColor: {r: 0.5332402, g: 0.5660378, b: 0.29636884, a: 1}
-    - _SColor: {r: 0.34298727, g: 0.4716981, b: 0.09567462, a: 1}
-    - _SpecColor: {r: 0.3018868, g: 0.2745936, b: 0.13812746, a: 0.5019608}
+    - _RimColor: {r: 0.8, g: 0.8, b: 0.8, a: 0.6}
+    - _SColor: {r: 0.17250077, g: 0.24528301, b: 0.03355287, a: 1}
+    - _SpecColor: {r: 0.13207549, g: 0.12451705, b: 0.08535067, a: 1}
   m_BuildTextureStacks: []

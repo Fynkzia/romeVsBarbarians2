@@ -181,7 +181,7 @@ public class EnemyAIController : MonoBehaviour
 
                 if(playerNearSquads.Count < nearEnemyList.Count){
                     int randomSqaud = Random.Range(0,playerNearSquads.Count);// случайно выбираем отряд к которому будет двигаться група вражеских отрядов
-                    for (int i = 0; i < nearEnemyList.Count; i++) {
+                    for (int i = 0; i < playerNearSquads.Count+1; i++) { // берем на одно больше чем отрядов игрока
                         SquadMoveToSquad(nearEnemyList[i],playerNearSquads[randomSqaud]);
 
                         if(actionQueueArray.Contains(nearEnemyList[i])){
