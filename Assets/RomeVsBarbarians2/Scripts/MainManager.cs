@@ -14,9 +14,14 @@ public class MainManager : MonoBehaviour {
 
     public void LoadMenu() {
         SceneManager.LoadScene("Menu");
+        Time.timeScale = 1f;
         if (gamePauseUI.isPaused) { 
             gamePauseUI.TogglePause();
         }
     }
 
+    public void ReloadScene() {
+        Scene scene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(scene.name);
+    }
 }

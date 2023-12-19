@@ -20,6 +20,7 @@ public class CoinsController : MonoBehaviour
     }
     public void ChangeAmountOfCoins(int change) {
         coins += change;
+        PlayerPrefs.SetInt("Coins", coins);
         coinsCounter.text = "Coins: " + coins.ToString();
     }
 

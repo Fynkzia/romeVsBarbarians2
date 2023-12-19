@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class WinLoseUI : MonoBehaviour
@@ -8,6 +9,7 @@ public class WinLoseUI : MonoBehaviour
     [SerializeField] private GameObject pauseUI;
     [SerializeField] private GameObject loseUI;
     [SerializeField] private GameObject winUI;
+
 
     private void Start() {
         gameObject.SetActive(true);
@@ -23,10 +25,12 @@ public class WinLoseUI : MonoBehaviour
     public void ShowWin() {
         winUI.SetActive(true);
         HideAnother();
+        Time.timeScale = 0f;
     }
 
     private void HideAnother() { 
         gameUI.SetActive(false);
         pauseUI.SetActive(false);
     }
+
 }

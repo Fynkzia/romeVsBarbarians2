@@ -555,7 +555,6 @@ public class SquadController : MonoBehaviour {
     }
 
     private void SquadDie() {
-        PlayerPrefs.Save();
 
         if (enemyController) { enemyController.SetBattle(false); }
 
