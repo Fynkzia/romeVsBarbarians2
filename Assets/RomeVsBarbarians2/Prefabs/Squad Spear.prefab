@@ -800,18 +800,18 @@ MonoBehaviour:
   coinsFromDeath: 1
   coef:
   - type: 0
-    attack: 0.3
-    defence: 0.3
-  - type: 1
     attack: 0.5
     defence: 0.5
-  - type: 2
+  - type: 1
     attack: 1
-    defence: 0.3
-  leftTriggerCoef: 0.25
-  rightTriggerCoef: 0.25
+    defence: 1
+  - type: 2
+    attack: 2
+    defence: 2
+  leftTriggerCoef: 1
+  rightTriggerCoef: 1
   frontTriggerCoef: 0
-  backTriggerCoef: 0.35
+  backTriggerCoef: 2
   offsetRadius: 0.5
   nowAttacked: []
   isMoved: 0
@@ -833,9 +833,9 @@ MonoBehaviour:
   playerSquad: 1
   inBattle: 0
   levelSquad: 0
-  powerSquad: 3
-  defenceSquad: 5
-  maxMorale: 0
+  powerSquad: 2
+  defenceSquad: 2
+  maxMorale: 5
   actionTime: 2
   actionUnits: 3
   attack: 0

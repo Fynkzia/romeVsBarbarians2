@@ -440,17 +440,23 @@ public class SquadController : MonoBehaviour {
 
             Transform atackedEnemy;
 
+                int enemyIndex = 0;
             if (enemyController.unitArray.Count > enemyController.maxFightingUnit) {
-                atackedEnemy = enemyController.unitArray[Random.Range(0, enemyController.maxFightingUnit)].transform;
+                enemyIndex = Random.Range(0, enemyController.maxFightingUnit);
             }
             else {
-                atackedEnemy = enemyController.unitArray[Random.Range(0, enemyController.unitArray.Count)].transform;
+                enemyIndex = Random.Range(0, enemyController.unitArray.Count);
             }
+                atackedEnemy = enemyController.unitArray[enemyIndex].transform;
+
+            
 
             Vector3 halfPosition = new Vector3((currentUnit.position.x + atackedEnemy.position.x) / 2, (currentUnit.position.y + atackedEnemy.position.y) / 2, (currentUnit.position.z + atackedEnemy.position.z) / 2);
 
-            await currentUnit.DOMove(halfPosition, actionTime / 2f).AsyncWaitForCompletion();
-            await currentUnit.DOMove(startPosition, actionTime / 2f).AsyncWaitForCompletion();
+            await currentUnit.DOMove(halfPosition, actionTime / 4f).AsyncWaitForCompletion();
+            enemyController.GetDamage(enemyIndex);
+            await currentUnit.DOMove(startPosition, actionTime / 1.5f).AsyncWaitForCompletion();
+
 
 
             if(currentUnit != null){
@@ -463,56 +469,43 @@ public class SquadController : MonoBehaviour {
 
     private void EnemyDamage() {
         currentTriggerCoef = AttackTriggerCoef();
-        float attack = powerSquad * (((currentStamina / maxStamina)/2f) + 0.5f); // стамина влияет на половину
-        float defence = enemyController.defenceSquad * (((enemyController.currentStamina / enemyController.maxStamina)/2f)+ 0.5f);// стамина влияет на половину
+       
+        float min = 0f - (enemyController.defenceSquad*0.1f) - (enemyController.defenceCoef) - ((enemyController.currentStamina / enemyController.maxStamina)*100f*0.02f);
 
-
-        float min = (attack / defence) + attackCoef + currentTriggerCoef;
-
-        if (enemyController.defence) {
-            min -= (((float)enemyController.actionUnits) / 10f);
+        if(enemyController.defence){
+            min -= (enemyController.actionUnits/25f)*3f;
         }
 
-        float max = enemyController.defenceSquad + (actionUnits / 10f) + enemyController.defenceCoef;
+        float max = 10f + ((powerSquad-enemyController.defenceSquad)*1.5f)+attackCoef +  currentTriggerCoef + ((actionUnits/25f)*3f)*((currentStamina / maxStamina)*100f*0.02f);
+       
+         Debug.Log("min "+min +" max " + max);
 
-        // Debug.Log("Attack "+ gameObject.name +"\n"+ 
-        //     "Balance:" + "\n"+
-        //     "attack = " + attack + "; enemy defence = " + defence + "\n"+
-        //     "attackCoef = " + attackCoef + " enemy defenceCoef = " + enemyController.defenceCoef+ "\n"+
-        //     "currentTriggerCoef = " + currentTriggerCoef+ "\n"+
-        //     "min = " +(attack / defence) +" + "+attackCoef+" + " + currentTriggerCoef +" = "+ min + "\n"+
-        //      " max = " + max + "\n"+
-        //     " to get damage random > " + enemyController.defenceSquad +
-      
-        // "",gameObject);
+        int index;
+        if (enemyController.unitArray.Count > enemyController.maxFightingUnit) {
+            index = Random.Range(0, enemyController.maxFightingUnit);
+        } else {
+            index = Random.Range(0, enemyController.unitArray.Count);
+        }
 
-        for (int i = 0; i < actionUnits; i++) {
-            int index;
-            if (enemyController.unitArray.Count > enemyController.maxFightingUnit) {
-                index = Random.Range(0, enemyController.maxFightingUnit);
-            } else {
-                index = Random.Range(0, enemyController.unitArray.Count);
-            }
+
             float r = Random.Range(min, max);
 
-//               Debug.Log("Attack "+ gameObject.name +"\n"+ 
-// "Random = " + r
-//               );
+                        Debug.Log("Attack "+ gameObject.name +"\n"+ 
+            "Random = " + r
+                        );
 
-            if (r > enemyController.defenceSquad) {                
-                //int index = 0;
+            if (r > 8.6f) {                
+               
                 enemyController.DieUnit(index);
                 coinsController.ChangeAmountOfCoins(coinsFromDeath);
 
-//                 Debug.Log("Attack "+ gameObject.name +"\n"+ 
-// "Die Unit in squad" + enemyController.gameObject.name
-//               );
 
             } else {
-                enemyController.GetDamage(index);
+                //enemyController.GetDamage(index);
             }
-        }
-        // currentStamina -= 0.05f;
+                 if (currentStamina > 0) {
+                    currentStamina -= 0.05f;
+                }
     }
 
     public void DieUnit(int index) {
