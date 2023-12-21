@@ -17,8 +17,8 @@ public class OrdersSystem : MonoBehaviour
     [SerializeField] private Button attackButton;
     [SerializeField] private Button defenceButton;
 
-    [SerializeField] private Sprite activeButtonImage;
-    [SerializeField] private Sprite selectedButtonImage;
+    [SerializeField] private Animator attackButtonAnimator;
+    [SerializeField] private Animator defenceButtonAnimator;
     
     [SerializeField] private int costOfOrder; //For basic implementation
 
@@ -27,13 +27,11 @@ public class OrdersSystem : MonoBehaviour
     [SerializeField]private bool orderSelected = false;
     [SerializeField]private bool prevCoinsState;
     [SerializeField]private bool currentCoinsState;
-    private Image attackButtonImage;
-    private Image defenceButtonImage;
 
     private void Start() {
         prevCoinsState = coinsController.AmountOfCoins() >= costOfOrder;
-        attackButtonImage = attackButton.GetComponent<Image>();
-        defenceButtonImage = defenceButton.GetComponent<Image>();
+        attackButtonAnimator = attackButton.GetComponent<Animator>();
+        defenceButtonAnimator = defenceButton.GetComponent<Animator>();
     }
 
     private void Update() {
@@ -79,29 +77,29 @@ public class OrdersSystem : MonoBehaviour
     public void AttackButtonClick() {
         if (orderSelected && currentOrder == OrderType.Attack) {
             orderSelected = false;
-            attackButtonImage.sprite = activeButtonImage;
+            attackButtonAnimator.SetTrigger("Normal");
         } else { 
             currentOrder = OrderType.Attack;
             orderSelected = true;
-            attackButtonImage.sprite = selectedButtonImage;
-            defenceButtonImage.sprite = activeButtonImage;
+            defenceButtonAnimator.SetTrigger("Normal");
+            attackButtonAnimator.SetTrigger("Selected");
         }
     }
     public void DefenceButtonClick() {
         if (orderSelected && currentOrder == OrderType.Defence) {
             orderSelected = false;
-            defenceButtonImage.sprite = activeButtonImage;
+            defenceButtonAnimator.SetTrigger("Normal");
         } else { 
             currentOrder = OrderType.Defence;
             orderSelected = true;
-            defenceButtonImage.sprite = selectedButtonImage;
-            attackButtonImage.sprite = activeButtonImage;
+            attackButtonAnimator.SetTrigger("Normal");
+            defenceButtonAnimator.SetTrigger("Selected");
         }
     }
 
     private void UnSelectButtons() {
         orderSelected = false;
-        attackButtonImage.sprite = activeButtonImage;
-        defenceButtonImage.sprite = activeButtonImage;
+        attackButtonAnimator.SetTrigger("Normal");
+        defenceButtonAnimator.SetTrigger("Normal");
     }
 }

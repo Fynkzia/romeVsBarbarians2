@@ -16,12 +16,12 @@ public class CoinsController : MonoBehaviour
         }
     }
     private void Start() {
-        coinsCounter.text = "Coins: " + coins.ToString();
+        coinsCounter.text = coins.ToString();
     }
     public void ChangeAmountOfCoins(int change) {
         coins += change;
         PlayerPrefs.SetInt("Coins", coins);
-        coinsCounter.text = "Coins: " + coins.ToString();
+        coinsCounter.text = coins.ToString();
     }
 
     public int AmountOfCoins() { 

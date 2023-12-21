@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class OrderTimeCoef {
@@ -28,6 +30,12 @@ public class OrderController : MonoBehaviour {
     [SerializeField] private float orderTime = 0;
     [SerializeField] public AttackOrder attackOrder;
     [SerializeField] public DefenceOrder defenceOrder;
+    [Space(10)]
+    [SerializeField] private GameObject orderIndicator;
+    [SerializeField] private Image bar;
+    [SerializeField] private TextMeshProUGUI barText;
+    [SerializeField] private Image orderImage;
+
     private SquadController squadController;
     private OrderType prevOrder;
     private List<int> shieldUnits = new List<int>();
@@ -43,40 +51,50 @@ public class OrderController : MonoBehaviour {
         }
     }
     public void DoOrder(OrderType currentOrder) {
-
         
         if (prevOrder == OrderType.None) {
+            orderIndicator.SetActive(true);
             if (currentOrder == OrderType.Attack) {
                 AddAttackOrder();
-                
+                //
             }
             if (currentOrder == OrderType.Defence) {
                 AddDefenceOrder();
+                //
             }
             amountOfOrders = 1;
+            ChangeText();
         }
+
         if (prevOrder == OrderType.Attack) {
             if (currentOrder == OrderType.Attack && amountOfOrders < ordersTime.Length) {
                 AddAttackOrder();
                 amountOfOrders++;
+                ChangeText();
             }
             if (currentOrder == OrderType.Defence) {
                 RemoveAttackOrder();
                 squadController.attack = false;
                 AddDefenceOrder();
                 amountOfOrders = 1;
+                ChangeText();
+                //
             }
         }
+
         if (prevOrder == OrderType.Defence) {
             if (currentOrder == OrderType.Attack) {
                 RemoveDefenceOrder();
                 squadController.defence = false;
                 AddAttackOrder();
                 amountOfOrders = 1;
+                ChangeText();
+                //
             }
             if (currentOrder == OrderType.Defence && amountOfOrders < ordersTime.Length) {
                 AddDefenceOrder();
                 amountOfOrders++;
+                ChangeText();
             }
         }
         prevOrder = currentOrder;
@@ -86,14 +104,17 @@ public class OrderController : MonoBehaviour {
     private void OrderTimer() {
         if (orderTime > 0) {
             orderTime -= Time.deltaTime;
+            bar.fillAmount = orderTime / ordersTime[amountOfOrders - 1].timeOfExpire;
         }
         else {
             if (prevOrder == OrderType.Attack) { RemoveAttackOrder(); }
             if (prevOrder == OrderType.Defence) { RemoveDefenceOrder(); }
 
             amountOfOrders--;
+            ChangeText();
             if (amountOfOrders == 0) {
                 prevOrder = OrderType.None;
+                orderIndicator.SetActive(false);
                 squadController.attack = false;
                 squadController.defence = false;
                 orderTime = 0;
@@ -151,5 +172,9 @@ public class OrderController : MonoBehaviour {
         }
         squadController.defenceSquad -= defenceOrder.defenceSquad;
         squadController.actionTime -= defenceOrder.actionTime;
+    }
+
+    private void ChangeText() {
+        barText.text = amountOfOrders.ToString();
     }
 }
