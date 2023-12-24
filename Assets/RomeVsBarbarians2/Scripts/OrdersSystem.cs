@@ -27,7 +27,12 @@ public class OrdersSystem : MonoBehaviour
     [SerializeField]private bool orderSelected = false;
     [SerializeField]private bool prevCoinsState;
     [SerializeField]private bool currentCoinsState;
+    [Header("Order sprites")]
+    [Space(10)]
+    [SerializeField] private Sprite attackSprite;
+    [SerializeField] private Sprite defenceSprite;
 
+    private Sprite currentSprite;
     private void Start() {
         prevCoinsState = coinsController.AmountOfCoins() >= costOfOrder;
         attackButtonAnimator = attackButton.GetComponent<Animator>();
@@ -62,7 +67,7 @@ public class OrdersSystem : MonoBehaviour
                     
                     if (hit.collider.gameObject.tag == "Squad") {
                         OrderController currentUnit = hit.collider.transform.GetComponent<OrderController>();
-                        currentUnit.DoOrder(currentOrder);
+                        currentUnit.DoOrder(currentOrder, currentSprite);
                         coinsController.ChangeAmountOfCoins(-costOfOrder);
                         
                         Debug.Log("Hit");
@@ -81,6 +86,7 @@ public class OrdersSystem : MonoBehaviour
         } else { 
             currentOrder = OrderType.Attack;
             orderSelected = true;
+            currentSprite = attackSprite;
             defenceButtonAnimator.SetTrigger("Normal");
             attackButtonAnimator.SetTrigger("Selected");
         }
@@ -92,6 +98,7 @@ public class OrdersSystem : MonoBehaviour
         } else { 
             currentOrder = OrderType.Defence;
             orderSelected = true;
+            currentSprite = defenceSprite;
             attackButtonAnimator.SetTrigger("Normal");
             defenceButtonAnimator.SetTrigger("Selected");
         }

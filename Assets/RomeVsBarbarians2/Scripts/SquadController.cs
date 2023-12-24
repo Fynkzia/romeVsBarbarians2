@@ -73,6 +73,7 @@ public class SquadController : MonoBehaviour {
     [SerializeField] public int maxFightingUnit;
     [SerializeField] private ParticleSystem bloodFx;
     [SerializeField] private GameObject movementIndicator;
+    [SerializeField] private GameObject battleIndicator;
 
 
     [Header("Morale Settings")]
@@ -266,6 +267,7 @@ public class SquadController : MonoBehaviour {
         for (int i = 0; i < animators.Count; i++) {
             animators[i].SetBool(IS_BATTLE, inBattle);
         }
+        battleIndicator.SetActive(inBattle);
     }
     public void SetShield(int i, bool isShield) {
         animators[i].SetBool("Shield", isShield);

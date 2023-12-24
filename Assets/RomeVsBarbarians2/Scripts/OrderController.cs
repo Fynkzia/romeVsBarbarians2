@@ -35,6 +35,7 @@ public class OrderController : MonoBehaviour {
     [SerializeField] private Image bar;
     [SerializeField] private TextMeshProUGUI barText;
     [SerializeField] private Image orderImage;
+    [SerializeField] private ParticleSystem orderFx;
 
     private SquadController squadController;
     private OrderType prevOrder;
@@ -50,17 +51,17 @@ public class OrderController : MonoBehaviour {
             OrderTimer();
         }
     }
-    public void DoOrder(OrderType currentOrder) {
-        
+    public void DoOrder(OrderType currentOrder, Sprite orderSprite) {
+        Instantiate(orderFx, gameObject.transform);
         if (prevOrder == OrderType.None) {
             orderIndicator.SetActive(true);
             if (currentOrder == OrderType.Attack) {
                 AddAttackOrder();
-                //
+                orderImage.sprite = orderSprite;
             }
             if (currentOrder == OrderType.Defence) {
                 AddDefenceOrder();
-                //
+                orderImage.sprite = orderSprite;
             }
             amountOfOrders = 1;
             ChangeText();
@@ -78,7 +79,7 @@ public class OrderController : MonoBehaviour {
                 AddDefenceOrder();
                 amountOfOrders = 1;
                 ChangeText();
-                //
+                orderImage.sprite = orderSprite;
             }
         }
 
@@ -89,7 +90,7 @@ public class OrderController : MonoBehaviour {
                 AddAttackOrder();
                 amountOfOrders = 1;
                 ChangeText();
-                //
+                orderImage.sprite = orderSprite;
             }
             if (currentOrder == OrderType.Defence && amountOfOrders < ordersTime.Length) {
                 AddDefenceOrder();
