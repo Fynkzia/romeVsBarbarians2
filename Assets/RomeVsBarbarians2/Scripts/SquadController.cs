@@ -183,15 +183,31 @@ public class SquadController : MonoBehaviour {
                 LookOnEnemy();
             }
             else {
-                if (battleTime >= actionTime) { // только нанесение урона
-                    battleTime = 0f;
-                    EnemyDamage();
-                    // UnitKick(enemySquad.transform);
+                if(!defence){
+                    if (battleTime >= actionTime) { // только нанесение урона
+                        battleTime = 0f;
+                        EnemyDamage();
+                        // UnitKick(enemySquad.transform);
 
-                }
-                if (animationAttackTime >= actionTime / actionUnits) {// только анимация атаки юнитов
-                    animationAttackTime = 0f;
-                    UnitKickOnce();
+                    }
+                    if (animationAttackTime >= actionTime / actionUnits) {// только анимация атаки юнитов
+                        animationAttackTime = 0f;
+                        UnitKickOnce();
+                    }
+                }else{
+
+                     
+                        if (battleTime >= actionTime) { // только нанесение урона
+                            battleTime = 0f;
+                            EnemyDamage();
+                            // UnitKick(enemySquad.transform);
+
+                        }
+                        if (animationAttackTime >= actionTime / 3f) {// только анимация атаки юнитов
+                            animationAttackTime = 0f;
+                            UnitKickOnce();
+                        }
+                
                 }
             }
         }
@@ -480,7 +496,13 @@ public class SquadController : MonoBehaviour {
             min -= (enemyController.actionUnits/25f)*3f;
         }
 
-        float max = 10f + ((powerSquad-enemyController.defenceSquad)*1.5f)+attackCoef +  currentTriggerCoef + ((actionUnits/25f)*3f)*((currentStamina / maxStamina)*100f*0.02f);
+        float max = 10f + ((powerSquad-enemyController.defenceSquad)*1.5f)+attackCoef +  currentTriggerCoef +((currentStamina / maxStamina)*100f*0.02f);
+
+        if(!defence){
+           max += ((actionUnits/25f)*3f);
+        }else{
+             max += ((3f/25f)*3f);
+        }
        
          Debug.Log("min "+min +" max " + max);
 
