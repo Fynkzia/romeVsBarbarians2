@@ -8,18 +8,21 @@ public class WinLoseManager : MonoBehaviour
     [SerializeField] private GameObject playerSquads;
     [SerializeField] private GameObject enemySquads;
     [SerializeField] private WinLoseUI winLoseUI;
-    [SerializeField] private int reward;
     [SerializeField] private TextMeshProUGUI rewardText;
 
     public int playerSquadsCount;
     public int enemySquadsCount;
     public bool isGameOver = false;
+    private int reward;
+    private int currentLevel;
     private CoinsController coinsController;
 
     private void Awake() {
         playerSquadsCount = playerSquads.transform.childCount;
         enemySquadsCount = enemySquads.transform.childCount;
         coinsController = GameObject.Find("CoinsController").GetComponent<CoinsController>();
+        reward = PlayerPrefs.GetInt("CurrentReward");
+        currentLevel = PlayerPrefs.GetInt("CurrentLevel");
     }
 
     private void Update() {
@@ -31,12 +34,21 @@ public class WinLoseManager : MonoBehaviour
             }
             if (enemySquadsCount == 0) { 
                 winLoseUI.ShowWin();
-                rewardText.text += reward;
-                coinsController.ChangeAmountOfCoins(reward);
+                WinSave();
                 isGameOver = !isGameOver;
                 PlayerPrefs.Save();
             }
             
+        }
+    }
+
+    private void WinSave() {
+        rewardText.text += reward;
+        coinsController.ChangeAmountOfCoins(reward);
+        int maxUnlockedLevel = PlayerPrefs.GetInt("MaxUnlockedLevel");
+        if (currentLevel == maxUnlockedLevel) {
+            maxUnlockedLevel++;
+            PlayerPrefs.SetInt("MaxUnlockedLevel", maxUnlockedLevel);
         }
     }
 }
