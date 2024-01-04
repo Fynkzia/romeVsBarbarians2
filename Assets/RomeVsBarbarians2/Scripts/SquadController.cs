@@ -89,14 +89,19 @@ public class SquadController : MonoBehaviour {
     [SerializeField] private float retreatChanceDefault;
     [SerializeField] private float retreatCoef;
 
+    [Header("Enemy AI settings")]
+    [Space(10)]
+    [SerializeField] public int aiActionValue = 100;
+    [SerializeField] public bool dangerAlert = false;
+
+    
+
     private Rigidbody rb;
     private GameObject enemySquad;
-    private SquadController enemyController;
+    [SerializeField] public List<SquadController> enemyController = new List<SquadController>();
     private Vector3[] positions;
     private List<Transform> fightingUnitList = new List<Transform>();
-    [SerializeField] private List<Transform> backUnitList = new List<Transform>();
-    [SerializeField] private List<Transform> rightUnitList = new List<Transform>();
-    [SerializeField] private List<Transform> leftUnitList = new List<Transform>();
+
 
     private int indexMove = 0;
     private float currentSpeed = 0f;
@@ -149,7 +154,7 @@ public class SquadController : MonoBehaviour {
         }
         colliderRadius = GetComponents<SphereCollider>()[1].radius;
 
-//SidesUnitsListSet();
+
                
 
  }
@@ -267,6 +272,10 @@ public class SquadController : MonoBehaviour {
         }
         else {
             CancelMovement();
+
+            if(!playerSquad){
+                AiActionValueReset();
+            }
         }
     }
 
@@ -284,6 +293,10 @@ public class SquadController : MonoBehaviour {
             animators[i].SetBool(IS_BATTLE, inBattle);
         }
         battleIndicator.SetActive(inBattle);
+
+        if(!playerSquad){
+                AiActionValueReset();
+            }
     }
     public void SetShield(int i, bool isShield) {
         animators[i].SetBool("Shield", isShield);
@@ -341,16 +354,15 @@ public class SquadController : MonoBehaviour {
             if(enemyCollider.gameObject.tag != ENEMY_TRIGGER_TAG && enemyCollider.gameObject.tag != SQUAD_TRIGGER_TAG) {
                 enemySquad = enemyCollider.gameObject;
                 if ((tag == SQUAD_TAG && enemySquad.tag == ENEMY_TAG) || (tag == ENEMY_TAG && enemySquad.tag == SQUAD_TAG)) {
-                    enemyController = enemyCollider.transform.GetComponent<SquadController>();
-                    CountCoef(enemyController.type);
+                   // enemyController = enemyCollider.transform.GetComponent<SquadController>();
+                   enemyController.Add(enemySquad.GetComponent<SquadController>());
+                    CountCoef(enemyController[enemyController.Count - 1].type); // тут вопросы по напвильносит 
                     
                     SetBattle(true);
-                    currentMorale -= lostMoraleThenAttack * enemyController.unitArray.Count;
+                    currentMorale -= lostMoraleThenAttack * enemyController[enemyController.Count - 1].unitArray.Count;
                     movementSpeed /= 1.5f;
                     rotationSpeed /= 1.5f;
                     boostSpeed /= 1.5f;
-
-                     aIController.SetBattlePoint(transform.position);
 
                     //GetComponents<SphereCollider>()[1].radius = colliderRadius + 0.1f;
                     if (isMoved) {
@@ -364,13 +376,21 @@ public class SquadController : MonoBehaviour {
     private void OnTriggerExit(Collider other) {
         if (other.gameObject.tag != ENEMY_TRIGGER_TAG && other.gameObject.tag != SQUAD_TRIGGER_TAG) {
 
+            
+
             if ((tag == SQUAD_TAG && enemySquad.tag == ENEMY_TAG) || (tag == ENEMY_TAG && enemySquad.tag == SQUAD_TAG)) {
-                Debug.Log(gameObject.name+" here",other.gameObject);
-                SetBattle(false);
-                movementSpeed *= 1.5f;
-                rotationSpeed *= 1.5f;
-                boostSpeed *= 1.5f;
-                escape = true;
+                SquadController exitObject = other.gameObject.GetComponent<SquadController>();
+                
+                enemyController.Remove(exitObject);
+                //Debug.Log(gameObject.name+" here",other.gameObject);
+
+                if(enemyController.Count==0){
+                    SetBattle(false);
+                    movementSpeed *= 1.5f;
+                    rotationSpeed *= 1.5f;
+                    boostSpeed *= 1.5f;
+                    escape = true;
+                }
 
                
 
@@ -425,11 +445,11 @@ public class SquadController : MonoBehaviour {
 
                 Transform atackedEnemy;
 
-                if (enemyController.unitArray.Count > enemyController.maxFightingUnit) {
-                    atackedEnemy = enemyController.unitArray[Random.Range(0, enemyController.maxFightingUnit)].transform;
+                if (enemyController[0].unitArray.Count > enemyController[0].maxFightingUnit) {
+                    atackedEnemy = enemyController[0].unitArray[Random.Range(0, enemyController[0].maxFightingUnit)].transform;
                 }
                 else {
-                    atackedEnemy = enemyController.unitArray[Random.Range(0, enemyController.unitArray.Count)].transform;
+                    atackedEnemy = enemyController[0].unitArray[Random.Range(0, enemyController[0].unitArray.Count)].transform;
                 }
 
                 await currentUnit.DOMove(atackedEnemy.position, actionTime / 2).AsyncWaitForCompletion();
@@ -461,20 +481,20 @@ public class SquadController : MonoBehaviour {
             Transform atackedEnemy;
 
                 int enemyIndex = 0;
-            if (enemyController.unitArray.Count > enemyController.maxFightingUnit) {
-                enemyIndex = Random.Range(0, enemyController.maxFightingUnit);
+            if (enemyController[0].unitArray.Count > enemyController[0].maxFightingUnit) {
+                enemyIndex = Random.Range(0, enemyController[0].maxFightingUnit);
             }
             else {
-                enemyIndex = Random.Range(0, enemyController.unitArray.Count);
+                enemyIndex = Random.Range(0, enemyController[0].unitArray.Count);
             }
-                atackedEnemy = enemyController.unitArray[enemyIndex].transform;
+                atackedEnemy = enemyController[0].unitArray[enemyIndex].transform;
 
             
 
             Vector3 halfPosition = new Vector3((currentUnit.position.x + atackedEnemy.position.x) / 2, (currentUnit.position.y + atackedEnemy.position.y) / 2, (currentUnit.position.z + atackedEnemy.position.z) / 2);
 
             await currentUnit.DOMove(halfPosition, actionTime / 4f).AsyncWaitForCompletion();
-            enemyController.GetDamage(enemyIndex);
+            enemyController[0].GetDamage(enemyIndex);
             await currentUnit.DOMove(startPosition, actionTime / 1.5f).AsyncWaitForCompletion();
 
 
@@ -490,13 +510,13 @@ public class SquadController : MonoBehaviour {
     private void EnemyDamage() {
         currentTriggerCoef = AttackTriggerCoef();
        
-        float min = 0f - (enemyController.defenceSquad*0.1f) - (enemyController.defenceCoef) - ((enemyController.currentStamina / enemyController.maxStamina)*100f*0.02f);
+        float min = 0f - (enemyController[0].defenceSquad*0.1f) - (enemyController[0].defenceCoef) - ((enemyController[0].currentStamina / enemyController[0].maxStamina)*100f*0.02f);
 
-        if(enemyController.defence){
-            min -= (enemyController.actionUnits/25f)*3f;
+        if(enemyController[0].defence){
+            min -= (enemyController[0].actionUnits/25f)*3f;
         }
 
-        float max = 10f + ((powerSquad-enemyController.defenceSquad)*1.5f)+attackCoef +  currentTriggerCoef +((currentStamina / maxStamina)*100f*0.02f);
+        float max = 10f + ((powerSquad-enemyController[0].defenceSquad)*1.5f)+attackCoef +  currentTriggerCoef +((currentStamina / maxStamina)*100f*0.02f);
 
         if(!defence){
            max += ((actionUnits/25f)*3f);
@@ -507,10 +527,10 @@ public class SquadController : MonoBehaviour {
          Debug.Log("min "+min +" max " + max);
 
         int index;
-        if (enemyController.unitArray.Count > enemyController.maxFightingUnit) {
-            index = Random.Range(0, enemyController.maxFightingUnit);
+        if (enemyController[0].unitArray.Count > enemyController[0].maxFightingUnit) {
+            index = Random.Range(0, enemyController[0].maxFightingUnit);
         } else {
-            index = Random.Range(0, enemyController.unitArray.Count);
+            index = Random.Range(0, enemyController[0].unitArray.Count);
         }
 
 
@@ -522,7 +542,7 @@ public class SquadController : MonoBehaviour {
 
             if (r > 8.6f) {                
                
-                enemyController.DieUnit(index);
+                enemyController[0].DieUnit(index);
                 coinsController.ChangeAmountOfCoins(coinsFromDeath);
 
 
@@ -538,9 +558,7 @@ public class SquadController : MonoBehaviour {
         currentMorale -= lostMoraleThenDie;
         GameObject currentUnit = unitArray[index];
 
-// backUnitList.Remove(currentUnit.transform);
-// leftUnitList.Remove(currentUnit.transform);
-// rightUnitList.Remove(currentUnit.transform);
+
 
         Transform currentModel = currentUnit.transform.GetChild(0);
         Instantiate(bloodFx, currentModel);
@@ -575,7 +593,13 @@ public class SquadController : MonoBehaviour {
 
     private void SquadDie() {
 
-        if (enemyController) { enemyController.SetBattle(false); }
+        if (enemyController.Count > 0) {
+             for(int i = 0; i < enemyController.Count;i++) {
+             
+             enemyController[i].enemyController.Remove(this);
+             enemyController[i].CanSquadFight(); 
+             }
+             }
 
         if (playerSquad) { // удаляем сквады с ии контролера
             aIController.DeletePlayerSquad(this);
@@ -588,6 +612,15 @@ public class SquadController : MonoBehaviour {
 
         Destroy(gameObject);
     }
+
+     public void CanSquadFight() {
+        if(enemyController.Count > 0){
+// тут надо развернуть отряд на 
+        }else{
+            SetBattle(false);
+        }
+
+     }
 
     public void GetDamage(int index) {
         if (Random.Range(1, 11) % 2 == 0) { 
@@ -629,63 +662,11 @@ public class SquadController : MonoBehaviour {
         }
         return 0;
     }
-     public void SidesUnitsListSet() {
 
-       
-        List<Transform> prewListB = new List<Transform>();
-        List<Transform> prewListR = new List<Transform>();
-        List<Transform> prewListL = new List<Transform>();
-
-
-        for (int i = 0; i < unitArray.Count; i++) {
-                            prewListB.Add(unitArray[i].transform);
-                            prewListR.Add(unitArray[i].transform);
-                            prewListL.Add(unitArray[i].transform);
-                        }
-
-
-     Transform  prewB = prewListB[0];
-        Transform  prewR = prewListR[0];
-        Transform  prewL = prewListL[0];
-
-            for (int j = 0; j < 5; j++) {
-
-        prewB = prewListB[0];
-        prewR = prewListR[0];
-        prewL = prewListL[0];
-
-                for (int i = 0; i < prewListB.Count-1; i++) {
-                    if(prewListB[i+1].localPosition.x < prewB.localPosition.x ){
-                        prewB = prewListB[i+1];
-        
-                    }
-                    
-                }
-
-                prewListB.Remove(prewB);
-                    backUnitList.Add(prewB);
-
-                for (int i = 0; i < prewListR.Count-1; i++) {
-                    if(prewListR[i+1].localPosition.z < prewR.localPosition.z ){
-                        prewR = prewListR[i+1];
-                    }
-                    
-                }
-                prewListR.Remove(prewR);
-                    rightUnitList.Add(prewR);
-
-        for (int i = 0; i < prewListL.Count-1; i++) {
-                    if(prewListL[i+1].localPosition.z > prewL.localPosition.z ){
-                        prewL = prewListL[i+1];
-                        
-                    }
-                    
-        }
-                prewListL.Remove(prewL);
-                    leftUnitList.Add(prewL);    
-
-            }
-            }
+    public void AiActionValueReset() {
+        aiActionValue = 100;
+        dangerAlert = false;
+    }
 
 }
 

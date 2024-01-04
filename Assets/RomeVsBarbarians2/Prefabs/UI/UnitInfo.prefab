@@ -166,7 +166,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &7266621330978043308
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -914,11 +914,23 @@ PrefabInstance:
       value: 0.8867924
       objectReference: {fileID: 0}
     - target: {fileID: 849022550105938404, guid: 5d4b3837fa3170c4f8f1021f93d573ee, type: 3}
+      propertyPath: m_Maskable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 849022550105938404, guid: 5d4b3837fa3170c4f8f1021f93d573ee, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 2100000, guid: dd99e3d3201354f95b464a82c52f59e3, type: 2}
+    - target: {fileID: 849022550105938404, guid: 5d4b3837fa3170c4f8f1021f93d573ee, type: 3}
       propertyPath: m_FillAmount
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 849022550105938404, guid: 5d4b3837fa3170c4f8f1021f93d573ee, type: 3}
       propertyPath: m_FillOrigin
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 849022550105938404, guid: 5d4b3837fa3170c4f8f1021f93d573ee, type: 3}
+      propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2597548580414993047, guid: 5d4b3837fa3170c4f8f1021f93d573ee, type: 3}
@@ -939,7 +951,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2902707859384339187, guid: 5d4b3837fa3170c4f8f1021f93d573ee, type: 3}
       propertyPath: m_PresetInfoIsWorld
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4495006261041472418, guid: 5d4b3837fa3170c4f8f1021f93d573ee, type: 3}
       propertyPath: m_SizeDelta.y
@@ -1045,11 +1057,26 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.2264151
       objectReference: {fileID: 0}
+    - target: {fileID: 8401151980324390568, guid: 5d4b3837fa3170c4f8f1021f93d573ee, type: 3}
+      propertyPath: m_Maskable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8401151980324390568, guid: 5d4b3837fa3170c4f8f1021f93d573ee, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 2100000, guid: dd99e3d3201354f95b464a82c52f59e3, type: 2}
+    - target: {fileID: 8401151980324390568, guid: 5d4b3837fa3170c4f8f1021f93d573ee, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8768872011641309661, guid: 5d4b3837fa3170c4f8f1021f93d573ee, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0.35
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3762865033387303144, guid: 5d4b3837fa3170c4f8f1021f93d573ee, type: 3}
+    - {fileID: 2902707859384339187, guid: 5d4b3837fa3170c4f8f1021f93d573ee, type: 3}
+    - {fileID: 7052476973907942603, guid: 5d4b3837fa3170c4f8f1021f93d573ee, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1080,7 +1107,19 @@ PrefabInstance:
       value: 0.10849059
       objectReference: {fileID: 0}
     - target: {fileID: 849022550105938404, guid: 5d4b3837fa3170c4f8f1021f93d573ee, type: 3}
+      propertyPath: m_Maskable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 849022550105938404, guid: 5d4b3837fa3170c4f8f1021f93d573ee, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 2100000, guid: dd99e3d3201354f95b464a82c52f59e3, type: 2}
+    - target: {fileID: 849022550105938404, guid: 5d4b3837fa3170c4f8f1021f93d573ee, type: 3}
       propertyPath: m_FillOrigin
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 849022550105938404, guid: 5d4b3837fa3170c4f8f1021f93d573ee, type: 3}
+      propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2597548580414993047, guid: 5d4b3837fa3170c4f8f1021f93d573ee, type: 3}
@@ -1097,7 +1136,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2902707859384339187, guid: 5d4b3837fa3170c4f8f1021f93d573ee, type: 3}
       propertyPath: m_PresetInfoIsWorld
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4495006261041472418, guid: 5d4b3837fa3170c4f8f1021f93d573ee, type: 3}
       propertyPath: m_SizeDelta.y
@@ -1203,11 +1242,26 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.2264151
       objectReference: {fileID: 0}
+    - target: {fileID: 8401151980324390568, guid: 5d4b3837fa3170c4f8f1021f93d573ee, type: 3}
+      propertyPath: m_Maskable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8401151980324390568, guid: 5d4b3837fa3170c4f8f1021f93d573ee, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 2100000, guid: dd99e3d3201354f95b464a82c52f59e3, type: 2}
+    - target: {fileID: 8401151980324390568, guid: 5d4b3837fa3170c4f8f1021f93d573ee, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8768872011641309661, guid: 5d4b3837fa3170c4f8f1021f93d573ee, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0.35
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3762865033387303144, guid: 5d4b3837fa3170c4f8f1021f93d573ee, type: 3}
+    - {fileID: 2902707859384339187, guid: 5d4b3837fa3170c4f8f1021f93d573ee, type: 3}
+    - {fileID: 7052476973907942603, guid: 5d4b3837fa3170c4f8f1021f93d573ee, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

@@ -24,6 +24,7 @@ public class UnitRetreatController : MonoBehaviour {
         animator = GetComponent<Animator>();
         body = gameObject.transform.GetChild(0).gameObject;
         animator.SetBool("Moving", true);
+        gameObject.layer = 10;
 
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         GetComponent<SphereCollider>().center = new Vector3(0f,-0.5f,0f);
