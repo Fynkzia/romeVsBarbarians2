@@ -86,8 +86,7 @@ public class SquadController : MonoBehaviour {
     [Space(10)]
     [SerializeField] private float retreatCount;
     [SerializeField] private float retreatChanceCount;
-    [SerializeField] private float retreatChanceDefault;
-    [SerializeField] private float retreatCoef;
+   
 
     [Header("Enemy AI settings")]
     [Space(10)]
@@ -241,7 +240,7 @@ public class SquadController : MonoBehaviour {
 
             float y = AngleBetweenTwoPoints(transform.position, lineRenderer.GetPosition(0));
             float deltaAngel = Math.Abs(transform.rotation.eulerAngles.y - y);
-            //Debug.Log(deltaAngel);
+
             if (!isStopRot) {
                 if (deltaAngel > maxDeltaAngel && deltaAngel < 360 - maxDeltaAngel) {
                     SetRotation(true);
@@ -262,10 +261,25 @@ public class SquadController : MonoBehaviour {
 
             if (isStopRot) {
                 //transform.rotation = Quaternion.LerpUnclamped(transform.rotation, Quaternion.Euler(new Vector3(0f, y, 0f)), rotationSpeed * Time.fixedDeltaTime);
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(new Vector3(0f, y, 0f)), rotationSpeed * Time.fixedDeltaTime);
+                //transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(new Vector3(0f, y, 0f)), rotationSpeed * Time.fixedDeltaTime);
 
-                if (deltaAngel < 4) {
+                for (int i = 0; i < unitArray.Count; i++) {
+                     unitArray[i].transform.rotation = Quaternion.RotateTowards(unitArray[i].transform.rotation, Quaternion.Euler(new Vector3(0f, y, 0f)), rotationSpeed * Time.fixedDeltaTime);
+                }
+
+                     float deltaAngelLocal = Math.Abs(unitArray[0].transform.rotation.eulerAngles.y - y);
+
+                // if (deltaAngel < 4) {
+                //     SetRotation(false);
+                // }
+                 if (deltaAngelLocal < 1) {
                     SetRotation(false);
+
+                    transform.rotation = Quaternion.Euler(new Vector3(0f, y, 0f));
+
+                    for (int i = 0; i < unitArray.Count; i++) {
+                     unitArray[i].transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+                    }
                 }
 
             }
@@ -401,11 +415,31 @@ public class SquadController : MonoBehaviour {
 
     private void LookOnEnemy() {
         float y = AngleBetweenTwoPoints(transform.position, enemySquad.transform.position);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(new Vector3(0f, y, 0f)), rotationSpeed * Time.fixedDeltaTime);
+        // transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(new Vector3(0f, y, 0f)), rotationSpeed * Time.fixedDeltaTime);
 
-        if (Mathf.Abs(transform.rotation.eulerAngles.y - y) < 3) {
-            battleRot = true;
-        }
+        // if (Mathf.Abs(transform.rotation.eulerAngles.y - y) < 3) {
+        //     battleRot = true;
+        // }
+
+        for (int i = 0; i < unitArray.Count; i++) {
+                     unitArray[i].transform.rotation = Quaternion.RotateTowards(unitArray[i].transform.rotation, Quaternion.Euler(new Vector3(0f, y, 0f)), rotationSpeed * Time.fixedDeltaTime);
+                }
+
+                     float deltaAngelLocal = Math.Abs(unitArray[0].transform.rotation.eulerAngles.y - y);
+
+                // if (deltaAngel < 4) {
+                //     SetRotation(false);
+                // }
+                 if (deltaAngelLocal < 1) {
+                    SetRotation(false);
+                     battleRot = true;
+
+                    transform.rotation = Quaternion.Euler(new Vector3(0f, y, 0f));
+
+                    for (int i = 0; i < unitArray.Count; i++) {
+                     unitArray[i].transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+                    }
+                }
     }
 
     async private void UnitKick(Transform enemyTransform) {
@@ -523,8 +557,6 @@ public class SquadController : MonoBehaviour {
         }else{
              max += ((3f/25f)*3f);
         }
-       
-         Debug.Log("min "+min +" max " + max);
 
         int index;
         if (enemyController[0].unitArray.Count > enemyController[0].maxFightingUnit) {
@@ -533,16 +565,11 @@ public class SquadController : MonoBehaviour {
             index = Random.Range(0, enemyController[0].unitArray.Count);
         }
 
-
             float r = Random.Range(min, max);
-
-                        Debug.Log("Attack "+ gameObject.name +"\n"+ 
-            "Random = " + r
-                        );
 
             if (r > 8.6f) {                
                
-                enemyController[0].DieUnit(index);
+                enemyController[0].DieUnit(index,currentTriggerCoef);
                 coinsController.ChangeAmountOfCoins(coinsFromDeath);
 
 
@@ -554,8 +581,8 @@ public class SquadController : MonoBehaviour {
                 }
     }
 
-    public void DieUnit(int index) {
-        currentMorale -= lostMoraleThenDie;
+    public void DieUnit(int index,float triggerCoef) {
+        currentMorale -= (lostMoraleThenDie * enemyController.Count) + (triggerCoef/10f);
         GameObject currentUnit = unitArray[index];
 
 
@@ -572,21 +599,26 @@ public class SquadController : MonoBehaviour {
     }
 
     private void TryToRetreat() {
-        retreatChanceCount = retreatChanceDefault + (1 - currentMorale / maxMorale);
-        if (unitArray.Count < retreatChanceCount && Random.Range(0, retreatChanceCount) > retreatCount + retreatCoef) {
-            SetBattle(false);
+        if(unitArray.Count < retreatChanceCount){
+
+            if (Random.Range(-maxMorale, maxMorale) > currentMorale ) {
+                    SetBattle(false);
             
-            for(int i = 0; i < unitArray.Count;i++) {
-                Transform currentModel = unitArray[i].transform.GetChild(0);
-                currentModel.gameObject.AddComponent<Rigidbody>();
-                currentModel.gameObject.AddComponent<SphereCollider>();
-                currentModel.GetComponent<UnitRetreatController>().enabled = true;
-                currentModel.parent = null;
+                for(int i = 0; i < unitArray.Count;i++) {
+                    Transform currentModel = unitArray[i].transform.GetChild(0);
+                    currentModel.gameObject.AddComponent<Rigidbody>();
+                    currentModel.gameObject.AddComponent<SphereCollider>();
+                    currentModel.GetComponent<UnitRetreatController>().enabled = true;
+                    currentModel.parent = null;
+                }
+                 SquadDie();
+                 return;
             }
 
-            SquadDie();
-        } else if (unitArray.Count == 0) {
-            SquadDie();
+             if (unitArray.Count < retreatCount||unitArray.Count == 0) {
+                SquadDie();
+             }
+
         }
 
     }

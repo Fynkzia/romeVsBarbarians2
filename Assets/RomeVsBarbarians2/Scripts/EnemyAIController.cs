@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
 
 public class EnemyAIController : MonoBehaviour
 {
@@ -68,6 +70,20 @@ public class EnemyAIController : MonoBehaviour
 
 [SerializeField] public Transform[] spawnPoints;
 
+[Header("UI Settings")]
+    [Space(10)]
+[SerializeField] public Animator supportUI;
+[SerializeField] public TextMeshProUGUI timerSupportUI;
+[SerializeField] public TextMeshProUGUI countSupportUI;
+
+[SerializeField] public Image supportUIBar;
+
+[SerializeField] public bool supportUIShow;
+[SerializeField] public bool supportUIAlert;
+
+
+    
+
 
 
 
@@ -92,6 +108,9 @@ public class EnemyAIController : MonoBehaviour
         if(wave5.Length > 0){
             waveMax ++;
         }
+        supportUI.gameObject.SetActive(false);
+        supportUIShow = false;
+        supportUIAlert = false;
     }
 
     // Update is called once per frame
@@ -123,13 +142,58 @@ public class EnemyAIController : MonoBehaviour
         }
 
         if(waveNow <= waveMax){
-             waveTimer += Time.fixedDeltaTime;
+             waveTimer += Time.deltaTime;
+
+              if(waveTiming[waveNow] - waveTimer < 30){
+                    if(!supportUIShow){
+                        supportUI.gameObject.SetActive(true);
+                        supportUIShow = true;
+                            
+                            int supportSquadsCount = 0;
+
+                         if(waveNow == 0){
+                            supportSquadsCount = wave0.Length;
+                        }
+                        if(waveNow == 1){
+                            supportSquadsCount = wave1.Length;
+                        }
+                        if(waveNow == 2){
+                            supportSquadsCount = wave2.Length;
+                        }
+                        if(waveNow == 3){
+                            supportSquadsCount = wave3.Length;
+                        }
+                        if(waveNow == 4){
+                            supportSquadsCount = wave4.Length;
+                        }
+                        if(waveNow == 5){
+                            supportSquadsCount = wave4.Length;
+                        }
+
+                        countSupportUI.text = "x" + supportSquadsCount;
+                    }
+                    timerSupportUI.text = "0:" + Mathf.FloorToInt((waveTiming[waveNow] - waveTimer)%60);
+
+                    supportUIBar.fillAmount = 1f - waveTimer/30f;
+
+                     if(waveTiming[waveNow] - waveTimer < 10){
+                        if(!supportUIAlert){
+                            supportUI.SetTrigger("Alert");
+                            supportUIAlert = true;
+                        }
+
+                     }
+              }
 
             if(waveTimer > waveTiming[waveNow]){
                 SpawnWave(waveNow);
 
                 waveNow ++;
                 waveTimer = 0;
+                supportUI.gameObject.SetActive(false);
+
+                supportUIShow = false;
+                supportUIAlert = false;
 
              }
 
