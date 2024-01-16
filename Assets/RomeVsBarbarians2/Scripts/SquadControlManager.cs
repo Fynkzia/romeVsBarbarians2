@@ -128,6 +128,8 @@ public class SquadControlManager : MonoBehaviour
                 lineRenderer.SetPosition(lineRenderer.positionCount - 1,hit.collider.gameObject.transform.position);
                 lineRenderer.startColor = attackColor;
                 lineRenderer.endColor = attackColor;
+                squadController.predictEnemy = hit.collider.transform;
+                squadController.isGoingToEnemy = true;
             }
         }
     }

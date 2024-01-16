@@ -97,6 +97,8 @@ public class SquadController : MonoBehaviour {
 
     private Rigidbody rb;
     private GameObject enemySquad;
+    public bool isGoingToEnemy = false;
+    public Transform predictEnemy;
     [SerializeField] public List<SquadController> enemyController = new List<SquadController>();
     private Vector3[] positions;
     private List<Transform> fightingUnitList = new List<Transform>();
@@ -368,6 +370,7 @@ public class SquadController : MonoBehaviour {
             if(enemyCollider.gameObject.tag != ENEMY_TRIGGER_TAG && enemyCollider.gameObject.tag != SQUAD_TRIGGER_TAG) {
                 enemySquad = enemyCollider.gameObject;
                 if ((tag == SQUAD_TAG && enemySquad.tag == ENEMY_TAG) || (tag == ENEMY_TAG && enemySquad.tag == SQUAD_TAG)) {
+                    isGoingToEnemy = false;
                    // enemyController = enemyCollider.transform.GetComponent<SquadController>();
                    enemyController.Add(enemySquad.GetComponent<SquadController>());
                     CountCoef(enemyController[enemyController.Count - 1].type); // тут вопросы по напвильносит 
@@ -406,7 +409,7 @@ public class SquadController : MonoBehaviour {
                     escape = true;
                 }
 
-               
+                battleRot = false;
 
                 //GetComponents<SphereCollider>()[1].radius = colliderRadius;
             }
