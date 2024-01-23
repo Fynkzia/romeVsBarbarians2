@@ -98,7 +98,7 @@ public class SquadController : MonoBehaviour {
     private Rigidbody rb;
     private GameObject enemySquad;
     public bool isGoingToEnemy = false;
-    public Transform predictEnemy;
+    public Collider predictEnemy;
     [SerializeField] public List<SquadController> enemyController = new List<SquadController>();
     private Vector3[] positions;
     private List<Transform> fightingUnitList = new List<Transform>();
