@@ -6,27 +6,30 @@ public class ShotMovement : MonoBehaviour
 {
 
 
-    public static void Create(GameObject pfArrow,Vector3 spawnPosition,Vector3 target, float speed) {
-        GameObject shot = Instantiate(pfArrow, spawnPosition, Quaternion.identity);
+    public static void Create(GameObject pfArrow,Vector3 spawnPosition,Vector3 target, float speed, float arrowsAmount) {
+        GameObject shot = Instantiate(pfArrow, spawnPosition, Quaternion.identity);//create correct rotation
         ShotMovement shotMovement = shot.GetComponent<ShotMovement>();
-        shotMovement.Setup(target, speed);
+        shotMovement.Setup(target, speed, arrowsAmount);
 
        // Debug.Log("Create", shot);
 
     }
     public float speed;
     public Vector3 target;
+    public float arrowsAmount;
+    [SerializeField] private GameObject pfVisual;
 
     private Vector3 _startPosition;
     private float _stepScale;
     private float _progress;
     private float arcHeight = 2;
-    private void Setup(Vector3 target, float speed) {
+    private void Setup(Vector3 target, float speed, float arrowsAmount) {
         _startPosition = transform.position;
 
         float distance = Vector3.Distance(_startPosition, target);
         this.target = target;
         this.speed = speed;
+        this.arrowsAmount = arrowsAmount;
 
         // This is one divided by the total flight duration, to help convert it to 0-1 progress.
         _stepScale = speed / distance;
