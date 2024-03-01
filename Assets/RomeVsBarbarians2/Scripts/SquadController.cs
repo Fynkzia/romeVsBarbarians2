@@ -97,6 +97,7 @@ public class SquadController : MonoBehaviour {
 
     private Rigidbody rb;
     private GameObject enemySquad;
+    [Space(10)]
     public bool isGoingToEnemy = false;
     public Collider predictEnemy;
     [SerializeField] public List<SquadController> enemyController = new List<SquadController>();
@@ -240,7 +241,7 @@ public class SquadController : MonoBehaviour {
             Vector3 linePosition = new Vector3(lineRenderer.GetPosition(0).x, transform.position.y, lineRenderer.GetPosition(0).z);
             Vector3 targetPos = Vector3.MoveTowards(transform.position, linePosition, CurrentSpeed() * Time.fixedDeltaTime);
 
-            float y = AngleBetweenTwoPoints(transform.position, lineRenderer.GetPosition(0));
+            float y = MathUtilities.AngleBetweenTwoPoints(transform.position, lineRenderer.GetPosition(0));
             float deltaAngel = Math.Abs(transform.rotation.eulerAngles.y - y);
 
             if (!isStopRot) {
@@ -325,10 +326,6 @@ public class SquadController : MonoBehaviour {
         }
     }
 
-    private float AngleBetweenTwoPoints(Vector3 a, Vector3 b) {
-        return 180f - Mathf.Atan2(a.z - b.z, a.x - b.x) * Mathf.Rad2Deg;
-    }
-
     private float CurrentSpeed() {
         float currentMoveSpeed = movementSpeed * StaminaEffectIndex();
         float currentBoostSpeed = boostSpeed * StaminaEffectIndex();
@@ -365,7 +362,7 @@ public class SquadController : MonoBehaviour {
         startTapTime = 0;
     }
 
-    private void OnTriggerEnter(Collider enemyCollider) {
+    public void OnMainTriggerEnter(Collider enemyCollider) {
         if (!escape) {
             if(enemyCollider.gameObject.tag != ENEMY_TRIGGER_TAG && enemyCollider.gameObject.tag != SQUAD_TRIGGER_TAG) {
                 enemySquad = enemyCollider.gameObject;
@@ -390,7 +387,7 @@ public class SquadController : MonoBehaviour {
 
         }
     }
-    private void OnTriggerExit(Collider other) {
+    public void OnMainTriggerExit(Collider other) {
         if (other.gameObject.tag != ENEMY_TRIGGER_TAG && other.gameObject.tag != SQUAD_TRIGGER_TAG) {
 
             
@@ -417,7 +414,7 @@ public class SquadController : MonoBehaviour {
     }
 
     private void LookOnEnemy() {
-        float y = AngleBetweenTwoPoints(transform.position, enemySquad.transform.position);
+        float y = MathUtilities.AngleBetweenTwoPoints(transform.position, enemySquad.transform.position);
         // transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(new Vector3(0f, y, 0f)), rotationSpeed * Time.fixedDeltaTime);
 
         // if (Mathf.Abs(transform.rotation.eulerAngles.y - y) < 3) {
