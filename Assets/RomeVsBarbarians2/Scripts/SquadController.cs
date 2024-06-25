@@ -68,6 +68,11 @@ public class SquadController : MonoBehaviour {
     [SerializeField] public float attackCoef;
     [SerializeField] public float defenceCoef;
 
+    [SerializeField] public GameObject[,] SquadFormation = new GameObject[5,5];
+    [SerializeField] public Vector3[,] SquadFormationPositions = new Vector3[5, 5];
+    [SerializeField] public int formationX = 5;
+    [SerializeField] public int formationY = 5;
+
     [Header("Animation Settings")]
     [Space(10)]
     [SerializeField] public int maxFightingUnit;
@@ -157,9 +162,54 @@ public class SquadController : MonoBehaviour {
         colliderRadius = GetComponents<SphereCollider>()[1].radius;
 
 
-               
+        Formations();
 
  }
+
+    private void Formations()
+    {
+        SquadFormation = new GameObject[formationX, formationY];
+        SquadFormationPositions = new Vector3[formationX, formationY];
+        int x = 0;
+        int y = 0;
+        for (int i = 0; i < unitArray.Count; i++)
+        {
+            SquadFormation[x, y] = unitArray[i].gameObject;
+            SquadFormationPositions[x, y] = unitArray[i].transform.localPosition;
+            x++;
+            if(x >= formationX)
+            {
+                x = 0;
+                y++;
+            }
+        }
+
+    }
+    private Vector2 GetVectorPosition(GameObject other)
+    {
+      
+        int x = 0;
+        int y = 0;
+        for (int i = 0; i < unitArray.Count; i++)
+        {
+            if(SquadFormation[x, y] == other)
+            {
+                return new Vector2(x, y);
+            }
+            
+            x++;
+            if (x >= formationX)
+            {
+                x = 0;
+                y++;
+            }
+        }
+
+        return new Vector2(0, 0);
+
+    }
+
+
 
     private void FixedUpdate() {
         if (isMoved) {
@@ -364,12 +414,14 @@ public class SquadController : MonoBehaviour {
 
     public void OnMainTriggerEnter(Collider enemyCollider) {
         if (!escape) {
-            if(enemyCollider.gameObject.tag != ENEMY_TRIGGER_TAG && enemyCollider.gameObject.tag != SQUAD_TRIGGER_TAG) {
+            //if(enemyCollider.gameObject.tag != ENEMY_TRIGGER_TAG && enemyCollider.gameObject.tag != SQUAD_TRIGGER_TAG) {
+
+               
+                if ((tag == SQUAD_TAG && enemyCollider.gameObject.tag == ENEMY_TAG) || (tag == ENEMY_TAG && enemyCollider.gameObject.tag == SQUAD_TAG)) {
                 enemySquad = enemyCollider.gameObject;
-                if ((tag == SQUAD_TAG && enemySquad.tag == ENEMY_TAG) || (tag == ENEMY_TAG && enemySquad.tag == SQUAD_TAG)) {
-                    isGoingToEnemy = false;
+                isGoingToEnemy = false;
                    // enemyController = enemyCollider.transform.GetComponent<SquadController>();
-                   enemyController.Add(enemySquad.GetComponent<SquadController>());
+                   enemyController.Add(enemySquad.transform.parent.gameObject.GetComponent<SquadController>());
                     CountCoef(enemyController[enemyController.Count - 1].type); // тут вопросы по напвильносит 
                     
                     SetBattle(true);
@@ -378,12 +430,14 @@ public class SquadController : MonoBehaviour {
                     rotationSpeed /= 1.5f;
                     boostSpeed /= 1.5f;
 
+                    Debug.Log(gameObject.name + "  тригернулулась дура");
+
                     //GetComponents<SphereCollider>()[1].radius = colliderRadius + 0.1f;
                     if (isMoved) {
                         CancelMovement();
                     }
                 }
-            }
+           // }
 
         }
     }
@@ -585,9 +639,11 @@ public class SquadController : MonoBehaviour {
         currentMorale -= (lostMoraleThenDie * enemyController.Count) + (triggerCoef/10f);
         GameObject currentUnit = unitArray[index];
 
+        Vector2 pos = GetVectorPosition(unitArray[index]);
 
+        unitArray[Random.Range(0, unitArray.Count)].transform.localPosition = SquadFormationPositions[(int)pos.x, (int)pos.y];
 
-        Transform currentModel = currentUnit.transform.GetChild(0);
+            Transform currentModel = currentUnit.transform.GetChild(0);
         Instantiate(bloodFx, currentModel);
         currentModel.parent = null;
         unitArray.RemoveAt(index);

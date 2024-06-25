@@ -45,10 +45,12 @@ public class SquadControlManager : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit)) {
                 pointDebug.position = hit.point;
-
+                
                 if (hit.collider.gameObject.tag == SQUAD_TAG) {
                     
                     squadController = hit.collider.transform.parent.gameObject.GetComponent<SquadController>();
+
+                   
 
                     if (!hitSquad && !squadController.isMoved) {//squad don't hitted before and squad don't moving
                         GameObject drawing = Instantiate(drawingPrefab);
@@ -126,7 +128,7 @@ public class SquadControlManager : MonoBehaviour
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit,1000f,unitLayer)) {
-            if (hit.collider.gameObject.tag == ENEMY_TAG) {
+            if (hit.collider.transform.parent.gameObject.tag == ENEMY_TAG) {
                 lineRenderer.positionCount++;
                 lineRenderer.SetPosition(lineRenderer.positionCount - 1,hit.collider.gameObject.transform.position);
                 lineRenderer.startColor = attackColor;
