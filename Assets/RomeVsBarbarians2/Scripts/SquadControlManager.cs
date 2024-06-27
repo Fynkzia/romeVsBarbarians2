@@ -56,9 +56,12 @@ public class SquadControlManager : MonoBehaviour
                         GameObject drawing = Instantiate(drawingPrefab);
                         lineRenderer = drawing.GetComponent<LineRenderer>();
 
-                        
+
+                        lineRenderer.positionCount++;
+                        lineRenderer.SetPosition(lineRenderer.positionCount - 1, squadController.transform.position);
+
                         squadController.lineRenderer = lineRenderer;
-                        
+
                     }
                     if (squadController.isMoved) {
                         squadController.tapCount++;
@@ -140,6 +143,30 @@ public class SquadControlManager : MonoBehaviour
     }
     public bool HasHitSquad() {
         return hitSquad;
+    }
+
+    public void SquadWayToPoint(SquadController Squad, Vector3 point)
+    {
+        GameObject drawing = Instantiate(drawingPrefab);
+        LineRenderer lineRenderer = drawing.GetComponent<LineRenderer>();
+        Squad.lineRenderer = lineRenderer;
+
+        Vector3 norm = Vector3.Normalize(point - Squad.transform.position);
+
+        lineRenderer.positionCount++;
+        lineRenderer.SetPosition(lineRenderer.positionCount - 1, Squad.transform.position);
+
+        lineRenderer.positionCount++;
+        lineRenderer.SetPosition(lineRenderer.positionCount - 1, Squad.transform.position + (norm));
+
+        // lineRenderer.positionCount++;
+        //lineRenderer.SetPosition(lineRenderer.positionCount - 1, Squad.transform.position + (norm*30));
+
+        
+       // Squad.SetBattle(false);
+       // Squad.SetMoving(true);
+       
+
     }
 
 }

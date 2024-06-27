@@ -30,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2835096852102318129}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!212 &8081912404648421090
 SpriteRenderer:
@@ -179,8 +179,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2, y: 2, z: 2}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.1708201, y: 2, z: 2}
+  m_Center: {x: 0.007763348, y: 0, z: 0}
 --- !u!1 &2570471043121216857
 GameObject:
   m_ObjectHideFlags: 0
@@ -216,12 +216,12 @@ Transform:
   m_Children:
   - {fileID: 5305785283442993638}
   - {fileID: 1972081108129068443}
+  - {fileID: 161495856137061943}
   - {fileID: 2239922670780491168}
   - {fileID: 1269769101177300773}
   - {fileID: 8722617056271776911}
   - {fileID: 6247079536093603239}
   - {fileID: 6499983510245207181}
-  - {fileID: 161495856137061943}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -266,6 +266,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d14acd2a2f51ad54a866759d2ee278a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelSquad: 0
+  powerSquad: 2.5
+  defenceSquad: 2
+  maxMorale: 5
+  actionTime: 2
+  actionUnits: 3
+  movementSpeed: 4
+  rotationSpeed: 60
+  boostSpeed: 2.5
+  maxStamina: 5
+  recoveryStamina: 0.1
+  consumptionStamina: 0.2
+  lostMoraleThenDie: 0.1
+  lostMoraleThenAttack: 0.005
+  recoveryMoraleSpeed: 0.05
+  retreatCount: 3
+  retreatChanceCount: 15
   unitArray:
   - {fileID: 0}
   - {fileID: 0}
@@ -317,40 +334,34 @@ MonoBehaviour:
   currentStamina: 0
   currentMorale: 0
   isStopRot: 0
-  movementSpeed: 4
-  rotationSpeed: 60
-  boostSpeed: 2.5
-  maxStamina: 5
-  recoveryStamina: 0.1
-  consumptionStamina: 0.2
   pointsDistance: 0.4
   maxDeltaAngel: 30
   deadTime: 5
   maxEscapeTime: 4
   playerSquad: 1
   inBattle: 0
-  levelSquad: 0
-  powerSquad: 2.5
-  defenceSquad: 2
-  maxMorale: 5
-  actionTime: 2
-  actionUnits: 3
   attack: 0
   defence: 0
   attackTriggerCoef: 0
   attackCoef: 0
   defenceCoef: 0
+  formationX: 5
+  formationY: 5
+  unitsSpacing: 1
+  radiusDetection: 1
+  avaliableToAttack: []
+  avaliableTargetsToAttack: []
+  detrctionMask:
+    serializedVersion: 2
+    m_Bits: 0
+  ignoreTriggers: 0
   maxFightingUnit: 5
   bloodFx: {fileID: 1004307555708668947, guid: 374dfa0c89fe0834bb04274a99223e8f, type: 3}
   movementIndicator: {fileID: 1516730008753690456}
   battleIndicator: {fileID: 2136700165858739251}
-  lostMoraleThenDie: 0.1
-  lostMoraleThenAttack: 0.005
-  recoveryMoraleSpeed: 0.05
-  retreatCount: 3
-  retreatChanceCount: 15
   aiActionValue: 100
   dangerAlert: 0
+  enemySquad: {fileID: 0}
   isGoingToEnemy: 0
   predictEnemy: {fileID: 0}
   enemyController: []
@@ -501,8 +512,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2, y: 2, z: 2}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.3398477, y: 2, z: 2}
+  m_Center: {x: -0.00000072139176, y: 0, z: 1.7347235e-18}
 --- !u!1 &3700587279357902604
 GameObject:
   m_ObjectHideFlags: 0
@@ -531,11 +542,11 @@ Transform:
   m_GameObject: {fileID: 3700587279357902604}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 6.175866, y: 6.1758657, z: 6.175866}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2835096852102318129}
-  m_RootOrder: 7
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5407149241749931876
 MeshFilter:
@@ -598,7 +609,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 3
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4154685814907799687
 GameObject:
@@ -695,8 +706,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2, y: 2, z: 2}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.3363006, y: 2, z: 2}
+  m_Center: {x: -0.0017755512, y: 0, z: 0}
 --- !u!1 &4864940286636478102
 GameObject:
   m_ObjectHideFlags: 0
@@ -792,8 +803,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2, y: 2, z: 2}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.1902244, y: 2, z: 2}
+  m_Center: {x: 0.0042724432, y: 0, z: 0}
 --- !u!1 &8113543724702092981
 GameObject:
   m_ObjectHideFlags: 0
@@ -808,7 +819,7 @@ GameObject:
   - component: {fileID: 596614234286191822}
   - component: {fileID: 4412510041063393334}
   m_Layer: 11
-  m_Name: SquadCollider
+  m_Name: SquadTrigger
   m_TagString: Squad
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -823,7 +834,7 @@ Transform:
   m_GameObject: {fileID: 8113543724702092981}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 6.175866, y: 6.1758657, z: 6.175866}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2835096852102318129}
@@ -890,7 +901,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 3
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &4412510041063393334
 MonoBehaviour:
@@ -956,7 +967,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2239922670780491168
 Transform:
   m_ObjectHideFlags: 0
@@ -970,7 +981,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2835096852102318129}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!33 &3177516025577774840
 MeshFilter:
@@ -1035,11 +1046,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100002, guid: 28a5e79925e3ce04a82856c16a572cbe, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 28a5e79925e3ce04a82856c16a572cbe, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 28a5e79925e3ce04a82856c16a572cbe, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1091,7 +1102,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11900000, guid: 28a5e79925e3ce04a82856c16a572cbe, type: 3}
       propertyPath: m_IgnoreLayers.m_Bits
-      value: 2039
+      value: 32759
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28a5e79925e3ce04a82856c16a572cbe, type: 3}
@@ -1113,7 +1124,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7484094749838222646, guid: e75b801c7dd1d3c4b93f8c238e255f72, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7484094749838222646, guid: e75b801c7dd1d3c4b93f8c238e255f72, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1219,7 +1230,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8788090585376487218, guid: 51bda6881a122479eaf53a17530b2d13, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8788090585376487218, guid: 51bda6881a122479eaf53a17530b2d13, type: 3}
       propertyPath: m_AnchorMax.x
