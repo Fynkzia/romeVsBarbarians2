@@ -348,12 +348,12 @@ MonoBehaviour:
   formationX: 5
   formationY: 5
   unitsSpacing: 1
-  radiusDetection: 1
+  radiusDetection: 5
   avaliableToAttack: []
   avaliableTargetsToAttack: []
   detrctionMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8192
   ignoreTriggers: 0
   maxFightingUnit: 5
   bloodFx: {fileID: 1004307555708668947, guid: 374dfa0c89fe0834bb04274a99223e8f, type: 3}
@@ -365,6 +365,7 @@ MonoBehaviour:
   isGoingToEnemy: 0
   predictEnemy: {fileID: 0}
   enemyController: []
+  UnitInfo: {fileID: 9072971008714615398}
   tapCount: 0
 --- !u!114 &6060907297312523291
 MonoBehaviour:
@@ -532,7 +533,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &161495856137061943
 Transform:
   m_ObjectHideFlags: 0
@@ -1184,6 +1185,10 @@ PrefabInstance:
       propertyPath: squad
       value: 
       objectReference: {fileID: 2570471043121216857}
+    - target: {fileID: 1392087569064729351, guid: 51bda6881a122479eaf53a17530b2d13, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1961741171993679307, guid: 51bda6881a122479eaf53a17530b2d13, type: 3}
       propertyPath: squad
       value: 
@@ -1366,3 +1371,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &9072971008714615398 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5957751454691457267, guid: 51bda6881a122479eaf53a17530b2d13, type: 3}
+  m_PrefabInstance: {fileID: 3406837251700249237}
+  m_PrefabAsset: {fileID: 0}

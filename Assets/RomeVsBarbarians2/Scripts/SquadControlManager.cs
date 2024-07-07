@@ -14,6 +14,7 @@ public class SquadControlManager : MonoBehaviour
     [SerializeField] private Transform pointDebug;
     [SerializeField] private LayerMask terrainLayer ;
     [SerializeField] private LayerMask unitLayer ;
+ 
 
     public static SquadControlManager Instance { get; private set; }
 
@@ -43,8 +44,9 @@ public class SquadControlManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0)) {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit)) {
+            if (Physics.Raycast(ray, out hit,1000f, unitLayer)) {
                 pointDebug.position = hit.point;
+
                 
                 if (hit.collider.gameObject.tag == SQUAD_TAG) {
                     
@@ -159,12 +161,15 @@ public class SquadControlManager : MonoBehaviour
         lineRenderer.positionCount++;
         lineRenderer.SetPosition(lineRenderer.positionCount - 1, Squad.transform.position + (norm));
 
+        lineRenderer.positionCount++;
+        lineRenderer.SetPosition(lineRenderer.positionCount - 1, point);
+
         // lineRenderer.positionCount++;
         //lineRenderer.SetPosition(lineRenderer.positionCount - 1, Squad.transform.position + (norm*30));
 
-        
-       // Squad.SetBattle(false);
-       // Squad.SetMoving(true);
+
+        // Squad.SetBattle(false);
+        Squad.SetMoving(true);
        
 
     }

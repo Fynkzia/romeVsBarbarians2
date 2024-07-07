@@ -10,10 +10,12 @@ public class MainTriggerController : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other) {
-        squadController.OnMainTriggerEnter(other);
+        if(other.gameObject.layer != 15)// в конце проверка чтоб не срабатывало от шутинг триггера
+            squadController.OnMainTriggerEnter(other);
     }
 
     private void OnTriggerExit(Collider other) {
-       squadController.OnMainTriggerExit(other);
+        if (other.gameObject.layer != 15)// в конце проверка чтоб не срабатывало от шутинг триггера
+            squadController.OnMainTriggerExit(other);
     }
 }

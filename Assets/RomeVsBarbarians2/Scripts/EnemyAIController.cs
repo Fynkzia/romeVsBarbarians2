@@ -280,21 +280,27 @@ public class EnemyAIController : MonoBehaviour
          playerFarSquads = new List<SquadController>();
 
             for (int i = 0; i < nearColliders.Length; i++) {
-                SquadController playerSquad = nearColliders[i].gameObject.GetComponent<SquadController>();
+                if (nearColliders[i].tag == "Squad")
+                {
+                    SquadController playerSquad = nearColliders[i].transform.GetComponent<SquadController>();
 
-                if(!playerNearSquads.Contains(playerSquad) ){
-                playerNearSquads.Add(playerSquad);
+                    if (!playerNearSquads.Contains(playerSquad))
+                    {
+                        playerNearSquads.Add(playerSquad);
+                    }
+
                 }
-                
-    
             }   
             for (int i = 0; i < farColliders.Length; i++) {
-                  SquadController playerSquad = farColliders[i].gameObject.GetComponent<SquadController>();
+                if (farColliders[i].tag == "Squad")
+                {
+                    SquadController playerSquad = farColliders[i].transform.GetComponent<SquadController>();
 
-                if(!playerFarSquads.Contains(playerSquad) ){
-                playerFarSquads.Add(playerSquad);
+                    if (!playerFarSquads.Contains(playerSquad))
+                    {
+                        playerFarSquads.Add(playerSquad);
+                    }
                 }
-                
     
             }  
  /// * выбираем из ближнего радиусв *
@@ -1025,24 +1031,30 @@ public void NearEnemySquadList(SquadController squad ){
         
 
             for (int i = 0; i < nearColliders.Length; i++) {
-                SquadController SquadNear = nearColliders[i].gameObject.GetComponent<SquadController>();
-                
-                if(!nearEnemyList.Contains(SquadNear) ){
-                nearEnemyList.Add(SquadNear);
+            if (nearColliders[i].tag == "Enemy")
+            {
+                SquadController SquadNear = nearColliders[i].GetComponent<SquadController>();
 
-                nearEnemyPower += SquadNear.powerSquad*(SquadNear.unitArray.Count+enemyCountCoef);
+                if (!nearEnemyList.Contains(SquadNear))
+                {
+                    nearEnemyList.Add(SquadNear);
 
-                if((int)SquadNear.type == 0){
-                    nearEnemyType0 ++;
+                    nearEnemyPower += SquadNear.powerSquad * (SquadNear.unitArray.Count + enemyCountCoef);
+
+                    if ((int)SquadNear.type == 0)
+                    {
+                        nearEnemyType0++;
+                    }
+                    if ((int)SquadNear.type == 1)
+                    {
+                        nearEnemyType1++;
+                    }
+                    if ((int)SquadNear.type == 2)
+                    {
+                        nearEnemyType2++;
+                    }
                 }
-                if((int)SquadNear.type == 1){
-                    nearEnemyType1 ++;
-                }
-                if((int)SquadNear.type == 2){
-                    nearEnemyType2 ++;
-                }
-                }
-                
+            }
     
             }   
         
@@ -1069,24 +1081,30 @@ public void NearEnemySquadList(SquadController squad ){
         
 
             for (int i = 0; i < nearColliders.Length; i++) {
-                SquadController SquadNear = nearColliders[i].gameObject.GetComponent<SquadController>();
+            if (nearColliders[i].tag == "Squad")
+            {
+                SquadController SquadNear = nearColliders[i].GetComponent<SquadController>();
 
-                if(!nearPlayerList.Contains(SquadNear) ){
-                nearPlayerList.Add(SquadNear);
+                if (!nearPlayerList.Contains(SquadNear))
+                {
+                    nearPlayerList.Add(SquadNear);
 
-                 nearPlayerPower += SquadNear.powerSquad*(SquadNear.unitArray.Count+playerCountCoef);
+                    nearPlayerPower += SquadNear.powerSquad * (SquadNear.unitArray.Count + playerCountCoef);
 
-                 if((int)SquadNear.type == 0){
-                    nearPlayerType0 ++;
+                    if ((int)SquadNear.type == 0)
+                    {
+                        nearPlayerType0++;
+                    }
+                    if ((int)SquadNear.type == 1)
+                    {
+                        nearPlayerType1++;
+                    }
+                    if ((int)SquadNear.type == 2)
+                    {
+                        nearPlayerType2++;
+                    }
                 }
-                if((int)SquadNear.type == 1){
-                    nearPlayerType1 ++;
-                }
-                if((int)SquadNear.type == 2){
-                    nearPlayerType2 ++;
-                }
-                }
-                
+            }
     
             }   
         
@@ -1155,10 +1173,9 @@ public void SetQueue() {
 
 actionQueueArray = new List<SquadController>();
 
-        GameObject[] allEnemy = GameObject.FindGameObjectsWithTag("Enemy");
 
-            for (int i = 0; i < allEnemy.Length; i++) {
-            actionQueueArray.Add(allEnemy[i].GetComponent<SquadController>());
+            for (int i = 0; i < enemyObject.transform.childCount; i++) {
+            actionQueueArray.Add(enemyObject.transform.GetChild(i).GetComponent<SquadController>());
         }
 
         
@@ -1169,10 +1186,10 @@ public void SetAllEnemiesList() {
 
 allEnemiesList = new List<SquadController>();
 
-        GameObject[] allEnemy = GameObject.FindGameObjectsWithTag("Enemy");
+        
 
-            for (int i = 0; i < allEnemy.Length; i++) {
-            allEnemiesList.Add(allEnemy[i].GetComponent<SquadController>());
+            for (int i = 0; i < enemyObject.transform.childCount; i++) {
+            allEnemiesList.Add(enemyObject.transform.GetChild(i).GetComponent<SquadController>());
         }
 
         

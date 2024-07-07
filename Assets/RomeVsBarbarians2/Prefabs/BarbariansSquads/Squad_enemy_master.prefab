@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 6432010578803548657}
   - component: {fileID: 5397064186978112961}
   - component: {fileID: 4518754308514480272}
-  m_Layer: 9
-  m_Name: SquadCollider
-  m_TagString: Squad
+  m_Layer: 11
+  m_Name: SquadTrigger
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -709,12 +709,12 @@ MonoBehaviour:
   formationX: 5
   formationY: 5
   unitsSpacing: 1
-  radiusDetection: 1
+  radiusDetection: 4
   avaliableToAttack: []
   avaliableTargetsToAttack: []
   detrctionMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8192
   ignoreTriggers: 0
   maxFightingUnit: 5
   bloodFx: {fileID: 1004307555708668947, guid: 374dfa0c89fe0834bb04274a99223e8f, type: 3}
@@ -726,6 +726,7 @@ MonoBehaviour:
   isGoingToEnemy: 0
   predictEnemy: {fileID: 0}
   enemyController: []
+  UnitInfo: {fileID: 90035751017018185}
   tapCount: 0
 --- !u!135 &5167949792111545231
 SphereCollider:
@@ -890,7 +891,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8847965869447370925
 Transform:
   m_ObjectHideFlags: 0
@@ -1156,6 +1157,11 @@ PrefabInstance:
       objectReference: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 51bda6881a122479eaf53a17530b2d13, type: 3}
+--- !u!95 &90035751017018185 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5957751454691457267, guid: 51bda6881a122479eaf53a17530b2d13, type: 3}
+  m_PrefabInstance: {fileID: 6021858507052485562}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &3054673904323198088 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8788090585376487218, guid: 51bda6881a122479eaf53a17530b2d13, type: 3}

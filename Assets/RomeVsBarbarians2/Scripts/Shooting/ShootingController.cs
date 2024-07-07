@@ -13,6 +13,8 @@ public class ShootingController : MonoBehaviour
     [SerializeField] float shotDamage;
     [SerializeField] float shotAccuracy;
     [SerializeField] float shotRapidity;
+    [SerializeField] float shotStartOffset;
+    [SerializeField] float shotSpawnDelay;
     [SerializeField] private GameObject pfArrow;
 
     [SerializeField]private SquadController squadController;
@@ -31,20 +33,27 @@ public class ShootingController : MonoBehaviour
         squadController = GetComponent<SquadController>();
         actionUnits = squadController.actionUnits;
 
-        shotCollider = shootingTrigger.GetComponent<SphereCollider>();
-        shotCollider.radius = shotRange;
+        
+            shotCollider = shootingTrigger.GetComponent<SphereCollider>();
+            shotCollider.radius = shotRange;
+            shotRangeManager = shootingTrigger.GetComponent<ShotRangeManager>();
+        
 
-        shotRangeManager = shootingTrigger.GetComponent<ShotRangeManager>();
+        
     }
     private void Update() {
+       
+
         if (shotAmount > 0) {
-            if (isAttackShooting) {
-                AttackShooting();
+           
+            if (rapidityTimer >= shotRapidity && !squadController.inBattle) {
 
-            }
-            if (rapidityTimer >= shotRapidity) {
+                if (isShootingSquad && !squadController.isMoved) {
+                    ShootingSquad();
+                }
 
-                if (isShootingSquad) {
+                if (isMovementShooting && squadController.isMoved)
+                {
                     ShootingSquad();
                 }
                 rapidityTimer = 0;
@@ -60,7 +69,8 @@ public class ShootingController : MonoBehaviour
             if (isFirstShoot) {
                 
                 if (shotRangeManager.enemyColliders.Contains(squadController.predictEnemy)) {
-                    Shot(squadController.predictEnemy);
+                    StartCoroutine(AttackShootingSiqunce());
+                   
                     isFirstShoot = false;
                 }
             }
@@ -86,9 +96,59 @@ public class ShootingController : MonoBehaviour
     }
 
     private void Shot(Collider predictEnemy) {
-        Vector3 enemyPosition = predictEnemy.gameObject.transform.position;
-        ShotMovement.Create(pfArrow, transform.position, enemyPosition, shotSpeed, actionUnits);
+       
 
+        StartCoroutine(SpawnShotAfterDelay(predictEnemy));
+
+    }
+
+    IEnumerator SpawnShotAfterDelay(Collider predictEnemy)
+    {
+        actionUnits = squadController.actionUnits;
+        Vector3 enemyPosition = predictEnemy.gameObject.transform.position;
+
+        for (int i = 0; i < actionUnits; i++)
+        {
+            int index = Random.Range(0, squadController.unitArray.Count);
+            squadController.SetShooting(index);
+
+            Vector3 directionToEnemy = enemyPosition - transform.position;
+            directionToEnemy.y = 0; // Оставляем только горизонтальную компоненту направления
+            squadController.unitArray[index].transform.rotation = Quaternion.LookRotation(directionToEnemy) * Quaternion.EulerAngles(0f, -90f, 0f);
+        }
+
+        yield return new WaitForSeconds(shotSpawnDelay);
+        Debug.Log("Shot");
+
+        ShotMovement.Create(pfArrow, transform.position + new Vector3(0, shotStartOffset, 0), enemyPosition, shotSpeed, actionUnits,shotDamage,shotAccuracy,gameObject.tag);
+    }
+
+    IEnumerator AttackShootingSiqunce()
+    {
+        
+        squadController.CancelMovement();
+
+        actionUnits = squadController.unitArray.Count;
+        Vector3 enemyPosition = squadController.predictEnemy.gameObject.transform.position;
+
+        for (int i = 0; i < actionUnits; i++)
+        {
+            int index = Random.Range(0, squadController.unitArray.Count);
+            squadController.SetShooting(index);
+
+            Vector3 directionToEnemy = enemyPosition - transform.position;
+            directionToEnemy.y = 0; // Оставляем только горизонтальную компоненту направления
+            squadController.unitArray[index].transform.rotation = Quaternion.LookRotation(directionToEnemy) * Quaternion.EulerAngles(0f, -90f, 0f);
+        }
+
+        yield return new WaitForSeconds(shotSpawnDelay);
+        ShotMovement.Create(pfArrow, transform.position + new Vector3(0, shotStartOffset, 0), enemyPosition, shotSpeed, actionUnits, shotDamage, shotAccuracy, gameObject.tag);
+
+        yield return new WaitForSeconds(0.5f);
+
+        SquadControlManager controlController = GameObject.Find("SquadControlManager").GetComponent<SquadControlManager>();
+
+        controlController.SquadWayToPoint(squadController, enemyPosition);
     }
 
     private void ShotNearest() {
@@ -96,6 +156,10 @@ public class ShootingController : MonoBehaviour
         float minDist = Mathf.Infinity;
         Vector3 currentPos = transform.position;
         foreach (Collider t in shotRangeManager.enemyColliders) {
+            if(t == null)
+            {
+                return;
+            }
             float dist = Vector3.Distance(t.gameObject.transform.position, currentPos);
             if (dist < minDist) {
                 tMin = t;
@@ -108,7 +172,28 @@ public class ShootingController : MonoBehaviour
         }
     }
 
-    private void ApplyDamage() {
-    
+    public void GetNewTargets()
+    {
+        Debug.Log("squadController.isGoingToEnemy " + squadController.isGoingToEnemy, squadController);
+        
+
+        if (squadController.isGoingToEnemy)
+        {
+           
+            if (isAttackShooting)
+            {
+                AttackShooting();
+                
+            }
+            else
+            {
+                squadController.CancelMovement();
+                ShootingSquad();
+                rapidityTimer = 0;
+            }
+
+        }
+        currentEnemy = null;
+
     }
 }
