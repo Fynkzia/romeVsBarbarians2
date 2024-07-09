@@ -270,17 +270,24 @@ MonoBehaviour:
   powerSquad: 2.5
   defenceSquad: 2
   maxMorale: 5
+  maxStamina: 5
   actionTime: 2
   actionUnits: 3
   movementSpeed: 4
-  rotationSpeed: 60
+  rotationSpeed: 130
   boostSpeed: 2.5
-  maxStamina: 5
-  recoveryStamina: 0.1
-  consumptionStamina: 0.2
   lostMoraleThenDie: 0.1
   lostMoraleThenAttack: 0.005
-  recoveryMoraleSpeed: 0.05
+  recoveryMoraleSpeed: 0.1
+  aroundRadius: 8
+  aroundSquadsBonus: 0.05
+  aroundRetreatBonus: 0.02
+  aroundMask:
+    serializedVersion: 2
+    m_Bits: 3072
+  lostStaminaMoving: 0.15
+  lostStaminaAttack: 0.05
+  recoveryStamina: 0.1
   retreatCount: 3
   retreatChanceCount: 15
   unitArray:
@@ -337,7 +344,7 @@ MonoBehaviour:
   pointsDistance: 0.4
   maxDeltaAngel: 30
   deadTime: 5
-  maxEscapeTime: 4
+  maxEscapeTime: 5
   playerSquad: 1
   inBattle: 0
   attack: 0
@@ -345,10 +352,11 @@ MonoBehaviour:
   attackTriggerCoef: 0
   attackCoef: 0
   defenceCoef: 0
+  squadUnitPositions: []
   formationX: 5
   formationY: 5
   unitsSpacing: 1
-  radiusDetection: 5
+  radiusDetection: 8
   avaliableToAttack: []
   avaliableTargetsToAttack: []
   detrctionMask:
@@ -359,6 +367,7 @@ MonoBehaviour:
   bloodFx: {fileID: 1004307555708668947, guid: 374dfa0c89fe0834bb04274a99223e8f, type: 3}
   movementIndicator: {fileID: 1516730008753690456}
   battleIndicator: {fileID: 2136700165858739251}
+  unitAttackDistance: 0.2
   aiActionValue: 100
   dangerAlert: 0
   enemySquad: {fileID: 0}
@@ -902,7 +911,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 3
+  m_Radius: 4.1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &4412510041063393334
 MonoBehaviour:

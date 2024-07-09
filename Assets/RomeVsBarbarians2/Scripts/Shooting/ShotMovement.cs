@@ -32,7 +32,7 @@ public class ShotMovement : MonoBehaviour
     private Vector3 _startPosition;
     private float _stepScale;
     private float _progress;
-    private float arcHeight = 3;
+    [SerializeField] private float arcHeight = 3;
     private float distance;
     private bool shown = false;
 
@@ -69,7 +69,7 @@ public class ShotMovement : MonoBehaviour
         _progress = Mathf.Min(_progress + Time.deltaTime * _stepScale * speedCoef, 1.0f);
 
         // Turn this 0-1 value into a parabola that goes from 0 to 1, then back to 0.
-        float parabola = 1.0f - 20.0f * (_progress - 0.5f) * (_progress - 0.5f);
+        
 
        
 
@@ -78,11 +78,21 @@ public class ShotMovement : MonoBehaviour
         // Travel in a straight line from our start position to the target.
 
         Vector3 nextPos = Vector3.Lerp(_startPosition, target, _progress);
-       
 
+        float parabola = 0;
         // Then add a vertical arc in excess of this.
-        nextPos.y += parabola + (arcHeight * (distance/40));
+        if (distance > 20f)
+        {
+             parabola = 1.0f - 20.0f * (_progress - 0.5f) * (_progress - 0.5f);
+        }
+        else
+        {
+             parabola = 0.3f - 9.0f * (_progress - 0.5f) * (_progress - 0.5f);
 
+        }
+        //Debug.Log("parabola " + parabola + "distance " + distance);
+
+        nextPos.y += parabola + (arcHeight * (distance / 50f));
         //Debug.Log("distance " + distance);
 
         // Continue as before.
@@ -134,7 +144,7 @@ public class ShotMovement : MonoBehaviour
                     float min = 0f - (enController.defenceSquad * 0.1f) - (enController.defenceCoef) - (-enController.unitArray.Count * 0.1f) - (distance * 0.4f);
 
                     float max = 10f + ((damage - enController.defenceSquad) * 1.1f) + (accuracy * 0.5f);
-                    Debug.Log("min " + min + " max " + max);
+                    //Debug.Log("min " + min + " max " + max);
 
                     float r = Random.Range(min, max);
 

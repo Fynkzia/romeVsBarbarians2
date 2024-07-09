@@ -46,7 +46,7 @@ public class UnitRetreatController : MonoBehaviour {
     }
     private void LookOn(Vector3 target) {
         float y = AngleBetweenTwoPoints(transform.position, target);
-        transform.rotation = Quaternion.Euler(new Vector3(0f, y, 0f));
+        transform.rotation = Quaternion.Euler(new Vector3(0f, y + 180f, 0f));
     }
 
     private float AngleBetweenTwoPoints(Vector3 a, Vector3 b) {

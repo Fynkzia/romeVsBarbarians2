@@ -114,11 +114,11 @@ public class ShootingController : MonoBehaviour
 
             Vector3 directionToEnemy = enemyPosition - transform.position;
             directionToEnemy.y = 0; // Оставляем только горизонтальную компоненту направления
-            squadController.unitArray[index].transform.rotation = Quaternion.LookRotation(directionToEnemy) * Quaternion.EulerAngles(0f, -90f, 0f);
+            squadController.unitArray[index].transform.rotation = Quaternion.LookRotation(directionToEnemy) * Quaternion.EulerAngles(0f, 90f, 0f);
         }
 
         yield return new WaitForSeconds(shotSpawnDelay);
-        Debug.Log("Shot");
+        
 
         ShotMovement.Create(pfArrow, transform.position + new Vector3(0, shotStartOffset, 0), enemyPosition, shotSpeed, actionUnits,shotDamage,shotAccuracy,gameObject.tag);
     }

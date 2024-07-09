@@ -207,7 +207,7 @@ public class EnemyAIController : MonoBehaviour
 
      public void AiAction(SquadController squad) {
 
-        if(squad.inBattle){
+        if(squad.inBattle){ // отряд сражается?
 
             NearEnemySquadList(squad);
             NearPlayerSquadList(squad);
@@ -222,6 +222,7 @@ public class EnemyAIController : MonoBehaviour
                         ceterOfSquads += nearPlayerList[i].transform.position;
                     }
 
+                    Debug.Log("AI retreat " + "1 ");
                     ceterOfSquads /= nearPlayerList.Count;
                     SqauadRetreat(squad,ceterOfSquads);
                     squad.aiActionValue = -1;
@@ -240,7 +241,7 @@ public class EnemyAIController : MonoBehaviour
                     for (int i = 0; i < nearPlayerList.Count; i++) {
                         ceterOfSquads += nearPlayerList[i].transform.position;
                     }
-
+                    Debug.Log("AI retreat " + "2 ");
                     ceterOfSquads /= nearPlayerList.Count;
                     squad.aiActionValue = -1;
                     SqauadRetreat(squad,ceterOfSquads);
@@ -258,7 +259,7 @@ public class EnemyAIController : MonoBehaviour
                     for (int i = 0; i < nearPlayerList.Count; i++) {
                         ceterOfSquads += nearPlayerList[i].transform.position;
                     }
-
+                    Debug.Log("AI retreat " + "3 ");
                     ceterOfSquads /= nearPlayerList.Count;
                     SqauadRetreat(squad,ceterOfSquads);
                     squad.aiActionValue = -1;
