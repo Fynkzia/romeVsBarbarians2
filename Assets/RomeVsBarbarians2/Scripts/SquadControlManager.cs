@@ -149,8 +149,14 @@ public class SquadControlManager : MonoBehaviour
     {
         if(lineRenderer.positionCount > 3)
         {
-            lineRenderer.SetPosition(0, squadController.transform.position);
-            lineRenderer.SetPosition(1, squadController.transform.position);
+            for (int i = 0; i < lineRenderer.positionCount; i++)
+            {
+                if(Vector3.Distance(squadController.transform.position, lineRenderer.GetPosition(i)) < squadController.aroundRadius)
+                lineRenderer.SetPosition(i, squadController.transform.position);
+            }
+
+                
+           
         }
     }
     public bool HasHitSquad() {

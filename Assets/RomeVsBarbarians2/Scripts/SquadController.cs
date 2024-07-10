@@ -78,7 +78,7 @@ public class SquadController : MonoBehaviour {
     [HideInInspector] public List<Animator> animators = new List<Animator>();
     [HideInInspector] public float currentStamina;
     [HideInInspector] public float currentMorale;
-    [HideInInspector] public bool isStopRot = false;
+    [SerializeField] public bool isStopRot = false;
 
     [Header("Movement Settings")]
     [Space(10)]
@@ -86,6 +86,11 @@ public class SquadController : MonoBehaviour {
     
     [SerializeField] private float pointsDistance;
     [SerializeField] private float maxDeltaAngel;
+    [SerializeField] private bool unitsRotating = false;
+   
+
+    [SerializeField]private float deltaAngels;
+
 
     [Header("Fighting Settings")]
     [Space(10)]
@@ -103,7 +108,7 @@ public class SquadController : MonoBehaviour {
 
     [SerializeField] public GameObject[,] SquadFormation = new GameObject[5, 5];
     [SerializeField] public Vector3[,] SquadFormationPositions = new Vector3[5, 5];
-    [SerializeField] public Vector3[] squadUnitPositions;
+    
     [SerializeField] public int formationX = 5;
     [SerializeField] public int formationY = 5;
     [SerializeField] public float unitsSpacing = 1;
@@ -190,6 +195,8 @@ public class SquadController : MonoBehaviour {
         controlController = GameObject.Find("SquadControlManager").GetComponent<SquadControlManager>();
         aIController = GameObject.Find("AIManager").GetComponent<EnemyAIController>();
         winLoseManager = GameObject.Find("WinLoseManager").GetComponent<WinLoseManager>();
+
+        deltaAngels = transform.rotation.eulerAngles.y;
     }
     private void Start() {
         rb = GetComponent<Rigidbody>();
@@ -204,35 +211,11 @@ public class SquadController : MonoBehaviour {
         colliderRadius = GetComponents<SphereCollider>()[1].radius;
 
 
-        Formations();
+        
 
  }
 
-    private void Formations()
-    {
-        //SquadFormation = new GameObject[formationX, formationY];
-        //SquadFormationPositions = new Vector3[formationX, formationY];
-        //int x = 0;
-        //int y = 0;
-        //for (int i = 0; i < unitArray.Count; i++)
-        //{
-        //    SquadFormation[x, y] = unitArray[i].gameObject;
-        //    SquadFormationPositions[x, y] = unitArray[i].transform.localPosition;
-        //    x++;
-        //    if(x >= formationX)
-        //    {
-        //        x = 0;
-        //        y++;
-        //    }
-        //}
-        squadUnitPositions = new Vector3[unitArray.Count];
-
-        for (int i = 0; i < unitArray.Count; i++)
-        {
-            squadUnitPositions[i] = unitArray[i].transform.localPosition;
-        }
-
-    }
+   
    
 
 
@@ -326,40 +309,52 @@ public class SquadController : MonoBehaviour {
             positions = new Vector3[(int)lineRenderer.positionCount];
             lineRenderer.GetPositions(positions);
 
-            Vector3 linePosition = new Vector3(lineRenderer.GetPosition(0).x, transform.position.y, lineRenderer.GetPosition(0).z);
+            Vector3 linePosition = new Vector3(lineRenderer.GetPosition(1).x, transform.position.y, lineRenderer.GetPosition(1).z);
             Vector3 targetPos = Vector3.MoveTowards(transform.position, linePosition, CurrentSpeed() * Time.fixedDeltaTime);
 
-            float y = MathUtilities.AngleBetweenTwoPoints(transform.position, lineRenderer.GetPosition(0));
-            float deltaAngel = Math.Abs(transform.rotation.eulerAngles.y - y );
+            float y = MathUtilities.AngleBetweenTwoPoints(transform.position, lineRenderer.GetPosition(1));
+            float deltaAngel = Math.Abs(deltaAngels - y );
 
+            
             if (!isStopRot) {
                 if (deltaAngel > maxDeltaAngel && deltaAngel < 360 - maxDeltaAngel) {
                     SetRotation(true);
                     currentSpeed = 0;
+                    unitsRotating = true;
                 }
                 else {
-                    transform.rotation = Quaternion.Euler(new Vector3(0f, y, 0f));
+                    if (unitsRotating)
+                    {
+                        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(new Vector3(0f, y, 0f)), rotationSpeed / 5f * Time.fixedDeltaTime);
+                        for (int i = 0; i < unitArray.Count; i++)
+                        {
+                            if(unitArray[i] != null)
+                            unitArray[i].transform.rotation = Quaternion.Euler(new Vector3(0f, y + 180f, 0f));
+                        }
+
+                        float angleDifference = Quaternion.Angle(transform.rotation, Quaternion.Euler(new Vector3(0f, y, 0f)));
+                        if (angleDifference < 1)
+                        {
+                            unitsRotating = true;
+                        }
+                    
+
+                    }
                     rb.MovePosition(targetPos);
+                    lineRenderer.SetPosition(0, transform.position);
                 }
             }
             if (Vector3.Distance(rb.position, linePosition) < pointsDistance) {
                 var pointsList = new List<Vector3>(positions);
-                pointsList.RemoveAt(0);
+                pointsList.RemoveAt(1);
                 positions = pointsList.ToArray();
                 lineRenderer.SetPositions(positions);
                 indexMove++;
             }
 
             if (isStopRot) {
-                //transform.rotation = Quaternion.LerpUnclamped(transform.rotation, Quaternion.Euler(new Vector3(0f, y, 0f)), rotationSpeed * Time.fixedDeltaTime);
-                //transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(new Vector3(0f, y, 0f)), rotationSpeed * Time.fixedDeltaTime);
+               
 
-                //for (int i = 0; i < unitArray.Count; i++)
-                //{
-                //    unitArray[i].transform.rotation = Quaternion.RotateTowards(unitArray[i].transform.rotation, Quaternion.Euler(new Vector3(0f, y, 0f)), rotationSpeed * Time.fixedDeltaTime);
-                //} 
-
-                
 
                 foreach (GameObject unit in unitArray)
                 {
@@ -367,35 +362,28 @@ public class SquadController : MonoBehaviour {
                     {
                         Quaternion unitRotation = unit.transform.rotation;
                         unit.transform.rotation = Quaternion.RotateTowards(unitRotation, Quaternion.Euler(new Vector3(0f, y + 180f, 0f)), rotationSpeed * Time.fixedDeltaTime);
-                        currentRotation = unit.transform.rotation;
+                        deltaAngels = unit.transform.rotation.eulerAngles.y-180;
                     }
                 }
 
 
-                    float deltaAngelLocal = Math.Abs(currentRotation.eulerAngles.y - y + 180f);
+
+
+               
+                float deltaAngelLocal = Math.Abs(deltaAngels - y);
 
                 
 
-                // if (deltaAngel < 4) {
-                //     SetRotation(false);
-                // }
-                if (deltaAngelLocal < 1 || deltaAngelLocal > 360f - 1f) {
+                if (deltaAngelLocal < 1f || deltaAngelLocal > 360 - 1f)
+                {
                     SetRotation(false);
-
-                    
-
-                    transform.rotation = Quaternion.Euler(new Vector3(0f, y, 0f));
-
-                    foreach (GameObject unit in unitArray)
+                    for (int i = 0; i < unitArray.Count; i++)
                     {
-                        if (unit != null)
-                        {
-                            
-                            unit.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
-
-                        }
+                        unitArray[i].transform.rotation = Quaternion.Euler(new Vector3(0f, y + 180f, 0f));
                     }
                 }
+               
+
 
             }
         }
@@ -518,21 +506,23 @@ public class SquadController : MonoBehaviour {
 
         foreach (var hitCollider in hitColliders)
         {
-            if(hitCollider.transform.parent.gameObject.layer == 12)
+            if (hitCollider != null)
             {
-                if((gameObject.tag == SQUAD_TAG && hitCollider.transform.parent.gameObject.tag == SQUAD_TAG) || (gameObject.tag == ENEMY_TAG && hitCollider.transform.parent.gameObject.tag == ENEMY_TAG))
-                aroundBonus += aroundSquadsBonus;
+                if (hitCollider.transform.parent.gameObject.layer == 12)
+                {
+                    if ((gameObject.tag == SQUAD_TAG && hitCollider.transform.parent.gameObject.tag == SQUAD_TAG) || (gameObject.tag == ENEMY_TAG && hitCollider.transform.parent.gameObject.tag == ENEMY_TAG))
+                        aroundBonus += aroundSquadsBonus;
 
-                if ((gameObject.tag == SQUAD_TAG && hitCollider.transform.parent.gameObject.tag == ENEMY_TAG) || (gameObject.tag == ENEMY_TAG && hitCollider.transform.parent.gameObject.tag == SQUAD_TAG))
-                    aroundBonus -= aroundSquadsBonus;
-            }
+                    if ((gameObject.tag == SQUAD_TAG && hitCollider.transform.parent.gameObject.tag == ENEMY_TAG) || (gameObject.tag == ENEMY_TAG && hitCollider.transform.parent.gameObject.tag == SQUAD_TAG))
+                        aroundBonus -= aroundSquadsBonus;
+                }
 
-            if(hitCollider.gameObject.layer == 10)
-            {
-                aroundBonus -= aroundRetreatBonus;
+                if (hitCollider.gameObject.layer == 10)
+                {
+                    aroundBonus -= aroundRetreatBonus;
+                }
             }
         }
-        Debug.Log("Bonus + "+ aroundBonus);
 
     }
 
@@ -574,11 +564,14 @@ public void OnMainTriggerEnter(Collider enemyCollider) { // тригеры то�
 
 
                     MoraleChange(- lostMoraleThenAttack * (enemyController[enemyController.Count - 1].unitArray.Count/ unitArray.Count));
-                    movementSpeed /= 1.5f;
-                    rotationSpeed /= 1.5f;
-                    boostSpeed /= 1.5f;
+                    if (!inBattle)
+                    {
+                        movementSpeed /= 1.5f;
+                        rotationSpeed /= 1.5f;
+                        boostSpeed /= 1.5f;
 
-                    SetBattle(true);
+                        SetBattle(true);
+                    }
                     SelectFightingUnits(enemySquad.transform.parent.transform);
                     SelectTargetsUnits();
 
@@ -748,11 +741,13 @@ public void OnMainTriggerEnter(Collider enemyCollider) { // тригеры то�
     async private void GoToFormation(Transform unit, Vector3 place)
     {
         await unit.DOMove(place, actionTime ).AsyncWaitForCompletion();
+       
 
     }
+    
 
 
-        private void EnemyDamage() {
+    private void EnemyDamage() {
 
         if (enemyController.Count == 0)
         {
@@ -1113,10 +1108,11 @@ public void OnMainTriggerEnter(Collider enemyCollider) { // тригеры то�
             float offsetX = (sideLength - 1) * spacing / 2;
             float offsetZ = (sideLength - 1) * spacing / 2;
 
-            Debug.Log("ArrangeInSquare " + gameObject.name, gameObject);
+           
 
             Vector3 newPosition = new Vector3(col * spacing - offsetX, 1, row * spacing - offsetZ); // Определяем новую позицию
            // units[i].transform.localPosition = newPosition; // Перемещаем юнит
+           if(i < units.Count || units[i] != null)
             GoToFormation(units[i].transform, newPosition + transform.position);
         }
     }
