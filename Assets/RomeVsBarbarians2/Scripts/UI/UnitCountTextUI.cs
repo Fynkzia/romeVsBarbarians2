@@ -13,6 +13,6 @@ public class UnitCountTextUI : MonoBehaviour
         squadController = squad.GetComponent<SquadController>();
     }
     private void Update() {
-        text.text = squadController.unitArray.Count.ToString();
+        text.text = squadController.currentAmountUnits.ToString();
     }
 }

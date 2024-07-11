@@ -115,7 +115,7 @@ public class SquadControlManager : MonoBehaviour
                         if (lineRenderer.positionCount > 0) {
                             currentLineLength += Vector3.Distance(lineRenderer.GetPosition(lineRenderer.positionCount - 1), mousePosSum / roundIndex);
                         }
-                        if (currentLineLength < GameOptions.Instance.maxLineLength) {
+                        if (currentLineLength < GameOptions.maxLineLength) {
                             lineRenderer.positionCount++;
                             lineRenderer.SetPosition(lineRenderer.positionCount - 1, mousePosSum / roundIndex);
                         }

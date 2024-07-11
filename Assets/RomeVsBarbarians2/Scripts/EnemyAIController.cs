@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class EnemyAIController : MonoBehaviour
 {
 
+
 [SerializeField] public List<SquadController> actionQueueArray;
 
 [SerializeField] public List<SquadController> allEnemiesList;

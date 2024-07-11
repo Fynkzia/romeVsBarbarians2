@@ -9,7 +9,7 @@ public class ShotMovement : MonoBehaviour
     public static void Create(GameObject pfArrow,Vector3 spawnPosition,Vector3 target, float speed, float arrowsAmount, float damage, float accuracy, string tag) {
         float y = MathUtilities.AngleBetweenTwoPoints(spawnPosition, target);
         GameObject shot = Instantiate(pfArrow, spawnPosition, Quaternion.Euler(new Vector3(0f, y, 0f)));
-        Debug.Log(shot.transform.position);
+        //Debug.Log(shot.transform.position);
         ShotMovement shotMovement = shot.GetComponent<ShotMovement>();
         shotMovement.Setup(target, speed, arrowsAmount, damage, accuracy,tag);
         
@@ -26,6 +26,7 @@ public class ShotMovement : MonoBehaviour
     public float radius;
 
     [SerializeField] private GameObject pfVisual;
+    [SerializeField] private GameObject fxVisual;
     [SerializeField] private Vector3 offsetPosition;
     [SerializeField] public LayerMask shotMask;
 
@@ -33,8 +34,10 @@ public class ShotMovement : MonoBehaviour
     private float _stepScale;
     private float _progress;
     [SerializeField] private float arcHeight = 3;
+    [SerializeField] private float offsetArrivedArrows = 0;
     private float distance;
     private bool shown = false;
+    private bool arrived = false;
 
     private const string ENEMY_TAG = "Enemy";
     private const string SQUAD_TAG = "Squad";
@@ -52,6 +55,8 @@ public class ShotMovement : MonoBehaviour
         gameObject.tag = tag;
         CreateVisual();
 
+        Debug.Log(target);
+
         // This is one divided by the total flight duration, to help convert it to 0-1 progress.
         _stepScale = speed / distance;
     }
@@ -64,67 +69,88 @@ public class ShotMovement : MonoBehaviour
     }
     private void Update() {
 
-        float speedCoef = 1f + (_progress - 0.5f) * (_progress - 0.5f)*2;
-        // Increment our progress from 0 at the start, to 1 when we arrive.
-        _progress = Mathf.Min(_progress + Time.deltaTime * _stepScale * speedCoef, 1.0f);
-
-        // Turn this 0-1 value into a parabola that goes from 0 to 1, then back to 0.
-        
-
-       
-
-        
-
-        // Travel in a straight line from our start position to the target.
-
-        Vector3 nextPos = Vector3.Lerp(_startPosition, target, _progress);
-
-        float parabola = 0;
-        // Then add a vertical arc in excess of this.
-        if (distance > 20f)
+        if (!arrived)
         {
-             parabola = 1.0f - 20.0f * (_progress - 0.5f) * (_progress - 0.5f);
-        }
-        else
-        {
-             parabola = 0.3f - 9.0f * (_progress - 0.5f) * (_progress - 0.5f);
+            float speedCoef = 1f + (_progress - 0.5f) * (_progress - 0.5f) * 2;
+            // Increment our progress from 0 at the start, to 1 when we arrive.
+            _progress = Mathf.Min(_progress + Time.deltaTime * _stepScale * speedCoef, 1.0f);
 
-        }
-        //Debug.Log("parabola " + parabola + "distance " + distance);
+            // Turn this 0-1 value into a parabola that goes from 0 to 1, then back to 0.
 
-        nextPos.y += parabola + (arcHeight * (distance / 50f));
-        //Debug.Log("distance " + distance);
 
-        // Continue as before.
-        if (_progress > 0.01f)
-        {
-            if (!shown)
+
+
+
+
+            // Travel in a straight line from our start position to the target.
+
+            Vector3 nextPos = Vector3.Lerp(_startPosition, target, _progress);
+
+            float parabola = 0;
+            // Then add a vertical arc in excess of this.
+            if (distance > 20f)
             {
-                shown = true;
-                for (int i = 0; i < arrowsAmount; i++)
+                parabola = 1.0f - 20.0f * (_progress - 0.5f) * (_progress - 0.5f);
+            }
+            else
+            {
+                parabola = 0.3f - 9.0f * (_progress - 0.5f) * (_progress - 0.5f);
+
+            }
+            //Debug.Log("parabola " + parabola + "distance " + distance);
+
+            nextPos.y += parabola + (arcHeight * (distance / 50f));
+            //Debug.Log("distance " + distance);
+
+            // Continue as before.
+            if (_progress > 0.01f)
+            {
+                if (!shown)
                 {
-                    
-                    transform.GetChild(i).gameObject.SetActive(true);
+                    shown = true;
+                    for (int i = 0; i < arrowsAmount; i++)
+                    {
+
+                        transform.GetChild(i).gameObject.SetActive(true);
+                    }
+
                 }
+            }
+
+            Vector3 rot = nextPos - transform.position;
+            transform.rotation = Quaternion.LookRotation(rot.normalized);
+
+
+
+            transform.position = nextPos;
+            // I presume you disable/destroy the arrow in Arrived so it doesn't keep arriving.
+            if (_progress == 1.0f)
+            {
+                Damage();
+                Destroy(gameObject, 5f);
+
+                ShotArrived();
+                arrived = true;
+
 
             }
         }
-
-        Vector3 rot = nextPos - transform.position;
-            transform.rotation = Quaternion.LookRotation(rot.normalized);
-
-       
-        
-        transform.position = nextPos;
-        // I presume you disable/destroy the arrow in Arrived so it doesn't keep arriving.
-        if (_progress == 1.0f)
-        {
-            Damage();
-            Destroy(gameObject);
-        }
     }
 
-    private void Damage()
+    private void ShotArrived()
+    {
+        transform.position = new Vector3(transform.position.x, target.y, transform.position.z);
+        for (int i = 0; i < arrowsAmount; i++)
+        {
+            Transform arrow = transform.GetChild(i);
+
+            arrow.rotation = Quaternion.Euler(180f,0,0);
+            arrow.position = new Vector3(arrow.position.x, 0 + offsetArrivedArrows, arrow.position.z);
+        }
+        Instantiate(fxVisual, transform.position, fxVisual.transform.rotation,transform);
+    }
+
+        private void Damage()
     {
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, radius, shotMask);
 

@@ -2,10 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameOptions : MonoBehaviour {
-    public float maxLineLength;
-    public static GameOptions Instance { get; private set; }
-    private void Awake() {
-        Instance = this;
-    }
+
+
+
+public static class GameOptions  {
+    public static float maxLineLength = 60f;
+    public static float unitsDeadTime = 5f;
+    public static float distanceToPoint =0.4f;
+
+
+
+
+   
+
 }
+
+

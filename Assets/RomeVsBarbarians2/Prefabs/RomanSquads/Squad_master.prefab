@@ -266,7 +266,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d14acd2a2f51ad54a866759d2ee278a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentAmountUnits: 0
   levelSquad: 0
+  amountUnits: 25
   powerSquad: 2.5
   defenceSquad: 2
   maxMorale: 5
@@ -276,20 +278,45 @@ MonoBehaviour:
   movementSpeed: 4
   rotationSpeed: 130
   boostSpeed: 2.5
+  lostStaminaMoving: 0.15
+  lostStaminaAttack: 0.05
+  recoveryStamina: 0.1
   lostMoraleThenDie: 0.1
   lostMoraleThenAttack: 0.005
   recoveryMoraleSpeed: 0.1
   aroundRadius: 8
-  aroundSquadsBonus: 0.05
-  aroundRetreatBonus: 0.02
   aroundMask:
     serializedVersion: 2
     m_Bits: 3072
-  lostStaminaMoving: 0.15
-  lostStaminaAttack: 0.05
-  recoveryStamina: 0.1
+  aroundSquadsBonus: 0.05
+  aroundRetreatBonus: 0.02
   retreatCount: 3
   retreatChanceCount: 15
+  coef:
+  - type: 0
+    attack: 0.4
+    defence: 0.3
+  - type: 1
+    attack: 1
+    defence: 0.5
+  - type: 2
+    attack: 0.7
+    defence: 0.4
+  leftTriggerCoef: 1
+  rightTriggerCoef: 1
+  frontTriggerCoef: 0
+  backTriggerCoef: 2
+  offsetRadius: 0.5
+  coinsFromDeath: 1
+  playerSquad: 1
+  type: 1
+  colliderRadius: 0
+  currentStamina: 0
+  currentMorale: 0
+  isMoved: 0
+  isStopRot: 0
+  inBattle: 0
+  isGoingToEnemy: 0
   unitArray:
   - {fileID: 0}
   - {fileID: 0}
@@ -316,46 +343,25 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  amountUnits: 25
-  type: 1
-  coinsFromDeath: 1
-  coef:
-  - type: 0
-    attack: 0.4
-    defence: 0.3
-  - type: 1
-    attack: 1
-    defence: 0.5
-  - type: 2
-    attack: 0.7
-    defence: 0.4
-  leftTriggerCoef: 1
-  rightTriggerCoef: 1
-  frontTriggerCoef: 0
-  backTriggerCoef: 2
-  offsetRadius: 0.5
-  nowAttacked: []
-  isMoved: 0
-  lineRenderer: {fileID: 0}
   animators: []
-  currentStamina: 0
-  currentMorale: 0
-  isStopRot: 0
-  pointsDistance: 0.4
+  nowAttacked: []
+  enemyController: []
+  lineRenderer: {fileID: 0}
+  enemySquad: {fileID: 0}
+  predictEnemy: {fileID: 0}
   maxDeltaAngel: 30
-  deadTime: 5
+  deltaAngels: 0
   maxEscapeTime: 5
-  playerSquad: 1
-  inBattle: 0
   attack: 0
   defence: 0
   attackTriggerCoef: 0
   attackCoef: 0
   defenceCoef: 0
-  squadUnitPositions: []
   formationX: 5
   formationY: 5
   unitsSpacing: 1
+  unitsYOffset: 1
+  randomOffset: 0.2
   radiusDetection: 8
   avaliableToAttack: []
   avaliableTargetsToAttack: []
@@ -370,10 +376,6 @@ MonoBehaviour:
   unitAttackDistance: 0.2
   aiActionValue: 100
   dangerAlert: 0
-  enemySquad: {fileID: 0}
-  isGoingToEnemy: 0
-  predictEnemy: {fileID: 0}
-  enemyController: []
   UnitInfo: {fileID: 9072971008714615398}
   tapCount: 0
 --- !u!114 &6060907297312523291

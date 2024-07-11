@@ -652,7 +652,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d14acd2a2f51ad54a866759d2ee278a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentAmountUnits: 0
   levelSquad: 0
+  amountUnits: 25
   powerSquad: 2
   defenceSquad: 3
   maxMorale: 5
@@ -662,24 +664,20 @@ MonoBehaviour:
   movementSpeed: 3
   rotationSpeed: 110
   boostSpeed: 2.5
+  lostStaminaMoving: 0.15
+  lostStaminaAttack: 0.05
+  recoveryStamina: 0.1
   lostMoraleThenDie: 0.1
   lostMoraleThenAttack: 0.005
   recoveryMoraleSpeed: 0.1
   aroundRadius: 8
-  aroundSquadsBonus: 0.05
-  aroundRetreatBonus: 0.02
   aroundMask:
     serializedVersion: 2
     m_Bits: 3072
-  lostStaminaMoving: 0.15
-  lostStaminaAttack: 0.05
-  recoveryStamina: 0.1
+  aroundSquadsBonus: 0.05
+  aroundRetreatBonus: 0.02
   retreatCount: 3
   retreatChanceCount: 15
-  unitArray: []
-  amountUnits: 25
-  type: 0
-  coinsFromDeath: 0
   coef:
   - type: 0
     attack: 1
@@ -695,19 +693,26 @@ MonoBehaviour:
   frontTriggerCoef: 0
   backTriggerCoef: 0.35
   offsetRadius: 0.5
-  nowAttacked: []
-  isMoved: 0
-  lineRenderer: {fileID: 0}
-  animators: []
+  coinsFromDeath: 0
+  playerSquad: 0
+  type: 0
+  colliderRadius: 0
   currentStamina: 0
   currentMorale: 0
+  isMoved: 0
   isStopRot: 0
-  pointsDistance: 0.4
-  maxDeltaAngel: 30
-  deadTime: 5
-  maxEscapeTime: 4
-  playerSquad: 0
   inBattle: 0
+  isGoingToEnemy: 0
+  unitArray: []
+  animators: []
+  nowAttacked: []
+  enemyController: []
+  lineRenderer: {fileID: 0}
+  enemySquad: {fileID: 0}
+  predictEnemy: {fileID: 0}
+  maxDeltaAngel: 30
+  deltaAngels: 0
+  maxEscapeTime: 4
   attack: 0
   defence: 0
   attackTriggerCoef: 0
@@ -716,6 +721,8 @@ MonoBehaviour:
   formationX: 5
   formationY: 5
   unitsSpacing: 1
+  unitsYOffset: 1
+  randomOffset: 0.25
   radiusDetection: 8
   avaliableToAttack: []
   avaliableTargetsToAttack: []
@@ -730,10 +737,6 @@ MonoBehaviour:
   unitAttackDistance: 0.2
   aiActionValue: 100
   dangerAlert: 0
-  enemySquad: {fileID: 0}
-  isGoingToEnemy: 0
-  predictEnemy: {fileID: 0}
-  enemyController: []
   UnitInfo: {fileID: 90035751017018185}
   tapCount: 0
 --- !u!135 &5167949792111545231
