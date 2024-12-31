@@ -19,8 +19,8 @@ public class SquadControlManager : MonoBehaviour
     public static SquadControlManager Instance { get; private set; }
 
     [SerializeField]private bool hitSquad = false;
-    private LineRenderer lineRenderer;
-    private SquadController squadController;
+    [SerializeField] private LineRenderer lineRenderer;
+    [SerializeField] private SquadController squadController;
     private Vector3 mousePos;
      private Vector3 mousePrevPos = Vector3.zero;
     private Vector3 mousePosSum = Vector3.zero;
@@ -36,7 +36,7 @@ public class SquadControlManager : MonoBehaviour
         Instance = this;
     }
 
-    private void Update() {
+    void Update() {
         HandleSquadTouch();
     }
 
@@ -55,14 +55,10 @@ public class SquadControlManager : MonoBehaviour
                    
 
                     if (!hitSquad && !squadController.isMoved) {//squad don't hitted before and squad don't moving
-                        GameObject drawing = Instantiate(drawingPrefab);
-                        lineRenderer = drawing.GetComponent<LineRenderer>();
 
 
-                        lineRenderer.positionCount++;
-                        lineRenderer.SetPosition(lineRenderer.positionCount - 1, squadController.transform.position);
-
-                        squadController.lineRenderer = lineRenderer;
+                        squadController.lineRenderer = GetLineRenderer(squadController.transform.position);
+                       
 
                     }
                     if (squadController.isMoved) {
@@ -78,6 +74,7 @@ public class SquadControlManager : MonoBehaviour
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, 1000f, terrainLayer)) {
+                
                 DrawLine();
             }
         }
@@ -100,33 +97,55 @@ public class SquadControlManager : MonoBehaviour
     }
 
     private void DrawLine() {
-        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit,1000f,terrainLayer)) {
-            if (hit.collider.gameObject.tag == TERRAIN_TAG) {
-                mousePos = new Vector3(hit.point.x, hit.point.y+offset, hit.point.z);
 
-                if(mousePrevPos != mousePos) {
-                    mousePosSum += mousePos;
-                    roundIndex++;
+        if (lineRenderer != null)
+        {
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, 1000f, terrainLayer))
+            {
+                if (hit.collider.gameObject.tag == TERRAIN_TAG)
+                {
+                    mousePos = new Vector3(hit.point.x, hit.point.y + offset, hit.point.z);
 
-                    if (roundIndex == maxRoundIndex) {
-                        
-                        if (lineRenderer.positionCount > 0) {
-                            currentLineLength += Vector3.Distance(lineRenderer.GetPosition(lineRenderer.positionCount - 1), mousePosSum / roundIndex);
+                    if (mousePrevPos != mousePos)
+                    {
+                        mousePosSum += mousePos;
+                        roundIndex++;
+
+                        if (roundIndex == maxRoundIndex)
+                        {
+
+
+
+
+
+                            if (lineRenderer.positionCount > 0)
+                            {
+                                currentLineLength += Vector3.Distance(lineRenderer.GetPosition(lineRenderer.positionCount - 1), mousePosSum / roundIndex);
+                            }
+                            if (currentLineLength < GameOptions.maxLineLength)
+                            {
+                                lineRenderer.positionCount++;
+                                lineRenderer.SetPosition(lineRenderer.positionCount - 1, mousePosSum / roundIndex);
+                            }
+                            roundIndex = 0;
+                            mousePosSum = Vector3.zero;
+
+
                         }
-                        if (currentLineLength < GameOptions.maxLineLength) {
-                            lineRenderer.positionCount++;
-                            lineRenderer.SetPosition(lineRenderer.positionCount - 1, mousePosSum / roundIndex);
-                        }
-                        roundIndex = 0;
-                        mousePosSum = Vector3.zero;
+                        mousePrevPos = mousePos;
                     }
-                    mousePrevPos = mousePos;
                 }
             }
+
         }
-        
+        else
+        {
+            
+            squadController.lineRenderer = GetLineRenderer(squadController.transform.position);
+        }
+
     }
 
     private void TryChangeColor() {
@@ -142,6 +161,16 @@ public class SquadControlManager : MonoBehaviour
                 squadController.predictEnemy = hit.collider;
                 squadController.isGoingToEnemy = true;
             }
+            else
+            {
+                squadController.predictEnemy = null;
+                squadController.isGoingToEnemy = false;
+            }
+        }
+        else
+        {
+            squadController.predictEnemy = null;
+            squadController.isGoingToEnemy = false;
         }
     }
 
@@ -161,6 +190,19 @@ public class SquadControlManager : MonoBehaviour
     }
     public bool HasHitSquad() {
         return hitSquad;
+    }
+
+    public LineRenderer GetLineRenderer(Vector3 position)
+    {
+        GameObject drawing = Instantiate(drawingPrefab);
+        lineRenderer = drawing.GetComponent<LineRenderer>();
+
+
+        lineRenderer.positionCount++;
+        lineRenderer.SetPosition(lineRenderer.positionCount - 1, position);
+
+       
+        return lineRenderer;
     }
 
     public void SquadWayToPoint(SquadController Squad, Vector3 point)

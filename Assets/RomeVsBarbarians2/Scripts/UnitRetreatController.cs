@@ -21,9 +21,9 @@ public class UnitRetreatController : MonoBehaviour {
         currentTime = 0;
         flashTimer = 0;
         rb = GetComponent<Rigidbody>();
-        animator = GetComponent<Animator>();
+       // animator = GetComponent<Animator>();
         body = gameObject.transform.GetChild(0).gameObject;
-        animator.SetBool("Moving", true);
+       // animator.SetBool("Moving", true);
         gameObject.layer = 10;
 
         rb.constraints = RigidbodyConstraints.FreezeRotation;

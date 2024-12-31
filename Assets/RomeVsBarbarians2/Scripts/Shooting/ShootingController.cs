@@ -42,7 +42,19 @@ public class ShootingController : MonoBehaviour
         
     }
     private void Update() {
-       
+
+        if (isShootingSquad && squadController.isMoved)
+        {
+            if (squadController.predictEnemy != null)
+            {
+                if (shotRangeManager.enemyColliders.Contains(squadController.predictEnemy))
+                {
+                    squadController.CancelMovement();
+
+                }
+            }
+
+        }
 
         if (shotAmount > 0) {
            
@@ -81,7 +93,7 @@ public class ShootingController : MonoBehaviour
     }
 
     private void ShootingSquad() {
-        if (squadController.isGoingToEnemy) {
+        if (squadController.predictEnemy != null) {
             if (shotRangeManager.enemyColliders.Contains(squadController.predictEnemy)) {
                 squadController.CancelMovement();
                 Shot(squadController.predictEnemy);
@@ -174,7 +186,7 @@ public class ShootingController : MonoBehaviour
 
     public void GetNewTargets()
     {
-        Debug.Log("squadController.isGoingToEnemy " + squadController.isGoingToEnemy, squadController);
+       
         
 
         if (squadController.isGoingToEnemy)

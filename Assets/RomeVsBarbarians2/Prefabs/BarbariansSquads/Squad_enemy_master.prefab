@@ -321,7 +321,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3638279387896862007
 Transform:
   m_ObjectHideFlags: 0
@@ -331,8 +331,8 @@ Transform:
   m_GameObject: {fileID: 2445277595290934853}
   m_LocalRotation: {x: 0.70710576, y: -0, z: -0, w: 0.7071079}
   m_LocalPosition: {x: 0.067, y: 0, z: 0.042}
-  m_LocalScale: {x: 8.417384, y: 8.417384, z: 8.417384}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 5578669096314907647}
   m_RootOrder: 3
@@ -708,7 +708,6 @@ MonoBehaviour:
   nowAttacked: []
   enemyController: []
   lineRenderer: {fileID: 0}
-  enemySquad: {fileID: 0}
   predictEnemy: {fileID: 0}
   maxDeltaAngel: 30
   deltaAngels: 0
@@ -731,12 +730,18 @@ MonoBehaviour:
     m_Bits: 8192
   ignoreTriggers: 0
   maxFightingUnit: 5
-  bloodFx: {fileID: 1004307555708668947, guid: 374dfa0c89fe0834bb04274a99223e8f, type: 3}
+  bloodFx:
+  - {fileID: 1004307555708668947, guid: 374dfa0c89fe0834bb04274a99223e8f, type: 3}
+  - {fileID: 5513426093337414878, guid: d959c2c6fbc114d1d959d6554165c615, type: 3}
+  deadFx: {fileID: 3391044420343106369, guid: 1565ab10af3b549f5bbf530b059e2d48, type: 3}
   movementIndicator: {fileID: 4988370982997612147}
-  battleIndicator: {fileID: 7021500483448151324}
+  battleIndicator: {fileID: 1744540808620133068}
   unitAttackDistance: 0.2
   aiActionValue: 100
   dangerAlert: 0
+  battleRot: 0
+  escape: 0
+  squadDie: 0
   UnitInfo: {fileID: 90035751017018185}
   tapCount: 0
 --- !u!135 &5167949792111545231
@@ -1069,7 +1074,7 @@ PrefabInstance:
     - target: {fileID: 2406992525919546419, guid: 51bda6881a122479eaf53a17530b2d13, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 5ddc680beb8444a56adc4d8a8fff183a, type: 3}
+      objectReference: {fileID: 21300000, guid: e5617d2bcad5c44758f8dc7c119f1b82, type: 3}
     - target: {fileID: 6926917472953381505, guid: 51bda6881a122479eaf53a17530b2d13, type: 3}
       propertyPath: squad
       value: 
@@ -1077,7 +1082,7 @@ PrefabInstance:
     - target: {fileID: 7183863521425250982, guid: 51bda6881a122479eaf53a17530b2d13, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 7adc39de833fc48289cd1e6263942fb6, type: 3}
+      objectReference: {fileID: 21300000, guid: 7562b968ee4b74653b41eab4bf7d626d, type: 3}
     - target: {fileID: 8788090585376487218, guid: 51bda6881a122479eaf53a17530b2d13, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1165,7 +1170,7 @@ PrefabInstance:
     - target: {fileID: 8833762772861064004, guid: 51bda6881a122479eaf53a17530b2d13, type: 3}
       propertyPath: m_sharedMaterial
       value: 
-      objectReference: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
+      objectReference: {fileID: 2140390282975761056, guid: 72a9922b64cae41a8ab34b324c75f62a, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 51bda6881a122479eaf53a17530b2d13, type: 3}
 --- !u!95 &90035751017018185 stripped
@@ -1173,14 +1178,14 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 5957751454691457267, guid: 51bda6881a122479eaf53a17530b2d13, type: 3}
   m_PrefabInstance: {fileID: 6021858507052485562}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1744540808620133068 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5450528691140346230, guid: 51bda6881a122479eaf53a17530b2d13, type: 3}
+  m_PrefabInstance: {fileID: 6021858507052485562}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &3054673904323198088 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8788090585376487218, guid: 51bda6881a122479eaf53a17530b2d13, type: 3}
-  m_PrefabInstance: {fileID: 6021858507052485562}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &7021500483448151324 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3666089615165363878, guid: 51bda6881a122479eaf53a17530b2d13, type: 3}
   m_PrefabInstance: {fileID: 6021858507052485562}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &9030297830868955067
@@ -1193,6 +1198,10 @@ PrefabInstance:
     - target: {fileID: 100002, guid: 28a5e79925e3ce04a82856c16a572cbe, type: 3}
       propertyPath: m_Name
       value: BlobShadowProjector
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 28a5e79925e3ce04a82856c16a572cbe, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 28a5e79925e3ce04a82856c16a572cbe, type: 3}
       propertyPath: m_RootOrder

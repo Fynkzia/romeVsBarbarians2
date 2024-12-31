@@ -1160,6 +1160,7 @@ GameObject:
   - component: {fileID: 7171167965650278176}
   - component: {fileID: 5605144652384763781}
   - component: {fileID: 7151713209939973987}
+  - component: {fileID: 7077626519071682334}
   m_Layer: 13
   m_Name: Unit_Triarii_point
   m_TagString: Squad
@@ -1236,6 +1237,33 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!205 &7077626519071682334
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7933408021389392847}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: -0.12920892, y: 0.38086712, z: 0.10883735}
+  m_Size: 2.923719
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.050430007
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 5905192428536804418}
+    - renderer: {fileID: 3685545903577390364}
+    - renderer: {fileID: 8964053653805936176}
+    - renderer: {fileID: 7907613819306570370}
+    - renderer: {fileID: 6435565920667671169}
+    - renderer: {fileID: 6356864923673342505}
+  - screenRelativeHeight: 0.011133281
+    fadeTransitionWidth: 0
+    renderers: []
+  m_Enabled: 0
 --- !u!1 &9063679445489407184
 GameObject:
   m_ObjectHideFlags: 0

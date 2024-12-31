@@ -9,6 +9,7 @@ public class BarUI : MonoBehaviour
     [SerializeField] private GameObject squad;
     [SerializeField] private Image barImage;
     public BarType barType;
+    [SerializeField] private Gradient gradient;
     private SquadController squadController;
 
     private void Awake() {
@@ -28,5 +29,6 @@ public class BarUI : MonoBehaviour
 
     public void ChangeProgress(float current, float maximum) { 
         barImage.fillAmount = current/maximum;
+        barImage.color = gradient.Evaluate(current / maximum);
     }
 }

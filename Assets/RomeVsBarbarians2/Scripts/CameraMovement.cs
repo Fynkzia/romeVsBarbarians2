@@ -8,12 +8,14 @@ public class CameraMovement : MonoBehaviour {
 
     [SerializeField] private Camera gameCamera;
     [SerializeField] private Camera renderTextureCamera;
+    [SerializeField] private Camera renderTerrainCamera;
     [SerializeField] private float[] panSpeed;  // Speed of panning.
     [SerializeField] private float[] panLimitZ; //Limits by Y
     [SerializeField] private float[] panLimitX; //Limits by X
     [SerializeField] private float zoomSpeed = 5f;
     [SerializeField] private RenderTexture[] cameraTextures;
     [SerializeField] private RawImage mainRenderTexture;
+
 
     public float[] fieldsOfView;
 
@@ -26,8 +28,10 @@ public class CameraMovement : MonoBehaviour {
     private bool setDeltaTouch = false;
 
     private float deltaMagnitudeDiff;
-    
-    
+
+    public event Action<int> OnZoomChanged;
+
+
     private void Start () {
         screenHeight = Screen.height;
         screenWidth = Screen.width;
@@ -37,7 +41,9 @@ public class CameraMovement : MonoBehaviour {
         targetFOVIndex = mainFOVIndex;
         gameCamera.fieldOfView = fieldsOfView[mainFOVIndex];
         renderTextureCamera.fieldOfView = fieldsOfView[mainFOVIndex];
+        renderTerrainCamera.fieldOfView = fieldsOfView[mainFOVIndex];
 
+        renderTextureCamera.targetTexture = cameraTextures[targetFOVIndex];
         renderTextureCamera.targetTexture = cameraTextures[targetFOVIndex];
 
     }
@@ -70,11 +76,13 @@ public class CameraMovement : MonoBehaviour {
             Vector3 panVector = new Vector3(-mouseDelta.x / screenWidth, 0, -mouseDelta.y / screenHeight) * panSpeed[targetFOVIndex] * Time.deltaTime;
 
             // Find new camera position
-            Vector3 newPosition = gameCamera.transform.position + panVector;
+            Vector3 newPosition = Vector3.Lerp(gameCamera.transform.position, gameCamera.transform.position + panVector, 1f);
             
             // Look for boundaries
             newPosition.x = Mathf.Clamp(newPosition.x, panLimitX[0], panLimitX[1]);
             newPosition.z = Mathf.Clamp(newPosition.z, panLimitZ[0], panLimitZ[1]);
+
+            
             gameCamera.transform.position = newPosition;
 
             // Update the last mouse position for the next frame.
@@ -89,6 +97,7 @@ public class CameraMovement : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.LeftArrow) && targetFOVIndex > 0) {
             targetFOVIndex--;
         }
+        OnZoomChanged?.Invoke(targetFOVIndex);
     }
 
 
@@ -135,8 +144,11 @@ public class CameraMovement : MonoBehaviour {
        
         gameCamera.fieldOfView = Mathf.Lerp(gameCamera.fieldOfView, fieldsOfView[targetFOVIndex], Time.deltaTime * zoomSpeed);
         renderTextureCamera.fieldOfView = Mathf.Lerp(renderTextureCamera.fieldOfView, fieldsOfView[targetFOVIndex], Time.deltaTime * zoomSpeed);
+        renderTerrainCamera.fieldOfView = Mathf.Lerp(renderTextureCamera.fieldOfView, fieldsOfView[targetFOVIndex], Time.deltaTime * zoomSpeed);
 
         renderTextureCamera.targetTexture = cameraTextures[targetFOVIndex];
+        renderTerrainCamera.targetTexture = cameraTextures[targetFOVIndex];
+
         mainRenderTexture.texture = renderTextureCamera.targetTexture;
         
     }

@@ -98,22 +98,22 @@ public class SquadController : MonoBehaviour {
     [HideInInspector] public float currentStamina;
     [HideInInspector] public float currentMorale;
 
-    [HideInInspector] public bool isMoved = false;
-    [HideInInspector] public bool isStopRot = false;
-    [HideInInspector] public bool inBattle = false;
-    [HideInInspector] public bool isGoingToEnemy = false;
+    [SerializeField] public bool isMoved = false;
+    [SerializeField] public bool isStopRot = false;
+    [SerializeField] public bool inBattle = false;
+    [SerializeField] public bool isGoingToEnemy = false;
 
 
     [Space(10)]
     [SerializeField] public List<GameObject> unitArray;
-    [HideInInspector] public List<Animator> animators = new List<Animator>();
+    
     [HideInInspector] public List<GameObject> nowAttacked;// массив юнитов которые уже находятся в атаке
     [SerializeField] public List<SquadController> enemyController = new List<SquadController>();
 
-    [HideInInspector] public LineRenderer lineRenderer;
+    [SerializeField] public LineRenderer lineRenderer;
     private Rigidbody rb;
 
-    [SerializeField] private GameObject enemySquad;
+    
     public Collider predictEnemy;
 
 
@@ -167,11 +167,25 @@ public class SquadController : MonoBehaviour {
     [Header("Animation Settings")]
     [Space(10)]
     [SerializeField] public int maxFightingUnit;
-    [SerializeField] private ParticleSystem bloodFx;
+    [SerializeField] private ParticleSystem[] bloodFx;
+    [SerializeField] private GameObject deadFx;
     [SerializeField] private GameObject movementIndicator;
     [SerializeField] private GameObject battleIndicator;
     [SerializeField] private float unitAttackDistance = 1.5f;
 
+    [SerializeField] public int animationState;
+    [SerializeField] public List<Material> materialsAnimation;
+    [HideInInspector] public List<MeshRenderer> meshRenderers = new List<MeshRenderer>();
+    [SerializeField] public Vector3 spriteSize;
+
+    [SerializeField] public float animationIdleUpdateTime;
+    [SerializeField] public float animationActionUpdateTime;
+    private float animTime = 0;
+    private int runAnimIndex = 0;
+    private Vector3[] initialPositions;
+
+
+    [Space(10)]
 
     [Header("Enemy AI settings")]
     [Space(10)]
@@ -186,9 +200,9 @@ public class SquadController : MonoBehaviour {
     private float battleTime = 0f;
     private float restorTime = 0f;
     private float animationAttackTime = 0f;
-    private bool battleRot = false;
-    private bool escape = false;
-    private bool squadDie = false;
+    [SerializeField] private bool battleRot = false;
+    [SerializeField] private bool escape = false;
+    [SerializeField] private bool squadDie = false;
     private float escapeTime = 0f;
     private float currentTriggerCoef;
     private float aroundBonus;
@@ -223,9 +237,10 @@ public class SquadController : MonoBehaviour {
         for (int i = 0; i < unitArray.Count; i++)
         {
 
-            animators.Add(unitArray[i].GetComponent<Animator>());
+            meshRenderers.Add(unitArray[i].GetComponentInChildren<MeshRenderer>());
 
         }
+        spriteSize = meshRenderers[0].transform.localScale;
 
         currentStamina = maxStamina;
         currentMorale = maxMorale;
@@ -243,13 +258,25 @@ public class SquadController : MonoBehaviour {
         rb = GetComponent<Rigidbody>();
 
 
-        for (int i = 0; i < animators.Count; i++) {
-            if (Random.Range(1, 3) % 2 == 0) {
-                animators[i].SetFloat(RANDOM_SPEED, 1.25f);
-            }
-            else {
-                animators[i].SetFloat(RANDOM_SPEED, 0.75f);
-            }
+        //for (int i = 0; i < animators.Count; i++)
+        //{
+        //    if (Random.Range(1, 3) % 2 == 0)
+        //    {
+        //        animators[i].SetFloat(RANDOM_SPEED, 1.25f);
+        //    }
+        //    else
+        //    {
+        //        animators[i].SetFloat(RANDOM_SPEED, 0.75f);
+        //    }
+        //}
+
+        animationState = 0;
+        SpriteAnimationChange();
+
+        initialPositions = new Vector3[meshRenderers.Count];
+        for (int i = 0; i < meshRenderers.Count; i++)
+        {
+            initialPositions[i] = meshRenderers[i].transform.position;
         }
 
     }
@@ -259,6 +286,27 @@ public class SquadController : MonoBehaviour {
 
 
     private void FixedUpdate() {
+
+        animTime += Time.fixedDeltaTime;
+        if (!isMoved)
+        {
+            if (animTime > animationIdleUpdateTime)
+            {
+                SpriteAnimationChange();
+                animTime = 0;
+            }
+        }
+        else
+        {
+            if (animTime > animationActionUpdateTime)
+            {
+                SpriteAnimationChange();
+                animTime = 0;
+            }
+
+            MoveAnimation();
+        }
+
         if (isMoved) {
             SquadMovement();
             if (currentStamina > 0) { currentStamina -= lostStaminaMoving * Time.fixedDeltaTime; }
@@ -344,6 +392,13 @@ public class SquadController : MonoBehaviour {
 
     }
     private void SquadMovement() {
+        if(lineRenderer == null)
+        {
+            SetRotation(false);
+            return;
+        }
+
+
         if (indexMove < lineRenderer.positionCount-1) {
             positions = new Vector3[(int)lineRenderer.positionCount];
             lineRenderer.GetPositions(positions);
@@ -439,13 +494,13 @@ public class SquadController : MonoBehaviour {
 
     public void SetMoving(bool isMoved) {
         this.isMoved = isMoved;
-        for (int i = 0; i < animators.Count; i++) {
-            if (animators[i].transform.parent == gameObject.transform)
-            {
+        //for (int i = 0; i < animators.Count; i++) {
+        //    if (animators[i].transform.parent == gameObject.transform)
+        //    {
 
-                animators[i].SetBool(IS_MOVING, isMoved);
-            }
-        }
+        //        animators[i].SetBool(IS_MOVING, isMoved);
+        //    }
+        //}
         movementIndicator.SetActive(isMoved);
     }
 
@@ -457,12 +512,12 @@ public class SquadController : MonoBehaviour {
         }
 
         this.inBattle = inBattle;
-        for (int i = 0; i < animators.Count; i++) {
-            if (animators[i].transform.parent == gameObject.transform)
-            {
-                animators[i].SetBool(IS_BATTLE, inBattle);
-            }
-        }
+       // for (int i = 0; i < animators.Count; i++) {
+           // if (animators[i].transform.parent == gameObject.transform)
+          //  {
+               // animators[i].SetBool(IS_BATTLE, inBattle);
+          //  }
+      //  }
         battleIndicator.SetActive(inBattle);
 
         
@@ -473,21 +528,21 @@ public class SquadController : MonoBehaviour {
     }
 
     public void SetShield(int i, bool isShield) {
-        animators[i].SetBool("Shield", isShield);
+        //animators[i].SetBool("Shield", isShield);
     }
 
     private void SetRotation(bool isStopRot) {
         this.isStopRot = isStopRot;
-        for (int i = 0; i < animators.Count; i++) {
-            if (animators[i].transform.parent == gameObject.transform)
-            {
-                animators[i].SetBool(IS_ROTATION, isStopRot);
-            }
-        }
+        //for (int i = 0; i < animators.Count; i++) {
+           // if (animators[i].transform.parent == gameObject.transform)
+           // {
+               // animators[i].SetBool(IS_ROTATION, isStopRot);
+            //}
+       // }
     }
     public void SetShooting(int i)
     {
-        animators[i].SetTrigger("Shooting");
+       // animators[i].SetTrigger("Shooting");
 
         
     }
@@ -520,7 +575,10 @@ public class SquadController : MonoBehaviour {
 
     public void CancelMovement() {
         SetMoving(false);
-        Destroy(lineRenderer.gameObject);
+        if (lineRenderer != null)
+        {
+            Destroy(lineRenderer.gameObject);
+        }
         indexMove = 0;
         currentSpeed = 0;
         positions = null;
@@ -596,13 +654,12 @@ public void OnMainTriggerEnter(Collider enemyCollider) { // тригеры то�
         if (!escape || !ignoreTriggers ) {
                
                 if ((tag == SQUAD_TAG && enemyCollider.gameObject.tag == ENEMY_TAG) || (tag == ENEMY_TAG && enemyCollider.gameObject.tag == SQUAD_TAG) ) {
-                if (enemySquad == null)
-                {
-                    enemySquad = enemyCollider.gameObject;
-                }
+                    //if(mainEnemySquad == null) { 
+                    //mainEnemySquad = enemyCollider.gameObject;
+                    //}
                     isGoingToEnemy = false;
 
-                SquadController squad = enemySquad.transform.parent.gameObject.GetComponent<SquadController>();
+                SquadController squad = enemyCollider.transform.parent.gameObject.GetComponent<SquadController>();
 
 
 
@@ -621,7 +678,7 @@ public void OnMainTriggerEnter(Collider enemyCollider) { // тригеры то�
 
                         SetBattle(true);
                     }
-                    SelectFightingUnits(enemySquad.transform.parent.transform);
+                    SelectFightingUnits();
                     SelectTargetsUnits();
 
 
@@ -649,10 +706,11 @@ public void OnMainTriggerEnter(Collider enemyCollider) { // тригеры то�
                     Debug.Log("exit");
                     enemyController.Remove(squadExiter);
 
-                    if(enemySquad.transform.parent.gameObject == squadExiter.gameObject)
-                    {
-                        enemySquad = null;
-                    }
+                    //if(enemyController[0].gameObject == squadExiter.gameObject)
+                    //{
+                    //    mainEnemySquad = null;
+                    //}
+                    SelectTargetsUnits();
                 }
                 
 
@@ -669,6 +727,12 @@ public void OnMainTriggerEnter(Collider enemyCollider) { // тригеры то�
     }
 
     private void LookOnEnemy() {
+        if(enemyController.Count == 0)
+        {
+            CanSquadFight();
+            return;
+        }
+
         float y = MathUtilities.AngleBetweenTwoPoints(transform.position, enemyController[0].transform.position);
 
 
@@ -684,7 +748,7 @@ public void OnMainTriggerEnter(Collider enemyCollider) { // тригеры то�
         {
             SetRotation(false);
             battleRot = true;
-            SelectFightingUnits(enemySquad.transform);
+            SelectFightingUnits();
 
             transform.rotation = Quaternion.Euler(new Vector3(0f, y, 0f));
         }
@@ -716,7 +780,7 @@ public void OnMainTriggerEnter(Collider enemyCollider) { // тригеры то�
         //{
         //    SetRotation(false);
         //    battleRot = true;
-        //    SelectFightingUnits(enemySquad.transform);
+        //    SelectFightingUnits(mainEnemySquad.transform);
 
         //    transform.rotation = Quaternion.Euler(new Vector3(0f, y, 0f));
 
@@ -782,18 +846,40 @@ public void OnMainTriggerEnter(Collider enemyCollider) { // тригеры то�
             Transform atackedEnemy;
 
             int enemyIndex = 0;
-            int enemySquadIndex = 0;
+            SquadController enemySquad;
 
 
-            enemyIndex = Random.Range(0, avaliableTargetsToAttack.Count);
-            enemySquadIndex = Random.Range(0, enemyController.Count);
+           
+            
 
-            if (enemyIndex >= avaliableTargetsToAttack.Count || avaliableTargetsToAttack[enemyIndex] == null)
+           
+
+            for (int i = 0; i < avaliableTargetsToAttack.Count; i++) // очищаем все это гамно
+            {
+
+
+                if (avaliableTargetsToAttack[i] == null || avaliableTargetsToAttack[i].transform.parent == null)
+                {
+
+                    avaliableTargetsToAttack.RemoveAt(i);
+                    i--;
+                }
+                
+
+
+
+
+            }
+            if (avaliableTargetsToAttack.Count == 0)
             {
                 return;
             }
 
+            enemyIndex = Random.Range(0, avaliableTargetsToAttack.Count) ;
+
             atackedEnemy = avaliableTargetsToAttack[enemyIndex].transform;
+
+            enemySquad = atackedEnemy.GetComponent<SquadController>();
 
                 Vector3 directionToEnemy = atackedEnemy.transform.position - currentUnit.transform.position;
                 directionToEnemy.y = 0; // Оставляем только горизонтальную компоненту направления
@@ -808,9 +894,9 @@ public void OnMainTriggerEnter(Collider enemyCollider) { // тригеры то�
            // Vector3 halfPosition = new Vector3((currentUnit.position.x + atackedEnemy.position.x) / 2, (currentUnit.position.y + atackedEnemy.position.y) / 2, (currentUnit.position.z + atackedEnemy.position.z) / 2);
 
             await currentUnit.DOMove(attackPosition, actionTime / 2f).AsyncWaitForCompletion();
-                if ( enemyController.Count != 0 && enemySquadIndex < enemyController.Count && enemyController[enemySquadIndex] != null )
+                if (enemySquad != null && enemyController.Count != 0 &&  enemyController.Contains(enemySquad))
                 {
-                    enemyController[enemySquadIndex].GetDamage(enemyIndex);
+                enemySquad.GetDamage(enemyIndex);
                 }
             await currentUnit.DOMove(startPosition, actionTime / 1.5f).AsyncWaitForCompletion();
 
@@ -831,7 +917,7 @@ public void OnMainTriggerEnter(Collider enemyCollider) { // тригеры то�
         if (enemyController.Count > 0)
         {
 
-            SelectFightingUnits(enemyController[0].transform); ///// ---- надо улучшить!
+            SelectFightingUnits(); 
            
 
         }
@@ -847,6 +933,7 @@ public void OnMainTriggerEnter(Collider enemyCollider) { // тригеры то�
 
 
     private void EnemyDamage() {
+       
 
         if (enemyController.Count == 0)
         {
@@ -869,7 +956,7 @@ public void OnMainTriggerEnter(Collider enemyCollider) { // тригеры то�
         {
             
 
-            if (avaliableTargetsToAttack[i].transform.parent != null)
+            if (avaliableTargetsToAttack[i] != null && avaliableTargetsToAttack[i].transform.parent != null)
             {
                 enController = avaliableTargetsToAttack[i].transform.parent.GetComponent<SquadController>();
                 if (enemyController.Contains(enController))
@@ -877,19 +964,25 @@ public void OnMainTriggerEnter(Collider enemyCollider) { // тригеры то�
                     indexTarget = i;
                     i = avaliableTargetsToAttack.Count;
                 }
-               
 
+
+            }
+            else
+            {
+                avaliableTargetsToAttack.RemoveAt(i);
+                i--;
             }
             
             
 
 
         }
+        
 
         if (indexTarget < 0) // если никого нет из целей - прирываем выполнение
             return;
 
-
+        
 
 
         currentTriggerCoef = AttackTriggerCoef(); /// --------- посмотреть шо за фигня !!!!
@@ -1014,8 +1107,8 @@ public void OnMainTriggerEnter(Collider enemyCollider) { // тригеры то�
 
                 Animator unitAnimator = unitArray[i].GetComponent<Animator>();
 
-                if (animators.Contains(unitAnimator))
-                    animators.Remove(unitAnimator);
+                //if (animators.Contains(unitAnimator))
+                //    animators.Remove(unitAnimator);
 
                 if(avaliableToAttack.Contains(unitArray[i]))
                  avaliableToAttack.Remove(unitArray[i]);
@@ -1056,9 +1149,11 @@ public void OnMainTriggerEnter(Collider enemyCollider) { // тригеры то�
        
 
         
-        Instantiate(bloodFx, unit.transform);
+        Instantiate(bloodFx[Random.Range(0, bloodFx.Length)], unit.transform.position, unit.transform.rotation);
+        Instantiate(deadFx, unit.transform.position, deadFx.transform.rotation);
 
-        
+
+
         //Destroy(unit, deadTime);
         unit.transform.parent = null;
 
@@ -1127,11 +1222,11 @@ public void OnMainTriggerEnter(Collider enemyCollider) { // тригеры то�
 
             DeleteUnit(currentUnit);
 
-            
 
 
-            Instantiate(bloodFx, currentUnit.transform);
 
+            Instantiate(bloodFx[Random.Range(0, bloodFx.Length)], currentUnit.transform.position, currentUnit.transform.rotation);
+            Instantiate(deadFx, currentUnit.transform.position, deadFx.transform.rotation);
 
             //Destroy(currentUnit, deadTime);
             currentUnit.transform.parent = null;
@@ -1184,7 +1279,7 @@ public void OnMainTriggerEnter(Collider enemyCollider) { // тригеры то�
              for(int i = 0; i < enemyController.Count;i++) {
              
              enemyController[i].enemyController.Remove(this);
-             enemyController[i].enemySquad = null;
+             //enemyController[i].mainEnemySquad = null;
              enemyController[i].CanSquadFight(); 
              }
              }
@@ -1202,7 +1297,7 @@ public void OnMainTriggerEnter(Collider enemyCollider) { // тригеры то�
         for (int i = 0; i < unitArray.Count; i++)
         {
             
-
+            if(unitArray[i].gameObject.activeInHierarchy == false)
                 Destroy(unitArray[i].gameObject);
             
 
@@ -1229,15 +1324,15 @@ public void OnMainTriggerEnter(Collider enemyCollider) { // тригеры то�
      }
 
     public void GetDamage(int index) {
-        if (index >= animators.Count || animators[index] == null)
-            return;
+        //if (index >= animators.Count || animators[index] == null)
+        //    return;
 
         if (Random.Range(1, 11) % 2 == 0) {
-            if (animators[index].transform.parent == transform)
-            animators[index].SetTrigger("GetDamage");
-        } else {
-            if (animators[index].transform.parent == transform)
-                animators[index].SetTrigger("GetDamage2");
+        //    if (animators[index].transform.parent == transform)
+        //    animators[index].SetTrigger("GetDamage");
+        //} else {
+        //    if (animators[index].transform.parent == transform)
+        //        animators[index].SetTrigger("GetDamage2");
         }
 
         MoraleChange(-(lostMoraleThenDie * (amountUnits / currentAmountUnits) * enemyController.Count)/5f);
@@ -1277,21 +1372,35 @@ public void OnMainTriggerEnter(Collider enemyCollider) { // тригеры то�
         return 0;
     }
 
-    private void SelectFightingUnits(Transform enemyTransform) /// можно улучшить - несколько раз искать с каждыйм разом большим радиусом. Искать точное количество (шоб на одного не нападать)
+    private void SelectFightingUnits() /// можно улучшить - несколько раз искать с каждыйм разом большим радиусом. Искать точное количество (шоб на одного не нападать)
     {
         avaliableToAttack.Clear();
-        Collider[] hitColliders = Physics.OverlapSphere(enemyTransform.position, radiusDetection, detrctionMask);
 
-        foreach (var hitCollider in hitColliders)
+        if(enemyController.Count <= 0)
         {
-            if (squadDie)
-            {
-                return;
-            }
-            if(hitCollider.transform.parent == gameObject.transform)
-            avaliableToAttack.Add(hitCollider.gameObject);
+            return;
         }
 
+        foreach (var eController in enemyController)
+        {
+            if (eController != null)
+            {
+
+
+                Collider[] hitColliders = Physics.OverlapSphere(eController.transform.position, radiusDetection, detrctionMask);
+
+                foreach (var hitCollider in hitColliders)
+                {
+                    if (squadDie)
+                    {
+                        return;
+                    }
+                    if (hitCollider != null && hitCollider.transform.parent == gameObject.transform)
+                        avaliableToAttack.Add(hitCollider.gameObject);
+                }
+            }
+
+        }
         if(avaliableToAttack.Count == 0)
         {
             
@@ -1307,8 +1416,21 @@ public void OnMainTriggerEnter(Collider enemyCollider) { // тригеры то�
 
         foreach (var hitCollider in hitColliders)
         {
-            if (hitCollider.gameObject.tag != gameObject.tag)
-                avaliableTargetsToAttack.Add(hitCollider.gameObject);
+
+            if (hitCollider.gameObject.tag != gameObject.tag )
+            {
+                SquadController sq = null;
+
+                if (hitCollider != null && hitCollider.transform.parent != null)
+                     sq = hitCollider.transform.parent.GetComponent<SquadController>();
+
+                if (sq != null && hitCollider != null)
+                {
+                    if (enemyController.Contains(sq))
+                        avaliableTargetsToAttack.Add(hitCollider.gameObject);
+                }
+
+            }
         }
 
     }
@@ -1341,7 +1463,98 @@ public void OnMainTriggerEnter(Collider enemyCollider) { // тригеры то�
         }
     }
 
-    
+
+    //animation
+    public void SpriteAnimationChange()
+    {
+       
+
+        if(animationState == 0) // idle
+        {
+            for (int i = 0; i < meshRenderers.Count; i++)
+            {
+
+
+                meshRenderers[i].material = materialsAnimation[animationState];
+
+            }
+
+            for (int i = 0; i < meshRenderers.Count; i++)
+            {
+
+
+                meshRenderers[i].transform.localScale = new Vector3(spriteSize.x, spriteSize.y, spriteSize.z);
+
+                if (Random.Range(1, 3) % 2 == 0)
+                {
+                    meshRenderers[i].transform.localScale = new Vector3(spriteSize.x, spriteSize.y + 0.3f, spriteSize.z);
+                }
+                
+
+                
+
+            }
+        }else if (animationState == 1)// run
+        {
+           if( runAnimIndex == 0)
+            {
+                runAnimIndex = 1;
+            }
+            else
+            {
+                runAnimIndex = 0;
+            }
+
+            for (int i = 0; i < meshRenderers.Count; i++)
+            {
+
+                
+                meshRenderers[i].transform.localScale = new Vector3(spriteSize.x, spriteSize.y, spriteSize.z);
+
+                if (meshRenderers[i].transform.localPosition.y > 0) 
+                {
+                   // meshRenderers[i].transform.localScale = new Vector3(spriteSize.x, spriteSize.y + 0.3f, spriteSize.z);
+                    meshRenderers[i].material = materialsAnimation[1];
+                }
+                else
+                {
+                    meshRenderers[i].material = materialsAnimation[2];
+                }
+                
+
+                
+                
+
+
+
+
+            }
+        }
+    }
+
+    void MoveAnimation()
+    {
+
+
+        float time = Time.time * 6;
+
+        for (int i = 0; i < meshRenderers.Count; i++)
+        {
+            // Рассчитываем индексы в сетке
+            int x = i % 5;
+            int z = i / 5;
+
+            // Вычисляем смещение волны
+            float waveOffset = Mathf.Sin((x + z) * 6f + time) * 0.1f;
+
+            // Обновляем позицию юнита
+            Vector3 targetPosition = initialPositions[i];
+            targetPosition.y += waveOffset;
+            meshRenderers[i].transform.position = targetPosition;
+
+        }
+    }
+
 
 }
 
