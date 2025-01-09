@@ -14,8 +14,8 @@ public class SquadControlManager : MonoBehaviour
     [SerializeField] private Transform pointDebug;
     [SerializeField] private LayerMask terrainLayer ;
     [SerializeField] private LayerMask unitLayer ;
- 
 
+    [SerializeField] private List<Vector3> pointsList = new List<Vector3>();
     public static SquadControlManager Instance { get; private set; }
 
     [SerializeField]private bool hitSquad = false;
@@ -83,12 +83,18 @@ public class SquadControlManager : MonoBehaviour
             if (!squadController.isMoved && currentLineLength > 0) { 
                 currentLineLength = 0;
                 squadController.SetMoving(true);
-                squadController.SetBattle(false);
+                
+                if (squadController.inBattle)
+                {
+                    squadController.SetBattle(false);
+                    squadController.escape = true;
+                }
+
                 TryToShortcutLine();
                 TryChangeColor();
             }
             hitSquad = false;
-
+            lineRenderer = null;
             mousePrevPos = Vector3.zero;
             mousePosSum = Vector3.zero;
             roundIndex = 0;
@@ -176,17 +182,28 @@ public class SquadControlManager : MonoBehaviour
 
     private void TryToShortcutLine()
     {
-        if(lineRenderer.positionCount > 3)
-        {
+        
+            Vector3[] positions = new Vector3[(int)lineRenderer.positionCount];
+            lineRenderer.GetPositions(positions);
+            
+
             for (int i = 0; i < lineRenderer.positionCount; i++)
             {
-                if(Vector3.Distance(squadController.transform.position, lineRenderer.GetPosition(i)) < squadController.aroundRadius)
-                lineRenderer.SetPosition(i, squadController.transform.position);
-            }
+                if (Vector3.Distance(squadController.transform.position, lineRenderer.GetPosition(i)) > squadController.colliderRadius+1f)
+                {
+                    pointsList.Add(lineRenderer.GetPosition(i));
+                    //i--;
+                    //Debug.Log("TryToShortcutLine");
+                }
 
-                
-           
-        }
+            }
+        lineRenderer.positionCount = pointsList.Count;
+        positions = pointsList.ToArray();
+            lineRenderer.SetPositions(positions);
+        pointsList.Clear();
+
+
+
     }
     public bool HasHitSquad() {
         return hitSquad;

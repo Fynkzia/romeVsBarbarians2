@@ -8,8 +8,10 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Pine_v1 1
-  m_Shader: {fileID: 210, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: f8d49205b3b0a644195633020367689d, type: 3}
   m_ValidKeywords:
+  - TCP2_DISABLE_WRAPPED_LIGHT
+  - TCP2_SPEC_TOON
   - _ALPHATEST_ON
   m_InvalidKeywords: []
   m_LightmapFlags: 0
@@ -18,8 +20,7 @@ Material:
   m_CustomRenderQueue: 2450
   stringTagMap:
     RenderType: TransparentCutout
-  disabledShaderPasses:
-  - GRABPASS
+  disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -75,7 +76,7 @@ Material:
     - _CameraFarFadeDistance: 2
     - _CameraNearFadeDistance: 1
     - _Cull: 2
-    - _Cutoff: 0.5
+    - _Cutoff: 0.015
     - _DetailNormalMapScale: 1
     - _DistortionBlend: 0.5
     - _DistortionEnabled: 0
@@ -85,29 +86,40 @@ Material:
     - _EmissionEnabled: 0
     - _FlipbookMode: 0
     - _GlossMapScale: 1
-    - _Glossiness: 0.233
+    - _Glossiness: 0
     - _GlossyReflections: 1
     - _LightingEnabled: 1
-    - _Metallic: 0.013
+    - _Metallic: 0.021
     - _Mode: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _RampSmooth: 0.1
-    - _RampThreshold: 0.5
+    - _RampSmooth: 0
+    - _RampSmoothAdd: 0
+    - _RampThreshold: 0.532
+    - _RimMax: 0.85
+    - _RimMin: 0.6
+    - _RimStrength: 0.5
     - _SmoothnessTextureChannel: 0
     - _SoftParticlesEnabled: 0
     - _SoftParticlesFarFadeDistance: 1
     - _SoftParticlesNearFadeDistance: 0
+    - _SpecBlend: 0.65
+    - _SpecSmooth: 0.343
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _TCP2_DISABLE_WRAPPED_LIGHT: 1
+    - _TCP2_RAMPTEXT: 0
+    - _TCP2_SPEC_TOON: 1
+    - _TCP2_STYLIZED_FRESNEL: 0
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
     - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
-    - _Color: {r: 1, g: 0.7985456, b: 0.4198113, a: 1}
+    - _Color: {r: 0.8773585, g: 0.8188884, b: 0.7076807, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _HColor: {r: 0.785, g: 0.785, b: 0.785, a: 1}
-    - _SColor: {r: 0.195, g: 0.195, b: 0.195, a: 1}
+    - _HColor: {r: 0.9150943, g: 0.8935119, b: 0.8935119, a: 1}
+    - _RimColor: {r: 0.8, g: 0.8, b: 0.8, a: 0.6}
+    - _SColor: {r: 0.08067818, g: 0.17249732, b: 0.3490566, a: 1}
     - _SoftParticleFadeParams: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   m_BuildTextureStacks: []

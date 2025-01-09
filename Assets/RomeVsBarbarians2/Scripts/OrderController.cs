@@ -126,18 +126,18 @@ public class OrderController : MonoBehaviour {
     }
 
     private void AddAttackOrder() {
-        if (squadController.unitArray.Count >= squadController.maxFightingUnit + 3) { 
-            squadController.actionUnits += 3;
-            squadController.maxFightingUnit += 3;
-        }
+        //if (squadController.unitArray.Count >= squadController.maxFightingUnit + 3) { 
+            //squadController.actionUnits += 3;
+            //squadController.maxFightingUnit += 3;
+        //}
         squadController.defenceSquad += attackOrder.defenceSquad;
         squadController.powerSquad += attackOrder.powerSquad;
         squadController.attack = true;
     }
     private void RemoveAttackOrder() {
         if (squadController.actionUnits >= 6) { 
-            squadController.actionUnits -= 3;
-            squadController.maxFightingUnit -= 3;
+            //squadController.actionUnits -= 3;
+            //squadController.maxFightingUnit -= 3;
         }
         squadController.defenceSquad -= attackOrder.defenceSquad;
         squadController.powerSquad -= attackOrder.powerSquad;
@@ -145,7 +145,7 @@ public class OrderController : MonoBehaviour {
     private void AddDefenceOrder() {
         if (squadController.unitArray.Count >= squadController.actionUnits + 3) { 
             squadController.actionUnits += 3;
-            squadController.maxFightingUnit += 3;
+           // squadController.maxFightingUnit += 3;
             int i = 0;
             while(i < 3) {
                 int randomUnit = Random.Range(0, squadController.unitArray.Count);
@@ -169,7 +169,7 @@ public class OrderController : MonoBehaviour {
                 i++;
             }
             squadController.actionUnits -= 3;
-            squadController.maxFightingUnit -= 3;
+           // squadController.maxFightingUnit -= 3;
         }
         squadController.defenceSquad -= defenceOrder.defenceSquad;
         squadController.actionTime -= defenceOrder.actionTime;

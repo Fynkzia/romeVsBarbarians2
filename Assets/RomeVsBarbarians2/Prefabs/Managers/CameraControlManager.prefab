@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8763020861122803141
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7794918849414905227}
+  - component: {fileID: 7914634697391116272}
+  m_Layer: 0
+  m_Name: CameraControlManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7794918849414905227
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8763020861122803141}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7914634697391116272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8763020861122803141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16a5469af3ff6764298ef36bbd508e54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameCamera: {fileID: 0}
+  renderTextureCamera: {fileID: 0}
+  renderTerrainCamera: {fileID: 0}
+  cinemachineObject: {fileID: 0}
+  cams:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  ZoomY:
+  - 96.6
+  - 126.7
+  - 164.9
+  ZoomRot:
+  - {x: -0.25465572, y: 0.36785898, z: -0.10548187, w: -0.88808995}
+  - {x: -0.32196307, y: 0.3586939, z: -0.13336125, w: -0.8659638}
+  - {x: -0.37061292, y: 0.35054305, z: -0.15351294, w: -0.84628564}
+  panSpeed:
+  - 2300
+  - 3500
+  - 5500
+  panLimitZ:
+  - 90
+  - 338
+  panLimitX:
+  - -64
+  - 170
+  zoomSpeed: 2.5
+  cameraTextures:
+  - {fileID: 8400000, guid: 16f98bd7be16fb245a6a65f470317fa1, type: 2}
+  - {fileID: 8400000, guid: 93b6aa2bbe1594e16b4de76864a16799, type: 2}
+  - {fileID: 8400000, guid: 92f34460959b8f749a80d35a740ea8fc, type: 2}
+  mainRenderTexture: {fileID: 0}
+  Rotation: {x: 0, y: -0.38268346, z: 0, w: 0.9238795}
+  fieldsOfView:
+  - 13.7
+  - 17
+  - 21

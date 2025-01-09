@@ -47,7 +47,7 @@ public class ShotMovement : MonoBehaviour
         _startPosition = transform.position;
 
         distance = Vector3.Distance(_startPosition, target);
-        this.target = target + new Vector3 (Random.Range(-0.4f,0.4f) * (distance /accuracy ), 0, Random.Range(-0.4f, 0.4f) * (distance / accuracy)); // разброс снарядов
+        this.target = target + new Vector3 (Random.Range(-0.2f,0.2f) *  accuracy , 0, Random.Range(-0.2f, 0.2f) *  accuracy); // разброс снарядов
         this.speed = speed;
         this.arrowsAmount = arrowsAmount;
         this.damage = damage;
@@ -145,7 +145,7 @@ public class ShotMovement : MonoBehaviour
             Transform arrow = transform.GetChild(i);
 
             arrow.rotation = Quaternion.Euler(180f,0,0);
-            arrow.position = new Vector3(arrow.position.x, 0 + offsetArrivedArrows, arrow.position.z);
+            arrow.localPosition = new Vector3(arrow.localPosition.x, 0 + offsetArrivedArrows, arrow.localPosition.z);
         }
         Instantiate(fxVisual, transform.position, fxVisual.transform.rotation,transform);
     }
@@ -179,7 +179,11 @@ public class ShotMovement : MonoBehaviour
 
                         enController.DieRandomUnit();
                     }
-                    enController.MoraleChange(-enController.lostMoraleThenDie / 5f); 
+                    else
+                    {
+                        enController.GetDamage();
+                    }
+                    //enController.MoraleChange(-enController.lostMoraleThenDie / 5f); 
                 }
 
 
@@ -197,12 +201,21 @@ public class ShotMovement : MonoBehaviour
 
                     float r = Random.Range(min, max);
 
-                    if (r > 9.8f)
+                    if (r > 10f)
                     {
 
                         enController.DieRandomUnit();
                     }
-                    enController.MoraleChange(-enController.lostMoraleThenDie / 5f); 
+                    else
+                    {
+                        if (r > 9f)
+                        {
+                            enController.GetDamage();
+
+                        }
+                        
+                    }
+                    //enController.MoraleChange(-enController.lostMoraleThenDie / 5f); 
                 }
 
             }

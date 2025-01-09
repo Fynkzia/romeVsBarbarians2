@@ -590,10 +590,7 @@ public class EnemyAIController : MonoBehaviour
                 return;
             }
 
-                if(squad.currentStamina/squad.maxStamina < 0.1 + (difficulty*0.05f)){ // отдых
-                    return;
-
-                }
+                
                 if(squad.currentMorale/squad.maxMorale < 0.1 + (difficulty*0.05f)){ // отдых
                     return;
 

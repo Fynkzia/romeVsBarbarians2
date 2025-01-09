@@ -114,25 +114,34 @@ public class ShootingController : MonoBehaviour
 
     }
 
-    IEnumerator SpawnShotAfterDelay(Collider predictEnemy)
+    IEnumerator SpawnShotAfterDelay(Collider predictEnemy  )
     {
+        
         actionUnits = squadController.actionUnits;
         Vector3 enemyPosition = predictEnemy.gameObject.transform.position;
+        squadController.animTime = 0;
+
+        AnimationController[] animationController = new AnimationController[(int)actionUnits];
 
         for (int i = 0; i < actionUnits; i++)
         {
-            int index = Random.Range(0, squadController.unitArray.Count);
-            squadController.SetShooting(index);
-
-            Vector3 directionToEnemy = enemyPosition - transform.position;
-            directionToEnemy.y = 0; // Оставляем только горизонтальную компоненту направления
-            squadController.unitArray[index].transform.rotation = Quaternion.LookRotation(directionToEnemy) * Quaternion.EulerAngles(0f, 90f, 0f);
+            int index = Random.Range(0, squadController.animatorControllers.Count);
+            squadController.animatorControllers[index].SpriteAnimationChange(9);
+            animationController[i] = squadController.animatorControllers[index];
+           
         }
 
         yield return new WaitForSeconds(shotSpawnDelay);
-        
 
-        ShotMovement.Create(pfArrow, transform.position + new Vector3(0, shotStartOffset, 0), enemyPosition, shotSpeed, actionUnits,shotDamage,shotAccuracy,gameObject.tag);
+        for (int i = 0; i < actionUnits; i++)
+        {
+
+            animationController[i].SpriteAnimationChange(10);
+            
+            
+        }
+        float distance = Vector3.Distance(transform.position, enemyPosition);
+        ShotMovement.Create(pfArrow, transform.position + new Vector3(0, shotStartOffset, 0), enemyPosition, shotSpeed, actionUnits,shotDamage,(10-shotAccuracy)* (distance/ shotRange), gameObject.tag);
     }
 
     IEnumerator AttackShootingSiqunce()
@@ -145,12 +154,15 @@ public class ShootingController : MonoBehaviour
 
         for (int i = 0; i < actionUnits; i++)
         {
-            int index = Random.Range(0, squadController.unitArray.Count);
-            squadController.SetShooting(index);
 
-            Vector3 directionToEnemy = enemyPosition - transform.position;
-            directionToEnemy.y = 0; // Оставляем только горизонтальную компоненту направления
-            squadController.unitArray[index].transform.rotation = Quaternion.LookRotation(directionToEnemy) * Quaternion.EulerAngles(0f, -90f, 0f);
+            int index = Random.Range(0, squadController.animatorControllers.Count);
+            squadController.animatorControllers[index].SpriteAnimationChange(8);
+            //int index = Random.Range(0, squadController.unitArray.Count);
+            //squadController.SetShooting(index);
+
+            //Vector3 directionToEnemy = enemyPosition - transform.position;
+            //directionToEnemy.y = 0; // Оставляем только горизонтальную компоненту направления
+            //squadController.unitArray[index].transform.rotation = Quaternion.LookRotation(directionToEnemy) * Quaternion.EulerAngles(0f, -90f, 0f);
         }
 
         yield return new WaitForSeconds(shotSpawnDelay);

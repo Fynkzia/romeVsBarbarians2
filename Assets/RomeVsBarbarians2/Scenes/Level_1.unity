@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.5748172, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1635,7 +1634,10 @@ MonoBehaviour:
   unitLayer:
     serializedVersion: 2
     m_Bits: 576
+  pointsList: []
   hitSquad: 0
+  lineRenderer: {fileID: 0}
+  squadController: {fileID: 0}
 --- !u!4 &379915197
 Transform:
   m_ObjectHideFlags: 0
@@ -2820,7 +2822,7 @@ Light:
   m_InnerSpotAngle: 21.802082
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 0
+    m_Type: 1
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -4000,10 +4002,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionQueueArray: []
+  allEnemiesList: []
   nearEnemyList: []
+  nearEnemyPower: 0
+  nearEnemyType0: 0
+  nearEnemyType1: 0
+  nearEnemyType2: 0
+  nearPlayerList: []
+  nearPlayerPower: 0
+  nearPlayerType0: 0
+  nearPlayerType1: 0
+  nearPlayerType2: 0
   playerNearSquads: []
   playerFarSquads: []
   battlePoints: []
+  helpPoints: []
   timeAction: 0
   actions: 0
   playerUnitLayer:
@@ -4013,10 +4026,30 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   drawingPrefab: {fileID: 3402867912507858967, guid: b9598d3b6662f4b46a667f70dbea15d0, type: 3}
+  horseCountCoef: 0
+  difficulty: 0
   timeToGetActions: 5
   farRadius: 70
   nearRadius: 20
   nearEnemyRadius: 15
+  enemyObject: {fileID: 0}
+  waveNow: 0
+  waveMax: 0
+  waveTimer: 0
+  waveTiming: []
+  wave0: []
+  wave1: []
+  wave2: []
+  wave3: []
+  wave4: []
+  wave5: []
+  spawnPoints: []
+  supportUI: {fileID: 0}
+  timerSupportUI: {fileID: 0}
+  countSupportUI: {fileID: 0}
+  supportUIBar: {fileID: 0}
+  supportUIShow: 0
+  supportUIAlert: 0
 --- !u!4 &941020587
 Transform:
   m_ObjectHideFlags: 0
@@ -5984,6 +6017,7 @@ Terrain:
   m_DetailObjectDensity: 0.026
   m_HeightmapPixelError: 4.8
   m_SplatMapDistance: 0
+  m_HeightmapMinimumLODSimplification: 0
   m_HeightmapMaximumLOD: 0
   m_ShadowCastingMode: 1
   m_DrawHeightmap: 1
@@ -6269,6 +6303,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameCamera: {fileID: 413516579}
   renderTextureCamera: {fileID: 963194227}
+  renderTerrainCamera: {fileID: 0}
+  cinemachineObject: {fileID: 0}
+  cams: []
+  ZoomY: []
+  ZoomRot: []
   panSpeed:
   - 2300
   - 3500
@@ -6285,6 +6324,7 @@ MonoBehaviour:
   - {fileID: 8400000, guid: 93b6aa2bbe1594e16b4de76864a16799, type: 2}
   - {fileID: 8400000, guid: 92f34460959b8f749a80d35a740ea8fc, type: 2}
   mainRenderTexture: {fileID: 1573674674}
+  Rotation: {x: 0, y: 0, z: 0, w: 0}
   fieldsOfView:
   - 7
   - 12
@@ -7134,13 +7174,15 @@ ParticleSystemRenderer:
   m_RenderAlignment: 0
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
-  m_UseCustomVertexStreams: 0
   m_EnableGPUInstancing: 1
   m_ApplyActiveColorSpace: 1
   m_AllowRoll: 1
   m_FreeformStretching: 0
   m_RotateWithStretchDirection: 1
+  m_UseCustomVertexStreams: 0
   m_VertexStreams: 00010304
+  m_UseCustomTrailVertexStreams: 0
+  m_TrailVertexStreams: 00010304
   m_Mesh: {fileID: 0}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}

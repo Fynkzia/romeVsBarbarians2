@@ -29,7 +29,7 @@ public class LookAtCamera : MonoBehaviour
 
     void HandleZoomChanged(int newZoom)
     {
-        float scale = 0.7f + newZoom * scaleFactor;
+        float scale = 0.6f + newZoom * scaleFactor;
         transform.localScale = new Vector3(scale, scale, scale);
     }
 

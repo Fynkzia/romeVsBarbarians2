@@ -18,9 +18,7 @@ public class BarUI : MonoBehaviour
 
     private void Update() {
         if (squadController != null) {
-            if (barType == BarType.Stamina) { 
-                ChangeProgress(squadController.currentStamina, squadController.maxStamina);
-            }
+            
             if (barType == BarType.Morale) {
                 ChangeProgress(squadController.currentMorale, squadController.maxMorale);
             }
