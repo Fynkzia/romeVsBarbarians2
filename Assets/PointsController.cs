@@ -13,6 +13,9 @@ public class PointsController : MonoBehaviour
     private Vector3[] originalPositions; // Исходные позиции точек
     public Transform[] points; // Список точек
 
+   
+
+
     private void Awake()
     {
         // Сохраняем исходные позиции точек
@@ -25,6 +28,8 @@ public class PointsController : MonoBehaviour
             points[i] = transform.GetChild(i);
             originalPositions[i] = points[i].localPosition;
         }
+
+        
     }
 
     public void RadiusUpdate()

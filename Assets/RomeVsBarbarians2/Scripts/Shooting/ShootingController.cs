@@ -152,23 +152,30 @@ public class ShootingController : MonoBehaviour
         actionUnits = squadController.unitArray.Count;
         Vector3 enemyPosition = squadController.predictEnemy.gameObject.transform.position;
 
+        yield return new WaitForSeconds(0.5f);
+
+
         for (int i = 0; i < actionUnits; i++)
         {
+            
+            squadController.animatorControllers[i].SpriteAnimationChange(9);
+           
 
-            int index = Random.Range(0, squadController.animatorControllers.Count);
-            squadController.animatorControllers[index].SpriteAnimationChange(8);
-            //int index = Random.Range(0, squadController.unitArray.Count);
-            //squadController.SetShooting(index);
-
-            //Vector3 directionToEnemy = enemyPosition - transform.position;
-            //directionToEnemy.y = 0; // Оставляем только горизонтальную компоненту направления
-            //squadController.unitArray[index].transform.rotation = Quaternion.LookRotation(directionToEnemy) * Quaternion.EulerAngles(0f, -90f, 0f);
         }
 
         yield return new WaitForSeconds(shotSpawnDelay);
-        ShotMovement.Create(pfArrow, transform.position + new Vector3(0, shotStartOffset, 0), enemyPosition, shotSpeed, actionUnits, shotDamage, shotAccuracy, gameObject.tag);
+        float distance = Vector3.Distance(transform.position, enemyPosition);
+        ShotMovement.Create(pfArrow, transform.position + new Vector3(0, shotStartOffset, 0), enemyPosition, shotSpeed, actionUnits, shotDamage, (10 - shotAccuracy) * (distance / shotRange), gameObject.tag);
 
-        yield return new WaitForSeconds(0.5f);
+        for (int i = 0; i < actionUnits; i++)
+        {
+
+            squadController.animatorControllers[i].SpriteAnimationChange(10);
+
+
+        }
+
+        yield return new WaitForSeconds(1f);
 
         SquadControlManager controlController = GameObject.Find("SquadControlManager").GetComponent<SquadControlManager>();
 
@@ -211,9 +218,12 @@ public class ShootingController : MonoBehaviour
             }
             else
             {
-                squadController.CancelMovement();
-                ShootingSquad();
-                rapidityTimer = 0;
+                if (isShootingSquad)
+                {
+                    squadController.CancelMovement();
+                    ShootingSquad();
+                    rapidityTimer = 0;
+                }
             }
 
         }

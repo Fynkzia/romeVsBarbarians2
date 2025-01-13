@@ -52,14 +52,14 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  ZoomY:
-  - 96.6
-  - 126.7
-  - 164.9
-  ZoomRot:
-  - {x: -0.25465572, y: 0.36785898, z: -0.10548187, w: -0.88808995}
-  - {x: -0.32196307, y: 0.3586939, z: -0.13336125, w: -0.8659638}
-  - {x: -0.37061292, y: 0.35054305, z: -0.15351294, w: -0.84628564}
+  fogStart:
+  - 150
+  - 228
+  - 570
+  fogEnds:
+  - 240
+  - 295
+  - 850
   panSpeed:
   - 2300
   - 3500
@@ -70,7 +70,14 @@ MonoBehaviour:
   panLimitX:
   - -64
   - 170
-  zoomSpeed: 2.5
+  zoomTime:
+  - 0
+  - 0.7
+  - 1
+  zoomFovTime:
+  - 0
+  - 0.6
+  - 0.8
   cameraTextures:
   - {fileID: 8400000, guid: 16f98bd7be16fb245a6a65f470317fa1, type: 2}
   - {fileID: 8400000, guid: 93b6aa2bbe1594e16b4de76864a16799, type: 2}
@@ -78,6 +85,10 @@ MonoBehaviour:
   mainRenderTexture: {fileID: 0}
   Rotation: {x: 0, y: -0.38268346, z: 0, w: 0.9238795}
   fieldsOfView:
-  - 13.7
+  - 23
   - 17
-  - 21
+  - 9.5
+  prevFovIndex: 0
+  zoomCurrentTime: 0
+  zoomFog: 0
+  isZoom: 0

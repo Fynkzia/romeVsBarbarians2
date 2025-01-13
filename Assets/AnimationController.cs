@@ -5,7 +5,8 @@ using UnityEngine;
 public class AnimationController : MonoBehaviour
 {
     [SerializeField] public List<Material> animtionMaterials;
-   
+    [SerializeField] public int state;
+
 
     [SerializeField] public MeshRenderer meshRenderer;
     // Start is called before the first frame update
@@ -13,5 +14,6 @@ public class AnimationController : MonoBehaviour
     public void SpriteAnimationChange(int animationindex)
     {
         meshRenderer.material = animtionMaterials[animationindex];
+        state = animationindex;
     }
 }

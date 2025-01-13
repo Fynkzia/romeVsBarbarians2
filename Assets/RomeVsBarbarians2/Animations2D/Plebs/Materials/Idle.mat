@@ -12,7 +12,7 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - TCP2_SPEC_TOON
+  - TCP2_DISABLE_WRAPPED_LIGHT
   - _ALPHATEST_ON
   - _GLOSSYREFLECTIONS_OFF
   m_InvalidKeywords: []
@@ -75,7 +75,7 @@ Material:
     - _CameraFarFadeDistance: 2
     - _CameraNearFadeDistance: 1
     - _Cull: 2
-    - _Cutoff: 0.086
+    - _Cutoff: 0.161
     - _DetailNormalMapScale: 1
     - _DistortionBlend: 0.5
     - _DistortionEnabled: 0
@@ -85,16 +85,16 @@ Material:
     - _EmissionEnabled: 0
     - _FlipbookMode: 0
     - _GlossMapScale: 1
-    - _Glossiness: 0.156
+    - _Glossiness: 0.215
     - _GlossyReflections: 0
     - _LightingEnabled: 1
-    - _Metallic: 0.194
+    - _Metallic: 0.051
     - _Mode: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _RampSmooth: 0.314
+    - _RampSmooth: 0.328
     - _RampSmoothAdd: 0.75
-    - _RampThreshold: 0.547
+    - _RampThreshold: 0.521
     - _RimMax: 0.85
     - _RimMin: 0.6
     - _RimStrength: 0.5
@@ -106,18 +106,18 @@ Material:
     - _SpecSmooth: 0.212
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _TCP2_DISABLE_WRAPPED_LIGHT: 0
+    - _TCP2_DISABLE_WRAPPED_LIGHT: 1
     - _TCP2_RAMPTEXT: 0
-    - _TCP2_SPEC_TOON: 1
+    - _TCP2_SPEC_TOON: 0
     - _TCP2_STYLIZED_FRESNEL: 0
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
     - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
-    - _Color: {r: 0.8301887, g: 0.81844074, b: 0.81844074, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _HColor: {r: 1, g: 1, b: 1, a: 1}
+    - _HColor: {r: 0.7830189, g: 0.71653616, b: 0.6832948, a: 1}
     - _RimColor: {r: 0.8, g: 0.8, b: 0.8, a: 0.6}
-    - _SColor: {r: 1, g: 1, b: 1, a: 1}
+    - _SColor: {r: 0.5943396, g: 0.39529192, b: 0.54808426, a: 0.23529412}
     - _SoftParticleFadeParams: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

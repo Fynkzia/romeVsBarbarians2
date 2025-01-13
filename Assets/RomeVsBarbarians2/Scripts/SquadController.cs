@@ -210,6 +210,12 @@ public class SquadController : MonoBehaviour {
     [SerializeField] private GameObject battleIndicator;
     [SerializeField] private PointsController unitPositions;
 
+    [SerializeField] private GameObject shadowObject;
+    [SerializeField] private GameObject selectObject;
+
+    public float shadowStartScale = 0;
+    public float selectStartScale = 0;
+
     public float angleToUpdateFormation = 0;
     public int tapCount = 0;
     private float startTapTime = 0;
@@ -254,6 +260,8 @@ public class SquadController : MonoBehaviour {
         pointsDistance = GameOptions.distanceToPoint;
         rb = GetComponent<Rigidbody>();
 
+        shadowStartScale = shadowObject.transform.localScale.x;
+        selectStartScale = selectObject.transform.localScale.x;
 
         animationState = 0;
         SpriteAnimationChange();
@@ -436,14 +444,26 @@ public class SquadController : MonoBehaviour {
 
                 if (!isStopRot)
                 {
-                   
+
                     float directionz = targetPos.z - transform.position.z;
                     float directionx = targetPos.x - transform.position.x;
 
-                    //direction = Quaternion.EulerAngles(0f, -45f, 0f) * direction;
+                    Vector2 lineVec = new Vector2(-1,1) - new Vector2(1, -1);
 
-                    if (directionx < 0 && directionz <= 0)
-                    {
+                    float crossProduct = lineVec.x * directionz - lineVec.y * directionx;
+
+                     if(crossProduct < 0) {
+
+                        for (int i = 0; i < animatorControllers.Count; i++)
+                        {
+                            Transform mesh = animatorControllers[i].transform.GetChild(0).transform;
+                            if (mesh.transform.localScale.x > 0)
+                                mesh.localScale = new Vector3(mesh.transform.localScale.x * -1, mesh.transform.localScale.y, mesh.transform.localScale.z);
+                        }
+
+                    }
+                    else {
+
                         for (int i = 0; i < animatorControllers.Count; i++)
                         {
                             Transform mesh = animatorControllers[i].transform.GetChild(0).transform;
@@ -451,35 +471,9 @@ public class SquadController : MonoBehaviour {
                                 mesh.localScale = new Vector3(mesh.transform.localScale.x * -1, mesh.transform.localScale.y, mesh.transform.localScale.z);
                         }
                     }
-                    else if (directionx > 0 && directionz >= 0)
-                    {
-                        Debug.Log("kek"); 
-                        for (int i = 0; i < animatorControllers.Count; i++)
-                        {
-                            Transform mesh = animatorControllers[i].transform.GetChild(0).transform;
-                            if (mesh.transform.localScale.x > 0)
-                                mesh.localScale = new Vector3(mesh.transform.localScale.x * -1, mesh.transform.localScale.y, mesh.transform.localScale.z);
-                        }
-                    }
 
-                    if (directionx < 0 && directionz >= 0)
-                    {
-                        for (int i = 0; i < animatorControllers.Count; i++)
-                        {
-                            Transform mesh = animatorControllers[i].transform.GetChild(0).transform;
-                            if (mesh.transform.localScale.x > 0)
-                                mesh.localScale = new Vector3(mesh.transform.localScale.x * -1, mesh.transform.localScale.y, mesh.transform.localScale.z);
-                        }
-                    }
-                    else if (directionx > 0 && directionz <= 0)
-                    {
-                        for (int i = 0; i < animatorControllers.Count; i++)
-                        {
-                            Transform mesh = animatorControllers[i].transform.GetChild(0).transform;
-                            if (mesh.transform.localScale.x > 0)
-                                mesh.localScale = new Vector3(mesh.transform.localScale.x * -1, mesh.transform.localScale.y, mesh.transform.localScale.z);
-                        }
-                    }
+
+
 
 
                     rb.MovePosition(targetPos);
@@ -538,7 +532,20 @@ public class SquadController : MonoBehaviour {
             {
                 animationState = 1;
 
-                
+                for (int i = 0; i < animatorControllers.Count; i++)
+                {
+                    animatorControllers[i].transform.localScale = new Vector3(spriteSize.x, spriteSize.y, spriteSize.z);
+
+                    if (Random.Range(1, 3) % 2 == 0)
+                    {
+                        animatorControllers[i].SpriteAnimationChange(2);
+                    }
+                    else
+                    {
+                        animatorControllers[i].SpriteAnimationChange(1);
+                    }
+                }
+
                     DefenceChange(-lostDefenceMoving * 2); // / баланс уменшаем защиту при любом движении
                 
             }
@@ -579,6 +586,20 @@ public class SquadController : MonoBehaviour {
             if (isMoved)
             {
                 animationState = 1;
+
+                for (int i = 0; i < animatorControllers.Count; i++)
+                {
+                    animatorControllers[i].transform.localScale = new Vector3(spriteSize.x, spriteSize.y, spriteSize.z);
+
+                    if (Random.Range(1, 3) % 2 == 0)
+                    {
+                        animatorControllers[i].SpriteAnimationChange(2);
+                    }
+                    else
+                    {
+                        animatorControllers[i].SpriteAnimationChange(1);
+                    }
+                }
             }
             else
             {
@@ -586,6 +607,8 @@ public class SquadController : MonoBehaviour {
                 Debug.Log("все вырубай нахуй",gameObject);
             }
         }
+
+        
 
         this.inBattle = inBattle;
         battleIndicator.SetActive(inBattle);
@@ -1267,6 +1290,11 @@ public class SquadController : MonoBehaviour {
 
             unitPositions.transform.localScale = new Vector3(scale, scale, scale);
 
+            float shadowScale = amountUnits/unitArray.Count;
+
+            shadowObject.transform.localScale = new Vector3(shadowStartScale - shadowScale, shadowStartScale - shadowScale, shadowStartScale - shadowScale);
+            selectObject.transform.localScale = new Vector3(selectStartScale - shadowScale, selectStartScale - shadowScale, shadowStartScale - shadowScale);
+
             UnitsTransform();
             SelectFightingUnits();
 
@@ -1582,19 +1610,25 @@ public class SquadController : MonoBehaviour {
 
                 animatorControllers[i].transform.localScale = new Vector3(spriteSize.x, spriteSize.y, spriteSize.z);
 
-                if (animatorControllers[i].transform.localPosition.y > 0)
+                if (animatorControllers[i].state == 1)
+                {
+                    // meshRenderers[i].transform.localScale = new Vector3(spriteSize.x, spriteSize.y + 0.3f, spriteSize.z);
+                    animatorControllers[i].SpriteAnimationChange(2);
+                }else
+
+                if (animatorControllers[i].state == 2)
+                {
+                    // meshRenderers[i].transform.localScale = new Vector3(spriteSize.x, spriteSize.y + 0.3f, spriteSize.z);
+                    animatorControllers[i].SpriteAnimationChange(3);
+                }
+                else
+
+                if (animatorControllers[i].state == 3)
                 {
                     // meshRenderers[i].transform.localScale = new Vector3(spriteSize.x, spriteSize.y + 0.3f, spriteSize.z);
                     animatorControllers[i].SpriteAnimationChange(1);
                 }
-                else if (animatorControllers[i].transform.localPosition.y < -0.45 && animatorControllers[i].transform.localPosition.y > -0.55)
-                {
-                    animatorControllers[i].SpriteAnimationChange(2);
-                }
-                else
-                {
-                    animatorControllers[i].SpriteAnimationChange(3);
-                }
+
 
 
 
