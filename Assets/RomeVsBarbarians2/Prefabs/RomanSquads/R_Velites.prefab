@@ -1064,6 +1064,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -1.46
       objectReference: {fileID: 0}
+    - target: {fileID: 596614234286191822, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
+      propertyPath: m_Radius
+      value: 3.7
+      objectReference: {fileID: 0}
     - target: {fileID: 674408651027327608, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.24
@@ -1166,15 +1170,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2835096852102318129, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 116.18
       objectReference: {fileID: 0}
     - target: {fileID: 2835096852102318129, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.61
       objectReference: {fileID: 0}
     - target: {fileID: 2835096852102318129, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 79.15
       objectReference: {fileID: 0}
     - target: {fileID: 2835096852102318129, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1422,7 +1426,7 @@ PrefabInstance:
       objectReference: {fileID: 2400736344165051392}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: colliderRadius
-      value: 5
+      value: 3.7
       objectReference: {fileID: 0}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: minimumFormation
@@ -1802,6 +1806,7 @@ MonoBehaviour:
   shotRapidity: 3.3
   shotStartOffset: 4
   shotSpawnDelay: 0.7
+  shotHalfDelay: 0
   pfArrow: {fileID: 5148241718951807296, guid: 4dedfec59b22d9149adc316ff5c9476d, type: 3}
   squadController: {fileID: 8411451147203699016}
   shootingTrigger: {fileID: 1236461072}

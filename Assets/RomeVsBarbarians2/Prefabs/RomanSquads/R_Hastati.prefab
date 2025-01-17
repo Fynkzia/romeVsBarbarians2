@@ -1394,8 +1394,43 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 162775231924634954, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4892313017378869728}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2570471043121216857, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2029669982760166790}
   m_SourcePrefab: {fileID: 100100000, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
+--- !u!1 &256657802075753939 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2570471043121216857, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
+  m_PrefabInstance: {fileID: 2315959762654867594}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2029669982760166790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 256657802075753939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74f1fb7e0e954ff4ab62e1aec94d664f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAttackShooting: 1
+  isShootingSquad: 0
+  isMovementShooting: 0
+  shotRange: 14
+  shotAmount: 100
+  shotSpeed: 15
+  shotDamage: 2.5
+  shotAccuracy: 2
+  shotRapidity: 3.3
+  shotStartOffset: 4
+  shotSpawnDelay: 0.7
+  shotHalfDelay: 0
+  pfArrow: {fileID: 5148241718951807296, guid: 4dedfec59b22d9149adc316ff5c9476d, type: 3}
+  squadController: {fileID: 9047224651742628108}
+  shootingTrigger: {fileID: 0}
 --- !u!4 &539227658572478651 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2835096852102318129, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
@@ -1406,6 +1441,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 162775231924634954, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
   m_PrefabInstance: {fileID: 2315959762654867594}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &9047224651742628108 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
+  m_PrefabInstance: {fileID: 2315959762654867594}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 256657802075753939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d14acd2a2f51ad54a866759d2ee278a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2646158517921084272
 PrefabInstance:
   m_ObjectHideFlags: 0

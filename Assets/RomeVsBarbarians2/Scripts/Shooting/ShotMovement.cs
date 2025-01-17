@@ -6,17 +6,19 @@ public class ShotMovement : MonoBehaviour
 {
 
 
-    public static void Create(GameObject pfArrow,Vector3 spawnPosition,Vector3 target, float speed, float arrowsAmount, float damage, float accuracy, string tag) {
+    public static void Create(GameObject pfArrow,Vector3 spawnPosition,Vector3 target, float speed, float arrowsAmount, float damage, float accuracy, string tag, float radius) {
         float y = MathUtilities.AngleBetweenTwoPoints(spawnPosition, target);
         GameObject shot = Instantiate(pfArrow, spawnPosition, Quaternion.Euler(new Vector3(0f, y, 0f)));
         //Debug.Log(shot.transform.position);
         ShotMovement shotMovement = shot.GetComponent<ShotMovement>();
-        shotMovement.Setup(target, speed, arrowsAmount, damage, accuracy,tag);
+        shotMovement.Setup(target, speed, arrowsAmount, damage, accuracy,tag, radius);
         
 
         //Debug.Log("Create", shot);
 
     }
+
+
     public float speed;
     public Vector3 target;
     public float damage;
@@ -24,6 +26,8 @@ public class ShotMovement : MonoBehaviour
     
     public float arrowsAmount;
     public float radius;
+
+    public float randomOffest;
 
     [SerializeField] private GameObject pfVisual;
     [SerializeField] private GameObject fxVisual;
@@ -43,16 +47,20 @@ public class ShotMovement : MonoBehaviour
     private const string SQUAD_TAG = "Squad";
 
 
-    private void Setup(Vector3 target, float speed, float arrowsAmount,float damage, float accuracy, string tag) {
+    private void Setup(Vector3 target, float speed, float arrowsAmount,float damage, float accuracy, string tag, float radius) {
         _startPosition = transform.position;
 
         distance = Vector3.Distance(_startPosition, target);
-        this.target = target + new Vector3 (Random.Range(-0.2f,0.2f) *  accuracy , 0, Random.Range(-0.2f, 0.2f) *  accuracy); // разброс снарядов
+        this.target = target + new Vector3 (Random.Range(-randomOffest, randomOffest) *  accuracy , 0, Random.Range(-randomOffest, randomOffest) *  accuracy); //не точность, чем дальше тем неточнее прилетает весь объект выстрела
         this.speed = speed;
         this.arrowsAmount = arrowsAmount;
         this.damage = damage;
         this.accuracy = accuracy;
         gameObject.tag = tag;
+
+        this.radius = radius;
+        offsetPosition = new Vector3(radius/1.8f, radius/5f , radius / 1.8f);
+
         CreateVisual();
 
         Debug.Log(target);
@@ -97,12 +105,12 @@ public class ShotMovement : MonoBehaviour
                 parabola = 0.3f - 9.0f * (_progress - 0.5f) * (_progress - 0.5f);
 
             }
-            //Debug.Log("parabola " + parabola + "distance " + distance);
+            
 
             nextPos.y += parabola + (arcHeight * (distance / 50f));
-            //Debug.Log("distance " + distance);
+       
 
-            // Continue as before.
+            
             if (_progress > 0.01f)
             {
                 if (!shown)
@@ -115,15 +123,15 @@ public class ShotMovement : MonoBehaviour
                     }
 
                 }
+                else { }
             }
 
             Vector3 rot = nextPos - transform.position;
             transform.rotation = Quaternion.LookRotation(rot.normalized);
-
-
-
             transform.position = nextPos;
-            // I presume you disable/destroy the arrow in Arrived so it doesn't keep arriving.
+
+
+
             if (_progress == 1.0f)
             {
                 Damage();
@@ -140,14 +148,18 @@ public class ShotMovement : MonoBehaviour
     private void ShotArrived()
     {
         transform.position = new Vector3(transform.position.x, target.y, transform.position.z);
+        transform.rotation = Quaternion.Euler(0f, transform.rotation.y, 0f);
+
         for (int i = 0; i < arrowsAmount; i++)
         {
             Transform arrow = transform.GetChild(i);
 
-            arrow.rotation = Quaternion.Euler(180f,0,0);
+            arrow.rotation = Quaternion.Euler(Random.Range(100f,180f),0,0);
             arrow.localPosition = new Vector3(arrow.localPosition.x, 0 + offsetArrivedArrows, arrow.localPosition.z);
         }
-        Instantiate(fxVisual, transform.position, fxVisual.transform.rotation,transform);
+        GameObject arrivedFX = Instantiate(fxVisual, transform.position, fxVisual.transform.rotation,transform);
+
+        arrivedFX.transform.localScale = new Vector3(radius/1.5f, radius / 1.5f, radius / 1.5f);
     }
 
         private void Damage()
@@ -165,12 +177,12 @@ public class ShotMovement : MonoBehaviour
 
                 SquadController enController = hitCollider.transform.parent.GetComponent<SquadController>();
 
-                for (int i = 0; i < arrowsAmount; i++)
+                for (int i = 0; i < arrowsAmount/ hitColliders.Length; i++) // равномерно распределятеся по всем отрядам
                 {
                     float min = 0f - (enController.defenceSquad * 0.1f) - (enController.defenceCoef) - (-enController.unitArray.Count * 0.1f) - (distance * 0.4f);
 
                     float max = 10f + ((damage - enController.defenceSquad) * 1.1f) + (accuracy * 0.5f);
-                    //Debug.Log("min " + min + " max " + max);
+                   
 
                     float r = Random.Range(min, max);
 
@@ -192,7 +204,9 @@ public class ShotMovement : MonoBehaviour
             {
                 SquadController enController = hitCollider.transform.parent.GetComponent<SquadController>();
 
-                for (int i = 0; i < arrowsAmount; i++)
+                
+
+                for (int i = 0; i < arrowsAmount / hitColliders.Length; i++) // равномерно распределятеся по всем отрядам
                 {
                     float min = 0f - (enController.defenceSquad * 0.1f) - (enController.defenceCoef) - (-enController.unitArray.Count * 0.1f) - (distance * 0.4f);
 
@@ -208,7 +222,7 @@ public class ShotMovement : MonoBehaviour
                     }
                     else
                     {
-                        if (r > 9f)
+                        if (r > 8f)
                         {
                             enController.GetDamage();
 

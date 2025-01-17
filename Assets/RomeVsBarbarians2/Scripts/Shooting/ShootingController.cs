@@ -15,6 +15,7 @@ public class ShootingController : MonoBehaviour
     [SerializeField] float shotRapidity;
     [SerializeField] float shotStartOffset;
     [SerializeField] float shotSpawnDelay;
+    [SerializeField] float shotHalfDelay;
     [SerializeField] private GameObject pfArrow;
 
     [SerializeField]private SquadController squadController;
@@ -116,32 +117,48 @@ public class ShootingController : MonoBehaviour
 
     IEnumerator SpawnShotAfterDelay(Collider predictEnemy  )
     {
-        
-        actionUnits = squadController.actionUnits;
+
         Vector3 enemyPosition = predictEnemy.gameObject.transform.position;
-        squadController.animTime = 0;
-
-        AnimationController[] animationController = new AnimationController[(int)actionUnits];
-
-        for (int i = 0; i < actionUnits; i++)
-        {
-            int index = Random.Range(0, squadController.animatorControllers.Count);
-            squadController.animatorControllers[index].SpriteAnimationChange(9);
-            animationController[i] = squadController.animatorControllers[index];
-           
-        }
-
-        yield return new WaitForSeconds(shotSpawnDelay);
-
-        for (int i = 0; i < actionUnits; i++)
-        {
-
-            animationController[i].SpriteAnimationChange(10);
-            
-            
-        }
         float distance = Vector3.Distance(transform.position, enemyPosition);
-        ShotMovement.Create(pfArrow, transform.position + new Vector3(0, shotStartOffset, 0), enemyPosition, shotSpeed, actionUnits,shotDamage,(10-shotAccuracy)* (distance/ shotRange), gameObject.tag);
+
+        if (distance > 2f)
+        {
+
+            AnimationController[] animationController = new AnimationController[(int)actionUnits];
+
+            actionUnits = squadController.actionUnits;
+
+            squadController.animTime = 0;
+
+            for (int i = 0; i < actionUnits; i++)
+            {
+                int index = Random.Range(0, squadController.animatorControllers.Count);
+                squadController.animatorControllers[index].SpriteAnimationChange(9);
+                animationController[i] = squadController.animatorControllers[index];
+
+            }
+
+            yield return new WaitForSeconds(shotSpawnDelay);
+
+            for (int i = 0; i < actionUnits; i++)
+            {
+
+                animationController[i].SpriteAnimationChange(10);
+
+
+            }
+
+            ShotMovement.Create(pfArrow, transform.position + new Vector3(0, shotStartOffset, 0), enemyPosition, shotSpeed, actionUnits, shotDamage, (distance / shotRange), gameObject.tag, squadController.colliderObject.radius);
+        }
+        else
+        {
+            yield return new WaitForSeconds(shotSpawnDelay);
+
+            SquadControlManager controlController = GameObject.Find("SquadControlManager").GetComponent<SquadControlManager>();
+
+            controlController.SquadWayToPoint(squadController, enemyPosition); // идем в рукопашную вместо атакаки
+
+        }
     }
 
     IEnumerator AttackShootingSiqunce()
@@ -165,7 +182,10 @@ public class ShootingController : MonoBehaviour
 
         yield return new WaitForSeconds(shotSpawnDelay);
         float distance = Vector3.Distance(transform.position, enemyPosition);
-        ShotMovement.Create(pfArrow, transform.position + new Vector3(0, shotStartOffset, 0), enemyPosition, shotSpeed, actionUnits, shotDamage, (10 - shotAccuracy) * (distance / shotRange), gameObject.tag);
+        ShotMovement.Create(pfArrow, transform.position + new Vector3(0, shotStartOffset, 0), enemyPosition, shotSpeed, actionUnits / 2, shotDamage, (distance / shotRange), gameObject.tag, squadController.colliderObject.radius);
+
+        yield return new WaitForSeconds(shotHalfDelay);
+        ShotMovement.Create(pfArrow, transform.position + new Vector3(0, shotStartOffset, 0), enemyPosition, shotSpeed, actionUnits/2, shotDamage, (distance / shotRange), gameObject.tag, squadController.colliderObject.radius);
 
         for (int i = 0; i < actionUnits; i++)
         {
@@ -179,7 +199,7 @@ public class ShootingController : MonoBehaviour
 
         SquadControlManager controlController = GameObject.Find("SquadControlManager").GetComponent<SquadControlManager>();
 
-        controlController.SquadWayToPoint(squadController, enemyPosition);
+        controlController.SquadWayToPoint(squadController, enemyPosition); // идем в рукопашную после выстрела атакаки
     }
 
     private void ShotNearest() {

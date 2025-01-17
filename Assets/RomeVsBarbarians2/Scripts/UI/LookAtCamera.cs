@@ -21,16 +21,29 @@ public class LookAtCamera : MonoBehaviour
             cameraMovement = GameObject.Find("CameraControlManager").GetComponent<CameraMovement>();
             cameraMovement.OnZoomChanged += HandleZoomChanged;
         }
+
+
     }
     private void LateUpdate() {
-        transform.LookAt(camera.transform);
-        transform.Rotate(0,180,0);
+        // Направление от объекта к камере
+        Vector3 directionToCamera = camera.transform.position - transform.position;
+
+        // Проецируем направление на плоскость XZ (убираем компонент по Y)
+        directionToCamera.y = 0;
+
+        // Если длина направления нулевая, избегаем ошибок
+        if (directionToCamera.sqrMagnitude > 0.001f)
+        {
+            // Устанавливаем поворот объекта так, чтобы он смотрел на камеру
+            transform.rotation = Quaternion.LookRotation(directionToCamera);
+        }
+
     }
 
     void HandleZoomChanged(int newZoom)
     {
         float scale = 0.6f + newZoom * scaleFactor;
-        transform.localScale = new Vector3(scale, scale, scale);
+        transform.localScale = new Vector3(-scale, scale, scale);
     }
 
     void OnDisable()

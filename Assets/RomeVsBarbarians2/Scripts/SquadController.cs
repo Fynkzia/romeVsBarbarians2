@@ -101,7 +101,7 @@ public class SquadController : MonoBehaviour {
     [SerializeField] public bool defence;
     [Space(10)]
 
-    [SerializeField] private SphereCollider colliderObject;
+    [SerializeField] public SphereCollider colliderObject;
     [SerializeField] public Collider predictEnemy;
 
 
@@ -747,7 +747,7 @@ public class SquadController : MonoBehaviour {
     {
 
 
-        if (currentMorale < 2f)
+        if (currentMorale/maxMorale < 0.3f)
         {
             UnitInfo.SetBool("Retreat", true);
 
@@ -1268,6 +1268,10 @@ public class SquadController : MonoBehaviour {
                 SquadDie();
             }
 
+        }
+        else
+        {
+            RetreatUpdate();
         }
 
     }
