@@ -163,7 +163,7 @@ Shader "Custom/TerrainShadingWithNormals"
                
                 o.uv = v.uv;
 
- UNITY_TRANSFER_FOG(o, o.vertex);
+                UNITY_TRANSFER_FOG(o, o.vertex);
                 return o;
             }
 
@@ -178,17 +178,12 @@ Shader "Custom/TerrainShadingWithNormals"
                 fixed4 tex2 = tex2D(_Splat2, i.uv * _Splat2Tiling.xy) * _Splat2Albedo;
                 fixed4 tex3 = tex2D(_Splat3, i.uv * _Splat3Tiling.xy) * _Splat3Albedo;
 
-                // Sample normal maps
-                float3 normal0 = UnpackNormal(tex2D(_Splat0Normal, i.uv * _Splat0Tiling.xy));
-                float3 normal1 = UnpackNormal(tex2D(_Splat1Normal, i.uv * _Splat1Tiling.xy));
-                float3 normal2 = UnpackNormal(tex2D(_Splat2Normal, i.uv * _Splat2Tiling.xy));
-                float3 normal3 = UnpackNormal(tex2D(_Splat3Normal, i.uv * _Splat3Tiling.xy));
 
-                // Blend normals
-                float3 blendedNormal = normalize(normal0 * control.r + normal1 * control.g + normal2 * control.b + normal3 * control.a);
+
 
                 // Blend textures based on control map
                fixed4 terrainColor = tex0 * control.r + tex1 * control.g + tex2 * control.b + tex3 * control.a;
+
 
                 // Apply height-based brightness
                 float heightFactor = saturate(i.worldPos.y / _MaxHeight);
@@ -208,12 +203,24 @@ Shader "Custom/TerrainShadingWithNormals"
                 terrainColor.rgb -= darkness;
 
 
-               float3 normalDirection = i.worldNormal;
+                  
+                float3 normalDirection = i.worldNormal;
                 float atten = _SpecularPower;
 
                 float3 lightDirection = normalize(_WorldSpaceLightPos0.xyz);
 
-				float3 diffuseReflection = atten * _LightColor0.xyz * max(0.0, dot(normalDirection, lightDirection));
+			    float3 diffuseReflection = atten * _LightColor0.xyz * dot(normalDirection, lightDirection);
+
+
+                    float shadowFactor = 1.0 - _ShadowTransition; // Factor for shadow, based on light intensity
+                    fixed3 shadowColor = _ShadowTintColor.rgb * _ShadowStrength * shadowFactor; // Shadow color effect
+
+                    float dotProduct = dot(normalDirection, lightDirection);
+                  float shadowAmount = saturate(1.0 - dotProduct);  // Чем больше угол между нормалью и направлением света, тем сильнее затемнение
+                  fixed3 shadowFinal = lerp(diffuseReflection.rgb, shadowColor, shadowAmount * shadowFactor);
+
+                    diffuseReflection.rgb += shadowFinal;
+
 
 
 
@@ -224,7 +231,8 @@ Shader "Custom/TerrainShadingWithNormals"
 
 
 				float3 specularReflection = atten * _SpecColor.rgb  * shininessPower;
-              
+
+                   
 
                 // Specular and diffuse lighting
                 //float3 diffuse = terrainColor.rgb * _LightColor0.rgb * max(0, dot(normal, _WorldSpaceLightPos0));

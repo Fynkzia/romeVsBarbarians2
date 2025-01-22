@@ -12,6 +12,7 @@ public class CameraMovement : MonoBehaviour {
     [SerializeField] private Camera renderTextureCamera;
     [SerializeField] private Camera renderTerrainCamera;
     [SerializeField] private GameObject cinemachineObject;
+    [SerializeField] private GameObject cinemachineFollowObject;
     public CinemachineVirtualCamera[] cams;
     [SerializeField] private float[] fogStart;
     [SerializeField] private float[] fogEnds;
@@ -127,6 +128,13 @@ public class CameraMovement : MonoBehaviour {
                 {
                     zoomCurrentTime = 0;
                     isZoom = false;
+
+                    //var composer = cams[targetFOVIndex].GetCinemachineComponent<CinemachineComposer>();
+
+                    //if (composer != null)
+                    //{
+                    //    Destroy(composer);
+                    //}
                 }
             }
 
@@ -152,14 +160,14 @@ public class CameraMovement : MonoBehaviour {
 
             panVector =  Rotation * panVector;
           
-            Vector3 newPosition = Vector3.Lerp(cinemachineObject.transform.position, cinemachineObject.transform.position + panVector , 1f);
+            Vector3 newPosition = Vector3.Lerp(cinemachineFollowObject.transform.position, cinemachineFollowObject.transform.position + panVector , 1f);
             
           
             newPosition.x = Mathf.Clamp(newPosition.x, panLimitX[0], panLimitX[1]);
             newPosition.z = Mathf.Clamp(newPosition.z, panLimitZ[0], panLimitZ[1]);
 
 
-            cinemachineObject.transform.position = newPosition;
+            cinemachineFollowObject.transform.position = newPosition;
 
             lastMousePosition = Input.mousePosition;
         }
@@ -308,8 +316,17 @@ public class CameraMovement : MonoBehaviour {
         for (int i = 0; i < cams.Length; i++)
         {
             cams[i].gameObject.SetActive(false);
+
+            //var composer = cams[i].GetCinemachineComponent<CinemachineComposer>();
+            //if (composer != null)
+            //{
+            //    Destroy(composer);
+            //}
         }
+
         cams[targetFOVIndex].gameObject.SetActive(true);
+       // cams[targetFOVIndex].AddCinemachineComponent<CinemachineComposer>();
+        
 
         renderTextureCamera.targetTexture = cameraTextures[targetFOVIndex];
         renderTerrainCamera.targetTexture = cameraTextures[targetFOVIndex];

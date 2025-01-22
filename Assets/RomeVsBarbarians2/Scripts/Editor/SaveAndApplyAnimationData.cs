@@ -34,6 +34,8 @@ public class SaveAndApplyAnimationData : EditorWindow
         {
             ApplySavedData();
         }
+
+        
     }
 
     private static void SaveAnimationData()
@@ -91,4 +93,6 @@ public class SaveAndApplyAnimationData : EditorWindow
 
         Debug.Log("Applied saved animation data to objects.");
     }
+
+    
 }

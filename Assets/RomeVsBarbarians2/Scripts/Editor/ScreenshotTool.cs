@@ -7,7 +7,7 @@ public class ScreenshotTool : EditorWindow
 {
     private Camera targetCamera;
     private GameObject parentObject;
-    private string screenshotsFolder;
+    private Material baseMaterial;
 
     [MenuItem("Tools/Screenshot Tool")]
     public static void ShowWindow()
@@ -21,6 +21,7 @@ public class ScreenshotTool : EditorWindow
 
         targetCamera = (Camera)EditorGUILayout.ObjectField("Target Camera", targetCamera, typeof(Camera), true);
         parentObject = (GameObject)EditorGUILayout.ObjectField("Parent Object", parentObject, typeof(GameObject), true);
+        baseMaterial = (Material)EditorGUILayout.ObjectField("base Unit Material", baseMaterial, typeof(Material), true);
 
         if (GUILayout.Button("Capture Screenshots"))
         {
@@ -37,6 +38,11 @@ public class ScreenshotTool : EditorWindow
             }
 
             CaptureScreenshots();
+        }
+
+        if (GUILayout.Button("Create Materials"))
+        {
+            CreateMaterals();
         }
     }
 
@@ -99,5 +105,81 @@ public class ScreenshotTool : EditorWindow
 
         RenderTexture.active = currentRT;
         DestroyImmediate(image);
+    }
+
+    private void CreateMaterals()
+    {
+        // Создаем папку для сохранения скриншотов
+        string dateFolderName = parentObject.name;
+        string screenshotsFolder = Application.dataPath + "/RomeVsBarbarians2/Animations2D/" + dateFolderName;
+
+        Directory.CreateDirectory(screenshotsFolder);
+
+        Debug.Log($"Скриншоты будут сохранены в: {screenshotsFolder}");
+
+        // Скрываем все дочерние объекты перед началом
+        foreach (Transform child in parentObject.transform)
+        {
+            child.gameObject.SetActive(false);
+        }
+
+        // Проходим по всем дочерним объектам
+        foreach (Transform child in parentObject.transform)
+        {
+            // Активируем текущий объект
+            child.gameObject.SetActive(true);
+
+            // Принудительно обновляем рендеринг камеры
+            targetCamera.Render();
+
+            Debug.Log($"Saving screenshot for {child.name}");
+
+            // Делаем скриншот
+            string screenshotName = $"{child.name}.png";
+            string screenshotPath = Path.Combine(screenshotsFolder, screenshotName);
+            SaveRenderTextureToFile(targetCamera.targetTexture, screenshotPath);
+
+            Debug.Log($"Скриншот объекта {child.name} сохранен в {screenshotPath}");
+
+            // Деактивируем текущий объект
+            child.gameObject.SetActive(false);
+        }
+
+        string materialsFolder = Application.dataPath + "/RomeVsBarbarians2/Animations2D/" + dateFolderName + "/Materials";
+
+        string newscreenshotsFolder = "Assets/RomeVsBarbarians2/Animations2D/" + dateFolderName;
+
+        Directory.CreateDirectory(materialsFolder);
+        AssetDatabase.Refresh();
+
+        string[] textureGuids = AssetDatabase.FindAssets("t:Texture2D", new[] { newscreenshotsFolder  });
+
+        foreach (string guid in textureGuids)
+        {
+            string texturePath = AssetDatabase.GUIDToAssetPath(guid);
+            Texture2D texture = AssetDatabase.LoadAssetAtPath<Texture2D>(texturePath);
+
+            if (texture != null)
+            {
+                // Создаем новый материал
+                Material material = new Material(baseMaterial);
+                material.mainTexture = texture;
+
+                // Генерация имени материала
+                string materialName = Path.GetFileNameWithoutExtension(texturePath);
+                string materialPath = newscreenshotsFolder + "/Materials/" + materialName + ".mat";
+
+                // Сохраняем материал
+                AssetDatabase.CreateAsset(material, materialPath);
+            }
+        }
+
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+
+
+
+      
+
     }
 }

@@ -189,11 +189,14 @@ public class ShotMovement : MonoBehaviour
                     if (r > 8.8f)
                     {
 
-                        enController.DieRandomUnit();
+                        enController.GetUnitDie(0, -2);
                     }
                     else
                     {
-                        enController.GetDamage();
+                        if (r > 5f)
+                        {
+                            enController.GetDamage(arrowsAmount / hitColliders.Length);
+                        }
                     }
                     //enController.MoraleChange(-enController.lostMoraleThenDie / 5f); 
                 }
@@ -218,16 +221,18 @@ public class ShotMovement : MonoBehaviour
                     if (r > 10f)
                     {
 
-                        enController.DieRandomUnit();
+                        enController.GetUnitDie(0, -2);
+                        enController.SpawnFriendlyFireFX();
                     }
                     else
                     {
-                        if (r > 8f)
+                        if (r > 5f)
                         {
-                            enController.GetDamage();
-
+                            enController.GetDamage((arrowsAmount / hitColliders.Length)*5f); // c множителем шоб по своим не стрелял даун
+                            enController.SpawnFriendlyFireFX();
                         }
-                        
+
+                       
                     }
                     //enController.MoraleChange(-enController.lostMoraleThenDie / 5f); 
                 }

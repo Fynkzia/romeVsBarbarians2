@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PointsController : MonoBehaviour
 {
-    [Range(0f, 1f)]
+    
     public float scatterAmount = 0f;
     public float radius = 1f;// Значение разброса от 0 до 1
 

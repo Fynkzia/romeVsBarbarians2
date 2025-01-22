@@ -4,15 +4,24 @@ using UnityEngine;
 
 public class ShootingController : MonoBehaviour
 {
+
+    [Space(10)]
+    [Header("Shooting Type")]
     [SerializeField] bool isAttackShooting;
     [SerializeField] bool isShootingSquad;
     [SerializeField] bool isMovementShooting;
+    [Space(10)]
+
+    [Header("Shooting Spec")]
     [SerializeField] float shotRange;
     [SerializeField] int shotAmount;
     [SerializeField] float shotSpeed;
     [SerializeField] float shotDamage;
     [SerializeField] float shotAccuracy;
     [SerializeField] float shotRapidity;
+
+    [Space(10)]
+    [Header("Shooting Setup")]
     [SerializeField] float shotStartOffset;
     [SerializeField] float shotSpawnDelay;
     [SerializeField] float shotHalfDelay;
@@ -20,6 +29,8 @@ public class ShootingController : MonoBehaviour
 
     [SerializeField]private SquadController squadController;
     [SerializeField] private GameObject shootingTrigger;
+
+
     private float actionUnits;
 
     private bool isFirstShoot;
@@ -166,7 +177,7 @@ public class ShootingController : MonoBehaviour
         
         squadController.CancelMovement();
 
-        actionUnits = squadController.unitArray.Count;
+        actionUnits = squadController.unitArray.Count/2f;
         Vector3 enemyPosition = squadController.predictEnemy.gameObject.transform.position;
 
         yield return new WaitForSeconds(0.5f);
@@ -243,6 +254,18 @@ public class ShootingController : MonoBehaviour
                     squadController.CancelMovement();
                     ShootingSquad();
                     rapidityTimer = 0;
+
+                    actionUnits = squadController.actionUnits;
+
+                    squadController.animTime = 0;
+
+                    for (int i = 0; i < actionUnits; i++) // по фану стразу ставим в анимацию замахивания
+                    {
+                        int index = Random.Range(0, squadController.animatorControllers.Count);
+                        squadController.animatorControllers[index].SpriteAnimationChange(9);
+                        
+
+                    }
                 }
             }
 

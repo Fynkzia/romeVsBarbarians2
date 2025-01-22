@@ -18,9 +18,12 @@ public class SquadControlManager : MonoBehaviour
     [SerializeField] private List<Vector3> pointsList = new List<Vector3>();
     public static SquadControlManager Instance { get; private set; }
 
-    [SerializeField]private bool hitSquad = false;
+    [SerializeField]public bool hitSquad = false;
     [SerializeField] private LineRenderer lineRenderer;
     [SerializeField] private SquadController squadController;
+
+    [SerializeField] private OrdersSystem ordersSystem;
+
     private Vector3 mousePos;
      private Vector3 mousePrevPos = Vector3.zero;
     private Vector3 mousePosSum = Vector3.zero;
@@ -37,11 +40,14 @@ public class SquadControlManager : MonoBehaviour
     }
 
     void Update() {
-        HandleSquadTouch();
+        if (Input.touchCount < 2)
+        {
+            HandleSquadTouch();
+        }
     }
 
     private void HandleSquadTouch() {
-        if (Input.GetMouseButtonDown(0)) {
+        if (Input.GetMouseButtonDown(0) && !ordersSystem.isOrderSelected()) {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit,1000f, unitLayer)) {
@@ -119,21 +125,42 @@ public class SquadControlManager : MonoBehaviour
                         mousePosSum += mousePos;
                         roundIndex++;
 
+                       
+                       
+
                         if (roundIndex == maxRoundIndex)
                         {
 
+                            Vector3 roundedVector = mousePosSum / roundIndex;
+                            float dist = Vector3.Distance(lineRenderer.GetPosition(lineRenderer.positionCount - 1), roundedVector);
+
+                            
+                           
 
 
-
-
-                            if (lineRenderer.positionCount > 0)
+                            if (currentLineLength < GameOptions.maxLineLength && dist > GameOptions.minLineLength)
                             {
-                                currentLineLength += Vector3.Distance(lineRenderer.GetPosition(lineRenderer.positionCount - 1), mousePosSum / roundIndex);
-                            }
-                            if (currentLineLength < GameOptions.maxLineLength)
-                            {
+                                Debug.Log("y =" + roundedVector.y );
+
+                                if (lineRenderer.positionCount > 0)
+                                {
+                                    currentLineLength += dist;
+                                }
+
                                 lineRenderer.positionCount++;
-                                lineRenderer.SetPosition(lineRenderer.positionCount - 1, mousePosSum / roundIndex);
+                                lineRenderer.SetPosition(lineRenderer.positionCount - 1, roundedVector);
+
+                                if (lineRenderer.positionCount > 2)
+                                {
+                                    if (roundedVector.y - lineRenderer.GetPosition(lineRenderer.positionCount - 2).y  > 1.2f)
+                                    {
+                                        Debug.Log("roundedVector.y");
+                                        currentLineLength = GameOptions.maxLineLength;
+
+
+                                    }
+                                    
+                                }
                             }
                             roundIndex = 0;
                             mousePosSum = Vector3.zero;
@@ -189,7 +216,7 @@ public class SquadControlManager : MonoBehaviour
 
             for (int i = 0; i < lineRenderer.positionCount; i++)
             {
-                if (Vector3.Distance(squadController.transform.position, lineRenderer.GetPosition(i)) > squadController.colliderRadius+1f)
+                if (Vector3.Distance(squadController.transform.position, lineRenderer.GetPosition(i)) > squadController.actionColliderRadius + 1f)
                 {
                     pointsList.Add(lineRenderer.GetPosition(i));
                     //i--;
@@ -207,6 +234,16 @@ public class SquadControlManager : MonoBehaviour
     }
     public bool HasHitSquad() {
         return hitSquad;
+    }
+
+    public void CancelDaw()
+    {
+        hitSquad = false;
+        lineRenderer = null;
+        mousePrevPos = Vector3.zero;
+        mousePosSum = Vector3.zero;
+        roundIndex = 0;
+
     }
 
     public LineRenderer GetLineRenderer(Vector3 position)

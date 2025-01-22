@@ -32,7 +32,12 @@ public class OrdersSystem : MonoBehaviour
     [SerializeField] private Sprite attackSprite;
     [SerializeField] private Sprite defenceSprite;
 
+    [SerializeField] private LayerMask unitLayer;
+
+    [SerializeField] private SquadControlManager squadControlManager;
+
     private Sprite currentSprite;
+
     private void Start() {
         prevCoinsState = coinsController.AmountOfCoins() >= costOfOrder;
         attackButtonAnimator = attackButton.GetComponent<Animator>();
@@ -55,20 +60,24 @@ public class OrdersSystem : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0)) {
 
-            if (!currentCoinsState) {
-                Debug.Log("Not enough coins"); 
-                return; 
-            }
+            //if (!currentCoinsState) {
+            //    Debug.Log("Not enough coins"); 
+            //    return; 
+            //}
 
             if (orderSelected) { 
                 Ray ray = cam.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hit;
-                if (Physics.Raycast(ray, out hit)) {
+                if (Physics.Raycast(ray, out hit, unitLayer)) {
                     
-                    if (hit.collider.gameObject.tag == "Squad") {
-                        OrderController currentUnit = hit.collider.transform.GetComponent<OrderController>();
+                    if (hit.collider.transform.parent.gameObject.tag == "Squad") {
+
+                        squadControlManager.CancelDaw();
+
+
+                        OrderController currentUnit = hit.collider.transform.parent.GetComponent<OrderController>();
                         currentUnit.DoOrder(currentOrder, currentSprite);
-                        coinsController.ChangeAmountOfCoins(-costOfOrder);
+                        //coinsController.ChangeAmountOfCoins(-costOfOrder);
                         
                         Debug.Log("Hit");
                     } else if (!EventSystem.current.IsPointerOverGameObject()) {
@@ -108,5 +117,10 @@ public class OrdersSystem : MonoBehaviour
         orderSelected = false;
         attackButtonAnimator.SetTrigger("Normal");
         defenceButtonAnimator.SetTrigger("Normal");
+    }
+
+    public bool isOrderSelected()
+    {
+        return orderSelected;
     }
 }
