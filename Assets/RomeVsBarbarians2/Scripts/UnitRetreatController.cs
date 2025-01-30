@@ -8,12 +8,12 @@ public class UnitRetreatController : MonoBehaviour {
     [SerializeField] private float timeToDisappear;
     [SerializeField] private float lastSeconds;
     [SerializeField] private float flashingTime;
-    [SerializeField] private Vector2 randomX;
-    [SerializeField] private Vector2 randomZ;
+    [SerializeField] public Vector3 enemyPos;
 
     private Rigidbody rb;
     
     private GameObject body;
+    private SphereCollider colider;
     private float currentTime;
     private float flashTimer;
     [SerializeField]private Vector3 direction;
@@ -24,7 +24,7 @@ public class UnitRetreatController : MonoBehaviour {
     [SerializeField] private float animUpdateTime;
     [SerializeField] private float animTime;
     [SerializeField] private AnimationController animationController;
-    private int runFame;
+    private int runFrame;
 
     private void Start() {
         currentTime = 0;
@@ -34,13 +34,18 @@ public class UnitRetreatController : MonoBehaviour {
         body = gameObject.transform.GetChild(0).gameObject;
 
         mesh = GetComponentInChildren<MeshRenderer>();
-
-
-        gameObject.layer = 10;
-
         rb.constraints = RigidbodyConstraints.FreezeRotation;
-        GetComponent<SphereCollider>().center = new Vector3(0f,-0.5f,0f);
-        direction = new Vector3(Random.Range(randomX.x, randomX.y), transform.position.y, Random.Range(randomZ.x, randomZ.y));
+        colider = GetComponent<SphereCollider>();
+
+
+        colider.center = new Vector3(0f, 0.65f, 0f);
+        colider.radius = 0.3f;
+
+        gameObject.layer = 10; // retreat layer
+
+        direction = (transform.position - enemyPos).normalized;
+        direction += new Vector3(Random.Range(-0.1f,0.1f),0f, Random.Range(-0.1f, 0.1f));
+        
 
         Rotate();
 
@@ -53,7 +58,11 @@ public class UnitRetreatController : MonoBehaviour {
             animTime += Time.fixedDeltaTime;
 
             if (currentTime>timeToDisappear-lastSeconds) {
-                Flashing();
+                Flashing(1);
+            }
+            else
+            {
+                Flashing(2);
             }
 
             if (animTime > animUpdateTime)
@@ -64,7 +73,7 @@ public class UnitRetreatController : MonoBehaviour {
 
 
 
-            Vector3 targetPos = Vector3.MoveTowards(transform.position, direction, speed * Time.fixedDeltaTime);
+            Vector3 targetPos = transform.position + direction * speed * Time.fixedDeltaTime;
             rb.MovePosition(targetPos);
         } else {
             Destroy(gameObject);
@@ -73,11 +82,11 @@ public class UnitRetreatController : MonoBehaviour {
 
     private void RunAnimation()
     {
-        animationController.SpriteAnimationChange(1+runFame);
-         runFame++;
-        if(2 < runFame)
+        animationController.SpriteAnimationChange(1+runFrame);
+         runFrame++;
+        if(2 < runFrame)
         {
-            runFame = 0;
+            runFrame = 0;
         }
 
     }
@@ -85,8 +94,8 @@ public class UnitRetreatController : MonoBehaviour {
     private float AngleBetweenTwoPoints(Vector3 a, Vector3 b) {
         return 180f - Mathf.Atan2(a.z - b.z, a.x - b.x) * Mathf.Rad2Deg;
     }
-    private void Flashing() {
-        flashTimer += Time.fixedDeltaTime;
+    private void Flashing(float time) {
+        flashTimer += Time.fixedDeltaTime * time;
         if(flashTimer>flashingTime) {
             flashTimer -= flashingTime;
             if(body.activeSelf) { 
@@ -99,8 +108,8 @@ public class UnitRetreatController : MonoBehaviour {
 
     void Rotate()
     {
-        float directionz = direction.z - transform.position.z;
-        float directionx = direction.x - transform.position.x;
+        float directionz = direction.z ;
+        float directionx = direction.x ;
 
         //direction = Quaternion.EulerAngles(0f, -45f, 0f) * direction;
         Transform mesh = transform.GetChild(0).transform;

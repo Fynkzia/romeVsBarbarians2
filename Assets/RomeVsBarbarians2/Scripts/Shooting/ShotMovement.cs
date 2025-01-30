@@ -228,7 +228,7 @@ public class ShotMovement : MonoBehaviour
                     {
                         if (r > 5f)
                         {
-                            enController.GetDamage((arrowsAmount / hitColliders.Length)*5f); // c множителем шоб по своим не стрелял даун
+                            enController.GetDamage((arrowsAmount / hitColliders.Length)*2f); // c множителем шоб по своим не стрелял даун
                             enController.SpawnFriendlyFireFX();
                         }
 

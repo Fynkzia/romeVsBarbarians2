@@ -60,6 +60,7 @@
     <Analyzer Include="/Applications/Unity/Hub/Editor/2022.3.49f1/Unity.app/Contents/Tools/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets/BuildingManager.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_TextEventHandler.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/OrdersSystem.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/VertexShakeA.cs" />
@@ -93,12 +94,12 @@
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/UI/UnitCountTextUI.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_DigitValidator.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_FrameRateCounter.cs" />
-    <Compile Include="Assets/RomeVsBarbarians2/Scripts/EnemyAIController.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TextConsoleSimulator.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/UnitRetreatController.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/CoinsController.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/LevelController.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TeleType.cs" />
+    <Compile Include="Assets/RomeVsBarbarians2/Scripts/AIController.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/Shooting/ShotRangeManager.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_TextEventCheck.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_UiFrameRateCounter.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="Assets/Epic Toon FX/Demo/Scripts/ETFXMouseOrbit.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/WinLoseManager.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/SkewTextExample.cs" />
+    <Compile Include="Assets/RomeVsBarbarians2/Scripts/FX/FxPart.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/WarpTextExample.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TextMeshProFloatingText.cs" />
     <Compile Include="Assets/Epic Toon FX/Demo/Scripts/ETFXButtonScript.cs" />
@@ -130,6 +132,7 @@
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/SquadControlManager.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/FpsCounter.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/OrderController.cs" />
+    <Compile Include="Assets/RomeVsBarbarians2/Scripts/AIDefencePoint.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/UI/BarUI.cs" />
     <Compile Include="Assets/Epic Toon FX/Scripts/ETFXPitchRandomizer.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_TextInfoDebugTool.cs" />
@@ -146,6 +149,7 @@
     <None Include="Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile Overlay.shader" />
     <None Include="Assets/Epic Toon FX/Prefabs/Combat/Combat FX.txt" />
     <None Include="Assets/!Default/Toony Colors Pro/Shader Templates 2/Modules/Module_Outline.txt" />
+    <None Include="Assets/RomeVsBarbarians2/Models/LowQualityCharatersAsset/Try our game mods at Patreon.txt" />
     <None Include="Assets/!Default/Toony Colors Pro/Shaders Generated/Examples/SG2/Detail Texture Simple.shader" />
     <None Include="Assets/!Default/Toony Colors Pro/Shaders PBS/TCP2_PBS_Main.cginc" />
     <None Include="Assets/TextMesh Pro/Shaders/TMP_Bitmap.shader" />
@@ -215,6 +219,7 @@
     <None Include="Assets/TextMesh Pro/Shaders/TMPro_Properties.cginc" />
     <None Include="Assets/!Default/Toony Colors Pro/Shaders/Include/TCP2_Outline.shader" />
     <None Include="Assets/!Default/Toony Colors Pro/Shaders Generated/Examples/Default/Subsurface Scattering.shader" />
+    <None Include="Assets/RomeVsBarbarians2/Models/LowQualityCharatersAsset/Visit Verrix Microassets for free stuff.txt" />
     <None Include="Assets/OldResourses/Fonts/Jacquard_12,Jersey_10,Jersey_15 2/Jersey_10/OFL.txt" />
     <None Include="Assets/TextMesh Pro/Shaders/TMPro_Surface.cginc" />
     <None Include="Assets/!Default/Toony Colors Pro/Shader Templates 2/Modules/Module_Vertical Fog.txt" />
@@ -264,6 +269,7 @@
     <None Include="Assets/!Default/Toony Colors Pro/Shaders/Variants Base/TCP2_Desktop_Specular.shader" />
     <None Include="Assets/Tiny Trees All Season/Update.txt" />
     <None Include="Assets/!Default/Toony Colors Pro/Shaders/TCP2_OutlineOnly.shader" />
+    <None Include="Assets/PixelLighting.shader" />
     <None Include="Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile.shader" />
     <None Include="Assets/!Default/Toony Colors Pro/Shaders Generated/Examples/Water/Water WindWaker.shader" />
     <None Include="Assets/!Default/Toony Colors Pro/Shader Templates 2/Modules/Module_CustomAmbient.txt" />

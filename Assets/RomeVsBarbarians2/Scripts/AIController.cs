@@ -1,0 +1,1025 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
+using UnityEngine.AI;
+
+public class AIController : MonoBehaviour
+{
+[Header("Action Priority")]
+
+
+[SerializeField] public float[] actionPrioruty;
+    // 0 - стоим, ничего не делаем
+    // 1 - бежим в атаку на конкретный отряда - если он близко!
+    // 2 - идем к подходящему отряду чтоб дать ему песды - если он далеко!
+    // 3 - отходим, ссымся. Если в бою - выходим из боя
+    // 4 - бежим на помощь союзному отряду
+    // 5 - бежим в точку защиты
+    // 6 - пробуем обойти врага
+
+    [Space(10)]
+
+[SerializeField] public List<SquadController> actionQueueArray;
+
+    [SerializeField] public List<SquadController> allEnemiesList;
+    [SerializeField] public List<SquadController> allPlayerList;
+
+
+    [SerializeField] List<SquadController> playerNearSquads = new List<SquadController>();
+[SerializeField]  List<SquadController> playerFarSquads = new List<SquadController>();
+
+    [SerializeField] List<SquadController> enemyNearSquads = new List<SquadController>();
+    [SerializeField] List<SquadController> enemyFarSquads = new List<SquadController>();
+
+    [SerializeField] public List<SquadController> playerGroups;
+
+    [SerializeField] List<AIDefencePoint> defencePoints = new List<AIDefencePoint>();
+
+    [SerializeField] private SquadController bestSquadToAttack;
+    [SerializeField] private SquadController bestSquadToRetreat;
+    [SerializeField] private SquadController bestSquadToHelp;
+    [SerializeField] private AIDefencePoint bestDefencePoints;
+
+    [SerializeField] public float nearEnemyPower;
+
+    [SerializeField] public float nearPlayerPower;
+
+
+    [SerializeField] public List<SquadController> squadsToDelete;
+
+    [Space(10)]
+    [SerializeField] public float timeAction;
+
+
+ [SerializeField] private LayerMask playerUnitLayer ;
+
+  [SerializeField] private LayerMask enemyUnitLayer ;
+
+ [SerializeField] private GameObject drawingPrefab;
+
+
+
+[Header("AI Settings")]
+    [Space(10)]
+    
+[SerializeField] public float difficulty;
+[SerializeField] public float timeToGetActions;
+[SerializeField] public float farRadius;
+[SerializeField] public float nearRadius;
+[SerializeField] public float nearEnemyRadius;
+
+
+[Header("Suport waves Settings")]
+    [Space(10)]
+
+[SerializeField] public Transform enemyObject;
+    [SerializeField] public Transform playerObject;
+    [SerializeField] public Transform defenceObject;
+
+    [SerializeField] public int waveNow;
+[SerializeField] public int waveMax;
+[SerializeField] public float waveTimer;
+
+ [Space(10)]
+[SerializeField] public float[] waveTiming;
+[SerializeField] public SquadController[] wave0;
+[SerializeField] public SquadController[] wave1;
+[SerializeField] public SquadController[] wave2;
+[SerializeField] public SquadController[] wave3;
+[SerializeField] public SquadController[] wave4;
+[SerializeField] public SquadController[] wave5;
+
+
+[SerializeField] public Transform[] spawnPoints;
+
+[Header("UI Settings")]
+    [Space(10)]
+[SerializeField] public Animator supportUI;
+[SerializeField] public TextMeshProUGUI timerSupportUI;
+[SerializeField] public TextMeshProUGUI countSupportUI;
+
+[SerializeField] public Image supportUIBar;
+
+[SerializeField] public bool supportUIShow;
+[SerializeField] public bool supportUIAlert;
+
+[Header("NavMesh Settings")]
+    [SerializeField] private NavMeshAgent agent;
+    private NavMeshPath path;
+
+    [SerializeField] public Transform targettt;
+    LineRenderer lineRenderer;
+
+
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        //SetQueue();
+
+        //if(wave1.Length > 0){
+        //    waveMax ++;
+        //}
+        //if(wave2.Length > 0){
+        //    waveMax ++;
+        //}
+        //if(wave3.Length > 0){
+        //    waveMax ++;
+        //}
+        //if(wave4.Length > 0){
+        //    waveMax ++;
+        //}
+        //if(wave5.Length > 0){
+        //    waveMax ++;
+        //}
+        //supportUI.gameObject.SetActive(false);
+        //supportUIShow = false;
+        //supportUIAlert = false;
+
+       
+
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        timeAction += Time.deltaTime;
+
+
+        if (timeAction > timeToGetActions)
+        {
+            if (actionQueueArray.Count > 0)
+            {
+                if (actionQueueArray[0] != null)
+                {
+                    AiAction(actionQueueArray[0]);
+
+                    if (actionQueueArray.Count > 0)
+                    {
+                        actionQueueArray.RemoveAt(0);
+                    }
+                }
+                else
+                {
+                    actionQueueArray.RemoveAt(0);
+                }
+            }
+           
+            //actions ++;
+            timeAction = 0;
+
+            if (actionQueueArray.Count == 0)
+            {
+                if (squadsToDelete.Count > 0)
+                {
+                    DeleteSquads();
+                }
+                
+
+                SetQueue();
+                PlayerSquadsCollectToGroup();
+                SetAllDefencePoint();
+                // actions = 0;
+            }
+
+        }
+
+        //if(waveNow <= waveMax){
+        //     waveTimer += Time.deltaTime;
+
+        //      if(waveTiming[waveNow] - waveTimer < 30){
+        //            if(!supportUIShow){
+        //                supportUI.gameObject.SetActive(true);
+        //                supportUIShow = true;
+
+        //                    int supportSquadsCount = 0;
+
+        //                 if(waveNow == 0){
+        //                    supportSquadsCount = wave0.Length;
+        //                }
+        //                if(waveNow == 1){
+        //                    supportSquadsCount = wave1.Length;
+        //                }
+        //                if(waveNow == 2){
+        //                    supportSquadsCount = wave2.Length;
+        //                }
+        //                if(waveNow == 3){
+        //                    supportSquadsCount = wave3.Length;
+        //                }
+        //                if(waveNow == 4){
+        //                    supportSquadsCount = wave4.Length;
+        //                }
+        //                if(waveNow == 5){
+        //                    supportSquadsCount = wave4.Length;
+        //                }
+
+        //                countSupportUI.text = "x" + supportSquadsCount;
+        //            }
+        //            timerSupportUI.text = "0:" + Mathf.FloorToInt((waveTiming[waveNow] - waveTimer)%60);
+
+        //            supportUIBar.fillAmount = 1f - waveTimer/30f;
+
+        //             if(waveTiming[waveNow] - waveTimer < 10){
+        //                if(!supportUIAlert){
+        //                    supportUI.SetTrigger("Alert");
+        //                    supportUIAlert = true;
+        //                }
+
+        //             }
+        //      }
+
+        //    if(waveTimer > waveTiming[waveNow]){
+        //        SpawnWave(waveNow);
+
+        //        waveNow ++;
+        //        waveTimer = 0;
+        //        supportUI.gameObject.SetActive(false);
+
+        //        supportUIShow = false;
+        //        supportUIAlert = false;
+
+        //     }
+
+
+        //}
+
+
+
+    }
+
+
+    public void AiAction(SquadController squad) {
+
+        for (int i = 0; i < actionPrioruty.Length; i++) ///// очистка
+        {
+            actionPrioruty[i] = 0;
+        }
+
+        if (squad.squadDie) { return; }
+
+        // познаем обстановку вокруг оттряда
+         FarPlayerSquadList(squad);
+         NearPlayerSquadList(squad); 
+         NearEnemySquadList(squad);
+
+
+        actionPrioruty[0] += enemyNearSquads.Count; // рядом с союзниками стоять комфортно
+        actionPrioruty[0] += 10/squad.currentMorale ; // мало морали - лучще постоять
+
+        float lastPowerToAttack = -2000f;
+        int bestIndexToAttack = 0;
+        int countToAttck = 0;
+
+        if (playerNearSquads.Count > 0) //  1 - бежим в атаку на конкретный отряда - если он близко!
+        {
+            
+
+            for (int i = 0; i < playerNearSquads.Count; i++)
+            {
+                float p = PowerСomparison(squad, playerNearSquads[i]);
+                if (p > lastPowerToAttack)
+                {
+                    lastPowerToAttack = p;
+                    bestIndexToAttack = i;
+                }
+                if (p > 0)
+                {
+                    countToAttck++;
+                }
+
+
+            }
+            bestSquadToAttack = playerNearSquads[bestIndexToAttack];
+
+            actionPrioruty[1] += countToAttck;//  пересмотрт!!!!!!
+            actionPrioruty[1] += lastPowerToAttack/10;//  пересмотрт!!!!!!
+
+
+            if (squad.predictEnemy != null) /// если чел уже идет к врагу или сражается - множим на 0;
+            {
+                if(squad.isMoved || squad.inBattle){
+
+                    if(squad.predictEnemy.transform.parent.gameObject == bestSquadToAttack.gameObject)
+                    {
+                        actionPrioruty[1] *= 0f ;
+                    }
+                }
+            }
+        }
+
+        if (squad.squadDie) { return; }
+
+        if (playerFarSquads.Count > 0 && playerNearSquads.Count == 0) //  2 - идем к подходящему отряду чтоб дать ему песды - если он далеко!
+        {
+            
+
+            for (int i = 0; i < playerFarSquads.Count; i++)
+            {
+                float p = PowerСomparison(squad, playerFarSquads[i]);
+                if (p > lastPowerToAttack)
+                {
+                    lastPowerToAttack = p;
+                    bestIndexToAttack = i;
+                }
+                if (p > 0)
+                {
+                    countToAttck++;
+                }
+
+
+            }
+
+            bestSquadToAttack = playerFarSquads[bestIndexToAttack];
+
+            actionPrioruty[2] += countToAttck;//  пересмотрт!!!!!!
+            actionPrioruty[2] += lastPowerToAttack / 20;//  пересмотрт!!!!!!
+
+
+            if (squad.predictEnemy != null) /// если чел уже идет к врагу или сражается - множим на 0;
+            {
+                if (squad.isMoved || squad.inBattle)
+                {
+
+                    if (squad.predictEnemy.transform.parent.gameObject == bestSquadToAttack.gameObject)
+                    {
+                        actionPrioruty[2] *= 0f;
+                    }
+                }
+            }
+
+        }
+
+        if (squad.squadDie) { return; }
+
+        if (playerNearSquads.Count > 0) //  3 - отходим, ссымся. Если в бою - выходим из боя
+        {
+            float lastPowerToRetreat = 0;
+            int bestIndexToRetreat = 0;
+            int countToRetreat = 0;
+
+            for (int i = 0; i < playerNearSquads.Count; i++)
+            {
+                float p = PowerСomparison(squad, playerNearSquads[i]);
+
+                if (p < lastPowerToRetreat)
+                {
+                    lastPowerToRetreat = p;
+                    bestIndexToRetreat = i;
+                }
+                if (p < 0)
+                {
+                    countToRetreat++;
+                }
+
+
+            }
+            bestSquadToRetreat = playerNearSquads[bestIndexToRetreat];
+
+            actionPrioruty[3] += countToRetreat;//  пересмотрт!!!!!!
+            actionPrioruty[3] += -lastPowerToRetreat / 10;//  пересмотрт!!!!!!
+
+                if (squad.inBattle )
+                {
+
+                     actionPrioruty[3] *= 0f;
+                actionPrioruty[0] *= 0f; /// переделать!!!
+
+                float powerCoef =  (squad.enemyController[0].ai_squadPower / squad.ai_squadPower)/10f;
+
+                    if (squad.currentMorale / squad.maxMorale < 0.35f + powerCoef)// пересмотрт!!!!!!
+                    {
+                        actionPrioruty[3] += squad.enemyController.Count;
+
+                        actionPrioruty[3] += 10 / squad.currentMorale;
+
+                    }
+
+
+                 }
+            
+        }
+
+        if (squad.squadDie) { return; }
+
+        float lastPowerToHelp = 0;
+        int bestIndexToHelp = 0;
+        
+
+        if (enemyNearSquads.Count > 0) // 4 - бежим на помощь союзному отряду
+        {
+            for (int i = 0; i < enemyNearSquads.Count; i++)
+            {
+                if (enemyNearSquads[i].ai_needHelp && enemyNearSquads[i].inBattle)
+                {
+
+                    float p = PowerСomparison(enemyNearSquads[i], enemyNearSquads[i].enemyController[0]);
+                    float p2 = PowerСomparison(squad, enemyNearSquads[i].enemyController[0]);
+
+                    if (p+ p2 > lastPowerToHelp)
+                    {
+                        lastPowerToHelp = p + p2;
+                        bestIndexToHelp = i;
+
+                        actionPrioruty[4] ++;//  пересмотрт!!!!!!
+                    }
+                   
+                }
+
+            }
+
+            bestSquadToHelp = enemyNearSquads[bestIndexToHelp];
+
+           
+            actionPrioruty[4] += lastPowerToHelp / 10; // пересмотрт!!!!!!
+
+        }
+
+        if (squad.squadDie) { return; }
+
+
+        float lastPriorityToDefence = -10f;
+        int bestIndexToDefence = 0;
+
+        if (defencePoints.Count > 0) // 5 - идем на выгодную дефенсЗону
+        {
+            for (int i = 0; i < defencePoints.Count; i++)
+            {
+                
+
+                    float p = defencePoints[i].defencePriority;
+                    
+
+                    if (p  > lastPriorityToDefence)
+                    {
+                    lastPriorityToDefence = p ;
+                    bestIndexToDefence = i;
+
+
+                    }
+
+                
+
+            }
+
+            bestDefencePoints = defencePoints[bestIndexToDefence];
+
+
+            actionPrioruty[5] += lastPriorityToDefence; // пересмотрт!!!!!!
+
+        }
+
+
+        if (squad.squadDie) { return; }
+
+        float lastPriority = -10f;
+        int bestAction = 0;
+        for (int i = 0; i < actionPrioruty.Length; i++) ///// финальное решение
+        {
+            if(actionPrioruty[i] > lastPriority)
+            {
+                lastPriority = actionPrioruty[i];
+                bestAction = i;
+            }
+        }
+
+        
+
+        if(bestAction == squad.ai_currentState)
+        {
+            squad.ai_currentState = 0;
+            return;
+        }
+
+
+
+        if (bestAction == 0) // бездействуем
+        {
+            squad.ai_currentState = 0;
+            return;
+        }
+
+
+        if (bestAction == 1 ) // идием пиздицца
+        {
+            squad.ai_currentState = 1;
+            DrawPathAndGo(squad, squad.transform.position, bestSquadToAttack.transform.position,1);
+            return;
+        }
+        if (bestAction == 2) // подтягиваемся к врагам на пол пути
+        {
+            squad.ai_currentState = 2;
+            DrawPathAndGo(squad, squad.transform.position, bestSquadToAttack.transform.position,2); // пол пути
+            return;
+        }
+        if (bestAction == 3) //отходим, ссымся.Если в бою - выходим из боя
+        {
+
+            squad.ai_currentState = 3;
+            Vector3 backVector;
+
+            if (bestSquadToRetreat != null) {
+                backVector = Vector3.Normalize(squad.transform.position - bestSquadToRetreat.transform.position);
+            }
+            else
+            {
+                backVector = Vector3.Normalize(squad.transform.position - squad.enemyController[0].transform.position);
+            }
+            
+
+            DrawPathAndGo(squad, squad.transform.position, squad.transform.position + (backVector * nearRadius), 1);
+            return;
+        }
+        if (bestAction == 4) // бежим на помощь союзному отряду
+        {
+            squad.ai_currentState = 4 ;
+            DrawPathAndGo(squad, squad.transform.position, bestSquadToHelp.transform.position, 1);
+            return;
+        }
+        if (bestAction == 5) // бежим в зону которую нужно защищать
+        {
+            squad.ai_currentState = 5;
+
+            bestDefencePoints.defencePriority -= 0.5f; // понижаем приоритет шоб много туда не бежало
+
+            float defRadius = bestDefencePoints.radius;
+            Vector3 randomPos = new Vector3(Random.Range(-defRadius, defRadius),0f, Random.Range(-defRadius, defRadius));
+
+            DrawPathAndGo(squad, squad.transform.position, bestDefencePoints.transform.position + randomPos, 1);
+            return;
+        }
+
+
+    }
+
+
+
+public void SetAllEnemiesList()
+    {
+
+        allEnemiesList = new List<SquadController>();
+
+
+
+        for (int i = 0; i < enemyObject.transform.childCount; i++)
+        {
+            allEnemiesList.Add(enemyObject.transform.GetChild(i).GetComponent<SquadController>());
+        }
+
+
+    }
+
+    public void SetAllPlayersList()
+    {
+
+        allPlayerList = new List<SquadController>();
+
+        for (int i = 0; i < playerObject.transform.childCount; i++)
+        {
+            allPlayerList.Add(playerObject.transform.GetChild(i).GetComponent<SquadController>());
+
+        }
+
+
+    }
+
+    public void SetQueue()
+    {
+
+        actionQueueArray = new List<SquadController>();
+
+
+        for (int i = 0; i < enemyObject.transform.childCount; i++)
+        {
+            actionQueueArray.Add(enemyObject.transform.GetChild(i).GetComponent<SquadController>());
+        }
+
+
+    }
+
+    public void SetAllDefencePoint()
+    {
+
+        defencePoints = new List<AIDefencePoint>();
+
+
+
+        for (int i = 0; i < defenceObject.transform.childCount; i++)
+        {
+            AIDefencePoint ai_defencePoint = defenceObject.transform.GetChild(i).GetComponent<AIDefencePoint>();
+             ai_defencePoint.CheckDefencePoint();
+
+            if (ai_defencePoint.needToDefence)
+            {
+                defencePoints.Add(ai_defencePoint);
+               
+            }
+        }
+
+
+    }
+
+
+    public void FarEnemySquadList(SquadController squad)
+{
+
+
+    Collider[] nearColliders = Physics.OverlapSphere(squad.transform.position, farRadius, enemyUnitLayer);
+
+    enemyFarSquads = new List<SquadController>();
+
+
+
+
+    for (int i = 0; i < nearColliders.Length; i++)
+    {
+        if (nearColliders[i].tag == "Enemy")
+        {
+            SquadController SquadNear = nearColliders[i].GetComponent<SquadController>();
+
+            if (!enemyFarSquads.Contains(SquadNear))
+            {
+                    enemyFarSquads.Add(SquadNear);
+
+
+
+
+            }
+        }
+
+    }
+
+
+}
+
+public void FarPlayerSquadList(SquadController squad)
+{
+
+    Collider[] nearColliders = Physics.OverlapSphere(squad.transform.position, farRadius, playerUnitLayer);
+
+    playerFarSquads = new List<SquadController>();
+
+    for (int i = 0; i < nearColliders.Length; i++)
+    {
+        if (nearColliders[i].tag == "Squad")
+        {
+            SquadController SquadNear = nearColliders[i].GetComponent<SquadController>();
+
+            if (!playerFarSquads.Contains(SquadNear))
+            {
+                    playerFarSquads.Add(SquadNear);
+
+
+
+
+            }
+        }
+
+    }
+
+}
+
+public void NearEnemySquadList(SquadController squad)
+    {
+       
+
+        Collider[] nearColliders = Physics.OverlapSphere(squad.transform.position, nearEnemyRadius, enemyUnitLayer);
+
+        enemyNearSquads = new List<SquadController>();
+      
+
+
+
+        for (int i = 0; i < nearColliders.Length; i++)
+        {
+            if (nearColliders[i].tag == "Enemy")
+            {
+                SquadController SquadNear = nearColliders[i].GetComponent<SquadController>();
+
+                if (!enemyNearSquads.Contains(SquadNear))
+                {
+                    enemyNearSquads.Add(SquadNear);
+
+                   
+
+                   
+                }
+            }
+
+        }
+
+
+    }
+
+public void NearPlayerSquadList(SquadController squad)
+    {
+
+        Collider[] nearColliders = Physics.OverlapSphere(squad.transform.position, nearEnemyRadius, playerUnitLayer);
+
+        playerNearSquads = new List<SquadController>();
+
+        for (int i = 0; i < nearColliders.Length; i++)
+        {
+            if (nearColliders[i].tag == "Squad")
+            {
+                SquadController SquadNear = nearColliders[i].GetComponent<SquadController>();
+
+                if (!playerNearSquads.Contains(SquadNear))
+                {
+                    playerNearSquads.Add(SquadNear);
+
+                    
+
+                    
+                }
+            }
+
+        }
+
+    }
+
+    
+
+
+
+    public void PlayerSquadsCollectToGroup()
+    {
+
+        SetAllPlayersList();
+
+
+        playerGroups = allPlayerList;
+
+        HashSet<SquadController> visited = new HashSet<SquadController>(); // Для отслеживания посещенных юнитов
+        int groupId = 0; // Идентификатор для новой группы
+
+        foreach (var squad in playerGroups)
+        {
+            if (!visited.Contains(squad))
+            {
+                // Создаем новую группу
+                groupId++;
+                List<SquadController> group = new List<SquadController>();
+
+                // Выполняем поиск для текущего юнита
+                FindGroup(squad, group, visited);
+
+ 
+            }
+        }
+
+      
+    }
+
+    private void FindGroup(SquadController squad, List<SquadController> group, HashSet<SquadController> visited)
+    {
+        Queue<SquadController> queue = new Queue<SquadController>();
+        queue.Enqueue(squad);
+
+        float squadTotalPower = 0f;
+
+        while (queue.Count > 0)
+        {
+            var current = queue.Dequeue();
+            if (!visited.Contains(current))
+            {
+                visited.Add(current); // Помечаем текущий юнит как посещенный
+                group.Add(current); // Добавляем юнита в текущую группу
+
+                squadTotalPower += current.ai_squadPower;
+
+                // Проверяем соседей
+                Collider[] neighbors = Physics.OverlapSphere(current.transform.position,nearRadius,playerUnitLayer);
+
+                foreach (var neighbor in neighbors)
+                {
+                    SquadController SquadNear = neighbor.GetComponent<SquadController>();
+
+                    if (playerGroups.Contains(SquadNear) && !visited.Contains(SquadNear))
+                    {
+                        queue.Enqueue(SquadNear);
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < group.Count; i++)
+        {
+            group[i].ai_groupPower = squadTotalPower;
+        }
+
+}
+
+
+
+
+
+
+
+
+    private void DrawPathAndGo(SquadController squad,Vector3 startPos, Vector3 targetPos, int pathCoef)
+{
+        GameObject drawing = Instantiate(drawingPrefab);
+        lineRenderer = drawing.GetComponent<LineRenderer>();
+
+        agent.enabled = false;
+
+        agent.transform.position = startPos;
+        agent.enabled = true;
+
+
+        path = new NavMeshPath();
+
+        agent.CalculatePath(targetPos, path);
+
+        if (path.corners.Length < 2) return;
+
+
+
+        if (path.corners.Length >= 4)// пол пути
+        {
+            int middleIndex = path.corners.Length / pathCoef;
+
+            for (int i = 0; i < middleIndex; i++)
+            {
+                lineRenderer.positionCount++;
+
+                lineRenderer.SetPosition(lineRenderer.positionCount - 1, path.corners[i]);
+            }
+
+
+                
+        }
+        else 
+        {
+
+            if (pathCoef >= 2) // пол пути
+            {
+                lineRenderer.positionCount++;
+                lineRenderer.SetPosition(lineRenderer.positionCount - 1, startPos);
+
+
+                lineRenderer.positionCount++;
+                lineRenderer.SetPosition(lineRenderer.positionCount - 1, (startPos + targetPos) / 2);
+            }
+            else  // полные путь
+            {
+                lineRenderer.positionCount = path.corners.Length;
+                lineRenderer.SetPositions(path.corners);
+            }
+        
+        }
+
+            
+
+        
+
+        if (squad.isMoved)
+        {
+            squad.indexMove = 0;
+            squad.movingPositions = null;
+            // CancelMovement();
+            if (lineRenderer != null)
+            {
+                Destroy(squad.lineRenderer.gameObject);
+            }
+
+        }
+
+        if (squad.inBattle)
+        {
+            squad.SetBattle(false);
+            squad.escape = true;
+        }
+
+        squad.lineRenderer = lineRenderer;
+
+        squad.SetMoving(true);
+    }
+
+
+public void SqauadRetreat(SquadController enemySquad,Vector3 center) {
+
+    Vector3 dir = Vector3.Normalize(center - enemySquad.transform.position);
+    
+    //SquadHalfWayToPoint(enemySquad,center-dir*nearRadius*2f);
+
+}
+
+
+
+
+
+
+public float PowerСomparison(SquadController squad,SquadController playerSquad ){
+        squad.AiPowerCalculate();
+        playerSquad.AiPowerCalculate();
+
+        float squadPwoer = squad.ai_squadPower + (squad.currentAmountUnits * squad.CountCoefAnalis(playerSquad.type).x);
+
+        float playerGroupPower = (playerSquad.ai_squadPower - playerSquad.ai_squadPower)/2f; // учитываем шо там по паверу вокруг него, чтоб не ломится на превосходящие силы
+              float playerSquadPwoer = playerSquad.ai_squadPower + (playerSquad.currentAmountUnits * playerSquad.CountCoefAnalis(squad.type).x) + playerGroupPower;
+
+        return squadPwoer - playerSquadPwoer;
+ }
+
+
+
+public void DeleteSquads() {
+
+        
+         for (int i = 0; i < squadsToDelete.Count; i++)
+        {
+
+            Destroy(squadsToDelete[i].gameObject);
+
+        }
+        squadsToDelete.Clear();
+
+    }
+
+
+    public void DeleteSquadFromQueue(SquadController squad)
+    {
+
+        if (actionQueueArray.Contains(squad))
+        {
+            actionQueueArray.Remove(squad);
+        }
+
+
+
+
+    }
+
+
+
+
+
+
+    public void SpawnWave(int wave){
+
+    Transform point = spawnPoints[Random.Range(0,spawnPoints.Length)]; 
+
+     SquadController[] squads = wave0;
+
+    if(wave == 0){
+         squads = wave0;
+    }
+    if(wave == 1){
+        squads = wave1;
+    }
+    if(wave == 2){
+         squads = wave2;
+    }
+    if(wave == 3){
+         squads = wave3;
+    }
+    if(wave == 4){
+         squads = wave4;
+    }
+    if(wave == 5){
+         squads = wave4;
+    }
+
+                 GameObject[] allPlayerSquads = GameObject.FindGameObjectsWithTag("Squad");
+
+                Vector3 ceterOfSquads = new Vector3(0,0,0);
+                    for (int i = 0; i < allPlayerSquads.Length; i++) {
+                        ceterOfSquads += allPlayerSquads[i].transform.position;
+                    }
+
+                    ceterOfSquads /= allPlayerSquads.Length;
+
+        Vector3 dirLeft = Quaternion.AngleAxis(point.rotation.eulerAngles.y, Vector3.up) * new Vector3(5f,0f,0f);
+        Vector3 dirRight = Quaternion.AngleAxis(point.rotation.eulerAngles.y, Vector3.up) * new Vector3(-5f,0f,0f);
+
+        GameObject sq = Instantiate(squads[0],point.position,point.rotation).gameObject;
+        sq.transform.parent = enemyObject;
+        SquadController spawnedSquad = sq.GetComponent<SquadController>();
+
+        //SquadHalfWayToPoint (spawnedSquad,ceterOfSquads);
+
+        for (int i = 1; i < squads.Length; i++) {
+            if(i % 2 == 0){
+                dirLeft += dirLeft;
+                    sq = Instantiate(squads[i],point.position+dirLeft,point.rotation).gameObject;
+                    sq.transform.parent = enemyObject;
+                    spawnedSquad = sq.GetComponent<SquadController>();
+                   // SquadHalfWayToPoint (spawnedSquad,ceterOfSquads);
+
+            }else{
+                dirRight +=dirRight;
+                sq = Instantiate(squads[i],point.position + dirRight,point.rotation).gameObject;
+                    sq.transform.parent = enemyObject;
+                    spawnedSquad = sq.GetComponent<SquadController>();
+                    ///SquadHalfWayToPoint (spawnedSquad,ceterOfSquads);
+                   
+
+            }
+            }
+
+    }
+}

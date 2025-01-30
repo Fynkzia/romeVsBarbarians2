@@ -35,7 +35,7 @@ public class SquadController : MonoBehaviour {
     [SerializeField] public float maxMorale;
     [Space(10)]
     [SerializeField] public float actionTime;
-    [SerializeField] public int actionUnits;
+
     [Space(10)]
     [SerializeField] public float actionColliderRadius;
 
@@ -90,16 +90,14 @@ public class SquadController : MonoBehaviour {
     [SerializeField] public bool inBattle = false;
     [SerializeField] public bool isGoingToEnemy = false;
 
-    [SerializeField] public bool attack;
-    [SerializeField] public bool defence;
-
     [SerializeField] private bool battleRot = false;
     [SerializeField] private bool battleMove = false;
     [SerializeField] private bool moveRot = false;
     [SerializeField] public bool escape = false;
-    [SerializeField] private bool squadDie = false;
+    [SerializeField] public bool squadDie = false;
     [SerializeField] public bool canFirstAttack = true;
     [SerializeField] public bool isStunned = false;
+    [SerializeField] public bool inBuildBattle = false;
 
 
 
@@ -124,8 +122,8 @@ public class SquadController : MonoBehaviour {
     [Space(10)]
     [SerializeField] private float angleToUpdateFormation = 35f;
     private float movingDistanceToPoint;
-    private Vector3[] movingPositions;
-    private int indexMove = 0;
+    public Vector3[] movingPositions;
+    public int indexMove = 0;
 
 
     [Header("Fighting Settings")]
@@ -141,6 +139,7 @@ public class SquadController : MonoBehaviour {
     [Space(10)]
     [SerializeField] public List<GameObject> avaliableToAttack;
     [SerializeField] public LayerMask detectionMask;
+    [SerializeField] public LayerMask maskToPush; 
     private float lastFormationValue = 0;
     private int lastAmountUnits = 0;
 
@@ -149,11 +148,14 @@ public class SquadController : MonoBehaviour {
     [Space(10)]
     [SerializeField] public int animationState;
     [HideInInspector] public List<AnimationController> animatorControllers = new List<AnimationController>();
-    private int runAnimIndex = 0;
+     private int runAnimIndex = 0;
+     private GameObject lastAttakedUnit;
+     Vector3 directionToEnemy;
 
 
     [SerializeField] public float animationIdleUpdateTime;
-    [SerializeField] public float animationActionUpdateTime;
+    [SerializeField] public float animationMoveUpdateTime;
+    [SerializeField] public float animationFightUpdateTime = 0.1f;
 
     public Vector3 spriteSize;
     private Vector3[] initialPositions;
@@ -171,9 +173,11 @@ public class SquadController : MonoBehaviour {
 
     [Header("Enemy AI settings")]
     [Space(10)]
-    [SerializeField] public int aiActionValue = 100;
-    [SerializeField] public bool dangerAlert = false;
+    [SerializeField] public float ai_squadPower = 0;
+    [SerializeField] public float ai_groupPower = 0;
+    [SerializeField] public bool ai_needHelp;
 
+    [SerializeField] public int ai_currentState = 0;
 
     [Header("Times")]
     [Space(10)]
@@ -189,7 +193,7 @@ public class SquadController : MonoBehaviour {
     [Space(10)]
     private CoinsController coinsController;
     private SquadControlManager controlController;
-    private EnemyAIController aIController;
+    private AIController aIController;
     private WinLoseManager winLoseManager;
 
     
@@ -199,6 +203,7 @@ public class SquadController : MonoBehaviour {
 
     [SerializeField] public SphereCollider colliderObject;
     [SerializeField] public Collider predictEnemy;
+    [SerializeField] public BuildingManager predictBuild;
     private Rigidbody rb;
     [SerializeField] public List<GameObject> unitArray;
     [SerializeField] public List<SquadController> enemyController = new List<SquadController>();
@@ -210,6 +215,7 @@ public class SquadController : MonoBehaviour {
     [SerializeField] private GameObject drawingPrefab;
     [SerializeField] private GameObject movementIndicator;
     [SerializeField] private GameObject battleIndicator;
+    [SerializeField] public GameObject shootingIndicator;
     [SerializeField] private PointsController unitPositions;
 
     [SerializeField] private GameObject shadowObject;
@@ -226,11 +232,16 @@ public class SquadController : MonoBehaviour {
     private const string SQUAD_TRIGGER_TAG = "SquadTrigger";
 
 
+   
+  
+
+
+
     private void Start() {
 
         coinsController = GameObject.Find("CoinsController").GetComponent<CoinsController>();
         controlController = GameObject.Find("SquadControlManager").GetComponent<SquadControlManager>();
-        aIController = GameObject.Find("AIManager").GetComponent<EnemyAIController>();
+        aIController = GameObject.Find("AIManager").GetComponent<AIController>();
         winLoseManager = GameObject.Find("WinLoseManager").GetComponent<WinLoseManager>();
         rb = GetComponent<Rigidbody>();
 
@@ -283,129 +294,175 @@ public class SquadController : MonoBehaviour {
         RadiusUpdate();
         UnitsTransformInFormation();
 
+        //ai
+        AiPowerCalculate();
+
     }
 
-    private void FixedUpdate() {
-
-        animTime += Time.fixedDeltaTime;
-
-        if (!isMoved && !inBattle)
+    private void FixedUpdate()
+    {
+        if (!squadDie)
         {
-            if (animTime > animationIdleUpdateTime)
+            animTime += Time.fixedDeltaTime;
+
+            if (!isMoved && !inBattle)
             {
-                SpriteAnimationChange();
 
 
-                animTime = 0;
-            }
-        }
-        else
-        {
-            if (animTime > animationActionUpdateTime)
-            {
-                SpriteAnimationChange();
-                animTime = 0;
-            }
 
-            if (isMoved)
-            {
-                MoveAnimation();
-            }
-
-            if (inBattle)
-            {
-                FigthAnimation();
-            }
-        }
-
-
-        if (!isStunned)
-        {
-
-            if (isMoved || battleMove)
-            {
-                SquadMovement();
-
-
-                FormationBonusChange(-lostDefenceMoving * Time.deltaTime);
-
-
-                if (tapCount > 0)
+                if (animTime > animationIdleUpdateTime)
                 {
-                    startTapTime += Time.fixedDeltaTime;
+                    SpriteAnimationChange();
 
-                    if (startTapTime > maxTimeWait)
-                    {
-                        tapCount = 0;
-                        startTapTime = 0;
-                    }
+                    animTime = 0;
 
-                    if (tapCount == 2)
-                    {
-                        CancelMovement();
-                    }
+
                 }
             }
-
-
-
-            if (inBattle)
+            else
             {
-                currentActionTime += Time.fixedDeltaTime;
-                // animationAttackTime += Time.fixedDeltaTime + (Random.Range(-0.1f, 0.1f) * Time.fixedDeltaTime);
 
-                if (currentActionTime >= actionTime / ((actionUnits / currentAmountUnits) * currentAmountUnits)) // вписываем экшн юнитс
+
+                if (isMoved)
                 {
-                    currentActionTime = 0f;
-                    SetEnemyDamage();
+                    if (animTime > animationMoveUpdateTime / MoraleToSpeedEffectIndex())
+                    {
+                        SpriteAnimationChange();
+                        animTime = 0;
+
+                    }
+
+                    MoveAnimation();
+                }
+
+                if (inBattle)
+                {
+                    if (animTime > animationFightUpdateTime)
+                    {
+                        if (inBuildBattle && predictBuild == null)
+                        {
+
+                            SetBattle(false);
+                            // return;
+                            animTime = 0;
+                        }
+
+
+                        SpriteAnimationChange();
+                        animTime = 0;
+                        FigthAnimation();
+
+                    }
 
 
                 }
 
+
+
+
             }
-        }
-        else
-        {
-            stunnedTime -= Time.fixedDeltaTime;
-
-           if(stunnedTime <= 0) {
-                stunnedTime = 0;
-                isStunned = false;
-            }
-        }
 
 
-        restorTime += Time.fixedDeltaTime;
-        if (restorTime > 1f)
-        {
-            if (!inBattle &&!isMoved && currentMorale < maxMorale)
+            if (!isStunned)
             {
-              
-                MoraleChange(recoveryMoraleSpeed * (currentAmountUnits / amountUnits));
 
+                if (isMoved || battleMove)
+                {
+                    SquadMovement();
+
+
+                    FormationBonusChange(-lostDefenceMoving * Time.deltaTime);
+
+
+                    if (tapCount > 0)
+                    {
+                        startTapTime += Time.fixedDeltaTime;
+
+                        if (startTapTime > maxTimeWait)
+                        {
+                            tapCount = 0;
+                            startTapTime = 0;
+                        }
+
+                        if (tapCount == 2)
+                        {
+                            CancelMovement();
+                        }
+                    }
+                }
+
+
+
+                if (inBattle)
+                {
+                    currentActionTime += Time.fixedDeltaTime;
+                    // animationAttackTime += Time.fixedDeltaTime + (Random.Range(-0.1f, 0.1f) * Time.fixedDeltaTime);
+
+                    if (currentActionTime >= actionTime) // вписываем экшн юнитс + (0.3f - actionUnits / currentAmountUnits)
+                    {
+                        if (inBuildBattle)
+                        {
+                            SetBuildDamage();
+                        }
+                        else
+                        {
+                            SetEnemyDamage();
+                        }
+                        currentActionTime = 0f;
+
+
+
+                    }
+
+                }
             }
-
-            
-
-            if (!inBattle && !isMoved && currentFormation <= formationSquad)
+            else
             {
-                FormationBonusChange(resetDefence * (currentMorale / maxMorale));
+                stunnedTime -= Time.fixedDeltaTime;
 
+                if (stunnedTime <= 0)
+                {
+                    stunnedTime = 0;
+                    isStunned = false;
+                }
             }
 
-            restorTime = 0;
+
+            restorTime += Time.fixedDeltaTime;
+            if (restorTime > 1f)
+            {
+                if (!inBattle && !isMoved && currentMorale < maxMorale)
+                {
+
+                    MoraleChange(recoveryMoraleSpeed * (currentAmountUnits / amountUnits));
+
+                }
+
+
+
+                if (!inBattle && !isMoved && currentFormation <= formationSquad)
+                {
+                    FormationBonusChange(resetDefence * (currentMorale / maxMorale));
+
+                }
+
+                restorTime = 0;
+            }
+
+            if (escape)
+            {
+                if (escapeTime < maxEscapeTime)
+                {
+                    escapeTime += Time.fixedDeltaTime;
+                }
+                else
+                {
+                    escape = false;
+                    escapeTime = 0;
+                }
+            }
+
         }
-
-        if (escape) {
-            if (escapeTime < maxEscapeTime) {
-                escapeTime += Time.fixedDeltaTime;
-            }
-            else {
-                escape = false;
-                escapeTime = 0;
-            }
-        }
-
     }
 
 
@@ -458,11 +515,12 @@ public class SquadController : MonoBehaviour {
                     float directionz = targetPos.z - transform.position.z;
                     float directionx = targetPos.x - transform.position.x;
 
-                    Vector2 lineVec = new Vector2(-1,1) - new Vector2(1, -1);
+                    Vector2 lineVec = new Vector2(-1, 1) - new Vector2(1, -1);
 
                     float crossProduct = lineVec.x * directionz - lineVec.y * directionx;
 
-                     if(crossProduct < 0) {
+                    if (crossProduct < 0)
+                    {
 
                         for (int i = 0; i < animatorControllers.Count; i++)
                         {
@@ -472,7 +530,8 @@ public class SquadController : MonoBehaviour {
                         }
 
                     }
-                    else {
+                    else
+                    {
 
                         for (int i = 0; i < animatorControllers.Count; i++)
                         {
@@ -481,10 +540,6 @@ public class SquadController : MonoBehaviour {
                                 mesh.localScale = new Vector3(mesh.transform.localScale.x * -1, mesh.transform.localScale.y, mesh.transform.localScale.z);
                         }
                     }
-
-
-
-
 
                     rb.MovePosition(targetPos);
                     lineRenderer.SetPosition(0, transform.position);
@@ -495,10 +550,26 @@ public class SquadController : MonoBehaviour {
                 {
                     var pointsList = new List<Vector3>(movingPositions);
                     pointsList.RemoveAt(1);
+                    
+
+                    if (predictEnemy != null && predictEnemy.transform.position != pointsList[pointsList.Count-1])
+                    {
+                        pointsList.Add(predictEnemy.transform.position);
+                        indexMove--;
+                    }
+
+
                     movingPositions = pointsList.ToArray();
                     lineRenderer.SetPositions(movingPositions);
                     indexMove++;
+
+                    if (predictEnemy != null && lineRenderer.positionCount > 2)
+                    {
+                        //lineRenderer.SetPosition(lineRenderer.positionCount-1, predictEnemy.transform.position);
+                    }
                 }
+
+                
 
                 MoraleChange(-(lostMoraleThenRun *Time.deltaTime));
 
@@ -508,15 +579,20 @@ public class SquadController : MonoBehaviour {
                 CancelMovement();
 
 
-                if (!playerSquad)
-                {
-                    AiActionValueReset();
-                }
+               
             }
         }
-        else
+        else ///  --- подходим чуууточку ближе 
         {
             Vector3 targetPos = Vector3.MoveTowards(transform.position, moveDir, CurrentSpeed() * Time.fixedDeltaTime);
+
+            if(predictEnemy == null)
+            {
+                
+                battleMove = false;
+                CancelMovement();
+                return;
+            }
 
             if (Vector3.Distance(rb.position, predictEnemy.transform.position) > (colliderObject.radius * 1.1f))
             {
@@ -525,6 +601,13 @@ public class SquadController : MonoBehaviour {
             }
             else
             {
+                float y = MathUtilities.AngleBetweenTwoPoints(transform.position, predictEnemy.transform.position);
+
+                    unitPositions.transform.rotation = Quaternion.Euler(new Vector3(0f, y, 0f));
+                    moveRot = false;
+                    UnitsTransformInFormation();
+                    squadRotate = unitPositions.transform.rotation;
+
                 
 
                 battleMove = false;
@@ -620,16 +703,38 @@ public class SquadController : MonoBehaviour {
             canFirstAttack = true;
         }
 
-        
+        if (inBuildBattle && !inBattle)
+        {
+            inBuildBattle = false;
+            predictBuild = null;
+        }
 
         this.inBattle = inBattle;
         battleIndicator.SetActive(inBattle);
-        
 
 
-        if (!playerSquad) {
-            AiActionValueReset();
+        if (inBattle)
+        {
+            if (enemyController.Count > 0)
+            {
+                //directionToEnemy = (enemyController[0].transform.position - (targetPosition + transform.position)).normalized;
+
+                directionToEnemy = enemyController[0].transform.position;
+            }
+            else
+            {
+                if (predictBuild == null)
+                {
+                    return;
+                } ////////////////// можно улучшить!!
+
+                //directionToEnemy = (predictBuild.transform.position - (targetPosition + transform.position)).normalized;
+                directionToEnemy = predictBuild.transform.position;
+            }
         }
+
+
+
     }
 
 
@@ -644,11 +749,29 @@ public class SquadController : MonoBehaviour {
             }
         }
     }
+    public Vector2 CountCoefAnalis(SquadType enemyType)
+    {
+        foreach (Coef el in coef)
+        {
+            if (el.type == enemyType)
+            {
+                return new Vector2(el.attack, el.defence);
+            }
+        }
+        return new Vector2(0, 0);
+    }
 
     private float AttackTriggerCoef(SquadController en)
     {
+        if(en == null)
+        {
+            return 0;
+        }
+
+        Quaternion enRot = en.unitPositions.transform.rotation;
         
-        Quaternion rotationDifference = Quaternion.Inverse(en.unitPositions.transform.rotation) * unitPositions.transform.rotation;
+
+        Quaternion rotationDifference = Quaternion.Inverse(enRot) * unitPositions.transform.rotation;
 
         // Преобразование разницы вращений в угол
         float angleY = Mathf.Abs(rotationDifference.eulerAngles.y);
@@ -745,14 +868,10 @@ public class SquadController : MonoBehaviour {
             return 0.5f;
         }
 
-        return 0.3f;
+        return 0.4f;
     }
 
-    private float ActionUnitsIndex()
-    {
-
-        return ((actionUnits / currentAmountUnits));
-    }
+   
 
 
 
@@ -761,7 +880,7 @@ public class SquadController : MonoBehaviour {
         {
             currentMorale += morale;
 
-            Debug.Log("MoraleChange - morale=" + morale, gameObject);
+            //Debug.Log("MoraleChange - morale=" + morale, gameObject);
         }
         
         if (currentAmountUnits < retreatMinCount)
@@ -810,17 +929,48 @@ public class SquadController : MonoBehaviour {
     public void CancelMovement()
     {
         SetMoving(false);
+
         if (lineRenderer != null)
         {
             Destroy(lineRenderer.gameObject);
         }
+
         indexMove = 0;
         currentSpeed = 0;
         movingPositions = null;
         tapCount = 0;
         startTapTime = 0;
         isGoingToEnemy = false;
-       
+
+        Collider[] nearColliders = Physics.OverlapSphere(transform.position, colliderObject.radius, maskToPush,QueryTriggerInteraction.Collide);
+
+        Debug.Log("this collider - "+nearColliders.Length);
+
+        if (nearColliders.Length > 0)
+        {
+            Vector3 dir = new Vector3();
+            for (int i = 0; i < nearColliders.Length; i++)
+            {
+
+                if (nearColliders[i] != colliderObject)
+                {
+                    if ((tag == SQUAD_TAG && colliderObject.gameObject.tag == SQUAD_TAG) || (tag == ENEMY_TAG && colliderObject.gameObject.tag == ENEMY_TAG))
+                    {
+                        dir += (nearColliders[i].transform.position - transform.position);
+                    }
+                   
+                }
+            }
+
+            Debug.Log("this collider - " + dir+ " mag - " + dir.magnitude );
+
+            //float force = 100f * Vector3.Distance(nearColliders[0].transform.position, transform.position);
+
+            if (dir.magnitude > 1.5f)
+            {
+                SquadPush(-dir.normalized, (1 / dir.magnitude) * 800f);
+            }
+        }
     }
 
     public void GoToSquad(Transform squad)
@@ -851,46 +1001,85 @@ public class SquadController : MonoBehaviour {
 
         lineRenderer.positionCount++;
         lineRenderer.SetPosition(lineRenderer.positionCount - 1, squad.transform.position);
-      
-        SetMoving(true);
+
+        if (inBattle)
+        {
+            battleMove = true;
+        }
+        else
+        {
+            SetMoving(true);
+        }
+       
     }
 
     public void SpriteRotate(Vector3 target, Transform unit)
     {
-        float directionz = target.z - unit.position.z;
-        float directionx = target.x - unit.position.x;
+        float directionz = target.z - unit.transform.position.z;
+        float directionx = target.x - unit.transform.position.x;
 
-        Transform mesh = unit.transform.GetChild(0).transform;
+        Vector2 lineVec = new Vector2(-1, 1) - new Vector2(1, -1);
 
-        if (directionx < 0 && directionz <= 0)
+        float crossProduct = lineVec.x * directionz - lineVec.y * directionx;
+
+        if (crossProduct < 0)
         {
 
-            if (mesh.transform.localScale.x < 0)
-                mesh.localScale = new Vector3(mesh.transform.localScale.x * -1, mesh.transform.localScale.y, mesh.transform.localScale.z);
+            for (int i = 0; i < animatorControllers.Count; i++)
+            {
+                Transform mesh = animatorControllers[i].transform.GetChild(0).transform;
+                if (mesh.transform.localScale.x > 0)
+                    mesh.localScale = new Vector3(mesh.transform.localScale.x * -1, mesh.transform.localScale.y, mesh.transform.localScale.z);
+            }
 
         }
-        else if (directionx > 0 && directionz >= 0)
+        else
         {
 
-            if (mesh.transform.localScale.x > 0)
-                mesh.localScale = new Vector3(mesh.transform.localScale.x * -1, mesh.transform.localScale.y, mesh.transform.localScale.z);
-
+            for (int i = 0; i < animatorControllers.Count; i++)
+            {
+                Transform mesh = animatorControllers[i].transform.GetChild(0).transform;
+                if (mesh.transform.localScale.x < 0)
+                    mesh.localScale = new Vector3(mesh.transform.localScale.x * -1, mesh.transform.localScale.y, mesh.transform.localScale.z);
+            }
         }
 
-        if (directionx < 0 && directionz >= 0)
-        {
+        //float directionz = target.z - unit.position.z;
+        //float directionx = target.x - unit.position.x;
 
-            if (mesh.transform.localScale.x > 0)
-                mesh.localScale = new Vector3(mesh.transform.localScale.x * -1, mesh.transform.localScale.y, mesh.transform.localScale.z);
+        //Transform mesh = unit.transform.GetChild(0).transform;
 
-        }
-        else if (directionx > 0 && directionz <= 0)
-        {
+        //if (directionx < 0 && directionz <= 0)
+        //{
 
-            if (mesh.transform.localScale.x > 0)
-                mesh.localScale = new Vector3(mesh.transform.localScale.x * -1, mesh.transform.localScale.y, mesh.transform.localScale.z);
+        //    if (mesh.transform.localScale.x < 0)
+        //        mesh.localScale = new Vector3(mesh.transform.localScale.x * -1, mesh.transform.localScale.y, mesh.transform.localScale.z);
 
-        }
+        //}
+        //else if (directionx > 0 && directionz >= 0)
+        //{
+
+        //    if (mesh.transform.localScale.x > 0)
+        //        mesh.localScale = new Vector3(mesh.transform.localScale.x * -1, mesh.transform.localScale.y, mesh.transform.localScale.z);
+
+        //}
+
+        //if (directionx < 0 && directionz >= 0)
+        //{
+
+        //    if (mesh.transform.localScale.x > 0)
+        //        mesh.localScale = new Vector3(mesh.transform.localScale.x * -1, mesh.transform.localScale.y, mesh.transform.localScale.z);
+
+        //}
+        //else if (directionx > 0 && directionz <= 0)
+        //{
+
+        //    if (mesh.transform.localScale.x > 0)
+        //        mesh.localScale = new Vector3(mesh.transform.localScale.x * -1, mesh.transform.localScale.y, mesh.transform.localScale.z);
+
+        //}
+
+    
 
     }
 
@@ -986,6 +1175,37 @@ public class SquadController : MonoBehaviour {
                             
                             GoToSquad(enemyCollider.transform);
                         }
+                    }
+                    else // дрались со зданием, все забыли
+                    {
+                        if (inBuildBattle) {
+
+                            predictEnemy = null;
+                            inBuildBattle = false;
+                            SetBattle(false);
+
+                            if (!enemyController.Contains(squad))
+                            {
+
+                                GoToSquad(enemyCollider.transform);
+                            }
+                        }
+                        
+                    }
+
+                }else if(enemyCollider.gameObject.layer == 16)// пиздим здание
+                {
+                    if (isMoved)
+                    {
+                        //moveDir = enemyCollider.transform.position;
+                        predictBuild = enemyCollider.GetComponent<BuildingManager>();
+                        inBuildBattle = true;
+
+
+                        CancelMovement();
+                        //battleMove = true;
+                        SetBattle(true);
+                        SelectFightingUnits();
                     }
                 }
             }
@@ -1101,34 +1321,52 @@ public class SquadController : MonoBehaviour {
     {
         avaliableToAttack.Clear();
 
-        if (enemyController.Count <= 0)
+        if (enemyController.Count <= 0 && inBuildBattle == false)
         {
             return;
         }
 
-        foreach (var eController in enemyController)
+        if (!inBuildBattle)
         {
-            if (eController != null)
+            foreach (var eController in enemyController)
             {
-                Collider[] hitColliders = Physics.OverlapSphere(eController.transform.position, colliderObject.radius, detectionMask);
-
-                foreach (var hitCollider in hitColliders)
+                if (eController != null)
                 {
-                    if (squadDie)
-                    {
-                        return;
-                    }
-                    if (hitCollider != null && hitCollider.transform.parent == gameObject.transform)
-                        avaliableToAttack.Add(hitCollider.gameObject);
-                }
-            }
+                    Collider[] hitColliders = Physics.OverlapSphere(eController.transform.position, colliderObject.radius, detectionMask);
 
-        }
-        if (avaliableToAttack.Count == 0) // если нет никого - подходим к врагам
-        {
-            if (enemyController.Count > 0)
+                    foreach (var hitCollider in hitColliders)
+                    {
+                        if (squadDie)
+                        {
+                            return;
+                        }
+                        if (hitCollider != null && hitCollider.transform.parent == gameObject.transform)
+                            avaliableToAttack.Add(hitCollider.gameObject);
+                    }
+                }
+
+            }
+            if (avaliableToAttack.Count == 0) // если нет никого - подходим к врагам
             {
-                GoToSquad(enemyController[0].transform);
+                if (enemyController.Count > 0)
+                {
+                    GoToSquad(enemyController[0].transform);
+                }
+
+            }
+        }
+        else
+        {
+            Collider[] hitColliders = Physics.OverlapSphere(predictBuild.transform.position, colliderObject.radius, detectionMask);
+
+            foreach (var hitCollider in hitColliders)
+            {
+                if (squadDie)
+                {
+                    return;
+                }
+                if (hitCollider != null && hitCollider.transform.parent == gameObject.transform)
+                    avaliableToAttack.Add(hitCollider.gameObject);
             }
 
         }
@@ -1169,8 +1407,8 @@ public class SquadController : MonoBehaviour {
             enController.stunnedTime = 1f;
             
         }
-      
 
+       
         canFirstAttack = false;
 
 
@@ -1208,9 +1446,6 @@ public class SquadController : MonoBehaviour {
 
         float min = GameOptions.GetMinDamageValue(enController,this); // уменьшение этого параметра влияет на уменьшение шансов сдохнуть от атаки.
 
-        if (enController.defence) {
-            min -= (enController.actionUnits / 25f) * 3f; //приказ на защиту
-        }
 
         float max = GameOptions.GetMaxDamageValue(enController, this);
 
@@ -1264,6 +1499,18 @@ public class SquadController : MonoBehaviour {
 
         }
     }
+    private void SetBuildDamage()
+    {
+        if(predictBuild == null)
+        {
+            SetBattle(false);
+            return;
+        }
+
+        if(inBuildBattle){
+            predictBuild.GetDamage((amountUnits * powerSquad)* MoraleEffectIndex());
+        }
+    }
 
     public void GetDamage(float moraleLostCoef)
     {
@@ -1285,12 +1532,12 @@ public class SquadController : MonoBehaviour {
         }
 
         FormationBonusChange(-lostDefenceMoving);
-
+        TryToRetreat();
     }
 
     public void GetUnitDie(float triggerCoef, int unitIndex) {// запускается на вражеском отряде, когда надо кого-то убить
 
-        Debug.Log("GetUnitDie",gameObject);
+       
 
         int r = 0;
         GameObject currentUnit = null;
@@ -1353,8 +1600,8 @@ public class SquadController : MonoBehaviour {
 
 
             DeleteUnit(currentUnit);
-            
-           
+
+          
 
 
             MoraleChange(-lostMoraleThenDie - (0.75f - (currentAmountUnits / amountUnits)));
@@ -1405,35 +1652,69 @@ public class SquadController : MonoBehaviour {
 
     // morale
     private void TryToRetreat() {
-        if (currentAmountUnits < retreatMinCount && currentMorale / maxMorale < 0.3f) {
-            float min = 0f - currentMorale - currentAmountUnits;
+        if (currentAmountUnits < retreatMinCount && currentMorale / maxMorale < 0.35f) {
+            float min = 0f - (2*currentMorale) - (2*(currentAmountUnits / amountUnits));
 
             float max = 10 + enemyController.Count;
 
             RetreatUpdate();
 
+            Debug.Log("TryToRetreat min = " + min + "max = "+ max);
+            if (Random.Range(min, max) > 4f) {///// зависит от сложности
 
-            if (Random.Range(min, max) > 10f) { ///// зависит от сложности
-                SetBattle(false);
-                squadDie = true;
+                if (unitArray[unitArray.Count - 1] != null)
+                {
+                    Transform currentModel = unitArray[unitArray.Count - 1].transform;
+                    currentModel.gameObject.AddComponent<Rigidbody>();
+                    currentModel.gameObject.AddComponent<SphereCollider>();
 
-                for (int i = 0; i < unitArray.Count; i++) {
-                    if (unitArray[i].transform.parent == gameObject.transform)
+                    UnitRetreatController unitRetreatController = currentModel.GetComponent<UnitRetreatController>();
+                    unitRetreatController.enabled = true;
+                    if (enemyController.Count > 0)
                     {
-                        Transform currentModel = unitArray[i].transform;
-                        currentModel.gameObject.AddComponent<Rigidbody>();
-                        currentModel.gameObject.AddComponent<SphereCollider>();
-                        currentModel.GetComponent<UnitRetreatController>().enabled = true;
-                        currentModel.parent = null;
+                        unitRetreatController.enemyPos = enemyController[0].transform.position;
                     }
+                    else
+                    {
+                        if (inBuildBattle)
+                        {
+                            unitRetreatController.enemyPos = predictBuild.transform.position;
+                        }
+                        else
+                        {
+                            unitRetreatController.enemyPos = new Vector3(0, 0, 0);
+                        }
+
+                    }
+
+                    currentModel.parent = null;
+
+
+
+                    if (unitArray.Contains(currentModel.gameObject))
+                        unitArray.Remove(currentModel.gameObject);
+
+                    if (avaliableToAttack.Contains(currentModel.gameObject))
+                        avaliableToAttack.Remove(currentModel.gameObject);
+
+
+                    AnimationController anim = currentModel.GetComponent<AnimationController>();
+
+                    if (animatorControllers.Contains(anim))
+                        animatorControllers.Remove(anim);
+
+                    currentAmountUnits--;
+                    Debug.Log("TryToRetreat", gameObject);
                 }
-                SquadDie();
-                return;
+
+
             }
 
             if (currentAmountUnits < retreatCount || currentAmountUnits == 0) {
-                SetBattle(false);
-                squadDie = true;
+               // SetBattle(false);
+                //squadDie = true;
+                inBattle = false;
+                battleIndicator.SetActive(false);
 
                 for (int i = 0; i < unitArray.Count; i++)
                 {
@@ -1442,10 +1723,29 @@ public class SquadController : MonoBehaviour {
                         Transform currentModel = unitArray[i].transform;
                         currentModel.gameObject.AddComponent<Rigidbody>();
                         currentModel.gameObject.AddComponent<SphereCollider>();
-                        currentModel.GetComponent<UnitRetreatController>().enabled = true;
+
+                        UnitRetreatController unitRetreatController = currentModel.GetComponent<UnitRetreatController>();
+                        unitRetreatController.enabled = true;
+
+                        if (enemyController.Count > 0)
+                        {
+                            unitRetreatController.enemyPos = enemyController[0].transform.position;
+                        }
+                        else
+                        {
+                            if (inBuildBattle)
+                            {
+                                unitRetreatController.enemyPos = predictBuild.transform.position;
+                            }
+                            else
+                            {
+                                unitRetreatController.enemyPos = new Vector3(0, 0, 0);
+                            }
+                        }
                         currentModel.parent = null;
                     }
                 }
+               
                 SquadDie();
             }
 
@@ -1461,14 +1761,16 @@ public class SquadController : MonoBehaviour {
     {
 
 
-        if (currentMorale / maxMorale < 0.3f)
+        if (currentMorale / maxMorale < 0.35f)
         {
             UnitInfo.SetBool("Retreat", true);
+            ai_needHelp = true;
 
         }
         else
         {
             UnitInfo.SetBool("Retreat", false);
+            ai_needHelp = false;
         }
 
     }
@@ -1479,7 +1781,7 @@ public class SquadController : MonoBehaviour {
         if (lastAmountUnits - unitArray.Count >= 4)
         {
             
-            colliderObject.radius = (actionColliderRadius + unitPositions.scatterAmount) * ((unitArray.Count / amountUnits)+0.2f);
+            colliderObject.radius = (actionColliderRadius + unitPositions.scatterAmount) * ((unitArray.Count / amountUnits)+0.3f);
             if (colliderObject.radius < 3)
             {
                 colliderObject.radius = 3;
@@ -1529,6 +1831,22 @@ public class SquadController : MonoBehaviour {
             initialPositions[i] = unitArray[i].transform.localPosition;
 
         }
+
+        if (unitPositions.scatterAmount > 0.6f)
+        {
+            if (inBattle)
+            {
+                if (enemyController.Count > 0)
+                {
+                    Transform targetSquad = enemyController[0].transform;
+
+                    for (int i = 0; i < animatorControllers.Count; i++)
+                    {
+                        SpriteRotate(targetSquad.position, animatorControllers[i].transform);
+                    }
+                }
+            }
+        }
     }
 
 
@@ -1540,25 +1858,36 @@ public class SquadController : MonoBehaviour {
             for (int i = 0; i < enemyController.Count; i++) {
 
                 enemyController[i].DeleteEnemySquad(this);
-                enemyController[i].CanSquadFight(); 
+              
             }
         }
 
-        if (playerSquad) { // удаляем сквады с ии контролера
-            aIController.DeletePlayerSquad(this);
-            winLoseManager.playerSquadsCount--;
-        }
-        else {
-            aIController.DeleteEnemySquad(this);
-            winLoseManager.enemySquadsCount--;
-        }
+        if (!squadDie)
+        {
+            if (playerSquad)
+            { // удаляем сквады с ии контролера
 
-        Destroy(gameObject);
+                winLoseManager.playerSquadsCount--;
+            }
+            else
+            {
+                aIController.DeleteSquadFromQueue(this);
+                winLoseManager.enemySquadsCount--;
+            }
+
+            aIController.squadsToDelete.Add(this);
+            //Destroy(gameObject);
+            squadDie = true;
+            gameObject.SetActive(false);
+        }
     }
 
     public void DeleteEnemySquad(SquadController squad)
     {
-        enemyController.Remove(squad);
+        if (enemyController.Contains(squad))
+        {
+            enemyController.Remove(squad);
+        }
         CanSquadFight();
 
         MoraleChange(addMoraleKillSquad);
@@ -1586,6 +1915,9 @@ public class SquadController : MonoBehaviour {
     //animation
     public void SpriteAnimationChange()
     {
+        if (squadDie){return; }
+
+
         if (animationState == 0) // idle
         {
             for (int i = 0; i < animatorControllers.Count; i++)
@@ -1635,6 +1967,8 @@ public class SquadController : MonoBehaviour {
                 {
                     animatorControllers[Random.Range(0, animatorControllers.Count)].GetComponent<AnimationController>().SpriteAnimationChange(7);
                 }
+
+              
             }
 
             damageCountAnimations = 0;
@@ -1691,32 +2025,35 @@ public class SquadController : MonoBehaviour {
 
             float fxCounter = 0;
 
-            for (int i = 0; i < avaliableToAttack.Count; i++)
+            for (int i = 0; i < 1; i++)
             {
-                if (Random.Range(1, 3) % 2 == 0)
-                {
-                    if (avaliableToAttack.Count == 0 || avaliableToAttack[i] == null) { return; }
-                    avaliableToAttack[i].GetComponent<AnimationController>().SpriteAnimationChange(5);
 
+                if (avaliableToAttack.Count == 0) { return; }
 
-                    SpriteRotate(enemyController[0].transform.position, avaliableToAttack[i].transform);
+               GameObject randomUnit =  avaliableToAttack[Random.Range(0, avaliableToAttack.Count)];
 
+                if (randomUnit != lastAttakedUnit) {
 
+                    randomUnit.GetComponent<AnimationController>().SpriteAnimationChange(5);
 
                     if (fxCounter <= 1)
                     {
                         if (Random.Range(1, 100) >= 95)
                         {
-                            Instantiate(fightFx[Random.Range(0, fightFx.Length)], avaliableToAttack[i].transform.position, transform.rotation);
+                            Instantiate(fightFx[Random.Range(0, fightFx.Length)], randomUnit.transform.position, transform.rotation);
                             fxCounter++;
+
+                            
                         }
                     }
+
+                    lastAttakedUnit = randomUnit;
                 }
                 else
                 {
-                    if (avaliableToAttack.Count == 0 || avaliableToAttack[i] == null) { return; }
-                    avaliableToAttack[i].GetComponent<AnimationController>().SpriteAnimationChange(4);
+                    //i++;
                 }
+   
 
             }
 
@@ -1757,9 +2094,9 @@ public class SquadController : MonoBehaviour {
 
     void MoveAnimation()
     {
+        
 
-
-        float time = Time.time * 10 * MoraleEffectIndex() ;
+        float time = Time.time * (13f-(3f/MoraleToSpeedEffectIndex()));
 
         for (int i = 0; i < animatorControllers.Count; i++)
         {
@@ -1768,7 +2105,7 @@ public class SquadController : MonoBehaviour {
             int z = i / 5;
 
             // Вычисляем смещение волны
-            float waveOffset = Mathf.Sin((x + z) * 10f + time) * 0.07f* MoraleEffectIndex();
+            float waveOffset = Mathf.Sin((x + z) * 10f + time)/10f ;
 
             // Обновляем позицию юнита
             Vector3 targetPosition = initialPositions[i];
@@ -1776,13 +2113,15 @@ public class SquadController : MonoBehaviour {
             animatorControllers[i].transform.localPosition = targetPosition;
 
         }
+
+       
     }
 
     void FigthAnimation()
     {
 
 
-        float time = Time.time + (10f * ActionUnitsIndex());
+        float time = Time.time * (3f + (4f * MoraleEffectIndex()));
 
         for (int i = 0; i < animatorControllers.Count; i++)
         {
@@ -1791,19 +2130,41 @@ public class SquadController : MonoBehaviour {
             int z = i / 5;
 
             // Вычисляем смещение волны
-            float waveOffset = Mathf.Sin((x + z) * 10f + time) * 1.8f;
+            float waveOffset = (Mathf.Sin((x + z) * 1f + time))/4f ;
 
             // Обновляем позицию юнита
             Vector3 targetPosition = initialPositions[i];
+
+            Vector3 dir = directionToEnemy;
+
+            if (enemyController.Count > 0)
+            {
+                dir = (directionToEnemy - (targetPosition + transform.position)).normalized;
+
+                
+            }
+            else
+            {
+                if (predictBuild == null)
+                {
+                    return;
+                } ////////////////// можно улучшить!!
+
+                dir = (directionToEnemy - (targetPosition + transform.position)).normalized;
+              
+            }
+
+
+
             if (avaliableToAttack.Contains(animatorControllers[i].transform.gameObject))
             {
 
-                targetPosition.x += waveOffset;
+                targetPosition += dir * waveOffset;
                 animatorControllers[i].transform.localPosition = targetPosition;
             }
             else
             {
-                targetPosition.x += waveOffset / 5;
+                targetPosition += dir * (waveOffset/3f);
                 animatorControllers[i].transform.localPosition = targetPosition;
             }
 
@@ -1820,10 +2181,11 @@ public class SquadController : MonoBehaviour {
     }
 
     //AI
-    public void AiActionValueReset()
+    public float AiPowerCalculate()
     {
-        aiActionValue = 100;
-        dangerAlert = false;
+        ai_squadPower = currentAmountUnits * powerSquad;
+
+        return ai_squadPower;
     }
 
     //fx
@@ -1832,6 +2194,8 @@ public class SquadController : MonoBehaviour {
         Instantiate(friendlyFireFx, unitArray[Random.Range(0, unitArray.Count)].transform.position, friendlyFireFx.transform.rotation);
 
     }
+
+   
 }
 
 

@@ -91,7 +91,7 @@ Shader "Custom/TerrainShadingWithNormals"
                 float2 uv : TEXCOORD0;
                
 
-             UNITY_FOG_COORDS(3)
+                  UNITY_FOG_COORDS(3)
             };
 
             // Control map

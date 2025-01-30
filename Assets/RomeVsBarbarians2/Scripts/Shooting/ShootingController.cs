@@ -19,6 +19,7 @@ public class ShootingController : MonoBehaviour
     [SerializeField] float shotDamage;
     [SerializeField] float shotAccuracy;
     [SerializeField] float shotRapidity;
+    [SerializeField] int projectilesPerShotCount;
 
     [Space(10)]
     [Header("Shooting Setup")]
@@ -31,8 +32,6 @@ public class ShootingController : MonoBehaviour
     [SerializeField] private GameObject shootingTrigger;
 
 
-    private float actionUnits;
-
     private bool isFirstShoot;
     private SphereCollider shotCollider;
     private Collider currentEnemy;
@@ -43,7 +42,7 @@ public class ShootingController : MonoBehaviour
         isFirstShoot = true;
         rapidityTimer = shotRapidity;
         squadController = GetComponent<SquadController>();
-        actionUnits = squadController.actionUnits;
+        
 
         
             shotCollider = shootingTrigger.GetComponent<SphereCollider>();
@@ -132,16 +131,16 @@ public class ShootingController : MonoBehaviour
         Vector3 enemyPosition = predictEnemy.gameObject.transform.position;
         float distance = Vector3.Distance(transform.position, enemyPosition);
 
-        if (distance > 2f)
+        if (distance > 10f)
         {
 
-            AnimationController[] animationController = new AnimationController[(int)actionUnits];
+            AnimationController[] animationController = new AnimationController[(int)projectilesPerShotCount];
 
-            actionUnits = squadController.actionUnits;
+           
 
             squadController.animTime = 0;
 
-            for (int i = 0; i < actionUnits; i++)
+            for (int i = 0; i < projectilesPerShotCount; i++)
             {
                 int index = Random.Range(0, squadController.animatorControllers.Count);
                 squadController.animatorControllers[index].SpriteAnimationChange(9);
@@ -151,7 +150,7 @@ public class ShootingController : MonoBehaviour
 
             yield return new WaitForSeconds(shotSpawnDelay);
 
-            for (int i = 0; i < actionUnits; i++)
+            for (int i = 0; i < projectilesPerShotCount; i++)
             {
 
                 animationController[i].SpriteAnimationChange(10);
@@ -159,7 +158,7 @@ public class ShootingController : MonoBehaviour
 
             }
 
-            ShotMovement.Create(pfArrow, transform.position + new Vector3(0, shotStartOffset, 0), enemyPosition, shotSpeed, actionUnits, shotDamage, (distance / shotRange), gameObject.tag, squadController.colliderObject.radius);
+            ShotMovement.Create(pfArrow, transform.position + new Vector3(0, shotStartOffset, 0), enemyPosition, shotSpeed, projectilesPerShotCount, shotDamage, (distance / shotRange), gameObject.tag, squadController.colliderObject.radius);
         }
         else
         {
@@ -177,13 +176,17 @@ public class ShootingController : MonoBehaviour
         
         squadController.CancelMovement();
 
-        actionUnits = squadController.unitArray.Count/2f;
+     
         Vector3 enemyPosition = squadController.predictEnemy.gameObject.transform.position;
 
         yield return new WaitForSeconds(0.5f);
 
+        
 
-        for (int i = 0; i < actionUnits; i++)
+          int shootingUnitsCouns = (int)squadController.currentAmountUnits/3;
+
+
+        for (int i = 0; i < shootingUnitsCouns; i++)
         {
             
             squadController.animatorControllers[i].SpriteAnimationChange(9);
@@ -193,12 +196,12 @@ public class ShootingController : MonoBehaviour
 
         yield return new WaitForSeconds(shotSpawnDelay);
         float distance = Vector3.Distance(transform.position, enemyPosition);
-        ShotMovement.Create(pfArrow, transform.position + new Vector3(0, shotStartOffset, 0), enemyPosition, shotSpeed, actionUnits / 2, shotDamage, (distance / shotRange), gameObject.tag, squadController.colliderObject.radius);
+        ShotMovement.Create(pfArrow, transform.position + new Vector3(0, shotStartOffset, 0), enemyPosition, shotSpeed, shootingUnitsCouns, shotDamage, (distance / shotRange), gameObject.tag, squadController.colliderObject.radius);
 
         yield return new WaitForSeconds(shotHalfDelay);
-        ShotMovement.Create(pfArrow, transform.position + new Vector3(0, shotStartOffset, 0), enemyPosition, shotSpeed, actionUnits/2, shotDamage, (distance / shotRange), gameObject.tag, squadController.colliderObject.radius);
+        ShotMovement.Create(pfArrow, transform.position + new Vector3(0, shotStartOffset, 0), enemyPosition, shotSpeed, shootingUnitsCouns, shotDamage, (distance / shotRange), gameObject.tag, squadController.colliderObject.radius);
 
-        for (int i = 0; i < actionUnits; i++)
+        for (int i = 0; i < shootingUnitsCouns; i++)
         {
 
             squadController.animatorControllers[i].SpriteAnimationChange(10);
@@ -211,6 +214,8 @@ public class ShootingController : MonoBehaviour
         SquadControlManager controlController = GameObject.Find("SquadControlManager").GetComponent<SquadControlManager>();
 
         controlController.SquadWayToPoint(squadController, enemyPosition); // идем в рукопашную после выстрела атакаки
+
+        squadController.shootingIndicator.SetActive(false);
     }
 
     private void ShotNearest() {
@@ -220,6 +225,8 @@ public class ShootingController : MonoBehaviour
         foreach (Collider t in shotRangeManager.enemyColliders) {
             if(t == null)
             {
+                squadController.shootingIndicator.SetActive(false);
+
                 return;
             }
             float dist = Vector3.Distance(t.gameObject.transform.position, currentPos);
@@ -230,7 +237,13 @@ public class ShootingController : MonoBehaviour
         }
         if(tMin != null) {
             currentEnemy = tMin;
-            Shot(tMin); 
+            Shot(tMin);
+            squadController.shootingIndicator.SetActive(true);
+
+        }
+        else
+        {
+            squadController.shootingIndicator.SetActive(false);
         }
     }
 
@@ -245,7 +258,7 @@ public class ShootingController : MonoBehaviour
             if (isAttackShooting)
             {
                 AttackShooting();
-                
+                squadController.shootingIndicator.SetActive(true);
             }
             else
             {
@@ -255,11 +268,11 @@ public class ShootingController : MonoBehaviour
                     ShootingSquad();
                     rapidityTimer = 0;
 
-                    actionUnits = squadController.actionUnits;
+                    squadController.shootingIndicator.SetActive(true);
 
                     squadController.animTime = 0;
 
-                    for (int i = 0; i < actionUnits; i++) // по фану стразу ставим в анимацию замахивания
+                    for (int i = 0; i < projectilesPerShotCount; i++) // по фану стразу ставим в анимацию замахивания
                     {
                         int index = Random.Range(0, squadController.animatorControllers.Count);
                         squadController.animatorControllers[index].SpriteAnimationChange(9);

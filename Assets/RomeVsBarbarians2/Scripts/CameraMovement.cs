@@ -175,7 +175,7 @@ public class CameraMovement : MonoBehaviour {
 
     private void HandleCameraZoom() {
         prevFovIndex = targetFOVIndex;
-        if (Input.GetKeyDown(KeyCode.RightArrow) && targetFOVIndex < fieldsOfView.Length - 1) {
+        if (Input.GetKeyDown(KeyCode.UpArrow) && targetFOVIndex < fieldsOfView.Length - 1) {
             
 
             targetFOVIndex++;
@@ -184,7 +184,7 @@ public class CameraMovement : MonoBehaviour {
              CamZoom();
 
         }
-        if (Input.GetKeyDown(KeyCode.LeftArrow) && targetFOVIndex > 0) {
+        if (Input.GetKeyDown(KeyCode.DownArrow) && targetFOVIndex > 0) {
             prevFovIndex = targetFOVIndex;
 
 

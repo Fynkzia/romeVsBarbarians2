@@ -38,6 +38,8 @@ Shader "Custom/CutoutSpecularWind"
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+            #pragma multi_compile_fog // Включение поддержки тумана
+
             #include "UnityCG.cginc"
 
             // Входные параметры
@@ -67,18 +69,24 @@ Shader "Custom/CutoutSpecularWind"
                 float4 vertex : POSITION;
                 half3 normal : NORMAL;
                 float2 uv : TEXCOORD0;
+                
             };
 
             struct v2f
             {
+
                 float4 pos : SV_POSITION;
                 float2 uv : TEXCOORD0;
                 half3 normal : TEXCOORD1;
+
+                
+                UNITY_FOG_COORDS(3)
             };
 
             v2f vert(appdata_t v)
             {
                 v2f o;
+
 
                 float3 worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
 
@@ -96,6 +104,9 @@ Shader "Custom/CutoutSpecularWind"
                 o.pos = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;
                 o.normal = v.normal;
+
+               
+                UNITY_TRANSFER_FOG(o, o.pos);
 
                 return o;
             }
@@ -122,7 +133,17 @@ Shader "Custom/CutoutSpecularWind"
                 float spec = pow(max(0.0, dot(i.normal, halfVec)), _Smoothness * 128.0);
                 fixed4 specular = _SpecularColor * _SpecularStrength * spec;
 
-                return shadowedAlbedo * lightColor + specular;
+
+
+                float3 lightFinal = shadowedAlbedo * lightColor + specular;
+
+                float4 finalColorWithFog = float4(lightFinal * _LightColor.rgb, 1.0);
+
+                   UNITY_APPLY_FOG(i.fogCoord, finalColorWithFog); 
+
+				return finalColorWithFog;
+
+
             }
             ENDCG
         }

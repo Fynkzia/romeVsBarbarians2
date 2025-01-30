@@ -76,7 +76,13 @@ public class SquadControlManager : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButton(0) && hitSquad && !squadController.isMoved) {
+        if (Input.GetMouseButton(0) && hitSquad ) {
+
+            if (squadController.isMoved)
+            {
+                squadController.CancelMovement();
+            }
+
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, 1000f, terrainLayer)) {
@@ -187,8 +193,8 @@ public class SquadControlManager : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit,1000f,unitLayer)) {
             if (hit.collider.transform.parent.gameObject.tag == ENEMY_TAG) {
-                lineRenderer.positionCount++;
-                lineRenderer.SetPosition(lineRenderer.positionCount - 1,hit.collider.gameObject.transform.position);
+                //lineRenderer.positionCount++;
+                //lineRenderer.SetPosition(lineRenderer.positionCount - 1,hit.collider.gameObject.transform.position);
                 lineRenderer.startColor = attackColor;
                 lineRenderer.endColor = attackColor;
                 squadController.predictEnemy = hit.collider;

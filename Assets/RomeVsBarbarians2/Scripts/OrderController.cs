@@ -87,7 +87,7 @@ public class OrderController : MonoBehaviour {
         if (prevOrder == OrderType.Defence) {
             if (currentOrder == OrderType.Attack) {
                 RemoveDefenceOrder();
-                squadController.defence = false;
+              
                 AddAttackOrder();
                 amountOfOrders = 1;
                 ChangeText();
@@ -117,8 +117,7 @@ public class OrderController : MonoBehaviour {
             if (amountOfOrders == 0) {
                 prevOrder = OrderType.None;
                 orderIndicator.SetActive(false);
-                squadController.attack = false;
-                squadController.defence = false;
+               
                 orderTime = 0;
                 return;
             }
@@ -128,52 +127,26 @@ public class OrderController : MonoBehaviour {
 
     private void AddAttackOrder() {
        
-            squadController.actionUnits += 1;
+            //squadController.actionUnits += (int)(squadController.currentAmountUnits/10);
             
         
     
         //squadController.attack = true;
     }
     private void RemoveAttackOrder() {
-        if (squadController.actionUnits >= 2) {
-            squadController.actionUnits -= 1;
-        }
+        //if (squadController.actionUnits >= 2) {
+        //    squadController.actionUnits -= (int)(squadController.currentAmountUnits / 10);
+        //}
        
     }
     private void AddDefenceOrder() {
-        if (squadController.unitArray.Count >= squadController.actionUnits + 3) { 
-            squadController.actionUnits += 3;
-           // squadController.maxFightingUnit += 3;
-            int i = 0;
-            while(i < 3) {
-                int randomUnit = Random.Range(0, squadController.unitArray.Count);
-                if (!shieldUnits.Contains(randomUnit)) { 
-                    shieldUnits.Add(randomUnit);
-//                    squadController.SetShield(randomUnit, true);
-                    i++;
-                }
-            }
-        } 
-        squadController.defenceSquad += defenceOrder.defenceSquad;
-        squadController.actionTime += defenceOrder.actionTime;
-        squadController.defence = true;
+       
     }
     private void RemoveDefenceOrder() {
-        if (squadController.actionUnits >= 6) {
-            int i = 0;
-            while (i < 3) {
-              //  squadController.SetShield(shieldUnits[shieldUnits.Count-1], false);
-                shieldUnits.RemoveAt(shieldUnits.Count-1);
-                i++;
-            }
-            squadController.actionUnits -= 3;
-           // squadController.maxFightingUnit -= 3;
-        }
-        squadController.defenceSquad -= defenceOrder.defenceSquad;
-        squadController.actionTime -= defenceOrder.actionTime;
+       
     }
 
     private void ChangeText() {
-        barText.text = amountOfOrders.ToString();
+        barText.text = "" + amountOfOrders;
     }
 }
