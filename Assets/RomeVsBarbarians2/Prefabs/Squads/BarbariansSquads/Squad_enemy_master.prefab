@@ -384,7 +384,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5360559559885659740}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 131804536491f4af2bfba894064f0a21, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -396,8 +396,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0.3, z: 0}
+  m_Radius: 3
+  m_Center: {x: 0, y: 3, z: 0}
 --- !u!54 &8515267042044785704
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -495,6 +495,8 @@ MonoBehaviour:
   stunnedTime: 0
   currentTriggerCoef: 0
   angleToUpdateFormation: 35
+  lossSpeedToStop: 2
+  timeToStop: 2
   movingPositions: []
   indexMove: 0
   maxEscapeTime: 4
@@ -504,6 +506,9 @@ MonoBehaviour:
   detectionMask:
     serializedVersion: 2
     m_Bits: 8192
+  maskToPush:
+    serializedVersion: 2
+    m_Bits: 0
   animationState: 0
   animatorControllers: []
   animationIdleUpdateTime: 1.5
@@ -526,7 +531,8 @@ MonoBehaviour:
   ai_currentState: 0
   animTime: 0
   unitPrefab: {fileID: 0}
-  colliderObject: {fileID: 5397064186978112961}
+  TriggerObject: {fileID: 5397064186978112961}
+  mainCollider: {fileID: 6400926838650143911}
   predictEnemy: {fileID: 0}
   predictBuild: {fileID: 0}
   unitArray: []
@@ -605,7 +611,7 @@ GameObject:
   - component: {fileID: 8700920731956472159}
   - component: {fileID: 5740564788433443242}
   - component: {fileID: 2847094528134917853}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: SquadCollider
   m_TagString: Enemy
   m_Icon: {fileID: 0}

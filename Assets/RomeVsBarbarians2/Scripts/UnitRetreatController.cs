@@ -10,6 +10,13 @@ public class UnitRetreatController : MonoBehaviour {
     [SerializeField] private float flashingTime;
     [SerializeField] public Vector3 enemyPos;
 
+
+    [SerializeField] public float shakeIntensity = 0.5f; // Амплитуда тряски
+    [SerializeField] public float shakeFrequency = 200f; // Частота тряски
+
+    private Vector3 initialPosition; // Начальная позиция объекта
+    private float shakeOffset; // Временной сдвиг для перлин шума
+
     private Rigidbody rb;
     
     private GameObject body;
@@ -45,7 +52,10 @@ public class UnitRetreatController : MonoBehaviour {
 
         direction = (transform.position - enemyPos).normalized;
         direction += new Vector3(Random.Range(-0.1f,0.1f),0f, Random.Range(-0.1f, 0.1f));
-        
+
+        initialPosition = mesh.transform.localPosition; // Сохраняем начальную позицию
+        shakeOffset = Random.Range(40.1f, 60.9f); // Уникальный сдвиг для объекта
+
 
         Rotate();
 
@@ -62,7 +72,7 @@ public class UnitRetreatController : MonoBehaviour {
             }
             else
             {
-                Flashing(2);
+               // Flashing(2);
             }
 
             if (animTime > animUpdateTime)
@@ -75,6 +85,17 @@ public class UnitRetreatController : MonoBehaviour {
 
             Vector3 targetPos = transform.position + direction * speed * Time.fixedDeltaTime;
             rb.MovePosition(targetPos);
+
+            float time = Time.time * shakeFrequency + shakeOffset;
+
+            // Генерация шума по X и Y
+            float offsetX = (Mathf.PerlinNoise(time, 0f) - 0.5f) * shakeIntensity * 2f;
+            float offsetY = (Mathf.PerlinNoise(0f, time) - 0.5f) * shakeIntensity * 2f;
+
+            // Применяем тряску
+            mesh.transform.localPosition = initialPosition + new Vector3(offsetX, 0, offsetY);
+
+
         } else {
             Destroy(gameObject);
         }
@@ -108,43 +129,31 @@ public class UnitRetreatController : MonoBehaviour {
 
     void Rotate()
     {
-        float directionz = direction.z ;
-        float directionx = direction.x ;
+        float directionz = direction.z;
+        float directionx = direction.x;
 
-        //direction = Quaternion.EulerAngles(0f, -45f, 0f) * direction;
-        Transform mesh = transform.GetChild(0).transform;
+        Vector2 lineVec = new Vector2(-1, 1) - new Vector2(1, -1);
 
-        if (directionx < 0 && directionz <= 0)
+        float crossProduct = lineVec.x * directionz - lineVec.y * directionx;
+
+        if (crossProduct < 0)
         {
+
             
-               
-                if (mesh.transform.localScale.x < 0)
-                    mesh.localScale = new Vector3(mesh.transform.localScale.x * -1, mesh.transform.localScale.y, mesh.transform.localScale.z);
-            
-        }
-        else if (directionx > 0 && directionz >= 0)
-        {
-           
                
                 if (mesh.transform.localScale.x > 0)
-                    mesh.localScale = new Vector3(mesh.transform.localScale.x * -1, mesh.transform.localScale.y, mesh.transform.localScale.z);
-            
-        }
+                    mesh.transform.localScale = new Vector3(mesh.transform.localScale.x * -1, mesh.transform.localScale.y, mesh.transform.localScale.z);
+      
 
-        if (directionx < 0 && directionz >= 0)
+        }
+        else
         {
+
             
               
-                if (mesh.transform.localScale.x > 0)
-                    mesh.localScale = new Vector3(mesh.transform.localScale.x * -1, mesh.transform.localScale.y, mesh.transform.localScale.z);
-            
-        }
-        else if (directionx > 0 && directionz <= 0)
-        {
-            
-                if (mesh.transform.localScale.x > 0)
-                    mesh.localScale = new Vector3(mesh.transform.localScale.x * -1, mesh.transform.localScale.y, mesh.transform.localScale.z);
+                if (mesh.transform.localScale.x < 0)
+                    mesh.transform.localScale = new Vector3(mesh.transform.localScale.x * -1, mesh.transform.localScale.y, mesh.transform.localScale.z);
             
         }
     }
-}
+ }

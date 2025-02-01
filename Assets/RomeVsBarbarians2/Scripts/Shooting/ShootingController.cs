@@ -150,15 +150,27 @@ public class ShootingController : MonoBehaviour
 
             yield return new WaitForSeconds(shotSpawnDelay);
 
-            for (int i = 0; i < projectilesPerShotCount; i++)
+            distance = Vector3.Distance(transform.position, enemyPosition);
+
+            if (distance > 10f)
             {
 
-                animationController[i].SpriteAnimationChange(10);
+                for (int i = 0; i < projectilesPerShotCount; i++)
+                {
+
+                    animationController[i].SpriteAnimationChange(10);
 
 
+                }
+
+                ShotMovement.Create(pfArrow, transform.position + new Vector3(0, shotStartOffset, 0), enemyPosition, shotSpeed, projectilesPerShotCount, shotDamage, (distance / shotRange), gameObject.tag, squadController.TriggerObject.radius);
             }
+            else
+            {
+                SquadControlManager controlController = GameObject.Find("SquadControlManager").GetComponent<SquadControlManager>();
 
-            ShotMovement.Create(pfArrow, transform.position + new Vector3(0, shotStartOffset, 0), enemyPosition, shotSpeed, projectilesPerShotCount, shotDamage, (distance / shotRange), gameObject.tag, squadController.colliderObject.radius);
+                controlController.SquadWayToPoint(squadController, enemyPosition); // идем в рукопашную вместо атакаки
+            }
         }
         else
         {
@@ -196,10 +208,10 @@ public class ShootingController : MonoBehaviour
 
         yield return new WaitForSeconds(shotSpawnDelay);
         float distance = Vector3.Distance(transform.position, enemyPosition);
-        ShotMovement.Create(pfArrow, transform.position + new Vector3(0, shotStartOffset, 0), enemyPosition, shotSpeed, shootingUnitsCouns, shotDamage, (distance / shotRange), gameObject.tag, squadController.colliderObject.radius);
+        ShotMovement.Create(pfArrow, transform.position + new Vector3(0, shotStartOffset, 0), enemyPosition, shotSpeed, shootingUnitsCouns, shotDamage, (distance / shotRange), gameObject.tag, squadController.TriggerObject.radius);
 
         yield return new WaitForSeconds(shotHalfDelay);
-        ShotMovement.Create(pfArrow, transform.position + new Vector3(0, shotStartOffset, 0), enemyPosition, shotSpeed, shootingUnitsCouns, shotDamage, (distance / shotRange), gameObject.tag, squadController.colliderObject.radius);
+        ShotMovement.Create(pfArrow, transform.position + new Vector3(0, shotStartOffset, 0), enemyPosition, shotSpeed, shootingUnitsCouns, shotDamage, (distance / shotRange), gameObject.tag, squadController.TriggerObject.radius);
 
         for (int i = 0; i < shootingUnitsCouns; i++)
         {

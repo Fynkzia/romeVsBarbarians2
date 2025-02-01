@@ -97,7 +97,6 @@ GameObject:
   - component: {fileID: 99249113234269805}
   - component: {fileID: 6750266649210976646}
   - component: {fileID: 6060907297312523291}
-  - component: {fileID: 8229446843784941425}
   m_Layer: 12
   m_Name: Squad_master
   m_TagString: Squad
@@ -147,8 +146,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0.3, z: 0}
+  m_Radius: 3
+  m_Center: {x: 0, y: 3, z: 0}
 --- !u!54 &99249113234269805
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -246,8 +245,11 @@ MonoBehaviour:
   stunnedTime: 0
   currentTriggerCoef: 0
   angleToUpdateFormation: 35
+  lossSpeedToStop: 1
+  timeToStop: 1
   movingPositions: []
   indexMove: 0
+  calculatedVelocity: {x: 0, y: 0, z: 0}
   maxEscapeTime: 5
   attackCoef: 0
   defenceCoef: 0
@@ -281,7 +283,8 @@ MonoBehaviour:
   ai_currentState: 0
   animTime: 0
   unitPrefab: {fileID: 0}
-  colliderObject: {fileID: 596614234286191822}
+  TriggerObject: {fileID: 596614234286191822}
+  mainCollider: {fileID: 853298669736795305}
   predictEnemy: {fileID: 0}
   predictBuild: {fileID: 0}
   unitArray:
@@ -359,27 +362,6 @@ MonoBehaviour:
   barText: {fileID: 4645186876013732402}
   orderImage: {fileID: 6762841245021287511}
   orderFx: {fileID: 824793428660867345, guid: 3ebb2e232877c4a9b994a7dde2a004a1, type: 3}
---- !u!135 &8229446843784941425
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2570471043121216857}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Radius: 3
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3700587279357902604
 GameObject:
   m_ObjectHideFlags: 0
@@ -394,11 +376,11 @@ GameObject:
   - component: {fileID: 7278029972765070928}
   m_Layer: 11
   m_Name: SquadCollider
-  m_TagString: Untagged
+  m_TagString: Squad
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &161495856137061943
 Transform:
   m_ObjectHideFlags: 0

@@ -64,7 +64,7 @@ Shader "Custom/TerrainShadingWithNormals"
 
     SubShader
     {
-        Tags { "Queue" = "Geometry" }
+        Tags { "Queue" = "Geometry" "LightMode"="ForwardBase"  }
         LOD 200
 
         Pass
@@ -73,8 +73,11 @@ Shader "Custom/TerrainShadingWithNormals"
             #pragma vertex vert
             #pragma fragment frag
             #pragma multi_compile_fog // Включение поддержки тумана
+            #pragma multi_compile_fwdbase
+            #pragma multi_compile_shadowcaster
 
             #include "UnityCG.cginc"
+            #include "AutoLight.cginc"
 
             struct appdata_t
             {
@@ -92,6 +95,7 @@ Shader "Custom/TerrainShadingWithNormals"
                
 
                   UNITY_FOG_COORDS(3)
+                  UNITY_LIGHTING_COORDS(4,5)
             };
 
             // Control map
@@ -164,6 +168,7 @@ Shader "Custom/TerrainShadingWithNormals"
                 o.uv = v.uv;
 
                 UNITY_TRANSFER_FOG(o, o.vertex);
+                TRANSFER_SHADOW(o);
                 return o;
             }
 
@@ -239,11 +244,16 @@ Shader "Custom/TerrainShadingWithNormals"
                 //float3 specular = _LightColor0.rgb * pow(max(0, dot(normal, halfDir)), _Smoothness * 128.0);
 
                 //float3 color = diffuse + specular * _Metallic;
+                  fixed shadow = SHADOW_ATTENUATION(i);
 
                 float3 lightFinal = terrainColor + diffuseReflection + specularReflection;
+                lightFinal *=shadow;
+
                 float4 finalColorWithFog = float4(lightFinal * _LightColor.rgb, 1.0);
 
-                   UNITY_APPLY_FOG(i.fogCoord, finalColorWithFog); 
+                   UNITY_APPLY_FOG(i.fogCoord, finalColorWithFog);
+
+              
 
 				return finalColorWithFog;
                 

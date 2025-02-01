@@ -99,7 +99,8 @@ public class SquadControlManager : MonoBehaviour
                 if (squadController.inBattle)
                 {
                     squadController.SetBattle(false);
-                    squadController.escape = true;
+                    squadController.Escape(true); 
+                    
                 }
 
                 TryToShortcutLine();
@@ -146,7 +147,7 @@ public class SquadControlManager : MonoBehaviour
 
                             if (currentLineLength < GameOptions.maxLineLength && dist > GameOptions.minLineLength)
                             {
-                                Debug.Log("y =" + roundedVector.y );
+                                //Debug.Log("y =" + roundedVector.y );
 
                                 if (lineRenderer.positionCount > 0)
                                 {
@@ -160,7 +161,7 @@ public class SquadControlManager : MonoBehaviour
                                 {
                                     if (roundedVector.y - lineRenderer.GetPosition(lineRenderer.positionCount - 2).y  > 1.2f)
                                     {
-                                        Debug.Log("roundedVector.y");
+                                       // Debug.Log("roundedVector.y");
                                         currentLineLength = GameOptions.maxLineLength;
 
 

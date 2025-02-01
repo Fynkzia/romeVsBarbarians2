@@ -121,9 +121,17 @@ public class SquadController : MonoBehaviour {
     [Header("Movement Settings")]
     [Space(10)]
     [SerializeField] private float angleToUpdateFormation = 35f;
+    [SerializeField] private float lossSpeedToStop = 2f;
+    [SerializeField] private float timeToStop = 2f;
+    private float lastSpeed;
+    private float currentTimeToStop;
+
     private float movingDistanceToPoint;
     public Vector3[] movingPositions;
     public int indexMove = 0;
+
+    private Vector3 previousPosition;
+    public Vector3 calculatedVelocity;
 
 
     [Header("Fighting Settings")]
@@ -201,7 +209,8 @@ public class SquadController : MonoBehaviour {
     [SerializeField] private GameObject unitPrefab;
     [Space(10)]
 
-    [SerializeField] public SphereCollider colliderObject;
+    [SerializeField] public SphereCollider TriggerObject;
+    [SerializeField] public SphereCollider mainCollider;
     [SerializeField] public Collider predictEnemy;
     [SerializeField] public BuildingManager predictBuild;
     private Rigidbody rb;
@@ -221,7 +230,7 @@ public class SquadController : MonoBehaviour {
     [SerializeField] private GameObject shadowObject;
     [SerializeField] private GameObject selectObject;
 
-    private float shadowStartScale = 0;
+    private Vector3 shadowStartScale ;
     private float selectStartScale = 0;
 
     [HideInInspector] public int tapCount = 0;
@@ -244,6 +253,9 @@ public class SquadController : MonoBehaviour {
         aIController = GameObject.Find("AIManager").GetComponent<AIController>();
         winLoseManager = GameObject.Find("WinLoseManager").GetComponent<WinLoseManager>();
         rb = GetComponent<Rigidbody>();
+        mainCollider = GetComponent<SphereCollider>();
+
+       
 
         movingDistanceToPoint = GameOptions.distanceToPoint;
 
@@ -266,9 +278,10 @@ public class SquadController : MonoBehaviour {
         currentMorale = maxMorale;
         currentFormation = formationSquad;
         currentActionTime = actionTime;
-        colliderObject.radius = actionColliderRadius;
+        TriggerObject.radius = actionColliderRadius;
+       
 
-        shadowStartScale = shadowObject.transform.localScale.x;
+        shadowStartScale = shadowObject.transform.localScale;
         selectStartScale = selectObject.transform.localScale.x;
 
         //анимации
@@ -366,17 +379,51 @@ public class SquadController : MonoBehaviour {
             if (!isStunned)
             {
 
-                if (isMoved || battleMove)
+                if (isMoved )
                 {
                     SquadMovement();
 
+                    calculatedVelocity = (rb.position - previousPosition) / Time.fixedDeltaTime;
+
+                    // Сохраняем текущую позицию для следующего кадра
+                    previousPosition = rb.position;
+
+                    float rbSpeed = calculatedVelocity.magnitude;
+
+                    if (rbSpeed < 10f) // ебейший костыль
+                    {
+                       
+
+                        if (rbSpeed > lastSpeed)
+                        {
+                            lastSpeed = rbSpeed;
+                            currentTimeToStop = 0;
+
+                        }
+
+                        if (rbSpeed + lossSpeedToStop < lastSpeed)
+                        {
+                            currentTimeToStop += Time.deltaTime;
+
+
+
+                            if (currentTimeToStop > timeToStop)
+                            {
+                                currentTimeToStop = 0;
+                                CancelMovement();
+
+                            }
+
+
+                        }
+                    }
 
                     FormationBonusChange(-lostDefenceMoving * Time.deltaTime);
 
 
                     if (tapCount > 0)
                     {
-                        startTapTime += Time.fixedDeltaTime;
+                        startTapTime += Time.deltaTime;
 
                         if (startTapTime > maxTimeWait)
                         {
@@ -389,6 +436,8 @@ public class SquadController : MonoBehaviour {
                             CancelMovement();
                         }
                     }
+
+                    
                 }
 
 
@@ -457,8 +506,19 @@ public class SquadController : MonoBehaviour {
                 }
                 else
                 {
-                    escape = false;
+                   
+
+                    Escape(false);
                     escapeTime = 0;
+                }
+
+                if(predictEnemy != null)
+                {
+                    if (Vector3.Distance(transform.position, predictEnemy.transform.position) < TriggerObject.radius)
+                    {
+                        Escape(false);
+                        escapeTime = 0;
+                    }
                 }
             }
 
@@ -470,8 +530,7 @@ public class SquadController : MonoBehaviour {
 
     private void SquadMovement() {
 
-        if (!battleMove)
-        {
+        
             if (lineRenderer == null)
             {
                
@@ -501,7 +560,9 @@ public class SquadController : MonoBehaviour {
                 if (moveRot)
                 {
                     unitPositions.transform.rotation = Quaternion.Euler(new Vector3(0f, y, 0f));
-                    moveRot = false;
+                    shadowObject.transform.rotation = Quaternion.Euler(new Vector3(90f, y, 0f));
+
+                moveRot = false;
                     UnitsTransformInFormation();
                     squadRotate = unitPositions.transform.rotation;
                     
@@ -581,39 +642,39 @@ public class SquadController : MonoBehaviour {
 
                
             }
-        }
-        else ///  --- подходим чуууточку ближе 
-        {
-            Vector3 targetPos = Vector3.MoveTowards(transform.position, moveDir, CurrentSpeed() * Time.fixedDeltaTime);
+        
+        //else ///  --- подходим чуууточку ближе 
+        //{
+        //    Vector3 targetPos = Vector3.MoveTowards(transform.position, moveDir, CurrentSpeed() * Time.fixedDeltaTime);
 
-            if(predictEnemy == null)
-            {
+        //    if(predictEnemy == null)
+        //    {
                 
-                battleMove = false;
-                CancelMovement();
-                return;
-            }
+        //        battleMove = false;
+        //        CancelMovement();
+        //        return;
+        //    }
 
-            if (Vector3.Distance(rb.position, predictEnemy.transform.position) > (colliderObject.radius * 1.1f))
-            {
-                rb.MovePosition(targetPos);
+        //    if (Vector3.Distance(rb.position, predictEnemy.transform.position) > (TriggerObject.radius * 1.1f))
+        //    {
+        //        rb.MovePosition(targetPos);
 
-            }
-            else
-            {
-                float y = MathUtilities.AngleBetweenTwoPoints(transform.position, predictEnemy.transform.position);
+        //    }
+        //    else
+        //    {
+        //        float y = MathUtilities.AngleBetweenTwoPoints(transform.position, predictEnemy.transform.position);
 
-                    unitPositions.transform.rotation = Quaternion.Euler(new Vector3(0f, y, 0f));
-                    moveRot = false;
-                    UnitsTransformInFormation();
-                    squadRotate = unitPositions.transform.rotation;
+        //            unitPositions.transform.rotation = Quaternion.Euler(new Vector3(0f, y, 0f));
+        //            moveRot = false;
+        //            UnitsTransformInFormation();
+        //            squadRotate = unitPositions.transform.rotation;
 
                 
 
-                battleMove = false;
+        //        battleMove = false;
                 
-            }
-        }
+        //    }
+        //}
     }
 
     public void SetMoving(bool isMoved) {
@@ -942,7 +1003,9 @@ public class SquadController : MonoBehaviour {
         startTapTime = 0;
         isGoingToEnemy = false;
 
-        Collider[] nearColliders = Physics.OverlapSphere(transform.position, colliderObject.radius, maskToPush,QueryTriggerInteraction.Collide);
+        lastSpeed = 0;
+
+        Collider[] nearColliders = Physics.OverlapSphere(transform.position, TriggerObject.radius, maskToPush,QueryTriggerInteraction.Collide);
 
         Debug.Log("this collider - "+nearColliders.Length);
 
@@ -952,9 +1015,9 @@ public class SquadController : MonoBehaviour {
             for (int i = 0; i < nearColliders.Length; i++)
             {
 
-                if (nearColliders[i] != colliderObject)
+                if (nearColliders[i] != TriggerObject)
                 {
-                    if ((tag == SQUAD_TAG && colliderObject.gameObject.tag == SQUAD_TAG) || (tag == ENEMY_TAG && colliderObject.gameObject.tag == ENEMY_TAG))
+                    if ((tag == SQUAD_TAG && TriggerObject.gameObject.tag == SQUAD_TAG) || (tag == ENEMY_TAG && TriggerObject.gameObject.tag == ENEMY_TAG))
                     {
                         dir += (nearColliders[i].transform.position - transform.position);
                     }
@@ -968,7 +1031,7 @@ public class SquadController : MonoBehaviour {
 
             if (dir.magnitude > 1.5f)
             {
-                SquadPush(-dir.normalized, (1 / dir.magnitude) * 800f);
+                //SquadPush(-dir.normalized, (1 / dir.magnitude) * 800f);
             }
         }
     }
@@ -1004,7 +1067,7 @@ public class SquadController : MonoBehaviour {
 
         if (inBattle)
         {
-            battleMove = true;
+           // battleMove = true;
         }
         else
         {
@@ -1095,73 +1158,7 @@ public class SquadController : MonoBehaviour {
                 if (enemyCollider.gameObject.layer == 12) // внутренний коллайдер отряда
                 {
                     
-                    isGoingToEnemy = false;
-
-                    SquadController squad = enemyCollider.transform.gameObject.GetComponent<SquadController>();
-
-
-
-                    if (!enemyController.Contains(squad))
-                    {
-                        enemyController.Add(squad);
-                        CountCoef(enemyController[enemyController.Count - 1].type); // тут вопросы по напвильносит 
-
-                        
-
-
-                        if (isMoved)
-                        {
-                            if (canFirstAttack)
-                            {
-                                FirstAtackDamage();
-                            }
-                            CancelMovement();
-
-                            
-                            battleMove = true;
-                            
-                        }
-                        if (!inBattle)
-                        {
-
-
-                            SetBattle(true);
-                           
-                        }
-                        SelectFightingUnits();
-
-
-
-
-
-                    }
-                    else
-                    {
-                        
-                        if (isMoved)
-                        {
-                            
-
-                            CancelMovement();
-                            battleMove = true;
-                            SetBattle(true);
-                        }
-
-                        if (!inBattle)
-                        {
-
-
-                            SetBattle(true);
-                        }
-                        else
-                        {
-                            
-                            CancelMovement();
-                            SetBattle(true);
-                        }
-                        SelectFightingUnits();
-                        squad.SelectFightingUnits();
-                    }
+                    
 
                 } else if (enemyCollider.gameObject.layer == 11)// внешний коллайдер отряда - подходим чтоб начать пиздилку
                 {
@@ -1193,20 +1190,6 @@ public class SquadController : MonoBehaviour {
                         
                     }
 
-                }else if(enemyCollider.gameObject.layer == 16)// пиздим здание
-                {
-                    if (isMoved)
-                    {
-                        //moveDir = enemyCollider.transform.position;
-                        predictBuild = enemyCollider.GetComponent<BuildingManager>();
-                        inBuildBattle = true;
-
-
-                        CancelMovement();
-                        //battleMove = true;
-                        SetBattle(true);
-                        SelectFightingUnits();
-                    }
                 }
             }
 
@@ -1219,101 +1202,217 @@ public class SquadController : MonoBehaviour {
     }
 
     public void OnMainTriggerExit(Collider other) {
-        if ((tag == SQUAD_TAG && other.gameObject.tag == ENEMY_TAG) || (tag == ENEMY_TAG && other.gameObject.tag == SQUAD_TAG))
+        if (!escape)
         {
-
-            if (other.gameObject.layer == 12) // внутренний коллайдер отряда
+            if ((tag == SQUAD_TAG && other.gameObject.tag == ENEMY_TAG) || (tag == ENEMY_TAG && other.gameObject.tag == SQUAD_TAG))
             {
 
-                if (!escape)
+                if (other.gameObject.layer == 12) // внутренний коллайдер отряда
                 {
-                    SquadController squadExiter = other.transform.gameObject.GetComponent<SquadController>();
 
-                    if (squadExiter.escape) {
-
-                        if (enemyController.Count == 0)
-                        {
-                            
-                            SetBattle(false);
-                        }
-                    }
-                    else
+                    if (!escape)
                     {
-                        if (!inBattle)
+                        SquadController squadExiter = other.transform.gameObject.GetComponent<SquadController>();
+
+                        if (squadExiter.escape)
                         {
-                          
-                            GoToSquad(other.transform);
+
+                            if (enemyController.Count == 0)
+                            {
+
+                                SetBattle(false);
+                            }
                         }
                         else
                         {
-                            if (enemyController.Contains(squadExiter) && enemyController.Count == 1)
-                            {
-
-                                
-                                GoToSquad(other.transform);
-                            }
-                        }
-                    }
-
-
-
-                }
-            }
-            else if (other.gameObject.layer == 11)// внешний коллайдер отряда - подходим чтоб начать пиздилку
-            {
-
-                
-
-                SquadController squadExiter = other.transform.parent.gameObject.GetComponent<SquadController>();
-
-
-
-                if ((tag == SQUAD_TAG && squadExiter.tag == ENEMY_TAG) || (tag == ENEMY_TAG && squadExiter.tag == SQUAD_TAG))
-                {
-
-                    if (enemyController.Contains(squadExiter))
-                    {
-                        enemyController.Remove(squadExiter);
-
-                        if (enemyController.Count == 0)
-                        {
-                            SetBattle(false);
-                            
-                        }
-                    }
-                    if (enemyController.Count > 0)
-                    {
-                        if (!escape)
-                        {
                             if (!inBattle)
                             {
-                               
-                                GoToSquad(enemyController[0].transform);
+
+                                GoToSquad(other.transform);
+                            }
+                            else
+                            {
+                                if (enemyController.Contains(squadExiter) && enemyController.Count == 1)
+                                {
+
+
+                                    GoToSquad(other.transform);
+                                }
                             }
                         }
+
+
+
                     }
-                    else
+                }
+                else if (other.gameObject.layer == 11)// внешний коллайдер отряда - подходим чтоб начать пиздилку
+                {
+
+
+
+                    SquadController squadExiter = other.transform.parent.gameObject.GetComponent<SquadController>();
+
+
+
+                    if ((tag == SQUAD_TAG && squadExiter.tag == ENEMY_TAG) || (tag == ENEMY_TAG && squadExiter.tag == SQUAD_TAG))
                     {
-                        
-                        if (!isMoved && inBattle)
+
+                        if (enemyController.Contains(squadExiter))
                         {
-                            
-                            SetBattle(false);
-                           
+                            enemyController.Remove(squadExiter);
+
+                            if (enemyController.Count == 0)
+                            {
+                                SetBattle(false);
+
+                            }
                         }
+                        if (enemyController.Count > 0)
+                        {
+                            if (!escape)
+                            {
+                                if (!inBattle)
+                                {
+
+                                    GoToSquad(enemyController[0].transform);
+                                }
+                            }
+                        }
+                        else
+                        {
+
+                            if (!isMoved && inBattle)
+                            {
+
+                                SetBattle(false);
+
+                            }
+                        }
+
+
+                        //CanSquadFight();
+
+
+
+                        //battleRot = false;
+
+
                     }
-
-
-                    //CanSquadFight();
-
-
-
-                    //battleRot = false;
-
-
                 }
             }
         }
+    }
+
+    public void OnCollisionEnter(Collision collision)
+    {
+        if ((tag == SQUAD_TAG && collision.gameObject.tag == ENEMY_TAG) || (tag == ENEMY_TAG && collision.gameObject.tag == SQUAD_TAG))
+        {
+            Debug.Log("main collider");
+
+            if (collision.gameObject.layer == 12) // внутренний коллайдер отряда
+            {
+
+                isGoingToEnemy = false;
+
+                SquadController squad = collision.transform.gameObject.GetComponent<SquadController>();
+
+
+
+                if (!enemyController.Contains(squad))
+                {
+                    enemyController.Add(squad);
+                    CountCoef(enemyController[enemyController.Count - 1].type); // тут вопросы по напвильносит 
+
+
+
+
+                    if (isMoved)
+                    {
+                        if (canFirstAttack)
+                        {
+                            FirstAtackDamage();
+                        }
+                        CancelMovement();
+
+
+                        // = false;
+
+                    }
+                    if (!inBattle)
+                    {
+
+
+                        SetBattle(true);
+
+                    }
+                    SelectFightingUnits();
+
+
+
+
+
+                }
+                else
+                {
+
+                    if (isMoved)
+                    {
+
+
+                        CancelMovement();
+                       // battleMove = false;
+                        SetBattle(true);
+                    }
+
+                    if (!inBattle)
+                    {
+
+
+                        SetBattle(true);
+                    }
+                    else
+                    {
+
+                        CancelMovement();
+                        SetBattle(true);
+                    }
+                    SelectFightingUnits();
+                    squad.SelectFightingUnits();
+                }
+
+            }
+            else if (collision.gameObject.layer == 16)// пиздим здание
+            {
+                if (isMoved)
+                {
+                    //moveDir = enemyCollider.transform.position;
+                    predictBuild = collision.gameObject.GetComponent<BuildingManager>();
+                    inBuildBattle = true;
+
+
+                    CancelMovement();
+                    //battleMove = true;
+                    SetBattle(true);
+                    SelectFightingUnits();
+                }
+            }
+        }
+     }
+
+    public void Escape(bool esc)
+    {
+        escape = esc;
+
+        if (esc)
+        {
+            gameObject.layer = 17;
+            escapeTime = 0;
+        }
+        else
+        {
+            gameObject.layer = 12;
+        }
+        
     }
 
     // fight
@@ -1332,7 +1431,7 @@ public class SquadController : MonoBehaviour {
             {
                 if (eController != null)
                 {
-                    Collider[] hitColliders = Physics.OverlapSphere(eController.transform.position, colliderObject.radius, detectionMask);
+                    Collider[] hitColliders = Physics.OverlapSphere(eController.transform.position, TriggerObject.radius, detectionMask);
 
                     foreach (var hitCollider in hitColliders)
                     {
@@ -1357,7 +1456,7 @@ public class SquadController : MonoBehaviour {
         }
         else
         {
-            Collider[] hitColliders = Physics.OverlapSphere(predictBuild.transform.position, colliderObject.radius, detectionMask);
+            Collider[] hitColliders = Physics.OverlapSphere(predictBuild.transform.position, TriggerObject.radius, detectionMask);
 
             foreach (var hitCollider in hitColliders)
             {
@@ -1781,23 +1880,27 @@ public class SquadController : MonoBehaviour {
         if (lastAmountUnits - unitArray.Count >= 4)
         {
             
-            colliderObject.radius = (actionColliderRadius + unitPositions.scatterAmount) * ((unitArray.Count / amountUnits)+0.3f);
-            if (colliderObject.radius < 3)
+            TriggerObject.radius = (actionColliderRadius + unitPositions.scatterAmount) * ((unitArray.Count / amountUnits)+0.3f);
+            if (TriggerObject.radius < 3)
             {
-                colliderObject.radius = 3;
+                TriggerObject.radius = 3;
             }
 
-                lastAmountUnits = unitArray.Count;
+            mainCollider.radius = TriggerObject.radius * 0.6f;
+            mainCollider.center = new Vector3(0, TriggerObject.radius * 0.6f, 0) ;
+
+            lastAmountUnits = unitArray.Count;
             
 
             float scale = 1-( 0.01f * (amountUnits - unitArray.Count));
 
             unitPositions.transform.localScale = new Vector3(scale, scale, scale);
 
-            float shadowScale = amountUnits/unitArray.Count;
+            float shadowScale =  1f - (currentAmountUnits/ amountUnits);
+            shadowScale *= 15f;
 
-            shadowObject.transform.localScale = new Vector3(shadowStartScale - shadowScale, shadowStartScale - shadowScale, shadowStartScale - shadowScale);
-            selectObject.transform.localScale = new Vector3(selectStartScale - shadowScale, selectStartScale - shadowScale, shadowStartScale - shadowScale);
+            shadowObject.transform.localScale = shadowStartScale - new Vector3(shadowScale, shadowScale, shadowScale);
+            selectObject.transform.localScale = new Vector3(selectStartScale - shadowScale, selectStartScale - shadowScale, selectStartScale - shadowScale);
 
             UnitsTransformInFormation();
             SelectFightingUnits();

@@ -133,7 +133,7 @@ public class BuildingManager : MonoBehaviour
 
         hitsAmount++ ;
 
-        Debug.Log("Build GetDamage : " + damage);
+        //Debug.Log("Build GetDamage : " + damage);
 
         currentShakeDuration = shakeDuration;
 

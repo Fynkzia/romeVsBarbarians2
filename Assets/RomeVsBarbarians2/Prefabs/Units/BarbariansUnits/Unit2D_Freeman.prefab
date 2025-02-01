@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 8765251326709574233}
   - component: {fileID: 2170048149961800539}
   - component: {fileID: 4483262432908071465}
-  - component: {fileID: 5377935785559235828}
   m_Layer: 13
   m_Name: Unit2D_Freeman
   m_TagString: Squad
@@ -53,6 +52,8 @@ MonoBehaviour:
   lastSeconds: 2
   flashingTime: 0.2
   enemyPos: {x: 0, y: 0, z: 0}
+  shakeIntensity: 0.25
+  shakeFrequency: 75
   direction: {x: 0, y: 0, z: 0}
   animUpdateTime: 0.5
   animTime: 0
@@ -102,27 +103,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 1a966a74cad7d4cb499a800739c34792, type: 2}
   state: 0
   meshRenderer: {fileID: 5200303591759752634}
---- !u!135 &5377935785559235828
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 950815347119611204}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1 &7653404893975416993
 GameObject:
   m_ObjectHideFlags: 0

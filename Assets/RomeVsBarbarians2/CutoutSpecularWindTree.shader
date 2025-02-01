@@ -41,6 +41,7 @@ Shader "Custom/CutoutSpecularWindTree"
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+ #pragma multi_compile_fog // Включение поддержки тумана
             #include "UnityCG.cginc"
 
             // Входные параметры
@@ -81,6 +82,8 @@ Shader "Custom/CutoutSpecularWindTree"
                 float2 uv : TEXCOORD0;
                 half3 normal : TEXCOORD1;
                 float3 worldPos : TEXCOORD2; // Передаем позицию в мир. пространстве
+
+                UNITY_FOG_COORDS(3)
             };
 
             v2f vert(appdata_t v)
@@ -113,6 +116,8 @@ Shader "Custom/CutoutSpecularWindTree"
                 o.normal = v.normal;
                 o.worldPos = worldPos;
 
+                UNITY_TRANSFER_FOG(o, o.pos);
+
                 return o;
             }
 
@@ -138,7 +143,14 @@ Shader "Custom/CutoutSpecularWindTree"
                 float spec = pow(max(0.0, dot(i.normal, halfVec)), _Smoothness * 128.0);
                 fixed4 specular = _SpecularColor * _SpecularStrength * spec;
 
-                return shadowedAlbedo * lightColor + specular;
+             
+                float3 lightFinal = shadowedAlbedo * lightColor + specular;
+
+                float4 finalColorWithFog = float4(lightFinal * _LightColor.rgb, 1.0);
+                UNITY_APPLY_FOG(i.fogCoord, finalColorWithFog); 
+
+				return finalColorWithFog;
+                  
             }
             ENDCG
         }
