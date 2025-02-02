@@ -44,6 +44,11 @@ public class CameraMovement : MonoBehaviour {
     [SerializeField]private bool zoomFog = false;
     [SerializeField] private bool isZoom = false;
 
+    [SerializeField] private LayerMask cloudsMask ;
+    //[SerializeField] private List< CloudsFade> clouds;
+    [SerializeField] private CloudsFade toFadeIn;
+    [SerializeField] private Collider toFadeInColl;
+
 
     private float deltaMagnitudeDiff;
 
@@ -140,6 +145,46 @@ public class CameraMovement : MonoBehaviour {
 
             zoomCurrentTime += Time.deltaTime;
         }
+
+        Vector3 origin = Camera.main.transform.position;
+        Vector3 direction = Camera.main.transform.forward;
+
+        // Пускаем луч
+        if (Physics.Raycast(origin, direction, out RaycastHit hit, 1000f, cloudsMask))
+        {
+            if (toFadeInColl == null)
+            {
+                Debug.Log("Попал в: " + hit.collider.gameObject.name);
+                Debug.DrawLine(origin, hit.point, Color.red); // Визуализация в редакторе
+
+                CloudsFade newCloud = hit.collider.GetComponent<CloudsFade>();
+
+                toFadeIn = newCloud;
+                toFadeInColl = hit.collider;
+                toFadeIn.CloudsFadeSet(true);
+
+                //newCloud.CloudsFadeSet(true);
+
+                //clouds.Add(newCloud);
+            }
+            else if(toFadeInColl != hit.collider)
+            {
+                toFadeIn.CloudsFadeSet(false);
+                toFadeInColl = null;
+                toFadeIn = null;
+            }
+
+
+
+        }
+        else if (toFadeInColl != null)
+        {
+            toFadeIn.CloudsFadeSet(false);
+            toFadeInColl = null;
+            toFadeIn = null;
+        }
+
+
     }
 
     private void HandleCameraMovement() {

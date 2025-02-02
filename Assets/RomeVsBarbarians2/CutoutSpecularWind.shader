@@ -26,7 +26,7 @@ Shader "Custom/CutoutSpecularWind"
 
     SubShader
     {
-        Tags { "Queue" = "AlphaTest" "RenderType"="TransparentCutout" }
+        Tags { "Queue" = "AlphaTest" "RenderType"="TransparentCutout" "LightMode"="ForwardBase" }
         Blend SrcAlpha OneMinusSrcAlpha
         AlphaToMask On
         ZWrite On
@@ -39,8 +39,11 @@ Shader "Custom/CutoutSpecularWind"
             #pragma vertex vert
             #pragma fragment frag
             #pragma multi_compile_fog // Включение поддержки тумана
+            #pragma multi_compile_fwdbase
+            #pragma multi_compile_shadowcaster
 
             #include "UnityCG.cginc"
+            #include "AutoLight.cginc"
 
             // Входные параметры
             sampler2D _AlbedoTex;
@@ -81,6 +84,7 @@ Shader "Custom/CutoutSpecularWind"
 
                 
                 UNITY_FOG_COORDS(3)
+                UNITY_LIGHTING_COORDS(4,5)
             };
 
             v2f vert(appdata_t v)
@@ -107,6 +111,7 @@ Shader "Custom/CutoutSpecularWind"
 
                
                 UNITY_TRANSFER_FOG(o, o.pos);
+                 TRANSFER_SHADOW(o);
 
                 return o;
             }
@@ -133,9 +138,11 @@ Shader "Custom/CutoutSpecularWind"
                 float spec = pow(max(0.0, dot(i.normal, halfVec)), _Smoothness * 128.0);
                 fixed4 specular = _SpecularColor * _SpecularStrength * spec;
 
+                fixed shadow = SHADOW_ATTENUATION(i);
 
 
                 float3 lightFinal = shadowedAlbedo * lightColor + specular;
+                lightFinal *=shadow;
 
                 float4 finalColorWithFog = float4(lightFinal * _LightColor.rgb, 1.0);
 

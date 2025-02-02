@@ -159,6 +159,7 @@ public class SquadController : MonoBehaviour {
      private int runAnimIndex = 0;
      private GameObject lastAttakedUnit;
      Vector3 directionToEnemy;
+     float moveAnimtime;
 
 
     [SerializeField] public float animationIdleUpdateTime;
@@ -241,8 +242,8 @@ public class SquadController : MonoBehaviour {
     private const string SQUAD_TRIGGER_TAG = "SquadTrigger";
 
 
-   
-  
+    
+
 
 
 
@@ -302,6 +303,7 @@ public class SquadController : MonoBehaviour {
         for (int i = 0; i < animatorControllers.Count; i++)
         {
             initialPositions[i] = animatorControllers[i].transform.localPosition;
+            initialPositions[i].y += Random.Range(-0.1f, 0.1f);
         }
 
         RadiusUpdate();
@@ -338,14 +340,14 @@ public class SquadController : MonoBehaviour {
 
                 if (isMoved)
                 {
-                    if (animTime > animationMoveUpdateTime / MoraleToSpeedEffectIndex())
+                    if (animTime > animationMoveUpdateTime / (currentSpeed/movementSpeed))
                     {
                         SpriteAnimationChange();
                         animTime = 0;
-
+                       
                     }
-
                     MoveAnimation();
+
                 }
 
                 if (inBattle)
@@ -1293,7 +1295,7 @@ public class SquadController : MonoBehaviour {
                         //CanSquadFight();
 
 
-
+                        
                         //battleRot = false;
 
 
@@ -1728,7 +1730,7 @@ public class SquadController : MonoBehaviour {
         currentAmountUnits--;
         unit.transform.parent = null;
         //unit.SetActive(false);
-        anim.SpriteAnimationChange(8);
+        anim.SpriteAnimationChange(9);
 
 
 
@@ -1886,8 +1888,8 @@ public class SquadController : MonoBehaviour {
                 TriggerObject.radius = 3;
             }
 
-            mainCollider.radius = TriggerObject.radius * 0.6f;
-            mainCollider.center = new Vector3(0, TriggerObject.radius * 0.6f, 0) ;
+            mainCollider.radius = TriggerObject.radius * 0.4f;
+            mainCollider.center = new Vector3(0, TriggerObject.radius * 0.4f, 0) ;
 
             lastAmountUnits = unitArray.Count;
             
@@ -1932,6 +1934,7 @@ public class SquadController : MonoBehaviour {
         {
             unitArray[i].transform.position = points[i].position;
             initialPositions[i] = unitArray[i].transform.localPosition;
+            initialPositions[i].y += Random.Range(-0.1f, 0.1f);
 
         }
 
@@ -2109,6 +2112,12 @@ public class SquadController : MonoBehaviour {
                 if (animatorControllers[i].state == 3)
                 {
                   
+                    animatorControllers[i].SpriteAnimationChange(4);
+                }
+                else
+                if (animatorControllers[i].state == 4)
+                {
+
                     animatorControllers[i].SpriteAnimationChange(1);
                 }
 
@@ -2120,7 +2129,7 @@ public class SquadController : MonoBehaviour {
             {
 
 
-                animatorControllers[i].SpriteAnimationChange(4);
+                animatorControllers[i].SpriteAnimationChange(5);
 
             }
 
@@ -2137,7 +2146,7 @@ public class SquadController : MonoBehaviour {
 
                 if (randomUnit != lastAttakedUnit) {
 
-                    randomUnit.GetComponent<AnimationController>().SpriteAnimationChange(5);
+                    randomUnit.GetComponent<AnimationController>().SpriteAnimationChange(6);
 
                     if (fxCounter <= 1)
                     {
@@ -2165,12 +2174,12 @@ public class SquadController : MonoBehaviour {
                 if (avaliableToAttack.Count == 0 || avaliableToAttack[0] == null) { return; }
                 if (Random.Range(1, 3) % 2 == 0)
                 {
-                    avaliableToAttack[Random.Range(0, avaliableToAttack.Count)].GetComponent<AnimationController>().SpriteAnimationChange(6);
+                    avaliableToAttack[Random.Range(0, avaliableToAttack.Count)].GetComponent<AnimationController>().SpriteAnimationChange(7);
 
                 }
                 else
                 {
-                    avaliableToAttack[Random.Range(0, avaliableToAttack.Count)].GetComponent<AnimationController>().SpriteAnimationChange(6);
+                    avaliableToAttack[Random.Range(0, avaliableToAttack.Count)].GetComponent<AnimationController>().SpriteAnimationChange(7);
                 }
             }
 
@@ -2184,11 +2193,11 @@ public class SquadController : MonoBehaviour {
 
                 if (Random.Range(1, 3) % 2 == 0)
                 {
-                    animatorControllers[i].SpriteAnimationChange(6);
+                    animatorControllers[i].SpriteAnimationChange(7);
                 }
                 else
                 {
-                    animatorControllers[i].SpriteAnimationChange(7);
+                    animatorControllers[i].SpriteAnimationChange(8);
                 }
 
             }
@@ -2197,9 +2206,9 @@ public class SquadController : MonoBehaviour {
 
     void MoveAnimation()
     {
-        
 
-        float time = Time.time * (13f-(3f/MoraleToSpeedEffectIndex()));
+
+         moveAnimtime += Time.deltaTime * (4f + (4f * currentSpeed/movementSpeed));
 
         for (int i = 0; i < animatorControllers.Count; i++)
         {
@@ -2208,7 +2217,7 @@ public class SquadController : MonoBehaviour {
             int z = i / 5;
 
             // Вычисляем смещение волны
-            float waveOffset = Mathf.Sin((x + z) * 10f + time)/10f ;
+            float waveOffset = Mathf.Sin((x + z) * 10f + moveAnimtime) / (15f - currentSpeed);
 
             // Обновляем позицию юнита
             Vector3 targetPosition = initialPositions[i];
@@ -2217,8 +2226,9 @@ public class SquadController : MonoBehaviour {
 
         }
 
-       
+
     }
+
 
     void FigthAnimation()
     {

@@ -90,15 +90,15 @@ public class ShootingController : MonoBehaviour
     private void AttackShooting() {
         if (squadController.isGoingToEnemy) {
             if (isFirstShoot) {
-                
+              
                 if (shotRangeManager.enemyColliders.Contains(squadController.predictEnemy)) {
                     StartCoroutine(AttackShootingSiqunce());
-                   
+                    Debug.Log("AttackShooting");
                     isFirstShoot = false;
                 }
             }
         } else {
-            isFirstShoot = true;
+           // isFirstShoot = true;
         }
 
     }
@@ -143,7 +143,7 @@ public class ShootingController : MonoBehaviour
             for (int i = 0; i < projectilesPerShotCount; i++)
             {
                 int index = Random.Range(0, squadController.animatorControllers.Count);
-                squadController.animatorControllers[index].SpriteAnimationChange(9);
+                squadController.animatorControllers[index].SpriteAnimationChange(10);
                 animationController[i] = squadController.animatorControllers[index];
 
             }
@@ -201,7 +201,7 @@ public class ShootingController : MonoBehaviour
         for (int i = 0; i < shootingUnitsCouns; i++)
         {
             
-            squadController.animatorControllers[i].SpriteAnimationChange(9);
+            squadController.animatorControllers[i].SpriteAnimationChange(10);
            
 
         }
@@ -216,7 +216,7 @@ public class ShootingController : MonoBehaviour
         for (int i = 0; i < shootingUnitsCouns; i++)
         {
 
-            squadController.animatorControllers[i].SpriteAnimationChange(10);
+            squadController.animatorControllers[i].SpriteAnimationChange(11);
 
 
         }
@@ -269,8 +269,11 @@ public class ShootingController : MonoBehaviour
            
             if (isAttackShooting)
             {
-                AttackShooting();
-                squadController.shootingIndicator.SetActive(true);
+                if (isFirstShoot)
+                {
+                    AttackShooting();
+                    squadController.shootingIndicator.SetActive(true);
+                }
             }
             else
             {
@@ -287,7 +290,7 @@ public class ShootingController : MonoBehaviour
                     for (int i = 0; i < projectilesPerShotCount; i++) // по фану стразу ставим в анимацию замахивания
                     {
                         int index = Random.Range(0, squadController.animatorControllers.Count);
-                        squadController.animatorControllers[index].SpriteAnimationChange(9);
+                        squadController.animatorControllers[index].SpriteAnimationChange(10);
                         
 
                     }

@@ -506,6 +506,9 @@ public class AIController : MonoBehaviour
         {
             squad.ai_currentState = 1;
             DrawPathAndGo(squad, squad.transform.position, bestSquadToAttack.transform.position,1);
+
+            squad.isGoingToEnemy = true;
+            squad.predictEnemy = bestSquadToAttack.TriggerObject;
             return;
         }
         if (bestAction == 2) // подтягиваемся к врагам на пол пути
