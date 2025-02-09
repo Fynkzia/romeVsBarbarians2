@@ -457,7 +457,7 @@ MonoBehaviour:
   lostMoraleThenDie: 0.2
   lostMoraleThenAttacked: 0.1
   addMoraleKillSquad: 1
-  addMoraleKillUnit: 0.15
+  addMoraleKillUnit: 0.1
   recoveryMoraleSpeed: 0.06
   retreatCount: 3
   retreatMinCount: 0
@@ -494,13 +494,13 @@ MonoBehaviour:
   currentSpeed: 0
   stunnedTime: 0
   currentTriggerCoef: 0
-  angleToUpdateFormation: 35
-  lossSpeedToStop: 2
+  angleToUpdateFormation: 25
+  lossSpeedToStop: 1
   timeToStop: 2
+  maxEscapeTime: 3
   movingPositions: []
   indexMove: 0
   calculatedVelocity: {x: 0, y: 0, z: 0}
-  maxEscapeTime: 4
   attackCoef: 0
   defenceCoef: 0
   avaliableToAttack: []
@@ -510,12 +510,16 @@ MonoBehaviour:
   maskToPush:
     serializedVersion: 2
     m_Bits: 0
+  updateFormation: 0
+  updateFormationIndex: 0
+  timeToUpdateUnit: 0.1
+  currentTimeToUpdateUnit: 0
   animationState: 0
   animatorControllers: []
   animationIdleUpdateTime: 1.5
   animationMoveUpdateTime: 0.25
   animationFightUpdateTime: 0.15
-  spriteSize: {x: 0, y: 0, z: 0}
+  moveFX: {fileID: 6031421226976732441, guid: 79ba666800bc1498b9bd72c18e20c9f1, type: 3}
   bloodFx:
   - {fileID: 1004307555708668947, guid: 374dfa0c89fe0834bb04274a99223e8f, type: 3}
   - {fileID: 5513426093337414878, guid: d959c2c6fbc114d1d959d6554165c615, type: 3}
@@ -526,6 +530,9 @@ MonoBehaviour:
   addMoraleFx: {fileID: 3730615119460860335, guid: 3428579618d4447508e3ceb4d0580024, type: 3}
   lostMoraleFx: {fileID: 8408955500383151332, guid: 773e4157dac944788bd1643c9e024a9c, type: 3}
   friendlyFireFx: {fileID: 3825571564101416963, guid: cee9bc7535e474ed4a85c49032df386d, type: 3}
+  moveFxInterval: 0.2
+  moveFXMax: 15
+  moveFXlist: []
   ai_squadPower: 0
   ai_groupPower: 0
   ai_needHelp: 0
@@ -716,6 +723,10 @@ PrefabInstance:
     - target: {fileID: 5118265392660971676, guid: e75b801c7dd1d3c4b93f8c238e255f72, type: 3}
       propertyPath: m_Name
       value: SquadDastFx
+      objectReference: {fileID: 0}
+    - target: {fileID: 5118265392660971676, guid: e75b801c7dd1d3c4b93f8c238e255f72, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7484094749838222646, guid: e75b801c7dd1d3c4b93f8c238e255f72, type: 3}
       propertyPath: m_RootOrder

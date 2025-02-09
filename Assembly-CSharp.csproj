@@ -61,11 +61,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets/SquadColliderController.cs" />
-    <Compile Include="Assets/BuildingManager.cs" />
+    <Compile Include="Assets/OfficerController.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_TextEventHandler.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/OrdersSystem.cs" />
+    <Compile Include="Assets/RomeVsBarbarians2/Scripts/Skills/PillumThrowSkill.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/VertexShakeA.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/MainManager.cs" />
+    <Compile Include="Assets/RomeVsBarbarians2/Scripts/CardsSystem.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/MathUtilities.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_ExampleScript_01.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/Shooting/ShotMovement.cs" />
@@ -77,9 +79,11 @@
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/EnvMapAnimator.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/UI/LookAtCamera.cs" />
     <Compile Include="Assets/Epic Toon FX/Demo/ParticleEffectsShowcase/Scripts/ParticleEffectsLibrary.cs" />
+    <Compile Include="Assets/OfficerSystem.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/CloudsFade.cs" />
     <Compile Include="Assets/ResolutionScaler.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_TextSelector_A.cs" />
+    <Compile Include="Assets/RomeVsBarbarians2/Scripts/BuildingManager.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/Benchmark01_UGUI.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/SimpleScript.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/Benchmark04.cs" />
@@ -90,9 +94,9 @@
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/GameOptions.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_PhoneNumberValidator.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/DeleteAfterDelay.cs" />
-    <Compile Include="Assets/AnimationController.cs" />
     <Compile Include="Assets/Epic Toon FX/Demo/Scripts/ETFXLoopScript.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/VertexJitter.cs" />
+    <Compile Include="Assets/RomeVsBarbarians2/Scripts/UI/OfficerUIPanel.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/UI/UnitCountTextUI.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_DigitValidator.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_FrameRateCounter.cs" />
@@ -106,6 +110,7 @@
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_TextEventCheck.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_UiFrameRateCounter.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/Shooting/ShootingController.cs" />
+    <Compile Include="Assets/RomeVsBarbarians2/Scripts/Skills/TestudoSkill.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/Benchmark01.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TextMeshSpawner.cs" />
     <Compile Include="Assets/Epic Toon FX/Demo/Scripts/ETFXSceneManager.cs" />
@@ -113,6 +118,8 @@
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/Benchmark02.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/MainTriggerController.cs" />
     <Compile Include="Assets/Epic Toon FX/Demo/ParticleEffectsShowcase/Scripts/PEButtonScript.cs" />
+    <Compile Include="Assets/RomeVsBarbarians2/Scripts/Skills/PillumThrowSkillSettings.cs" />
+    <Compile Include="Assets/CityController.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_TextSelector_B.cs" />
     <Compile Include="Assets/PointsController.cs" />
     <Compile Include="Assets/Epic Toon FX/Demo/Scripts/ETFXMouseOrbit.cs" />
@@ -128,15 +135,18 @@
     <Compile Include="Assets/Epic Toon FX/Scripts/ETFXLightFade.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/CameraMovement.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/CameraController.cs" />
+    <Compile Include="Assets/RomeVsBarbarians2/Scripts/AnimationController.cs" />
     <Compile Include="Assets/Epic Toon FX/Demo/ParticleEffectsShowcase/Scripts/UICanvasManager.cs" />
+    <Compile Include="Assets/OfficerSkill.cs" />
     <Compile Include="Assets/Epic Toon FX/Demo/Scripts/ETFXProjectileScript.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/Benchmark03.cs" />
+    <Compile Include="Assets/RomeVsBarbarians2/Scripts/Skills/TestudoSkillSettings.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/SquadControlManager.cs" />
-    <Compile Include="Assets/CloudsController.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/FpsCounter.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/OrderController.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/AIDefencePoint.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/UI/BarUI.cs" />
+    <Compile Include="Assets/RomeVsBarbarians2/Scripts/CloudsController.cs" />
     <Compile Include="Assets/Epic Toon FX/Scripts/ETFXPitchRandomizer.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_TextInfoDebugTool.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/UI/WinLoseUI.cs" />
@@ -235,6 +245,7 @@
     <None Include="Assets/TextMesh Pro/Resources/LineBreaking Following Characters.txt" />
     <None Include="Assets/!Default/Toony Colors Pro/Shaders PBS/TCP2_Standard PBS Outline Blended.shader" />
     <None Include="Assets/!Default/Toony Colors Pro/Shader Templates 2/Modules/Module_Sketch.txt" />
+    <None Include="Assets/Water.shader" />
     <None Include="Assets/!Default/Toony Colors Pro/Shaders/Include/TCP2_Outline_SM2.shader" />
     <None Include="Assets/!Default/Toony Colors Pro/Shader Templates 2/Modules/Module_Aura2.txt" />
     <None Include="Assets/!Default/Toony Colors Pro/Shaders Generated/Examples/Water/Reflection.shader" />

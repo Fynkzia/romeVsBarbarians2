@@ -11,7 +11,9 @@ public class LookAtCamera : MonoBehaviour
 
     
     [SerializeField] private float scaleFactor;
-    
+
+    [SerializeField] public float[] scales;
+
 
     private void Awake() {
         camera = Camera.main;
@@ -40,10 +42,16 @@ public class LookAtCamera : MonoBehaviour
 
     }
 
-    void HandleZoomChanged(int newZoom)
+    public void HandleZoomChanged(int newZoom)
     {
-        float scale = 0.6f + newZoom * scaleFactor;
-        transform.localScale = new Vector3(-scale, scale, scale);
+        Debug.Log("newZoom  " + newZoom);
+
+        if (newZoom < scales.Length)
+        {
+            float scale = scales[newZoom];
+            transform.localScale = new Vector3(-scale, scale, scale);
+        }
+       
     }
 
     void OnDisable()

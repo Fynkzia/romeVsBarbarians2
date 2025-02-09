@@ -6,7 +6,8 @@ using UnityEngine.UI;
 using Cinemachine;
 using DG.Tweening;
 
-public class CameraMovement : MonoBehaviour {
+public class CameraMovement : MonoBehaviour
+{
 
     [SerializeField] private Camera gameCamera;
     [SerializeField] private Camera renderTextureCamera;
@@ -37,14 +38,14 @@ public class CameraMovement : MonoBehaviour {
     private int targetFOVIndex;
     private bool setDeltaTouch = false;
 
-  
+
     [SerializeField] private int prevFovIndex;
     [SerializeField] float zoomCurrentTime = 0f;
-    
-    [SerializeField]private bool zoomFog = false;
+
+    [SerializeField] private bool zoomFog = false;
     [SerializeField] private bool isZoom = false;
 
-    [SerializeField] private LayerMask cloudsMask ;
+    [SerializeField] private LayerMask cloudsMask;
     //[SerializeField] private List< CloudsFade> clouds;
     [SerializeField] private CloudsFade toFadeIn;
     [SerializeField] private Collider toFadeInColl;
@@ -55,11 +56,15 @@ public class CameraMovement : MonoBehaviour {
     public event Action<int> OnZoomChanged;
 
 
-    private void Start () {
+    private void Start()
+    {
         screenHeight = Screen.height;
         screenWidth = Screen.width;
+
+        OnZoomChanged?.Invoke(targetFOVIndex);
     }
-    private void Awake() {
+    private void Awake()
+    {
         //mainFOVIndex = (int)Mathf.Ceil((fieldsOfView.Length - 1) / 2);
         targetFOVIndex = mainFOVIndex;
         gameCamera.fieldOfView = fieldsOfView[mainFOVIndex];
@@ -79,14 +84,19 @@ public class CameraMovement : MonoBehaviour {
         cams[targetFOVIndex].gameObject.SetActive(true);
     }
 
-    private void Update() {
-        if (Input.touchCount == 2) {
+    private void Update()
+    {
+        if (Input.touchCount == 2)
+        {
             HandleCameraZoomTouch();
-        } else {
-           if (!SquadControlManager.Instance.HasHitSquad()) {
+        }
+        else
+        {
+            if (!SquadControlManager.Instance.HasHitSquad())
+            {
                 HandleCameraMovement();
             }
-            HandleCameraZoom();   
+            HandleCameraZoom();
         }
 
         if (isZoom)
@@ -167,9 +177,9 @@ public class CameraMovement : MonoBehaviour {
 
                 //clouds.Add(newCloud);
             }
-            else if(toFadeInColl != hit.collider)
+            else if (toFadeInColl != hit.collider)
             {
-                toFadeIn.CloudsFadeSet(false);
+                //toFadeIn.CloudsFadeSet(false);
                 toFadeInColl = null;
                 toFadeIn = null;
             }
@@ -179,7 +189,7 @@ public class CameraMovement : MonoBehaviour {
         }
         else if (toFadeInColl != null)
         {
-            toFadeIn.CloudsFadeSet(false);
+            //toFadeIn.CloudsFadeSet(false);
             toFadeInColl = null;
             toFadeIn = null;
         }
@@ -187,27 +197,31 @@ public class CameraMovement : MonoBehaviour {
 
     }
 
-    private void HandleCameraMovement() {
-      
-        if (Input.GetMouseButtonDown(0)) {
+    private void HandleCameraMovement()
+    {
+
+        if (Input.GetMouseButtonDown(0))
+        {
             lastMousePosition = Input.mousePosition;
         }
 
-      
-        if (Input.GetMouseButtonUp(0)) {
+
+        if (Input.GetMouseButtonUp(0))
+        {
             lastMousePosition = Vector3.zero;
         }
 
-      
-        if (Input.GetMouseButton(0)) {
+
+        if (Input.GetMouseButton(0))
+        {
             Vector3 mouseDelta = Input.mousePosition - lastMousePosition;
             Vector3 panVector = new Vector3(-mouseDelta.x / screenWidth, 0, -mouseDelta.y / screenHeight) * panSpeed[targetFOVIndex] * Time.deltaTime;
 
-            panVector =  Rotation * panVector;
-          
-            Vector3 newPosition = Vector3.Lerp(cinemachineFollowObject.transform.position, cinemachineFollowObject.transform.position + panVector , 1f);
-            
-          
+            panVector = Rotation * panVector;
+
+            Vector3 newPosition = Vector3.Lerp(cinemachineFollowObject.transform.position, cinemachineFollowObject.transform.position + panVector, 1f);
+
+
             newPosition.x = Mathf.Clamp(newPosition.x, panLimitX[0], panLimitX[1]);
             newPosition.z = Mathf.Clamp(newPosition.z, panLimitZ[0], panLimitZ[1]);
 
@@ -218,36 +232,41 @@ public class CameraMovement : MonoBehaviour {
         }
     }
 
-    private void HandleCameraZoom() {
+    private void HandleCameraZoom()
+    {
         prevFovIndex = targetFOVIndex;
-        if (Input.GetKeyDown(KeyCode.UpArrow) && targetFOVIndex < fieldsOfView.Length - 1) {
-            
+        if (Input.GetKeyDown(KeyCode.UpArrow) && targetFOVIndex < fieldsOfView.Length - 1)
+        {
+
 
             targetFOVIndex++;
-            
 
-             CamZoom();
+
+            CamZoom();
+
 
         }
-        if (Input.GetKeyDown(KeyCode.DownArrow) && targetFOVIndex > 0) {
+        if (Input.GetKeyDown(KeyCode.DownArrow) && targetFOVIndex > 0)
+        {
             prevFovIndex = targetFOVIndex;
 
 
             targetFOVIndex--;
-            
+
 
             CamZoom();
 
 
 
         }
-        OnZoomChanged?.Invoke(targetFOVIndex);
 
-       
+
+
     }
 
 
-    private void HandleCameraZoomTouch() {
+    private void HandleCameraZoomTouch()
+    {
 
         Touch touch1 = Input.GetTouch(0);
         Touch touch2 = Input.GetTouch(1);
@@ -263,9 +282,11 @@ public class CameraMovement : MonoBehaviour {
 
         prevFovIndex = targetFOVIndex;
 
-        if (!setDeltaTouch && !isZoom) {
+        if (!setDeltaTouch && !isZoom)
+        {
 
-            if (deltaMagnitudeDiff > 0 && targetFOVIndex < fieldsOfView.Length - 1) {
+            if (deltaMagnitudeDiff > 0 && targetFOVIndex < fieldsOfView.Length - 1)
+            {
                 targetFOVIndex++;
                 setDeltaTouch = true;
 
@@ -273,7 +294,8 @@ public class CameraMovement : MonoBehaviour {
 
 
             }
-            if (deltaMagnitudeDiff < 0 && targetFOVIndex > 0) {
+            if (deltaMagnitudeDiff < 0 && targetFOVIndex > 0)
+            {
                 targetFOVIndex--;
                 setDeltaTouch = true;
 
@@ -286,17 +308,19 @@ public class CameraMovement : MonoBehaviour {
 
         }
 
-        if(touch1.phase == TouchPhase.Ended) {
+        if (touch1.phase == TouchPhase.Ended)
+        {
             setDeltaTouch = false;
             lastMousePosition = touch2.position;
         }
 
-        if (touch2.phase == TouchPhase.Ended) {
+        if (touch2.phase == TouchPhase.Ended)
+        {
             setDeltaTouch = false;
             lastMousePosition = touch1.position;
         }
 
-       
+
     }
 
     private void CamZoom()
@@ -305,13 +329,13 @@ public class CameraMovement : MonoBehaviour {
         zoomCurrentTime = 0;
 
         if (prevFovIndex == 2) /// ебанутиший кастыль
-            {
+        {
             zoomFog = true;
         }
 
         int indexSpeed = 0;
 
-        if (prevFovIndex > targetFOVIndex) 
+        if (prevFovIndex > targetFOVIndex)
         {
             indexSpeed = prevFovIndex;
         }
@@ -320,40 +344,40 @@ public class CameraMovement : MonoBehaviour {
             indexSpeed = targetFOVIndex;
         }
 
-        Debug.Log("indexSpeed " + indexSpeed);
+
 
         gameCamera.GetComponent<CinemachineBrain>().m_DefaultBlend.m_Time = zoomTime[indexSpeed];
 
-       
-
-        DOTween.To(
-                    () => RenderSettings.fogEndDistance,      
-                    x => RenderSettings.fogEndDistance = x,   
-                    fogEnds[targetFOVIndex],            
-                     zoomTime[indexSpeed]                   
-                );
-                DOTween.To(
-                    () => RenderSettings.fogStartDistance,    
-                    x => RenderSettings.fogStartDistance = x,    
-                    fogStart[targetFOVIndex],         
-                     zoomTime[indexSpeed]         
-                );
-
 
 
         DOTween.To(
-            () => renderTextureCamera.fieldOfView,      
-            x => renderTextureCamera.fieldOfView = x,    
-            fieldsOfView[targetFOVIndex],             
-            zoomFovTime[indexSpeed]                   
+                    () => RenderSettings.fogEndDistance,
+                    x => RenderSettings.fogEndDistance = x,
+                    fogEnds[targetFOVIndex],
+                     zoomTime[indexSpeed]
+                );
+        DOTween.To(
+            () => RenderSettings.fogStartDistance,
+            x => RenderSettings.fogStartDistance = x,
+            fogStart[targetFOVIndex],
+             zoomTime[indexSpeed]
+        );
+
+
+
+        DOTween.To(
+            () => renderTextureCamera.fieldOfView,
+            x => renderTextureCamera.fieldOfView = x,
+            fieldsOfView[targetFOVIndex],
+            zoomFovTime[indexSpeed]
         );
         DOTween.To(
-            () => renderTerrainCamera.fieldOfView,      
-            x => renderTerrainCamera.fieldOfView = x,   
-            fieldsOfView[targetFOVIndex],            
-            zoomFovTime[indexSpeed]                
+            () => renderTerrainCamera.fieldOfView,
+            x => renderTerrainCamera.fieldOfView = x,
+            fieldsOfView[targetFOVIndex],
+            zoomFovTime[indexSpeed]
         );
-    
+
 
 
 
@@ -370,19 +394,26 @@ public class CameraMovement : MonoBehaviour {
         }
 
         cams[targetFOVIndex].gameObject.SetActive(true);
-       // cams[targetFOVIndex].AddCinemachineComponent<CinemachineComposer>();
-        
+        // cams[targetFOVIndex].AddCinemachineComponent<CinemachineComposer>();
+
 
         renderTextureCamera.targetTexture = cameraTextures[targetFOVIndex];
         renderTerrainCamera.targetTexture = cameraTextures[targetFOVIndex];
 
         mainRenderTexture.texture = renderTextureCamera.targetTexture;
 
-        
 
 
+        OnZoomChanged?.Invoke(targetFOVIndex);
 
     }
 
-    
+    public void CamToPoint(Vector3 point)
+    {
+        if(Vector3.Distance(cinemachineFollowObject.transform.position, point) > 10f)
+        {
+            cinemachineFollowObject.transform.position = point;
+        }
+        
+    }
 }

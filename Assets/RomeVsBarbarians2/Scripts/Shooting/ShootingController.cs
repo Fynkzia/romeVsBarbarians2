@@ -158,7 +158,7 @@ public class ShootingController : MonoBehaviour
                 for (int i = 0; i < projectilesPerShotCount; i++)
                 {
 
-                    animationController[i].SpriteAnimationChange(10);
+                    animationController[i].SpriteAnimationChange(11);
 
 
                 }

@@ -50,12 +50,12 @@ MonoBehaviour:
   speed: 3
   timeToDisappear: 15
   lastSeconds: 2
-  flashingTime: 0.2
+  flashingTime: 0.1
   enemyPos: {x: 0, y: 0, z: 0}
   shakeIntensity: 0.25
   shakeFrequency: 75
   direction: {x: 0, y: 0, z: 0}
-  animUpdateTime: 0.5
+  animUpdateTime: 0.3
   animTime: 0
   animationController: {fileID: 4483262432908071465}
 --- !u!65 &2170048149961800539
@@ -104,6 +104,8 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 1a966a74cad7d4cb499a800739c34792, type: 2}
   state: 0
   meshRenderer: {fileID: 5200303591759752634}
+  startPos: {x: 0, y: 0, z: 0}
+  startScale: {x: 0, y: 0, z: 0}
 --- !u!1 &7653404893975416993
 GameObject:
   m_ObjectHideFlags: 0

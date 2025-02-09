@@ -5,28 +5,31 @@ using UnityEngine;
 public class CloudsFade : MonoBehaviour
 {
 
-    [SerializeField] public ParticleSystem[] clouds;
+    [SerializeField] public MeshRenderer[] clouds;
     [SerializeField] public bool doFade;
 
     [SerializeField] public bool fadeOut;
 
     [SerializeField] private float fadeSpeed;
-    [SerializeField] private float timeToFade;
+    [SerializeField] private float timeFade;
     [SerializeField] private float currentTime = 0f;
+
+    [SerializeField] private BoxCollider collider;
 
     Material instMat;
 
     // Start is called before the first frame update
     void Start()
     {
-        //CloudsFadeSet(true);
+        collider = GetComponent<BoxCollider>();
     }
 
     private void Update()
     {
         if (doFade)
         {
-            //currentTime += Time.deltaTime;
+           
+
             if (fadeOut)
             {
                 instMat.color += new Color(0, 0, 0, -fadeSpeed * Time.deltaTime);
@@ -48,30 +51,45 @@ public class CloudsFade : MonoBehaviour
 
            
 
-            
+
+
 
          }
-        
+
+        if (fadeOut)
+        {
+            currentTime += Time.deltaTime;
+
+            if (timeFade <= currentTime)
+            {
+                currentTime = 0;
+                CloudsFadeSet(false);
+
+            }
+        }
+
     }
 
     // Update is called once per frame
     public void CloudsFadeSet(bool fade)
     {
-        if (!doFade)
+        if (!doFade || fade)
         {
             fadeOut = fade;
             doFade = true;
+            collider.enabled = !fade;
+
 
             if (instMat == null)
             {
-                ParticleSystemRenderer render = clouds[0].GetComponent<ParticleSystemRenderer>();
+               
 
-                instMat = new Material(render.sharedMaterial);
+                instMat = new Material(clouds[0].material);
 
                 for (int i = 0; i < clouds.Length; i++)
                 {
 
-                    clouds[i].GetComponent<ParticleSystemRenderer>().sharedMaterial = instMat;
+                    clouds[i].material = instMat;
 
 
                 }

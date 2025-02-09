@@ -63,7 +63,7 @@ public class ShotMovement : MonoBehaviour
 
         CreateVisual();
 
-        Debug.Log(target);
+//        Debug.Log(target);
 
         // This is one divided by the total flight duration, to help convert it to 0-1 progress.
         _stepScale = speed / distance;
@@ -189,13 +189,13 @@ public class ShotMovement : MonoBehaviour
                     if (r > 8.8f)
                     {
 
-                        enController.GetUnitDie(0, -2);
+                        enController.GetUnitDie(-2, 0,0, arrowsAmount / hitColliders.Length);
                     }
                     else
                     {
                         if (r > 5f)
                         {
-                            enController.GetDamage(arrowsAmount / hitColliders.Length);
+                            enController.GetDamage(0,0, arrowsAmount / hitColliders.Length);
                         }
                     }
                     //enController.MoraleChange(-enController.lostMoraleThenDie / 5f); 
@@ -214,21 +214,21 @@ public class ShotMovement : MonoBehaviour
                     float min = 0f - (enController.defenceSquad * 0.1f) - (enController.defenceCoef) - (-enController.unitArray.Count * 0.1f) - (distance * 0.4f);
 
                     float max = 10f + ((damage - enController.defenceSquad) * 1.1f) + (accuracy * 0.5f);
-                    Debug.Log("min " + min + " max " + max);
+                    //Debug.Log("min " + min + " max " + max);
 
                     float r = Random.Range(min, max);
 
                     if (r > 10f)
                     {
 
-                        enController.GetUnitDie(0, -2);
+                        enController.GetUnitDie(-2, 0, 0, arrowsAmount / hitColliders.Length);
                         enController.SpawnFriendlyFireFX();
                     }
                     else
                     {
-                        if (r > 5f)
+                        if (r > 6f)
                         {
-                            enController.GetDamage((arrowsAmount / hitColliders.Length)*2f); // c множителем шоб по своим не стрелял даун
+                            enController.GetDamage(0, 0, arrowsAmount / hitColliders.Length * 2); // c множителем шоб по своим не стрелял даун
                             enController.SpawnFriendlyFireFX();
                         }
 

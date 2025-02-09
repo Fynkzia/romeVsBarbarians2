@@ -25,12 +25,12 @@ public static class GameOptions  {
     {
         float min = 0f; // уменьшение этого параметра влияет на уменьшение шансов сдохнуть от атаки.
 
-        min -= (enController.defenceSquad * defenceBalanceCoef);
-        min -= (enController.defenceSquad - squad.powerSquad) * specDiffBalanceCoef;//влияние базовой защиты
+        min -= (enController.defenceSquad * defenceBalanceCoef);//влияние базовой защиты
+        min -= (enController.defenceSquad - squad.powerSquad) * specDiffBalanceCoef;//влияние разницы
         min -= enController.defenceCoef * typeBalanceCoef;//влияние коефицента типа отряда
         min -= ((enController.currentMorale / enController.maxMorale) * 5 * moraleBalanceCoef);//влияние морали
-        min -= ((enController.currentFormation / enController.formationSquad) * 5 * formationBalanceCoef);
-        min -= ((enController.transform.position.y - squad.transform.position.y) * 2 * tacktickBalanceCoef);//влияние формации
+        min -= ((enController.currentFormation / enController.formationSquad) * 5 * formationBalanceCoef);//влияние формации
+        min -= ((enController.transform.position.y - squad.transform.position.y) * 2 * tacktickBalanceCoef);//влияние возвышености
 
         return min;
     }
