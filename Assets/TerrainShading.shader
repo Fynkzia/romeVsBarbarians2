@@ -64,7 +64,7 @@ Shader "Custom/TerrainShadingWithNormals"
 
     SubShader
     {
-        Tags { "Queue" = "Geometry" "LightMode"="ForwardBase"  }
+        Tags { "Queue" = "Geometry" "LightMode"="ForwardBase" "TerrainCompatible"="True"  }
         LOD 200
 
         Pass

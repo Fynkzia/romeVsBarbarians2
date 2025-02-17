@@ -10,6 +10,8 @@ public class CityController : MonoBehaviour
 
     public float cityTickTime;
 
+    public int cityBuildingsStart;
+
     public int cityBuildings;
     public int cityUnits;
 
@@ -20,10 +22,11 @@ public class CityController : MonoBehaviour
     public Transform[] spawnPoints;
     public List<GameObject> buildings;
 
-
+    public ArmyController armyInCity;
+    public ArmyController armyObject;
 
     private float currentTime;
-    private int lastBuildCoint;
+    private int untisToBuild;
 
     [SerializeField] public TextMeshProUGUI cityNameText;
     [SerializeField] public TextMeshProUGUI buildingsCount;
@@ -35,10 +38,20 @@ public class CityController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for (int i = 0; i < cityBuildings; i++)
+        for (int i = 0; i < cityBuildingsStart; i++)
         {
+            cityBuildings++;
             AddBuildings();
         }
+
+        buildingsCount.text = "" + cityBuildings;
+
+        buildingsCountChange.text = "+" + cityBuildings / 50;
+
+        unitsCount.text = "" + cityUnits;
+        unitsCountChange.text = "+" + cityBuildings;
+
+        
     }
 
     // Update is called once per frame
@@ -48,22 +61,28 @@ public class CityController : MonoBehaviour
 
         if (currentTime > cityTickTime)
         {
-            if (cityBuildings < cityBuildingsMax)
+            if (cityUnits < cityUnitsMax)
             {
                 cityUnits += cityBuildings;
+               
             }
 
-            if (cityBuildings < cityBuildingsMax) {
-                cityBuildings += cityUnits / 50;
+            untisToBuild += cityBuildings;
 
-                if (lastBuildCoint + 1 < cityBuildings) {
-                    lastBuildCoint = cityBuildings;
+            if (cityBuildings < cityBuildingsMax) {
+           
+
+                if (untisToBuild > 50) {
+                   
                     AddBuildings();
+                    cityBuildings++;
+
+                    untisToBuild = 0;
                     }
 
-                buildingsCount.text = "" + lastBuildCoint;
+                buildingsCount.text = "" + cityBuildings;
 
-                buildingsCountChange.text = "+" + cityUnits / 50;
+                buildingsCountChange.text = "+" + cityBuildings / 50;
                 
             }
 
@@ -76,7 +95,7 @@ public class CityController : MonoBehaviour
 
     public void AddBuildings()
     {
-        GameObject newBuild = Instantiate(build, spawnPoints[lastBuildCoint]);
+        GameObject newBuild = Instantiate(build, spawnPoints[cityBuildings]);
         buildings.Add(newBuild);
     }
 }

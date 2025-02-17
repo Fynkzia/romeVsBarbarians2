@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LookAtCamera : MonoBehaviour
 {
-    private Camera camera;
+    public Camera camera;
     private CameraMovement cameraMovement;
 
     [SerializeField]private bool banner;
@@ -14,37 +14,55 @@ public class LookAtCamera : MonoBehaviour
 
     [SerializeField] public float[] scales;
 
+    bool isInit = false;
+
 
     private void Awake() {
+
         camera = Camera.main;
 
-        if (banner)
+
+        if (!banner)
         {
-            cameraMovement = GameObject.Find("CameraControlManager").GetComponent<CameraMovement>();
-            cameraMovement.OnZoomChanged += HandleZoomChanged;
+            isInit = true;
         }
 
-
     }
-    private void LateUpdate() {
-        // Направление от объекта к камере
-        Vector3 directionToCamera = camera.transform.position - transform.position;
 
-        // Проецируем направление на плоскость XZ (убираем компонент по Y)
-        directionToCamera.y = 0;
-
-        // Если длина направления нулевая, избегаем ошибок
-        if (directionToCamera.sqrMagnitude > 0.001f)
+    public void InitBanner(Camera cam, CameraMovement camMov)
+    {
+        if (banner && cameraMovement == null)
         {
-            // Устанавливаем поворот объекта так, чтобы он смотрел на камеру
-            transform.rotation = Quaternion.LookRotation(directionToCamera);
+            camera = cam;
+            cameraMovement = camMov;
+            cameraMovement.OnZoomChanged += HandleZoomChanged;
+        }
+        isInit = true;
+    }
+
+
+    private void LateUpdate() {
+        if (isInit)
+        {
+            // Направление от объекта к камере
+            Vector3 directionToCamera = camera.transform.position - transform.position;
+
+            // Проецируем направление на плоскость XZ (убираем компонент по Y)
+            directionToCamera.y = 0;
+
+            // Если длина направления нулевая, избегаем ошибок
+            if (directionToCamera.sqrMagnitude > 0.001f)
+            {
+                // Устанавливаем поворот объекта так, чтобы он смотрел на камеру
+                transform.rotation = Quaternion.LookRotation(directionToCamera);
+            }
         }
 
     }
 
     public void HandleZoomChanged(int newZoom)
     {
-        Debug.Log("newZoom  " + newZoom);
+        
 
         if (newZoom < scales.Length)
         {

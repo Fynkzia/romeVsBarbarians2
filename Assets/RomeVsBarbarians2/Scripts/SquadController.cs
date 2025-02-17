@@ -219,6 +219,7 @@ public class SquadController : MonoBehaviour {
     private AIController aIController;
     private WinLoseManager winLoseManager;
 
+    public BattleSceneManager battleSceneManager;
     
     [Space(10)]
     [SerializeField] private GameObject unitPrefab;
@@ -233,6 +234,12 @@ public class SquadController : MonoBehaviour {
     [SerializeField] public List<SquadController> enemyController = new List<SquadController>();
 
     [SerializeField] public LineRenderer lineRenderer;
+
+    [Header("Map Settings")]
+    [Space(10)]
+    public int unitsNeed;
+    public int coinsNeed;
+    [SerializeField] public SquadMapUIPanel mapUIPanel;
 
 
     [SerializeField] private Animator UnitInfo;
@@ -256,22 +263,31 @@ public class SquadController : MonoBehaviour {
     private const string SQUAD_TRIGGER_TAG = "SquadTrigger";
 
 
+
     public event Action OnInBattleTrue;
     public event Action OnSquadDie;
 
     public event Action<int> OnUnitsCountChange;
 
+    private void Start()
+    {
+       // InitSquad();
+    }
 
-    private void Start() {
+    public void InitSquad() {
 
-        coinsController = GameObject.Find("CoinsController").GetComponent<CoinsController>();
-        controlController = GameObject.Find("SquadControlManager").GetComponent<SquadControlManager>();
-        aIController = GameObject.Find("AIManager").GetComponent<AIController>();
-        winLoseManager = GameObject.Find("WinLoseManager").GetComponent<WinLoseManager>();
+       // battleSceneManager = GameObject.Find("BattleSceneManager").GetComponent<BattleSceneManager>();
+
+       
+        controlController = battleSceneManager.controlController;
+        aIController = battleSceneManager.aIController;
+       // winLoseManager = GameObject.Find("WinLoseManager").GetComponent<WinLoseManager>();
         rb = GetComponent<Rigidbody>();
         mainCollider = GetComponent<SphereCollider>();
 
-       
+        UnitInfo.gameObject.GetComponent<LookAtCamera>().InitBanner(battleSceneManager.gameCamera, battleSceneManager.cameraController);
+        UnitInfo.SetBool("Retreat", false);
+
 
         movingDistanceToPoint = GameOptions.distanceToPoint;
 
@@ -287,7 +303,7 @@ public class SquadController : MonoBehaviour {
         }
 
         
-        currentAmountUnits = unitArray.Count;
+        currentAmountUnits = amountUnits;
         lastAmountUnits = unitArray.Count;
         lastMorale = maxMorale;
 
@@ -1813,6 +1829,34 @@ public class SquadController : MonoBehaviour {
         FormationBonusChange(-lostDefenceMoving- triggerCoef/10f);
         TryToRetreat();
     }
+    public void AutoBattle_GetUnitDie(int multiplayer )
+    {
+
+       
+
+        float moraleLost = 0;
+
+
+        moraleLost -= Mathf.Pow(lostMoraleThenAttacked, 0.3f + (currentAmountUnits / amountUnits));
+
+
+        currentAmountUnits -= 1 * multiplayer;
+
+        moraleLost -= Mathf.Pow(lostMoraleThenDie, 0.3f + (currentAmountUnits / amountUnits));
+        
+
+
+
+        MoraleChange(moraleLost);
+
+        FormationBonusChange(-lostDefenceMoving / 10f);
+
+        if (currentAmountUnits < retreatCount || currentAmountUnits == 0)
+        {
+            squadDie = true;
+        }
+
+     }
 
     public void GetUnitDie(int unitIndex, float bonusMoraleLost, float triggerCoef, float countDiff) {// запускается на вражеском отряде, когда надо кого-то убить
 
@@ -2192,25 +2236,29 @@ public class SquadController : MonoBehaviour {
             }
         }
 
+        
+        //gameObject.SetActive(false);
+
         if (!squadDie)
         {
             if (playerSquad)
             { // удаляем сквады с ии контролера
 
-                winLoseManager.playerSquadsCount--;
+                //  winLoseManager.playerSquadsCount--;
+                battleSceneManager.DiePlayerSquad(this);
             }
             else
             {
                 aIController.DeleteSquadFromQueue(this);
-                winLoseManager.enemySquadsCount--;
+                battleSceneManager.DieEnemySquad(this);
+                //  winLoseManager.enemySquadsCount--;
             }
 
-            aIController.squadsToDelete.Add(this);
+           // aIController.squadsToDelete.Add(this);
             //Destroy(gameObject);
-            squadDie = true;
-            gameObject.SetActive(false);
+         
         }
-
+        squadDie = true;
         OnSquadDie?.Invoke();
     }
 
@@ -2528,7 +2576,7 @@ public class SquadController : MonoBehaviour {
     //AI
     public float AiPowerCalculate()
     {
-        ai_squadPower = currentAmountUnits * powerSquad;
+        ai_squadPower = GameOptions.PowerCalculate(this);
 
         return ai_squadPower;
     }
@@ -2558,6 +2606,10 @@ public class SquadController : MonoBehaviour {
             }
         }
     }
+
+    //map
+
+
 
 
 }

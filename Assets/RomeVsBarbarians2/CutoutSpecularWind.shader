@@ -38,6 +38,8 @@ Shader "Custom/CutoutSpecularWind"
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+            #pragma multi_compile_instancing // Включаем поддержку инстансинга
+            #pragma instancing_options assumeuniformscaling 
             #pragma multi_compile_fog // Включение поддержки тумана
             #pragma multi_compile_fwdbase
             #pragma multi_compile_shadowcaster
@@ -72,6 +74,8 @@ Shader "Custom/CutoutSpecularWind"
                 float4 vertex : POSITION;
                 half3 normal : NORMAL;
                 float2 uv : TEXCOORD0;
+
+                UNITY_VERTEX_INPUT_INSTANCE_ID
                 
             };
 
@@ -85,12 +89,14 @@ Shader "Custom/CutoutSpecularWind"
                 
                 UNITY_FOG_COORDS(3)
                 UNITY_LIGHTING_COORDS(4,5)
+
             };
 
             v2f vert(appdata_t v)
             {
                 v2f o;
 
+                 UNITY_SETUP_INSTANCE_ID(v);
 
                 float3 worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
 

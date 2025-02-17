@@ -17,38 +17,29 @@ public class WinLoseManager : MonoBehaviour
     private int currentLevel;
     private CoinsController coinsController;
 
-    private void Awake() {
+    public void Init() {
         playerSquadsCount = playerSquads.transform.childCount;
         enemySquadsCount = enemySquads.transform.childCount;
         coinsController = GameObject.Find("CoinsController").GetComponent<CoinsController>();
-        reward = PlayerPrefs.GetInt("CurrentReward");
-        currentLevel = PlayerPrefs.GetInt("CurrentLevel");
+      
     }
 
     private void Update() {
-        if (!isGameOver) { 
-            if (playerSquadsCount == 0) {
-                winLoseUI.ShowLose();
-                isGameOver = !isGameOver;
-                PlayerPrefs.Save();
-            }
-            if (enemySquadsCount == 0) { 
-                winLoseUI.ShowWin();
-                WinSave();
-                isGameOver = !isGameOver;
-                PlayerPrefs.Save();
-            }
+        //if (!isGameOver) { 
+        //    if (playerSquadsCount == 0) {
+        //        winLoseUI.ShowLose();
+        //        isGameOver = !isGameOver;
+                
+        //    }
+        //    if (enemySquadsCount == 0) { 
+        //        winLoseUI.ShowWin();
+               
+        //        isGameOver = !isGameOver;
+               
+        //    }
             
-        }
+        //}
     }
 
-    private void WinSave() {
-        rewardText.text += reward;
-        coinsController.ChangeAmountOfCoins(reward);
-        int maxUnlockedLevel = PlayerPrefs.GetInt("MaxUnlockedLevel");
-        if (currentLevel == maxUnlockedLevel) {
-            maxUnlockedLevel++;
-            PlayerPrefs.SetInt("MaxUnlockedLevel", maxUnlockedLevel);
-        }
-    }
+   
 }

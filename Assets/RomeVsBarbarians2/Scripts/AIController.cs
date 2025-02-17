@@ -568,7 +568,10 @@ public void SetAllEnemiesList()
 
         for (int i = 0; i < enemyObject.transform.childCount; i++)
         {
-            allEnemiesList.Add(enemyObject.transform.GetChild(i).GetComponent<SquadController>());
+            if (enemyObject.transform.GetChild(i).gameObject.activeSelf)
+            {
+                allEnemiesList.Add(enemyObject.transform.GetChild(i).GetComponent<SquadController>());
+            }
         }
 
 
@@ -581,7 +584,10 @@ public void SetAllEnemiesList()
 
         for (int i = 0; i < playerObject.transform.childCount; i++)
         {
-            allPlayerList.Add(playerObject.transform.GetChild(i).GetComponent<SquadController>());
+            if (playerObject.transform.GetChild(i).gameObject.activeSelf)
+            {
+                allPlayerList.Add(playerObject.transform.GetChild(i).GetComponent<SquadController>());
+            }
 
         }
 
@@ -936,7 +942,7 @@ public void DeleteSquads() {
          for (int i = 0; i < squadsToDelete.Count; i++)
         {
 
-            Destroy(squadsToDelete[i].gameObject);
+           // Destroy(squadsToDelete[i].gameObject);
 
         }
         squadsToDelete.Clear();

@@ -11,7 +11,7 @@ public class SquadControlManager : MonoBehaviour
 
     [SerializeField]private int maxRoundIndex = 3;
 
-    [SerializeField] private Transform pointDebug;
+ 
     [SerializeField] private LayerMask terrainLayer ;
     [SerializeField] private LayerMask unitLayer ;
 
@@ -22,7 +22,7 @@ public class SquadControlManager : MonoBehaviour
     [SerializeField] private LineRenderer lineRenderer;
     [SerializeField] private SquadController squadController;
 
-    [SerializeField] private OrdersSystem ordersSystem;
+    
 
     private Vector3 mousePos;
      private Vector3 mousePrevPos = Vector3.zero;
@@ -47,11 +47,11 @@ public class SquadControlManager : MonoBehaviour
     }
 
     private void HandleSquadTouch() {
-        if (Input.GetMouseButtonDown(0) && !ordersSystem.isOrderSelected()) {
+        if (Input.GetMouseButtonDown(0) ) {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit,1000f, unitLayer)) {
-                pointDebug.position = hit.point;
+               
 
                 
                 if (hit.collider.gameObject.tag == SQUAD_TAG) {

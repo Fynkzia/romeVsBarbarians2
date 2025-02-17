@@ -102,7 +102,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2835096852102318129
 Transform:
   m_ObjectHideFlags: 0
@@ -321,6 +321,9 @@ MonoBehaviour:
   - {fileID: 0}
   enemyController: []
   lineRenderer: {fileID: 0}
+  unitsNeed: 0
+  coinsNeed: 0
+  mapUIPanel: {fileID: 0}
   UnitInfo: {fileID: 9072971008714615398}
   drawingPrefab: {fileID: 3402867912507858967, guid: b9598d3b6662f4b46a667f70dbea15d0, type: 3}
   movementIndicator: {fileID: 1516730008753690456}

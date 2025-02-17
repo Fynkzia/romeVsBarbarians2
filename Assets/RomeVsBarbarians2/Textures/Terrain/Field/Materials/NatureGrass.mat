@@ -17,7 +17,7 @@ Material:
   - _ALPHATEST_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
-  m_DoubleSidedGI: 1
+  m_DoubleSidedGI: 0
   m_CustomRenderQueue: 2000
   stringTagMap: {}
   disabledShaderPasses: []
@@ -73,7 +73,7 @@ Material:
     m_Floats:
     - _BumpScale: 1
     - _Cutoff: 0.204
-    - _CutoutThreshold: 0.289
+    - _CutoutThreshold: 0.958
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _GlossMapScale: 1
@@ -90,7 +90,7 @@ Material:
     - _RimMax: 0.85
     - _RimMin: 0.6
     - _RimStrength: 0.5
-    - _ShadowIntensity: 0
+    - _ShadowIntensity: 0.054
     - _ShadowThreshold: 0.226
     - _ShadowTransition: 0
     - _Smoothness: 0.005
@@ -105,13 +105,13 @@ Material:
     - _TCP2_SPEC_TOON: 0
     - _TCP2_STYLIZED_FRESNEL: 0
     - _UVSec: 0
-    - _WindFrameStep: 0.2
-    - _WindFrequency: 4.72
-    - _WindSpeed: 0.5
-    - _WindStrength: 0.935
+    - _WindFrameStep: 0.238
+    - _WindFrequency: 10
+    - _WindSpeed: 8.66
+    - _WindStrength: 0.241
     - _ZWrite: 1
     m_Colors:
-    - _AlbedoColor: {r: 0.83137256, g: 0.72496814, b: 0.52156866, a: 1}
+    - _AlbedoColor: {r: 0.7830189, g: 0.7284643, b: 0.5872642, a: 1}
     - _Color: {r: 0.7312547, g: 0.8018868, b: 0.5711552, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _HColor: {r: 1, g: 1, b: 1, a: 1}
@@ -119,6 +119,6 @@ Material:
     - _LightDirection: {r: 0.5, g: 1, b: 0.5, a: 0}
     - _RimColor: {r: 0.8, g: 0.8, b: 0.8, a: 0.6}
     - _SColor: {r: 0.8113208, g: 0.7692239, b: 0.80778086, a: 1}
-    - _ShadowColor: {r: 0.21698111, g: 0.21698111, b: 0.21698111, a: 1}
-    - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
+    - _ShadowColor: {r: 1, g: 1, b: 1, a: 1}
+    - _SpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []

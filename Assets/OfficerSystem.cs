@@ -19,7 +19,7 @@ public class OfficerSystem : MonoBehaviour
     int officersCount = 0;
 
     // Start is called before the first frame update
-    void Start()
+    public void Init()
     {
         SetAllPlayersList();
         //SetAllOfficerPanels();

@@ -48,6 +48,15 @@ public static class GameOptions  {
         return max;
     }
 
+    public static float PowerCalculate(SquadController squad)
+    {
+        float power = 10f;
+
+        power += squad.powerSquad * squad.currentAmountUnits;
+
+        return power;
+    }
+
 }
 
 

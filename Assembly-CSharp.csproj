@@ -60,6 +60,7 @@
     <Analyzer Include="/Applications/Unity/Hub/Editor/2022.3.49f1/Unity.app/Contents/Tools/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets/SquadMapUIPanel.cs" />
     <Compile Include="Assets/SquadColliderController.cs" />
     <Compile Include="Assets/OfficerController.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_TextEventHandler.cs" />
@@ -73,16 +74,21 @@
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/Shooting/ShotMovement.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMPro_InstructionOverlay.cs" />
     <Compile Include="Assets/Epic Toon FX/Demo/Scripts/ETFXFireProjectile.cs" />
+    <Compile Include="Assets/ArmyUIPanel.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/VertexShakeB.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/DropdownSample.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/VertexColorCycler.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/EnvMapAnimator.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/UI/LookAtCamera.cs" />
+    <Compile Include="Assets/SquadsManager.cs" />
     <Compile Include="Assets/Epic Toon FX/Demo/ParticleEffectsShowcase/Scripts/ParticleEffectsLibrary.cs" />
     <Compile Include="Assets/OfficerSystem.cs" />
+    <Compile Include="Assets/HireController.cs" />
+    <Compile Include="Assets/BattleSceneManager.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/CloudsFade.cs" />
     <Compile Include="Assets/ResolutionScaler.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_TextSelector_A.cs" />
+    <Compile Include="Assets/RomeVsBarbarians2/Scripts/CameraMapMovement.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/BuildingManager.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/Benchmark01_UGUI.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/SimpleScript.cs" />
@@ -101,15 +107,18 @@
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_DigitValidator.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_FrameRateCounter.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TextConsoleSimulator.cs" />
+    <Compile Include="Assets/BattleInfo.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/UnitRetreatController.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/CoinsController.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/LevelController.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TeleType.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/AIController.cs" />
+    <Compile Include="Assets/SpawnPoint.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/Shooting/ShotRangeManager.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_TextEventCheck.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_UiFrameRateCounter.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/Shooting/ShootingController.cs" />
+    <Compile Include="Assets/MapBattleController.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/Skills/TestudoSkill.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/Benchmark01.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TextMeshSpawner.cs" />
@@ -120,6 +129,7 @@
     <Compile Include="Assets/Epic Toon FX/Demo/ParticleEffectsShowcase/Scripts/PEButtonScript.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/Skills/PillumThrowSkillSettings.cs" />
     <Compile Include="Assets/CityController.cs" />
+    <Compile Include="Assets/HireUIPanel.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/TMP_TextSelector_B.cs" />
     <Compile Include="Assets/PointsController.cs" />
     <Compile Include="Assets/Epic Toon FX/Demo/Scripts/ETFXMouseOrbit.cs" />
@@ -134,10 +144,12 @@
     <Compile Include="Assets/Epic Toon FX/Demo/ParticleEffectsShowcase/Scripts/PEDestoryTimed.cs" />
     <Compile Include="Assets/Epic Toon FX/Scripts/ETFXLightFade.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/CameraMovement.cs" />
+    <Compile Include="Assets/MapSceneManager.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/CameraController.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/AnimationController.cs" />
     <Compile Include="Assets/Epic Toon FX/Demo/ParticleEffectsShowcase/Scripts/UICanvasManager.cs" />
     <Compile Include="Assets/OfficerSkill.cs" />
+    <Compile Include="Assets/RomeVsBarbarians2/Scripts/MapControlManager.cs" />
     <Compile Include="Assets/Epic Toon FX/Demo/Scripts/ETFXProjectileScript.cs" />
     <Compile Include="Assets/TextMesh Pro/Examples &amp; Extras/Scripts/Benchmark03.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/Skills/TestudoSkillSettings.cs" />
@@ -145,6 +157,8 @@
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/FpsCounter.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/OrderController.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/AIDefencePoint.cs" />
+    <Compile Include="Assets/SceneLoader.cs" />
+    <Compile Include="Assets/ArmyController.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/UI/BarUI.cs" />
     <Compile Include="Assets/RomeVsBarbarians2/Scripts/CloudsController.cs" />
     <Compile Include="Assets/Epic Toon FX/Scripts/ETFXPitchRandomizer.cs" />

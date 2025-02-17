@@ -9,12 +9,15 @@ using DG.Tweening;
 public class CameraMovement : MonoBehaviour
 {
 
+    [SerializeField] private BattleSceneManager battleSceneManager;
+
     [SerializeField] private Camera gameCamera;
     [SerializeField] private Camera renderTextureCamera;
     [SerializeField] private Camera renderTerrainCamera;
     [SerializeField] private GameObject cinemachineObject;
     [SerializeField] private GameObject cinemachineFollowObject;
     public CinemachineVirtualCamera[] cams;
+    public GameObject exitCam;
     [SerializeField] private float[] fogStart;
     [SerializeField] private float[] fogEnds;
     [SerializeField] private float[] panSpeed;  // Speed of panning.
@@ -32,7 +35,7 @@ public class CameraMovement : MonoBehaviour
 
     private Vector3 lastMousePosition;
     private float prevTouchDeltaMag;
-    private int mainFOVIndex = 1;
+    public int mainFOVIndex = 1;
     private float screenWidth;
     private float screenHeight;
     private int targetFOVIndex;
@@ -56,17 +59,45 @@ public class CameraMovement : MonoBehaviour
     public event Action<int> OnZoomChanged;
 
 
-    private void Start()
+    public void CameraMoveToExit()
+    {
+        cams[targetFOVIndex].gameObject.SetActive(false);
+        exitCam.SetActive(true);
+
+    }
+
+    public void CameraMoveEnter()
+    {
+        
+
+        targetFOVIndex = 2;
+
+        CamZoom();
+    }
+
+    public void Init()
     {
         screenHeight = Screen.height;
         screenWidth = Screen.width;
 
+        panLimitX[0] = panLimitX[0] + transform.position.x;
+        panLimitX[1] = panLimitX[1] + transform.position.x;
+
+        panLimitZ[0] = panLimitZ[0] + transform.position.z;
+        panLimitZ[1] = panLimitZ[1] + transform.position.z;
+
         OnZoomChanged?.Invoke(targetFOVIndex);
+
+        Debug.Log("Init - ???");
+
+        //cams[targetFOVIndex].gameObject.SetActive(true);
+
+        //        CamToPoint(battleSceneManager.playerSquads[0].transform.position);
     }
     private void Awake()
     {
         //mainFOVIndex = (int)Mathf.Ceil((fieldsOfView.Length - 1) / 2);
-        targetFOVIndex = mainFOVIndex;
+        //targetFOVIndex = mainFOVIndex;
         gameCamera.fieldOfView = fieldsOfView[mainFOVIndex];
         renderTextureCamera.fieldOfView = fieldsOfView[mainFOVIndex];
         renderTerrainCamera.fieldOfView = fieldsOfView[mainFOVIndex];
@@ -81,7 +112,7 @@ public class CameraMovement : MonoBehaviour
 
         }
 
-        cams[targetFOVIndex].gameObject.SetActive(true);
+        
     }
 
     private void Update()
