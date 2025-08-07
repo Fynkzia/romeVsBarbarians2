@@ -1572,11 +1572,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 413329540627125498, guid: 9fc645479fdaa49a6b326532b41c64ab, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1.65
+      value: 1.6
       objectReference: {fileID: 0}
     - target: {fileID: 413329540627125498, guid: 9fc645479fdaa49a6b326532b41c64ab, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1.67
+      value: 5.41
       objectReference: {fileID: 0}
     - target: {fileID: 3468833461974290716, guid: 9fc645479fdaa49a6b326532b41c64ab, type: 3}
       propertyPath: m_Sprite
@@ -1621,6 +1621,10 @@ PrefabInstance:
     - target: {fileID: 3800096980757170583, guid: 9fc645479fdaa49a6b326532b41c64ab, type: 3}
       propertyPath: amountUnits
       value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 3800096980757170583, guid: 9fc645479fdaa49a6b326532b41c64ab, type: 3}
+      propertyPath: coinsFromDie
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3800096980757170583, guid: 9fc645479fdaa49a6b326532b41c64ab, type: 3}
       propertyPath: defenceSquad
@@ -1746,6 +1750,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6619447512661446550, guid: 9fc645479fdaa49a6b326532b41c64ab, type: 3}
+      propertyPath: squad
+      value: 
+      objectReference: {fileID: 551178192509740498}
     - target: {fileID: 7808990791969045480, guid: 9fc645479fdaa49a6b326532b41c64ab, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.23
@@ -1909,6 +1917,11 @@ PrefabInstance:
       addedObject: {fileID: 3252673587273135539}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9fc645479fdaa49a6b326532b41c64ab, type: 3}
+--- !u!1 &551178192509740498 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 600889865586482275, guid: 9fc645479fdaa49a6b326532b41c64ab, type: 3}
+  m_PrefabInstance: {fileID: 1148672456938371505}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8982228938101912740 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8311303100096466197, guid: 9fc645479fdaa49a6b326532b41c64ab, type: 3}

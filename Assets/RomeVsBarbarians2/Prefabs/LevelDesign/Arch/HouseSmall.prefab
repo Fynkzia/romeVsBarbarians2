@@ -883,6 +883,7 @@ GameObject:
   - component: {fileID: 2364428297182640169}
   - component: {fileID: 7604102230845759414}
   - component: {fileID: 6761495131840595006}
+  - component: {fileID: 427124628911574443}
   m_Layer: 16
   m_Name: HouseSmall
   m_TagString: Enemy
@@ -916,7 +917,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5185996277045338134}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 131804536491f4af2bfba894064f0a21, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -928,8 +929,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4.6078115, y: 6.1410747, z: 2.1190925}
-  m_Center: {x: 0.018085485, y: 0.2619934, z: 0.72577524}
+  m_Size: {x: 3.7662475, y: 5.1260962, z: 6.2195535}
+  m_Center: {x: -0.041298497, y: 0.2247491, z: 2.7760077}
 --- !u!114 &6761495131840595006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -943,6 +944,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerBuilding: 0
+  inGroupBuilding: 0
+  isDestroed: 0
+  spawnerController: {fileID: 0}
   hitPoints: 100
   buildingSize: 2
   shootingBuilding: 0
@@ -953,6 +957,7 @@ MonoBehaviour:
   shotAccuracy: 0
   shotRapidity: 0
   projectilesPerShotCount: 0
+  coinCost: 5
   shotStartOffset: 0
   shotSpawnDelay: 0
   shotHalfDelay: 0
@@ -961,11 +966,28 @@ MonoBehaviour:
   shootingIndicator: {fileID: 0}
   damageFx:
   - {fileID: 5192474632808955707}
+  coinFx: {fileID: 1907167698180525989, guid: 42b76643cf2c9436897bcaee0205a644, type: 3}
   shakeDuration: 1
   shakeIntensity: 1
   decayRate: 1
   meshObject: {fileID: 6515707537582939054}
   destroyObject: {fileID: 3823132591374251014}
+--- !u!208 &427124628911574443
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5185996277045338134}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 2.145, y: 2.46, z: 2.07}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.14, y: 0.28, z: 0.7}
+  m_TimeToStationary: 0.5
 --- !u!1 &6263702525183925552
 GameObject:
   m_ObjectHideFlags: 0

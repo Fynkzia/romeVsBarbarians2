@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Cinemachine;
 using DG.Tweening;
+using UnityEngine.EventSystems;
 
 public class CameraMapMovement : MonoBehaviour
 {
@@ -40,7 +41,9 @@ public class CameraMapMovement : MonoBehaviour
     [SerializeField] private GameObject zoomedCam;
     [SerializeField] private GameObject toBattleCam;
 
-
+    [SerializeField] private float defaultCamTime;
+    [SerializeField] private float zoomCamTime;
+    [SerializeField] private float battleCamTime;
 
     [SerializeField] private LayerMask cloudsMask;
     [SerializeField] private LayerMask mapMask;
@@ -50,8 +53,10 @@ public class CameraMapMovement : MonoBehaviour
     [SerializeField] private Collider toFadeInColl;
 
     public MapControlManager mapControlManager;
- 
 
+    public event Action<int> OnZoomChanged;
+
+    public GraphicRaycaster raycaster;
 
     private void Start()
     {
@@ -67,29 +72,45 @@ public class CameraMapMovement : MonoBehaviour
 
             mainCam.SetActive(false);
             zoomedCam.SetActive(true);
+
+            OnZoomChanged?.Invoke(1);
+
+            gameCamera.GetComponent<CinemachineBrain>().m_DefaultBlend.m_Time = zoomCamTime;
         }
         else
         {
             mainCam.SetActive(true);
             zoomedCam.SetActive(false);
+
+            OnZoomChanged?.Invoke(0);
+
+            gameCamera.GetComponent<CinemachineBrain>().m_DefaultBlend.m_Time = defaultCamTime;
         }
+
+       
 
     }
 
+    
+
     public void EnterToBattle()
     {
-        mainCam.SetActive(false);
+        //mainCam.SetActive(false);
         zoomedCam.SetActive(false);
 
         toBattleCam.SetActive(true);
+
+        gameCamera.GetComponent<CinemachineBrain>().m_DefaultBlend.m_Time = battleCamTime;
     }
 
     public void ExitFromBattle()
     {
-        mainCam.SetActive(true);
-        zoomedCam.SetActive(false);
+        mainCam.SetActive(false);
+        zoomedCam.SetActive(true);
 
         toBattleCam.SetActive(false);
+
+        gameCamera.GetComponent<CinemachineBrain>().m_DefaultBlend.m_Time = battleCamTime;
     }
 
     private void Update()
@@ -106,12 +127,12 @@ public class CameraMapMovement : MonoBehaviour
             
         }
 
-
+// выключаем облака
 
         Vector3 origin = Camera.main.transform.position;
         Vector3 direction = Camera.main.transform.forward;
 
-        // Пускаем луч
+       
         if (Physics.Raycast(origin, direction, out RaycastHit hit, 1000f, cloudsMask))
         {
             if (toFadeInColl == null)
@@ -148,6 +169,8 @@ public class CameraMapMovement : MonoBehaviour
             toFadeIn = null;
         }
 
+ // выключаем облака
+
         if (isFollow)
         {
             
@@ -173,9 +196,23 @@ public class CameraMapMovement : MonoBehaviour
 
     private void HandleCameraMovement()
     {
+        if (Input.touchCount > 0 && EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
+        {
+            // Пользователь прикасается к UI — игнорируем
+            return;
+        }
+
+        
+
         if (!ignoreMovement)
         {
-            if (Input.GetMouseButtonDown(0))
+
+            if (IsPointerClickingOnUI())
+            {
+                return;
+            }
+
+            if (Input.GetMouseButtonDown(0) )
             {
                 lastMousePosition = Input.mousePosition;
             }
@@ -183,7 +220,7 @@ public class CameraMapMovement : MonoBehaviour
 
             if (Input.GetMouseButtonUp(0))
             {
-                lastMousePosition = Vector3.zero;
+               // lastMousePosition = Vector3.zero;
             }
 
 
@@ -208,7 +245,7 @@ public class CameraMapMovement : MonoBehaviour
                         cinemachineFollowObject.transform.position = newPosition;
 
 
-                        if (Vector3.Distance(cinemachineFollowObject.transform.position, followTarget) > 5f)
+                        if (Vector3.Distance(cinemachineFollowObject.transform.position, followTarget) > 0.1f)
                         {
                             Debug.Log("CamToPoint - stop " + Vector3.Distance(cinemachineFollowObject.transform.position, followTarget));
 
@@ -231,7 +268,7 @@ public class CameraMapMovement : MonoBehaviour
                     {
                         cinemachineFollowObject.transform.position = newPosition;
 
-                        if (Vector3.Distance(cinemachineFollowObject.transform.position, mapFollowObject.transform.position) > 5f)
+                        if (Vector3.Distance(cinemachineFollowObject.transform.position, mapFollowObject.transform.position) > 0.1f)
                         {
                             Debug.Log("CamToPoint - stop " + Vector3.Distance(cinemachineFollowObject.transform.position, mapFollowObject.transform.position));
 
@@ -274,7 +311,7 @@ public class CameraMapMovement : MonoBehaviour
     {
         cinemachineFollowObject.transform.position = Vector3.MoveTowards(cinemachineFollowObject.transform.position, followTarget, followSpeed * Time.deltaTime);
 
-        if (Vector3.Distance(cinemachineFollowObject.transform.position, followTarget) > 1f)
+        if (Vector3.Distance(cinemachineFollowObject.transform.position, followTarget) > 0.1f)
         {
             if (mapFollowObject == null)
             {
@@ -302,33 +339,117 @@ public class CameraMapMovement : MonoBehaviour
 
     public void CamToPoint( Vector3 point, GameObject followObject)
     {
-        if (Vector3.Distance(cinemachineFollowObject.transform.position, point) > 1f)
+        if (followObject == null)
         {
-            //cinemachineFollowObject.transform.position = point;
-            if (followObject != null)
+
+            if (mapControlManager.drawPath)
             {
-                mapFollowObject = followObject;
+                if (Vector3.Distance(cinemachineFollowObject.transform.position, point) > 18f)
+                {
+
+                    mapFollowObject = null;
+
+                    isFollow = true;
+                    followTarget = point;
+                    isArrived = false;
+
+                    
+                }
+                else
+                {
 
 
+                    mapControlManager.cameraCentred = true;
+                    isFollow = false;
+                    //followCollider = null;
+                    isArrived = true;
+                }
+                return;
+            }
+
+           
+
+            if (Vector3.Distance(cinemachineFollowObject.transform.position, point) > 1f)
+            {
+                
+                
+                mapFollowObject = null;
+
+                isFollow = true;
+                followTarget = point;
+                isArrived = false;
+
+               
             }
             else
             {
-                mapFollowObject = null;
+
+                
+                mapControlManager.cameraCentred = true;
+                isFollow = false;
+                //followCollider = null;
+                isArrived = true;
             }
-
-            isFollow = true;
-            followTarget = point;
-            isArrived = false;
-
-            Debug.Log("CamToPoint");
         }
         else
         {
-            mapControlManager.cameraCentred = true;
-            isFollow = false;
-            //followCollider = null;
-            isArrived = true;
+            //if (Vector3.Distance(cinemachineFollowObject.transform.position, point) > 0.1f)
+            //{
+            //    //cinemachineFollowObject.transform.position = point;
+
+                if (followObject != null)
+                {
+                    mapFollowObject = followObject;
+
+
+                }
+                else
+                {
+                   
+                }
+
+                isFollow = true;
+                followTarget = mapFollowObject.transform.position;
+                isArrived = false;
+
+                
+            //}
+            //else
+            //{
+            //    mapControlManager.cameraCentred = true;
+            //    isFollow = false;
+            //    //followCollider = null;
+              //  isArrived = true;
+
+                Debug.Log("followObject");
+            //}
         }
 
+    }
+
+    public bool IsPointerClickingOnUI()
+    {
+       
+
+        PointerEventData pointerData = new PointerEventData(EventSystem.current);
+        pointerData.position = Input.mousePosition;
+
+        List<RaycastResult> results = new List<RaycastResult>();
+          
+
+        raycaster.Raycast(pointerData, results);
+
+        foreach (var result in results)
+        {
+            // Фильтрация по тегу, имени или типу объекта
+            if (result.gameObject.layer == 5) 
+            { // Задай нужным UI объектам этот тег
+                Debug.Log("IsPointerClickingOnUI");
+
+                return true;
+            }
+        }
+
+        return false;
     }
 }

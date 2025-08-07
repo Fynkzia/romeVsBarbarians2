@@ -27,6 +27,20 @@ public class CloudController : MonoBehaviour
 
     void Start()
     {
+        spawnAreaMin.x = spawnAreaMin.x + transform.position.x;
+        spawnAreaMin.y = spawnAreaMin.y + transform.position.z;
+
+        spawnAreaMax.x = spawnAreaMax.x + transform.position.x;
+        spawnAreaMax.y = spawnAreaMax.y + transform.position.z;
+
+        cloudAreaMin.x = cloudAreaMin.x + transform.position.x;
+        cloudAreaMin.y = cloudAreaMin.y + transform.position.z;
+
+        cloudAreaMax.x = cloudAreaMax.x + transform.position.x;
+        cloudAreaMax.y = cloudAreaMax.y + transform.position.z;
+
+
+
         for (int i = 0; i < cloudCount; i++)
         {
             SpawnCloud(true);

@@ -18,6 +18,8 @@ public class CameraMovement : MonoBehaviour
     [SerializeField] private GameObject cinemachineFollowObject;
     public CinemachineVirtualCamera[] cams;
     public GameObject exitCam;
+    public float exitCamTime;
+
     [SerializeField] private float[] fogStart;
     [SerializeField] private float[] fogEnds;
     [SerializeField] private float[] panSpeed;  // Speed of panning.
@@ -53,16 +55,43 @@ public class CameraMovement : MonoBehaviour
     [SerializeField] private CloudsFade toFadeIn;
     [SerializeField] private Collider toFadeInColl;
 
+    [SerializeField] SquadControlManager squadControlManager;
 
     private float deltaMagnitudeDiff;
 
     public event Action<int> OnZoomChanged;
 
 
+    public void CameraSetEnterPoint()
+    {
+        cams[targetFOVIndex].gameObject.SetActive(false);
+        exitCam.SetActive(true);
+        gameCamera.GetComponent<CinemachineBrain>().m_DefaultBlend.m_Time = 0f;
+    }
+
     public void CameraMoveToExit()
     {
         cams[targetFOVIndex].gameObject.SetActive(false);
         exitCam.SetActive(true);
+        gameCamera.GetComponent<CinemachineBrain>().m_DefaultBlend.m_Time = exitCamTime;
+    }
+
+    //public void CameraEnterAnimation()
+    //{
+    //    CameraSetEnterPoint();
+
+
+
+    //}
+
+    public void UpdateRenderTexture()
+    {
+
+        renderTextureCamera.targetTexture = cameraTextures[targetFOVIndex];
+        renderTerrainCamera.targetTexture = cameraTextures[targetFOVIndex];
+
+        mainRenderTexture.texture = renderTextureCamera.targetTexture;
+
 
     }
 
@@ -73,6 +102,7 @@ public class CameraMovement : MonoBehaviour
         targetFOVIndex = 2;
 
         CamZoom();
+        gameCamera.GetComponent<CinemachineBrain>().m_DefaultBlend.m_Time = exitCamTime;
     }
 
     public void Init()
@@ -88,7 +118,12 @@ public class CameraMovement : MonoBehaviour
 
         OnZoomChanged?.Invoke(targetFOVIndex);
 
+        mainRenderTexture = GameObject.Find("UIManager").GetComponent<UIManager>().rawBattleUiPanel;
+
+        UpdateRenderTexture();
+
         Debug.Log("Init - ???");
+
 
         //cams[targetFOVIndex].gameObject.SetActive(true);
 
@@ -123,7 +158,7 @@ public class CameraMovement : MonoBehaviour
         }
         else
         {
-            if (!SquadControlManager.Instance.HasHitSquad())
+            if (!squadControlManager.HasHitSquad())
             {
                 HandleCameraMovement();
             }

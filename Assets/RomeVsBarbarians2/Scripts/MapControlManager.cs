@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class MapControlManager : MonoBehaviour
 {
-    [SerializeField] private Camera cam;
+    [SerializeField] private GraphicRaycaster raycaster;
+
+   [SerializeField] private Camera cam;
     [SerializeField] private GameObject drawingPrefab;
     [SerializeField] private float offset;
     [SerializeField] private Color attackColor;
@@ -30,16 +34,19 @@ public class MapControlManager : MonoBehaviour
 
     [SerializeField] private ArmyController armyController;
     [SerializeField] private CityController cityController;
-    [SerializeField] private HireController hireController;
+    [SerializeField] private CityToDoController toDoController;
 
-    [SerializeField] private BattleInfo battleController;
+    [SerializeField] private MapBattleController battleController;
     [SerializeField] private Vector3 battleControllerOffset;
 
+    [SerializeField] public UIManager uiManager;
+    
 
-    [SerializeField] public GameObject armyUIPanel;
-    [SerializeField] public GameObject cityUIPanel;
-    [SerializeField] public GameObject hireUIPanel;
+    [SerializeField] private float infoUpdateTime = 3f;
+    private float currentInfoUpdateTime = 0f;
 
+    [SerializeField] private float unzoomDistance = 10f;
+    private float currentUnzoomDistance = 0f;
 
     private Vector3 mousePos;
      private Vector3 mousePrevPos = Vector3.zero;
@@ -55,9 +62,7 @@ public class MapControlManager : MonoBehaviour
 
     void Start()
     {
-        armyUIPanel.SetActive(false);
-        cityUIPanel.SetActive(false);
-        hireUIPanel.SetActive(false);
+       
     }
 
 
@@ -66,13 +71,44 @@ public class MapControlManager : MonoBehaviour
         {
             HandleSquadTouch();
         }
+
+        if (tapBattle && battleController != null)
+        {
+            currentInfoUpdateTime += Time.deltaTime;
+
+            if (currentInfoUpdateTime > infoUpdateTime)
+            {
+                BattleUpdate();
+                currentInfoUpdateTime = 0;
+            }
+        }
     }
 
     private void HandleSquadTouch() {
         if (Input.GetMouseButtonDown(0)) {
 
-            
-                Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+
+
+            EventSystem eventSystem = EventSystem.current;
+           
+
+            PointerEventData eventData = new PointerEventData(eventSystem)
+            {
+                position = Input.mousePosition
+            };
+            List<RaycastResult> results = new List<RaycastResult>();
+            raycaster.Raycast(eventData, results);
+
+            foreach (var result in results)
+            {
+                if (result.gameObject.layer == 5) // Игнорируем элементы с этим тегом
+                    return;
+
+
+            }
+
+
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hit;
                 if (Physics.Raycast(ray, out hit, 3000f, mapLayer))
                 {
@@ -80,24 +116,29 @@ public class MapControlManager : MonoBehaviour
                 if (!tapBattle)
                 {
 
-                    if (hit.collider.gameObject.GetComponent<BattleInfo>() != null)
+                    if (hit.collider.gameObject.GetComponent<MapBattleController>() != null)
                     {
-                        battleController = hit.collider.gameObject.GetComponent<BattleInfo>();
+                        battleController = hit.collider.gameObject.GetComponent<MapBattleController>();
 
                         if (battleController.isSelect)
                         {
                             battleController.Select(false);
+
+                            uiManager.UIReset();
 
                             tapBattle = true;
 
                         }
                         else
                         {
+
                             battleController.Select(true);
 
-                            tapBattle = true;
-                            cameraMapMovement.CamToPoint(hit.collider.transform.position + battleControllerOffset,null);
+                            uiManager.BattlePanelActivation(battleController);
 
+                            tapBattle = true;
+
+                            cameraMapMovement.CamToPoint(hit.collider.transform.position + battleControllerOffset,null);
                             cameraMapMovement.Zoom(true);
                         }
 
@@ -107,14 +148,19 @@ public class MapControlManager : MonoBehaviour
                 }
                 else
                 {
-                    if (hit.collider.gameObject.GetComponent<BattleInfo>() != null)
+                    if (hit.collider.gameObject.GetComponent<MapBattleController>() != null)
                     {
-                        battleController = hit.collider.gameObject.GetComponent<BattleInfo>();
+                        battleController = hit.collider.gameObject.GetComponent<MapBattleController>();
 
                         if (battleController.isSelect)
                         {
 
                             battleController.Select(false);
+
+
+                            uiManager.UIReset();
+
+
                             tapBattle = false;
                             battleController = null;
 
@@ -137,35 +183,70 @@ public class MapControlManager : MonoBehaviour
                         {
                             armyController.gameObject.SetActive(true);
                         }
+
+                        if (tapArmy)
+                        {
+                            if(armyController != null)
+                            {
+                                armyController.SetMoving(false);
+                            }
+                        }
                     }
                     else
                     {
-
+/// ресет всего
                         if (tapCity)
                         {
                             tapCity = false;
 
-                            hireController.CityDeselect();
+                            toDoController.CityDeselect();
                             if (armyController != null)
                             {
                                 armyController.ArmyDeselect();
                             }
-                            armyController = null;
-                            hireController = null;
+                           
+                            toDoController = null;
                             cityController = null;
 
-                            armyUIPanel.SetActive(false);
-                            cityUIPanel.SetActive(false);
-                            hireUIPanel.SetActive(false);
+                            
                         }
 
+
+                        if (tapArmy)
+                        {
+                            tapArmy = false;
+
+                            armyController = null;
+                           
+
+
+                        }
+
+                        if (tapBattle)
+                        {
+                            tapBattle = false;
+
+                           
+                        }
+
+                         uiManager.UIReset();
+/// ресет всего                          
+
+
+
+
+
+
+
+
+// нажали на армию
                         if (hit.collider.gameObject.GetComponent<ArmyController>() != null)
                         {
                             armyController = hit.collider.transform.gameObject.GetComponent<ArmyController>();
 
                             
 
-                            armyUIPanel.SetActive(true);
+                          
                             armyController.ArmySelected();
 
                             tapArmy = true;
@@ -178,17 +259,25 @@ public class MapControlManager : MonoBehaviour
 
                             cameraMapMovement.Zoom(true);
 
+                            uiManager.ArmyUIActivation(armyController);
+
                         }
                         else if (hit.collider.gameObject.GetComponent<CityController>() != null)
                         {
-
+// нажали на город
                             cityController = hit.collider.transform.gameObject.GetComponent<CityController>();
-                            cityUIPanel.SetActive(true);
+
+                            uiManager.CityUIActivation(cityController);
+
+                           
+
+                            cityController.CitySelected();
 
                             if (cityController.armyInCity != null)
                             {
                                 armyController = cityController.armyInCity;
-                                armyUIPanel.SetActive(true);
+                                uiManager.ArmyUIActivation(armyController);
+
 
                                 armyController.ArmySelected();
                                 tapArmy = true;
@@ -196,14 +285,14 @@ public class MapControlManager : MonoBehaviour
                             else
                             {
 
-                                armyUIPanel.SetActive(false);
+                               
                             }
 
-                            hireController = hit.collider.transform.gameObject.GetComponent<HireController>();
+                            toDoController = hit.collider.transform.gameObject.GetComponent<CityToDoController>();
 
-                            hireUIPanel.SetActive(true);
+                            
 
-                            hireController.CitySelected();
+                            toDoController.CitySelected();
                             tapCity = true;
                             cameraCentred = false;
                             cameraMapMovement.CamToPoint(hit.collider.transform.position, null);
@@ -211,6 +300,8 @@ public class MapControlManager : MonoBehaviour
                             selectedCollider = hit.collider;
 
                             cameraMapMovement.Zoom(true);
+
+                            Debug.Log("CITY TAP");
                         }
 
 
@@ -233,7 +324,7 @@ public class MapControlManager : MonoBehaviour
 
             if (tapArmy && tapToSelected && cameraCentred)
             {
-                Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+                Ray ray = cam.ScreenPointToRay(Input.mousePosition + new Vector3(0f,25f,0f));
                 RaycastHit hit;
                 if (Physics.Raycast(ray, out hit, 3000f, terrainLayer))
                 {
@@ -245,13 +336,31 @@ public class MapControlManager : MonoBehaviour
                         {
                             if (!tapCity)
                             {
+                                armyController.targetObject.gameObject.SetActive(true);
+                                armyController.lineRenderer.SetPosition(0, armyController.transform.position);
+                                armyController.lineRenderer.SetPosition(1, armyController.targetObject.transform.position);
                                 armyController.targetObject.transform.position = hit.point;
+
+
+                                currentUnzoomDistance = Vector3.Distance(armyController.targetObject.transform.position, armyController.transform.position);
+
+                                if (currentUnzoomDistance >= unzoomDistance)
+                                {
+                                    cameraMapMovement.Zoom(false);
+
+
+                                    cameraMapMovement.CamToPoint(armyController.targetObject.transform.position, null);
+                                }
                             }
                             else
                             {
+                              
+
                                 
                                 armyController.targetObject.transform.position = hit.point;
-                                
+                               
+
+
                             }
                             drawPath = true;
                             cameraMapMovement.ignoreMovement = true;
@@ -272,10 +381,7 @@ public class MapControlManager : MonoBehaviour
 
             if (tapCity && tapArmy && drawPath)
             {
-                armyController.transform.parent = null;
-                armyController.gameObject.SetActive(true);
-
-                cityController.armyInCity = null;
+                //armyController.ExitFromCity();
 
                 
             }
@@ -285,6 +391,19 @@ public class MapControlManager : MonoBehaviour
 
                 armyController.SetMoving(true);
 
+                if(drawPath)
+                {
+                    cameraCentred = false;
+                    cameraMapMovement.CamToPoint(armyController.gameObject.transform.position, armyController.gameObject);
+
+                  
+
+                    
+
+                    cameraMapMovement.Zoom(true);
+                }
+
+                
                 
                 drawPath = false;
                 tapToSelected = false;
@@ -298,6 +417,12 @@ public class MapControlManager : MonoBehaviour
                     {
                         armyController.jointArmy = hit.collider.transform.gameObject.GetComponent<ArmyController>();
                         armyController.goToJoint = true;
+                    }
+                    else if(hit.collider.gameObject.layer == 19)
+                    {
+                        
+
+                        armyController.goToCity = true;
                     }
 
                     }
@@ -313,6 +438,7 @@ public class MapControlManager : MonoBehaviour
             mousePrevPos = Vector3.zero;
             mousePosSum = Vector3.zero;
             roundIndex = 0;
+           
 
         }
     }
@@ -321,9 +447,18 @@ public class MapControlManager : MonoBehaviour
 
     public void CencelSelection()
     {
-        armyUIPanel.SetActive(false);
-        cityUIPanel.SetActive(false);
-        hireUIPanel.SetActive(false);
+        uiManager.UIReset();
+
+        if (tapArmy)
+        {
+            armyController.ArmyDeselect();
+        }
+
+        if (tapCity)
+        {
+            cityController.CityDeselect();
+        }
+
 
         drawPath = false;
         tapToSelected = false;
@@ -333,6 +468,8 @@ public class MapControlManager : MonoBehaviour
         tapCity = false;
 
         tapBattle = false;
+
+       
         if (battleController != null)
         {
             battleController.Select(false);
@@ -344,22 +481,86 @@ public class MapControlManager : MonoBehaviour
         cameraMapMovement.Zoom(false);
     }
 
-    public void SelectBattle(BattleInfo info)
+    public void BattleUpdate()
+    {
+
+
+        uiManager.BattlePanelUpdate(battleController);
+
+       
+
+
+    }
+
+    public void SelectBattle(MapBattleController info)
+    {
+        
+            CencelSelection();
+
+            tapBattle = true;
+
+
+            battleController = info;
+
+            cameraMapMovement.CamToPoint(info.transform.position + battleControllerOffset, null);
+
+            battleController.Select(true);
+
+        uiManager.BattlePanelActivation(battleController);
+          
+
+            cameraMapMovement.Zoom(true);
+        
+    }
+
+    public void SelectCity(CityController info)
     {
 
         CencelSelection();
 
-        tapBattle = true;
-        
-            
-            battleController = info;
+      
 
-        cameraMapMovement.CamToPoint(info.transform.position + battleControllerOffset,null);
 
-        battleController.Select(true);
+        cityController = info;
 
+       
+
+        uiManager.CityUIActivation(cityController);
+
+
+
+        cityController.CitySelected();
+
+        if (cityController.armyInCity != null)
+        {
+            armyController = cityController.armyInCity;
+            uiManager.ArmyUIActivation(armyController);
+
+
+            armyController.ArmySelected();
+            tapArmy = true;
+        }
+        else
+        {
+
+
+        }
+
+        toDoController = cityController.gameObject.GetComponent<CityToDoController>();
+
+
+
+        toDoController.CitySelected();
+        tapCity = true;
+        cameraCentred = false;
+        cameraMapMovement.CamToPoint(cityController.gameObject.transform.position, null);
+
+        selectedCollider = cityController.GetComponent<Collider>();
 
         cameraMapMovement.Zoom(true);
+
+        Debug.Log("CITY Select");
+
     }
 
 

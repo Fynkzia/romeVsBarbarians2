@@ -223,11 +223,9 @@ public class ShootingController : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
-        SquadControlManager controlController = GameObject.Find("SquadControlManager").GetComponent<SquadControlManager>();
+        squadController.GoToSquad(squadController.predictEnemy.transform); // идем в рукопашную после выстрела атакаки
 
-        controlController.SquadWayToPoint(squadController, enemyPosition); // идем в рукопашную после выстрела атакаки
-
-        squadController.shootingIndicator.SetActive(false);
+        squadController.squadInfo.ShootingIndicator(false);
     }
 
     private void ShotNearest() {
@@ -237,7 +235,7 @@ public class ShootingController : MonoBehaviour
         foreach (Collider t in shotRangeManager.enemyColliders) {
             if(t == null)
             {
-                squadController.shootingIndicator.SetActive(false);
+                squadController.squadInfo.ShootingIndicator(false);
 
                 return;
             }
@@ -250,12 +248,12 @@ public class ShootingController : MonoBehaviour
         if(tMin != null) {
             currentEnemy = tMin;
             Shot(tMin);
-            squadController.shootingIndicator.SetActive(true);
+            squadController.squadInfo.ShootingIndicator(true);
 
         }
         else
         {
-            squadController.shootingIndicator.SetActive(false);
+            squadController.squadInfo.ShootingIndicator(false);
         }
     }
 
@@ -272,7 +270,7 @@ public class ShootingController : MonoBehaviour
                 if (isFirstShoot)
                 {
                     AttackShooting();
-                    squadController.shootingIndicator.SetActive(true);
+                    squadController.squadInfo.ShootingIndicator(true);
                 }
             }
             else
@@ -283,7 +281,7 @@ public class ShootingController : MonoBehaviour
                     ShootingSquad();
                     rapidityTimer = 0;
 
-                    squadController.shootingIndicator.SetActive(true);
+                    squadController.squadInfo.ShootingIndicator(true);
 
                     squadController.animTime = 0;
 

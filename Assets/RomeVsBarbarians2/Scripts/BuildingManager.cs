@@ -6,6 +6,10 @@ public class BuildingManager : MonoBehaviour
 {
 
     [SerializeField] private bool playerBuilding;
+    [SerializeField] private bool inGroupBuilding;
+    [SerializeField] public bool isDestroed;
+
+    [SerializeField] private SquadSpawnerController spawnerController;
 
     [SerializeField] public float hitPoints;
 
@@ -24,6 +28,10 @@ public class BuildingManager : MonoBehaviour
     [SerializeField] int projectilesPerShotCount;
 
     [Space(10)]
+    [Header("Economic Spec")]
+    [SerializeField] int coinCost;
+
+    [Space(10)]
     [Header("Shooting Setup")]
     [SerializeField] float shotStartOffset;
     [SerializeField] float shotSpawnDelay;
@@ -36,7 +44,8 @@ public class BuildingManager : MonoBehaviour
     [Space(10)]
     [Header("FX Setup")]
     [SerializeField] private GameObject[] damageFx;
-   
+    [SerializeField] private GameObject coinFx;
+
     [SerializeField] private float shakeDuration = 1f; // Длительность тряски
     [SerializeField] private float shakeIntensity = 1f; // Интенсивность тряски
     [SerializeField] private float decayRate = 1f;
@@ -76,52 +85,55 @@ public class BuildingManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (shootingBuilding)
+        if (!isDestroed)
         {
-            if (shotAmount > 0)
+            if (shootingBuilding)
             {
-
-                if (rapidityTimer >= shotRapidity)
+                if (shotAmount > 0)
                 {
 
-
-                    if (currentEnemy == null)
+                    if (rapidityTimer >= shotRapidity)
                     {
-                        ShotNearest();
+
+
+                        if (currentEnemy == null)
+                        {
+                            ShotNearest();
+                        }
+                        else
+                        {
+                            Shot(currentEnemy);
+                        }
+
+
+
+                        rapidityTimer = 0;
                     }
                     else
                     {
-                        Shot(currentEnemy);
+                        rapidityTimer += Time.deltaTime;
                     }
-
-
-
-                    rapidityTimer = 0;
-                }
-                else
-                {
-                    rapidityTimer += Time.deltaTime;
                 }
             }
-        }
 
-        if (currentShakeDuration > 0)
-        {
-            // Рассчитываем смещение тряски
-            float damping = Mathf.Clamp01(currentShakeDuration / shakeDuration);
-            float offsetX = Random.Range(-1f, 1f) * shakeIntensity * damping;
-            float offsetY = Random.Range(-1f, 1f) * shakeIntensity * damping;
-
-            // Применяем смещение к объекту
-            meshObject.transform.localPosition = originalPosition + new Vector3(offsetX, offsetY, 0f);
-
-            // Уменьшаем время тряски с учетом затухания
-            currentShakeDuration -= Time.deltaTime * decayRate;
-
-            // Если тряска закончилась, возвращаем объект на исходную позицию
-            if (currentShakeDuration <= 0)
+            if (currentShakeDuration > 0)
             {
-                meshObject.transform.localPosition = originalPosition;
+                // Рассчитываем смещение тряски
+                float damping = Mathf.Clamp01(currentShakeDuration / shakeDuration);
+                float offsetX = Random.Range(-1f, 1f) * shakeIntensity * damping;
+                float offsetY = Random.Range(-1f, 1f) * shakeIntensity * damping;
+
+                // Применяем смещение к объекту
+                meshObject.transform.localPosition = originalPosition + new Vector3(offsetX, offsetY, 0f);
+
+                // Уменьшаем время тряски с учетом затухания
+                currentShakeDuration -= Time.deltaTime * decayRate;
+
+                // Если тряска закончилась, возвращаем объект на исходную позицию
+                if (currentShakeDuration <= 0)
+                {
+                    meshObject.transform.localPosition = originalPosition;
+                }
             }
         }
     }
@@ -129,28 +141,59 @@ public class BuildingManager : MonoBehaviour
     public void GetDamage(float damage)
     {
 
-        hitPoints -= damage;
-
-        hitsAmount++ ;
-
-        //Debug.Log("Build GetDamage : " + damage);
-
-        currentShakeDuration = shakeDuration;
-
-        if (hitPoints <= 0)
+        if (!isDestroed)
         {
-            //squadController.SetBattle(false);
-            //Destroy(gameObject);
-            meshObject.gameObject.SetActive(false);
-            destroyObject.gameObject.SetActive(true);
+            hitPoints -= damage;
 
-            destroyObject.transform.parent = null;
-            Destroy(gameObject);
-        }
-        else
-        {
-           GameObject fx = Instantiate(damageFx[Random.Range(0, damageFx.Length)],transform);
-            fx.SetActive(true);
+            hitsAmount++;
+
+            //Debug.Log("Build GetDamage : " + damage);
+
+            currentShakeDuration = shakeDuration;
+
+            if (hitPoints <= 0)
+            {
+
+                //squadController.SetBattle(false);
+                //Destroy(gameObject);
+                meshObject.gameObject.SetActive(false);
+                destroyObject.gameObject.SetActive(true);
+
+                destroyObject.transform.parent = null;
+
+                for (int i = 0; i < coinCost; i++)
+                {
+                    GameObject coin = Instantiate(coinFx, transform.parent.parent);
+
+
+                    coin.transform.position = transform.position;
+                    coin.transform.rotation = Quaternion.Euler(0f, Random.Range(0, 360f), 0f);
+                }
+
+                
+
+                if (inGroupBuilding)
+                {
+                    spawnerController.BuildDestroy(this);
+
+                    spawnerController.battleSceneManager.resourceManager.ChangeAmountOfCoins(coinCost);
+                }
+                else
+                {
+                    ResourceManager resourceManager = GameObject.Find("MapControlManager").GetComponent<ResourceManager>();
+                    resourceManager.ChangeAmountOfCoins(coinCost);
+                }
+
+                isDestroed = true;
+                GetComponent<BoxCollider>().enabled = false;
+                //Destroy(gameObject,2f);
+
+            }
+            else
+            {
+                GameObject fx = Instantiate(damageFx[Random.Range(0, damageFx.Length)], transform);
+                fx.SetActive(true);
+            }
         }
     }
 

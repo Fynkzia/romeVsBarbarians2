@@ -8,84 +8,67 @@ public class BattleInfo : MonoBehaviour
 {
     
 
-    public int sceneIndex;
-    public bool isSelect;
+    
 
-    public Button toBattleButton;
+   
 
     public GameObject toBattleButtonObject;
     public GameObject autoBattleObject;
 
+
     public Image startbattleTimer;
 
-    public ArmyController playerArmy;
-    public ArmyController enemyArmy;
 
     public Canvas canvas;
 
     public MapBattleController mapBattleController;
 
-    public TextMeshProUGUI unitsCountPlayerText;
-    public TextMeshProUGUI unitsCountEnemyText;
+   
 
-    public TextMeshProUGUI powerCountPlayerText;
-    public TextMeshProUGUI powerCountEnemyText;
-
-    public Image moraleCountPlayerBar;
-    public Image moraleCountEnemyrBar;
-
-    public Transform playerSquadsPanel;
-    public Transform enemySquadsPanel;
-
-    public List<SquadMapUIPanel> playerSquadsPanelList;
-    public List<SquadMapUIPanel> enemySquadsPanelList;
+    
 
     [SerializeField] private Animator animator;
-    MapSceneManager mapSceneManage;
+
+   
 
     private void Awake()
     {
         
-        mapSceneManage = GameObject.Find("MapSceneManager").GetComponent<MapSceneManager>();
-        canvas.worldCamera = mapSceneManage.gameCamera;
+        
+
+        mapBattleController.BattleTimerUpdate += StartBattleTimerUpdate;
 
     }
 
 
     public void Select(bool select)
     {
-        isSelect = select;
+       
 
         if (select)
         {
-            UpdateArmyInfo();
+          
             animator.SetBool("Select",true);
+
+            if (!mapBattleController.inAutoBattle)
+            {
+                toBattleButtonObject.SetActive(false);
+            }
         }
         else
         {
             animator.SetBool("Select", false);
+
+            if (!mapBattleController.inAutoBattle)
+            {
+                toBattleButtonObject.SetActive(true);
+            }
         }
 
         
     }
 
-    public void SelectBattle()
-    {
-        if (mapSceneManage != null)
-        {
-            mapSceneManage.controlController.SelectBattle(this);
-        }
-        else
-        {
-            mapSceneManage = GameObject.Find("MapSceneManager").GetComponent<MapSceneManager>();
-            mapSceneManage.controlController.SelectBattle(this);
-        }
-
-
-        
-
-
-    }
+    
 
     public void AutoBattleStart()
     {
@@ -112,57 +95,13 @@ public class BattleInfo : MonoBehaviour
     public void StartBattleTimerUpdate(float fillAmount)
     {
         startbattleTimer.fillAmount = fillAmount;
+        
     }
-
-    public void UpdateArmyInfo()
-    {
-        ClearSqudsList();
-        CreateSqudsList();
-
-        playerArmy.ArmyPowerUpdate();
-        enemyArmy.ArmyPowerUpdate();
-
-        powerCountPlayerText.text = "pwr." + playerArmy.armyPower;
-        powerCountEnemyText.text = "pwr." + enemyArmy.armyPower;
-
-        unitsCountPlayerText.text = "" + playerArmy.UnitsCountUpdate(); ;
-        unitsCountEnemyText.text = "" + enemyArmy.UnitsCountUpdate(); ;
-
-    }
-
-    public void ClearSqudsList()
-    {
-        for (int i = 0; i < playerSquadsPanelList.Count; i++)
-        {
-            Destroy(playerSquadsPanelList[i].gameObject);
-        }
-        for (int i = 0; i < enemySquadsPanelList.Count; i++)
-        {
-            Destroy(enemySquadsPanelList[i].gameObject);
-        }
-
-        playerSquadsPanelList.Clear();
-        enemySquadsPanelList.Clear();
-
-    }
-
-    public void CreateSqudsList()
-    {
-        for (int i = 0; i < playerArmy.squadList.Count; i++)
-        {
-            SquadMapUIPanel newPanel = Instantiate(playerArmy.squadList[i].mapUIPanel, playerSquadsPanel);
-            playerSquadsPanelList.Add(newPanel);
-            newPanel.UpdateSquadUiPanel(playerArmy.squadList[i]);
-        }
-        for (int i = 0; i < enemyArmy.squadList.Count; i++)
-        {
-            SquadMapUIPanel newPanel = Instantiate(enemyArmy.squadList[i].mapUIPanel, enemySquadsPanel);
-            enemySquadsPanelList.Add(newPanel);
-            newPanel.UpdateSquadUiPanel(enemyArmy.squadList[i]);
-        }
 
     
 
-    }
+    
+
+    
 
 }

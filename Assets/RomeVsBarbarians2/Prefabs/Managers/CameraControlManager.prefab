@@ -44,14 +44,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16a5469af3ff6764298ef36bbd508e54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  battleSceneManager: {fileID: 0}
   gameCamera: {fileID: 0}
   renderTextureCamera: {fileID: 0}
   renderTerrainCamera: {fileID: 0}
   cinemachineObject: {fileID: 0}
+  cinemachineFollowObject: {fileID: 0}
   cams:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  exitCam: {fileID: 0}
+  exitCamTime: 2
   fogStart:
   - 150
   - 228
@@ -87,8 +91,15 @@ MonoBehaviour:
   fieldsOfView:
   - 23
   - 17
-  - 9.5
+  - 12
+  mainFOVIndex: 1
   prevFovIndex: 0
   zoomCurrentTime: 0
   zoomFog: 0
   isZoom: 0
+  cloudsMask:
+    serializedVersion: 2
+    m_Bits: 0
+  toFadeIn: {fileID: 0}
+  toFadeInColl: {fileID: 0}
+  squadControlManager: {fileID: 0}

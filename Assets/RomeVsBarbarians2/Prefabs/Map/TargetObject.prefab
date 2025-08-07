@@ -1,5 +1,80 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1425234327039260077
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7900899375754821664}
+  - component: {fileID: 3535158538638024484}
+  - component: {fileID: 4053432525432197519}
+  m_Layer: 6
+  m_Name: Arrow
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &7900899375754821664
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1425234327039260077}
+  m_LocalRotation: {x: -0, y: 6.1118044e-10, z: -0.99999994, w: 0.0004978536}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 548563214828587310}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -179.943}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -0.11, y: -1.23}
+  m_SizeDelta: {x: 1.6512, y: 1.2109}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &3535158538638024484
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1425234327039260077}
+  m_CullTransparentMesh: 1
+--- !u!114 &4053432525432197519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1425234327039260077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 81f8f0c2baaec45c094172a33841282b, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &2513557768524278559
 GameObject:
   m_ObjectHideFlags: 0
@@ -9,6 +84,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3434900785505542650}
+  - component: {fileID: 2422538607141797469}
   m_Layer: 0
   m_Name: TargetObject
   m_TagString: Untagged
@@ -32,6 +108,27 @@ Transform:
   - {fileID: 548563214828587310}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &2422538607141797469
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2513557768524278559}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9c396cbbe6e464de7a3013af686d27da, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &4637092206989597397
 GameObject:
   m_ObjectHideFlags: 0
@@ -145,7 +242,7 @@ GameObject:
   - component: {fileID: 7331270097918288883}
   - component: {fileID: 7132128073558297638}
   m_Layer: 6
-  m_Name: Banner (4)
+  m_Name: Stick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -158,17 +255,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4769586760600978981}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalRotation: {x: -0.000000059604645, y: -0.0000000033804692, z: -1, w: -0.000000060063144}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 548563214828587310}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -180}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.11557007, y: 0.56}
-  m_SizeDelta: {x: 0.202, y: 4.746}
+  m_AnchoredPosition: {x: -0.12, y: 5.37}
+  m_SizeDelta: {x: 0.202, y: 6.6277}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7331270097918288883
 CanvasRenderer:
@@ -198,7 +295,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 98020aa670b414626bbf424e48966ed2, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -444,7 +541,7 @@ GameObject:
   - component: {fileID: 3589075042925306127}
   - component: {fileID: 8878868433140276519}
   m_Layer: 6
-  m_Name: Banner
+  m_Name: Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -466,8 +563,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.11557007, y: 6.22}
-  m_SizeDelta: {x: 5.093, y: 3.2354}
+  m_AnchoredPosition: {x: -0.11557007, y: 10.12}
+  m_SizeDelta: {x: 5.4571, y: 3.2354}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3589075042925306127
 CanvasRenderer:
@@ -520,7 +617,6 @@ GameObject:
   - component: {fileID: 610535394202799020}
   - component: {fileID: 6748721184781939192}
   - component: {fileID: 853461267839434748}
-  - component: {fileID: 5483452195547173298}
   m_Layer: 6
   m_Name: UnitInfo (1)
   m_TagString: Untagged
@@ -543,6 +639,7 @@ RectTransform:
   - {fileID: 4786349305391300587}
   - {fileID: 6282287721909681346}
   - {fileID: 4552571268071157069}
+  - {fileID: 7900899375754821664}
   - {fileID: 1377369471794917829}
   - {fileID: 8793787584267383147}
   m_Father: {fileID: 3434900785505542650}
@@ -627,33 +724,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32f36b774ea4c58408008acfb0cad680, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  banner: 0
+  camera: {fileID: 0}
+  battleInfo: 0
+  mapInfo: 0
   scaleFactor: 0.2
   scales:
   - 0.8
   - 0.9
   - 1.5
---- !u!95 &5483452195547173298
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7715783681868115662}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 2a335f4bac31f448ea0c34be60b16961, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
+  isInit: 0
 --- !u!1 &8213597448713894238
 GameObject:
   m_ObjectHideFlags: 0
@@ -815,7 +894,7 @@ GameObject:
   - component: {fileID: 8855960803295467005}
   - component: {fileID: 3454228742959940846}
   m_Layer: 6
-  m_Name: Banner (1)
+  m_Name: Dot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -829,16 +908,16 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8245004702982529868}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.000009946}
-  m_LocalScale: {x: 0.31710878, y: 1.5303, z: 1.5303}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 4.479035, y: 4.479035, z: 4.479035}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 548563214828587310}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.11558, y: -1.75}
-  m_SizeDelta: {x: 5.093, y: 0.7259}
+  m_AnchoredPosition: {x: -0.1153, y: -1.9578}
+  m_SizeDelta: {x: 0.1351, y: 0.1351}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8855960803295467005
 CanvasRenderer:

@@ -6,15 +6,17 @@ public class LookAtCamera : MonoBehaviour
 {
     public Camera camera;
     private CameraMovement cameraMovement;
+    private CameraMapMovement cameraMapMovement;
 
-    [SerializeField]private bool banner;
+    [SerializeField]private bool battleInfo;
+    [SerializeField] private bool mapInfo;
 
-    
+
     [SerializeField] private float scaleFactor;
 
     [SerializeField] public float[] scales;
 
-    bool isInit = false;
+    public bool isInit = false;
 
 
     private void Awake() {
@@ -22,22 +24,62 @@ public class LookAtCamera : MonoBehaviour
         camera = Camera.main;
 
 
-        if (!banner)
+        if (!battleInfo && !mapInfo)
         {
             isInit = true;
         }
 
+
+        if (mapInfo)
+        {
+            cameraMapMovement = GameObject.Find("MapControlManager").GetComponent<CameraMapMovement>();
+            InitMapInfo(Camera.main, cameraMapMovement);
+        }
+
     }
 
-    public void InitBanner(Camera cam, CameraMovement camMov)
+    public void Reset()
     {
-        if (banner && cameraMovement == null)
+       
+            camera = null;
+
+        if (cameraMapMovement != null)
+        {
+            cameraMapMovement.OnZoomChanged -= HandleZoomChanged;
+            cameraMapMovement = null;
+        }
+        if (cameraMovement != null)
+        {
+            cameraMovement.OnZoomChanged -= HandleZoomChanged;
+            cameraMovement = null;
+        }
+
+
+        isInit = false;
+    }
+
+    public void InitMapInfo(Camera cam, CameraMapMovement camMov)
+    {
+        if (mapInfo && !isInit)
+        {
+            camera = cam;
+            cameraMapMovement = camMov;
+            cameraMapMovement.OnZoomChanged += HandleZoomChanged;
+        }
+        isInit = true;
+    }
+
+    public void InitBattleInfo(Camera cam, CameraMovement camMov)
+    {
+        if (battleInfo && !isInit)
         {
             camera = cam;
             cameraMovement = camMov;
             cameraMovement.OnZoomChanged += HandleZoomChanged;
         }
         isInit = true;
+
+        HandleZoomChanged(cameraMovement.mainFOVIndex);
     }
 
 
@@ -78,6 +120,10 @@ public class LookAtCamera : MonoBehaviour
         {
             cameraMovement.OnZoomChanged -= HandleZoomChanged; // Отписка от события
         }
+        if (cameraMapMovement != null)
+        {
+            cameraMapMovement.OnZoomChanged -= HandleZoomChanged; // Отписка от события
+        }
     }
 
     void OnDestroy()
@@ -85,6 +131,10 @@ public class LookAtCamera : MonoBehaviour
         if (cameraMovement != null)
         {
             cameraMovement.OnZoomChanged -= HandleZoomChanged; // Отписка от события при уничтожении
+        }
+        if (cameraMapMovement != null)
+        {
+            cameraMapMovement.OnZoomChanged -= HandleZoomChanged; // Отписка от события
         }
     }
 }

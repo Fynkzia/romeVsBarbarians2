@@ -16,7 +16,7 @@ public class PointsController : MonoBehaviour
    
 
 
-    private void Awake()
+    public void Init()
     {
         // Сохраняем исходные позиции точек
         int childCount = transform.childCount;

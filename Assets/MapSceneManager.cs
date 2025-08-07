@@ -10,8 +10,17 @@ public class MapSceneManager : MonoBehaviour
     public GameObject cinemachineGameObject;
     public GameObject lightGameObject;
 
-    public Animator transitionAnimation;
+    public UIManager uIManager;
 
+    public CampainManager campainManager;
+
+    
+
+
+    private void Start()
+    {
+        
+    }
 
     public void EnterMapScene()
     {
@@ -19,19 +28,26 @@ public class MapSceneManager : MonoBehaviour
         lightGameObject.gameObject.SetActive(true);
         cinemachineGameObject.gameObject.SetActive(true);
 
+        uIManager.MapUiActivation(true);
+
         controlController.gameObject.SetActive(true);
+       
+
 
         cameraMapMovement.ExitFromBattle();
 
-        transitionAnimation.SetTrigger("Out");
+       
 
     }
     public void ExitMapScene()
     {
         Debug.Log("ExitMapScene");
 
-        
 
+
+        // uIManager.gameObject.SetActive(false);
+
+        uIManager.MapUiActivation(false);
 
         gameCamera.gameObject.SetActive(false);
         lightGameObject.gameObject.SetActive(false);
@@ -45,9 +61,16 @@ public class MapSceneManager : MonoBehaviour
 
     public void ExitMapSceneAnimation()
     {
-        transitionAnimation.SetTrigger("In");
+        uIManager.TransitionAnimation(true);
+        cameraMapMovement.EnterToBattle();
+    }
+
+    public void EnterMapSceneAnimation()
+    {
+        gameCamera.gameObject.SetActive(true);
+        cinemachineGameObject.gameObject.SetActive(true);
         cameraMapMovement.EnterToBattle();
     }
 
 
-    }
+}

@@ -1,43 +1,91 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 public class ArmyController : MonoBehaviour
 {
     public bool isPlayer = true;
+    public bool isCampainTarget = true;
 
     public string armyName;
     public int armyUnits;
     public int armySqaudCount;
 
     public int armyPower;
+    public float armyMorale;
+    public float armyMoraleMax;
 
     public bool isSelected;
 
-    public int armySpeed;
+    public bool inCity;
+    public CityController city;
+
+    public bool retreat;
+    public float retreatTime;
+    public float retreatCurrentTime;
+
+    [Header("Moving")]
+    [Space(10)]
     public bool isMoved;
-    public Transform targetObject;
-    [SerializeField] private NavMeshAgent agent;
     public bool goToJoint;
+    public bool goToBattle;
+    public bool goToCity;
+
+    public float armySpeed;
+
+    public float armySpeedMin;
+    public float armySpeedMax;
+
+    public Transform targetObjectPrefab;
+    public Transform targetObject;
+
+
+    public Vector3 moveDirection;
+
+    [SerializeField] private NavMeshAgent agent;
+
+    [Header("Morale")]
+    [Space(10)]
+
+    public float moraleUpdateTime;
+    public float currentMoraleUpdateTime;
+
+
+    [Header("Battle")]
+    [Space(10)]
+    public bool inBattle;
+
+    public ArmyController enemyArmy;
 
     public ArmyController jointArmy;
+    public int armyDefence;
 
+   
+
+    [Header("Formation")]
+    [Space(10)]
     public float formationTime;
     float currentFormationTime;
     public bool isFormated;
-    int formationIndex;
+    public int formationIndex;
     public Transform[] formationPoints;
+    public Transform formationObject;
 
     public GameObject[] SquadMapPrefabs;
-    public Transform targetObjectPrefab;
 
-    public int armyDefence;
 
-    public bool inBattle;
+    [Header("Formation movement")]
+    public float offset = 1.0f;    // Расстояние между сегментами
 
+    private Vector3[] history;     // История позиций родителя
+    private int historyLength;
+
+    [Header("Other")]
+    [Space(10)]
 
 
     public List<SquadController> squadStartList;
@@ -48,37 +96,46 @@ public class ArmyController : MonoBehaviour
 
     public GameObject armyInfoPanel;
     [SerializeField] public TextMeshProUGUI armyNameText;
-    [SerializeField] public TextMeshProUGUI armySquadCountText;
+    
     [SerializeField] public TextMeshProUGUI armyUnitsCountText;
+    [SerializeField] public TextMeshProUGUI armyPowerCountText;
+
+    [SerializeField] public BarUI moraleBarImage;
+    
 
 
     [SerializeField] public LineRenderer lineRendererPrefab;
     [SerializeField] public LineRenderer lineRenderer;
 
-    public ArmyUIPanel armyUIPanel;
     
 
-    public List<Transform> followers;  // Остальные отряды просто меняют Transform
-    public float followDistance = 2f;  // Расстояние между юнитами
-    public float followSpeed = 5f;  // Скорость передвижения следователей
+    public List<Transform> squadsOnMap;  // Остальные отряды просто меняют Transform
+     // Скорость передвижения следователей
 
     private Queue<Vector3> leaderPositions = new Queue<Vector3>();
 
     [SerializeField] MapControlManager mapControlManager;
+    [SerializeField] MapSceneManager mapSceneManager;
     public BoxCollider collider;
+
+
+    public event Action<ArmyController> OnArmyDestroyed;
 
     // Start is called before the first frame update
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         lineRenderer = Instantiate(lineRendererPrefab);
-        mapControlManager = GameObject.Find("MapControlManager").GetComponent<MapControlManager>();
+
+        mapSceneManager = GameObject.Find("MapSceneManager").GetComponent<MapSceneManager>();
+        mapControlManager = mapSceneManager.controlController;
         collider = GetComponent<BoxCollider>();
 
         if (targetObject == null)
         {
             Transform newTarget = Instantiate(targetObjectPrefab, transform.position, transform.rotation);
             targetObject = newTarget;
+            targetObject.gameObject.SetActive(false);
         }
 
         for (int i = 0; i < squadStartList.Count; i++)
@@ -88,51 +145,51 @@ public class ArmyController : MonoBehaviour
             newSquadController.transform.parent = transform;
             squadList.Add(newSquadController);
 
-            GameObject newSquad = Instantiate(SquadMapPrefabs[0], transform.position,transform.rotation);
-            followers.Add(newSquad.transform);
-        }
-    }
-    public void SetMoving( bool move)
-    {
-        isMoved = move;
+            newSquadController.InitOnMap();
 
-        if (!isMoved)
+            GameObject newSquad = Instantiate(SquadMapPrefabs[0], transform.position,transform.rotation, transform);
+            squadsOnMap.Add(newSquad.transform);
+        }
+
+        SetFormation(Vector3.zero);
+        UpdateArmyInfo();
+
+        SpeedCalculation();
+
+
+        historyLength = squadsOnMap.Count * 50; // Чем больше - тем плавнее шаг
+        history = new Vector3[historyLength];
+
+        // Заполняем стартовыми значениями
+        for (int i = 0; i < historyLength; i++)
         {
-            isFormated = true;
-
-            currentFormationTime = 0;
-            formationIndex = 0;
+            history[i] = transform.position;
         }
     }
 
-    public void RedyToBattle()
+
+
+    public void UpdateArmyInfo()
     {
-        inBattle = true;
-        isMoved = false;
+        ArmyMoraleUpdate();
 
-        targetObject.position = transform.position;
-        agent.Stop();
+        armyUnitsCountText.text = "" + UnitsCountUpdate();
+        armyPowerCountText.text = "" + ArmyPowerUpdate();
 
-        collider.enabled = false;
-        armyInfoPanel.SetActive(false);
-        targetObject.gameObject.SetActive(false);
+        moraleBarImage.ChangeProgress(armyMorale,armyMoraleMax);
+
+       
     }
 
-    public void ResetAfterBattle()
-    {
-        inBattle = false;
-        isMoved = false;
+    
 
-        targetObject.position = transform.position;
-        agent.Stop();
+    
 
-        collider.enabled = true;
-        armyInfoPanel.SetActive(true);
-        targetObject.gameObject.SetActive(true);
-    }
+   
 
+    
 
-            public int UnitsCountUpdate()
+   public int UnitsCountUpdate()
     {
         int count = 0;
         for (int i = 0; i < squadList.Count; i++)
@@ -159,12 +216,424 @@ public class ArmyController : MonoBehaviour
         return power;
     }
 
+    public void ArmyMoraleUpdate()
+    {
+        float moraleMax = 0;
+        float moraleCur = 0;
+
+        for (int i = 0; i < squadList.Count; i++)
+        {
+            moraleMax += squadList[i].maxMorale;
+            moraleCur += squadList[i].currentMorale;
+        }
+
+        armyMorale = moraleCur;
+
+        armyMoraleMax = moraleMax;
+
+       
+    }
+
+
+
+  
+
+
+    public void SqaudsUpdate()
+    {
+        ArmyPowerUpdate();
+        UnitsCountUpdate();
+
+        UpdateArmyInfo();
+
+
+        for (int i = 0; i < squadList.Count; i++)
+        {
+            SquadController squad = squadList[i];
+
+            if (squad.squadDie){
+
+                if (!squad.playerSquad)
+                {
+
+
+                }
+                RemoveSquad(squad);
+
+                Destroy(squad.gameObject);
+            }
+        }
+
+    }
+
+
+    public void AddNewSquad(SquadController squad)
+    {
+        SquadController newSquadController = Instantiate(squad, transform.position, transform.rotation);
+        newSquadController.gameObject.SetActive(false);
+        newSquadController.transform.parent = transform;
+        squadList.Add(newSquadController);
+
+        newSquadController.InitOnMap();
+
+        GameObject newSquad = Instantiate(SquadMapPrefabs[0], transform.position, transform.rotation);
+        squadsOnMap.Add(newSquad.transform);
+
+        if (mapControlManager == null)
+        {
+
+            mapControlManager = GameObject.Find("MapControlManager").GetComponent<MapControlManager>();
+        }
+
+        if (isSelected)
+        {
+            
+                mapControlManager.uiManager.ArmyUIActivation(this);
+            
+
+            
+        }
+
+        SpeedCalculation();
+
+
+    }
+
+    public void AddSquadFromArmy(SquadController squad)
+    {
+        SquadController newSquadController = squad;
+        newSquadController.gameObject.SetActive(false);
+        newSquadController.transform.parent = transform;
+        squadList.Add(newSquadController);
+
+        GameObject newSquad = Instantiate(SquadMapPrefabs[0], transform.position, transform.rotation);
+        squadsOnMap.Add(newSquad.transform);
+
+
+
+        if (isSelected)
+        {
+            mapControlManager.uiManager.ArmyUIListUpdate(this);
+        }
+
+        SpeedCalculation();
+
+        UpdateArmyInfo();
+
+    }
+
+    public void RemoveSquad(SquadController squad)
+    {
+        squadList.Remove(squad);
+
+            
+        Destroy(squadsOnMap[0].gameObject);
+        squadsOnMap.RemoveAt(0);
+
+
+
+
+        if (!inBattle) // баттл сам разбереться шо делать с армией/
+        {
+            if (squadList.Count == 0)
+            {
+                ArmyDestroy();
+            }
+        }
+        SpeedCalculation();
+        UpdateArmyInfo();
+    }
+
+
+    public void SquadMoraleChange(float moraleChange)
+    {
+        for (int i = 0; i < squadList.Count; i++)
+        {
+            squadList[i].MoraleChange(moraleChange);
+        }
+    }
+
+
+    public void SquadSelect(int index)
+    {
+       
+
+        if (!selectedSquadList.Contains(squadList[index]))
+        {
+            selectedSquadList.Add(squadList[index]);
+        }
+        else
+        {
+            selectedSquadList.Remove(squadList[index]);
+        }
+    }
+
+    
+
+   
+
+    public void ArmyDestroy() // отсылает мап баттл котроллер
+    {
+        
+            OnArmyDestroyed?.Invoke(this); // ивент идет на компайн манагер
+        
+
+        isSelected = false;
+        if (targetObject != null)
+        {
+            Destroy(targetObject.gameObject);
+        }
+
+        for (int i = 0; i < squadsOnMap.Count; i++)
+        {
+            Destroy(squadsOnMap[i].gameObject);
+        }
+
+        if (lineRenderer != null)
+        {
+            Destroy(lineRenderer.gameObject);
+        }
+     
+        
+
+        Destroy(gameObject);
+     }
+
+    public void ArmySelected()
+    {
+        isSelected = true;
+    
+
+      
+    }
+
+    public void ArmyDeselect()
+    {
+        isSelected = false;
+        
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!retreat)
+        {
+            if ((tag == "Player" && other.gameObject.tag == "Enemy"))//|| (tag == "Enemy" && other.gameObject.tag == "Player")
+            {
+                ArmyController enemy = null;
+
+                if (other.GetComponent<ArmyController>() != null)
+                {
+                    enemy = other.GetComponent<ArmyController>();
+
+                }
+                else if (other.GetComponent<CityController>() != null)
+                {
+                    enemy = other.GetComponent<CityController>().armyInCity;
+                }
+
+
+                if (enemy != null)
+                {
+                    enemyArmy = enemy;
+                    SceneLoader.Instance.CreateBattleInfo(this, enemy);
+
+
+                    RedyToBattle();
+
+                    enemy.enemyArmy = this;
+                    enemy.RedyToBattle();
+                    // enemy.collider.enabled = false;
+
+                    // enemy.armyInfoPanel.SetActive(false);
+                    // enemy.targetObject.gameObject.SetActive(false);
+
+                }
+            }
+        }
+
+        if (goToCity)
+        {
+            if (other.tag == tag && other.gameObject.layer == 19)
+            {
+                CityController newCity = other.GetComponent<CityController>();
+
+                EnterToCity(newCity);
+            }
+
+        }
+
+        Debug.Log("OnTriggerEnter");
+        if (goToJoint)
+        {
+           
+            if (other.tag == tag)
+            {
+                if(other.GetComponent<BoxCollider>() == jointArmy.collider)
+                {
+                    for (int i = 0; i < squadList.Count; i++)
+                    {
+                        if (jointArmy.squadList.Count < 20)
+                        {
+                            jointArmy.AddSquadFromArmy(squadList[0]);
+                            RemoveSquad(squadList[0]);
+                        }
+                        else
+                        {
+                            return;
+                        }
+
+                    }
+
+                        goToJoint = false;
+
+                   
+
+                    
+                }
+            }
+        }
+
+        if (isMoved)
+        {
+            if (other.gameObject.layer == 20) // in battle map
+            {
+
+                MapBattleController mapControlManager = other.GetComponent<MapBattleController>();
+
+                if (mapControlManager.playerArmy.squadList.Count < 20)
+                {
+                    SetMoving(false);
+
+                    mapControlManager.AddSquadsToArmy(true, this);
+                }
+               
+
+            }
+
+            if (other.tag != tag && other.gameObject.layer == 19) //завахт пустого горада
+            {
+                CityController newCity = other.GetComponent<CityController>();
+                if (city.armyInCity == null)
+                {
+
+                    city.CityCaptured(isPlayer);
+                }
+            }
+        }
+
+
+    }
+
+    //city
+    public void EnterToCity(CityController newCity)
+    {
+        if (goToCity)
+        {
+            goToCity = false;
+
+            SetMoving(false);
+
+            targetObject.position = transform.position;
+            targetObject.gameObject.SetActive(false);
+
+            collider.enabled = false;
+
+            city = newCity;
+
+            inCity = true;
+            city.armyInCity = this;
+
+
+            //agent.nextPosition = city.armyPoint.position;
+
+            agent.transform.position = city.armyPoint.position;
+            //transform.position = city.armyPoint.position;
+            //transform.parent = city.transform;
+
+
+
+
+            if (isSelected)
+            {
+
+                mapControlManager.SelectCity(city);
+
+
+            }
+
+            for (int i = 0; i < squadsOnMap.Count; i++)
+            {
+                squadsOnMap[i].gameObject.SetActive(false);
+            }
+        }
+
+    }
+
+    public void ExitFromCity()
+    {
+        // transform.parent = null;
+        if (inCity)
+        {
+            inCity = false;
+
+            Vector3 dir = transform.position - city.transform.position;
+
+            Debug.Log("dir = " + dir.normalized);
+            targetObject.position = targetObject.position + (dir.normalized * 5f);
+            SetMoving(true);
+
+            targetObject.gameObject.SetActive(true);
+            collider.enabled = true;
+
+
+
+
+
+            if (isSelected)
+            {
+
+                city.CityDeselect();
+
+                city.gameObject.GetComponent<CityToDoController>().CityDeselect();
+
+
+            }
+
+            city.armyInCity = null;
+            city = null;
+
+
+            for (int i = 0; i < squadsOnMap.Count; i++)
+            {
+                squadsOnMap[i].gameObject.SetActive(true);
+            }
+        }
+    }
+
+    public bool RestorUnitsFromCity()
+    {
+
+        for (int i = 0; i < squadList.Count; i++)
+        {
+            SquadController squad = squadList[Random.Range(0, squadList.Count)];
+
+            if (squad.amountUnits > squad.currentAmountUnits)
+            {
+                squad.currentAmountUnits++;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //battle
+
     public void GetDamage(ArmyController enAmry)
     {
         int enPower = enAmry.armyPower;
         ArmyPowerUpdate();
 
-        if (enAmry.squadList.Count == 0)
+        if (enAmry.squadList.Count == 0 || squadList.Count == 0)
         {
             return;
         }
@@ -172,7 +641,7 @@ public class ArmyController : MonoBehaviour
         Debug.Log("GetDamage enPower - " + enPower);
         Debug.Log("GetDamage plPower - " + ArmyPowerUpdate());
 
-        float powerResult =  enPower/ enAmry.squadList.Count;
+        float powerResult = enPower / enAmry.squadList.Count;
         Debug.Log("GetDamage powerResult - " + powerResult);
 
         int damageCount = enAmry.squadList.Count;
@@ -189,170 +658,80 @@ public class ArmyController : MonoBehaviour
 
             randomSquad.AutoBattle_GetUnitDie(multiplayerCount);
         }
+        //SqaudsUpdate();
+
+
+    }
+
+    public void RedyToBattle()
+    {
+        inBattle = true;
+        isMoved = false;
+
+        targetObject.position = transform.position;
+        agent.Stop();
+
+        collider.enabled = false;
+        //armyInfoPanel.SetActive(false);
+        targetObject.gameObject.SetActive(false);
+
+        SetFormation(Vector3.zero);
+    }
+
+    public void Retreat(Vector3 battlePos)
+    {
+        retreat = true;
+
         SqaudsUpdate();
-        ArmyPowerUpdate();
-        UnitsCountUpdate();
+        SquadMoraleChange(-2f);
 
+        inBattle = false;
+        isMoved = true;
+
+        Vector3 dir = transform.position - battlePos;
+
+        targetObject.position = targetObject.position + dir.normalized * 15f;
+        SetMoving(true);
+
+        collider.enabled = true;
+        armyInfoPanel.SetActive(true);
+        targetObject.gameObject.SetActive(true);
+
+        SpeedCalculation();
     }
 
-
-    public void SqaudsUpdate()
+    public void ResetAfterBattle()
     {
+        inBattle = false;
+        isMoved = false;
 
+        targetObject.position = transform.position;
+        agent.Stop();
 
+        collider.enabled = true;
+        armyInfoPanel.SetActive(true);
+        targetObject.gameObject.SetActive(true);
 
-        for (int i = 0; i < squadList.Count; i++)
-        {
-            SquadController squad = squadList[i];
-
-            if (squad.squadDie){
-                RemoveSquad(squad);
-
-                Destroy(squad.gameObject);
-            }
-        }
-
+        SpeedCalculation();
     }
-
-
-    public void AddSquad(SquadController squad,int index)
-    {
-        SquadController newSquadController = Instantiate(squad, transform.position, transform.rotation);
-        newSquadController.gameObject.SetActive(false);
-        newSquadController.transform.parent = transform;
-        squadList.Add(newSquadController);
-
-        GameObject newSquad = Instantiate(SquadMapPrefabs[0], transform.position, transform.rotation);
-        followers.Add(newSquad.transform);
-
-
-
-        if (isSelected)
-        {
-            UpdateSquadsList();
-        }
-
-        
-
-
-    }
-
-    public void RemoveSquad(SquadController squad)
-    {
-        squadList.Remove(squad);
-        
-    }
-
-    public void SquadSelect(int index)
-    {
-       
-
-        if (!selectedSquadList.Contains(squadList[index]))
-        {
-            selectedSquadList.Add(squadList[index]);
-        }
-        else
-        {
-            selectedSquadList.Remove(squadList[index]);
-        }
-    }
-
-    public void UpdateSquadsList()
-    {
-
-        if(mapControlManager == null)
-        {
-            mapControlManager = GameObject.Find("MapControlManager").GetComponent<MapControlManager>();
-        }
-
-        if(mapControlManager.armyUIPanel.active == false)
-        {
-            mapControlManager.armyUIPanel.SetActive(true);
-        }
-        armyUIPanel = mapControlManager.armyUIPanel.GetComponent<ArmyUIPanel>();
-        armyUIPanel.Clear();
-
-
-        for (int i = 0; i < squadList.Count; i++)
-        {
-            SquadMapUIPanel newSquadPanel = armyUIPanel.AddSquad(squadList[i].mapUIPanel);
-
-            int index = i;
-            newSquadPanel.GetComponent<Button>().onClick.AddListener(() => SquadSelect(index));
-        }
-        
-    }
-
-    public void ArmySelected()
-    {
-        isSelected = true;
-        UpdateSquadsList();
-    }
-
-    public void ArmyDeselect()
-    {
-        isSelected = false;
-        
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if ((tag == "Player" && other.gameObject.tag == "Enemy"))//|| (tag == "Enemy" && other.gameObject.tag == "Player")
-        {
-            ArmyController enemy = other.GetComponent<ArmyController>();
-
-            SceneLoader.Instance.CreateBattleInfo(this, enemy);
-
-
-            RedyToBattle();
-
-            enemy.RedyToBattle();
-           // enemy.collider.enabled = false;
-
-            // enemy.armyInfoPanel.SetActive(false);
-            // enemy.targetObject.gameObject.SetActive(false);
-
-
-        }
-
-        Debug.Log("OnTriggerEnter");
-        if (goToJoint)
-        {
-           
-            if (collider.tag == tag)
-            {
-                if(other.GetComponent<BoxCollider>() == jointArmy.collider)
-                {
-                    for (int i = 0; i < squadList.Count; i++)
-                    {
-                        jointArmy.AddSquad(squadList[i], i);
-
-                            }
-
-                        goToJoint = false;
-
-                    for (int i = 0; i < followers.Count; i++)
-                    {
-                        
-
-                        Destroy(followers[i].gameObject);
-
-                    }
-
-                    Destroy(targetObject.gameObject);
-
-                    Destroy(lineRenderer.gameObject);
-                    Destroy(gameObject);
-                }
-            }
-        }
-    }
-
 
 
     // Update is called once per frame
     void FixedUpdate()
     {
+
+        if (retreat)
+        {
+            retreatCurrentTime += Time.deltaTime;
+
+            if(retreatCurrentTime >= retreatTime)
+            {
+
+                retreat = false;
+                retreatCurrentTime = 0;
+            }
+        }
+
         if (isMoved)
         {
             ArmyMovement();
@@ -367,71 +746,99 @@ public class ArmyController : MonoBehaviour
                 if(currentFormationTime > formationTime)
                 {
 
-                    followers[formationIndex].transform.position = formationPoints[formationIndex].position;
-                    followers[formationIndex].transform.rotation = formationPoints[formationIndex].rotation;
-                    formationIndex++;
+                    //squadsOnMap[formationIndex].transform.position = formationPoints[formationIndex].position;
+                    //squadsOnMap[formationIndex].transform.rotation = formationPoints[formationIndex].rotation;
+                   
 
-                    currentFormationTime = 0;
+                    
 
-                    if(formationIndex >= followers.Count)
+                    if(formationIndex >= squadsOnMap.Count)
                     {
-                        isFormated = false;
-                        currentFormationTime = 0;
-                        formationIndex = 0;
+                        //isFormated = false;
+                        //currentFormationTime = 0;
+                        //formationIndex = 0;
                     }
                 }
             }
+        }
+
+        currentMoraleUpdateTime += Time.deltaTime;
+
+        if (currentMoraleUpdateTime > moraleUpdateTime)
+        {
+            if (isMoved)
+            {
+                for (int i = 0; i < squadList.Count; i++)
+                {
+                    squadList[i].MoraleChange(-squadList[i].lostMoraleThenRun);
+                }
+                UpdateArmyInfo();
+            }
+            else if(!inBattle)
+            {
+                if (armyMorale <= armyMoraleMax)
+                {
+                    for (int i = 0; i < squadList.Count; i++)
+                    {
+                        squadList[i].MoraleChange(squadList[i].recoveryMoraleSpeed);
+                    }
+                    
+                    UpdateArmyInfo();
+                }
+            }
+                 
+            currentMoraleUpdateTime = 0;
         }
     }
 
     void ArmyMovement()
     {
         //Vector3 targetPos = Vector3.MoveTowards(transform.position, targetObject.position, armySpeed * Time.fixedDeltaTime);
+        moveDirection = (transform.position - targetObject.position).normalized;
+
         agent.SetDestination(targetObject.position);
-        leaderPositions.Enqueue(transform.position);
 
-        int maxQueueSize = Mathf.CeilToInt(followers.Count * followDistance);
-        while (leaderPositions.Count > maxQueueSize)
+        // Сдвигаем историю назад и записываем новую позицию в начало
+        for (int i = historyLength - 1; i > 0; i--)
         {
-            leaderPositions.Dequeue();
+            history[i] = history[i - 1];
         }
+        history[0] = transform.position;
 
-        // Двигаем последователей
-        int step = Mathf.CeilToInt(followDistance);
-        int index = leaderPositions.Count - step;
-
-        for (int i = 0; i < followers.Count; i++)
+        // Расставляем сегменты по истории с интервалом
+        for (int i = 0; i < squadsOnMap.Count; i++)
         {
-            if (index >= 0 && index < leaderPositions.Count)
-            {
-                Vector3 targetPos = leaderPositions.ToArray()[index];
-                targetPos.y = followers[i].position.y;  // Не меняем высоту
-                followers[i].position = Vector3.Lerp(followers[i].position, targetPos, followSpeed * Time.deltaTime);
+            int index = Mathf.Min((i + 1) * Mathf.RoundToInt(offset * 10), historyLength - 1);
 
-                Vector3 direction = targetPos - followers[i].position;
-                if (direction.magnitude > 0.1f)  // Проверка, чтобы избежать нулевого направления
+           
+                squadsOnMap[i].position = history[index];
+
+                // Поворот к следующей точке истории (просто для вида)
+                Vector3 dir = history[index - 1] - history[index];
+                if (dir.sqrMagnitude > 0.001f)
                 {
-                    Quaternion targetRotation = Quaternion.LookRotation(direction);
-                    followers[i].rotation = Quaternion.Slerp(followers[i].rotation, targetRotation, 10f * Time.deltaTime);
+                    squadsOnMap[i].rotation = Quaternion.LookRotation(dir);
                 }
+
+            if (Vector3.Distance(squadsOnMap[i].position, targetObject.position) < 0.2f)
+            {
+                squadsOnMap[i].transform.position = formationPoints[i].position;
             }
-            index -= step;
 
-            
+         }
 
-        }
 
-        if (Vector3.Distance(followers[followers.Count - 1].position,transform.position)<0.2f)
+        // Когда хвост близко и агент остановился — выравниваем формацию
+        if (Vector3.Distance(squadsOnMap[^1].position, transform.position) < 0.2f)
         {
-            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance && agent.velocity.sqrMagnitude == 0f)
             {
-                if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f) // Убедимся, что он реально стоит
-                {
-                    SetMoving(false);
-                }
+                SetMoving(false);
+                SetFormation(moveDirection);
             }
         }
-        
+
+
 
         lineRenderer.SetPosition(0,transform.position);
         lineRenderer.SetPosition(1, targetObject.transform.position);
@@ -439,4 +846,87 @@ public class ArmyController : MonoBehaviour
 
     }
 
+    
+
+  
+
+    public void SetMoving(bool move)
+    {
+        //if(isMoved && !move)
+        //{
+        //    SetFormation();
+        //}
+
+        isMoved = move;
+
+        if (move)
+        {
+
+            agent.Resume();
+            formationIndex = 0;
+            isFormated = false;
+
+            targetObject.gameObject.SetActive(true);
+
+
+        }
+        else
+        {
+            agent.Stop();
+            targetObject.gameObject.SetActive(false);
+        }
+
+        if (inCity)
+        {
+            ExitFromCity();
+        }
+
+
+
+    }
+
+    public void SpeedCalculation()
+    {
+        float t = 1f - (squadList.Count / 20f);
+        t = t * t;
+        armySpeed = Mathf.Lerp(armySpeedMin, armySpeedMax, t);
+        agent.speed = armySpeed;
+    }
+
+    //formation
+    IEnumerator SquadsToFormation( float delay)
+    {
+        for (int i = 0; i < squadsOnMap.Count; i++)
+        {
+            squadsOnMap[i].transform.position = formationPoints[i].position;
+            squadsOnMap[i].transform.rotation = formationPoints[i].rotation;
+
+
+            yield return new WaitForSeconds(delay); // Ждем перед следующим юнитом
+        }
+    }
+
+    public void SetFormation(Vector3 direction)
+    {
+        isFormated = true;
+
+
+
+        currentFormationTime = 0;
+        formationIndex = 0;
+
+        if (inBattle)
+        {
+            Vector3 dirToArmy = (transform.position - enemyArmy.transform.position).normalized;
+
+            formationObject.transform.rotation = Quaternion.LookRotation(dirToArmy);
+        }
+        else if (isMoved)
+        {
+            formationObject.transform.rotation = Quaternion.LookRotation(direction);
+
+        }
+
+        StartCoroutine(SquadsToFormation(0.1f));
+    }
 }

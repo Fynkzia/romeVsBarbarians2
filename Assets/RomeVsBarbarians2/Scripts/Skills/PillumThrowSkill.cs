@@ -59,6 +59,7 @@ public class PillumThrowSkill : OfficerSkill
     {
 
         squadController.CancelMovement();
+        squadController.squadInfo.ShootingIndicator(true);
 
 
         Vector3 enemyPosition = squadController.predictEnemy.gameObject.transform.position;
@@ -99,6 +100,6 @@ public class PillumThrowSkill : OfficerSkill
 
         //controlController.SquadWayToPoint(squadController, enemyPosition); // идем в рукопашную после выстрела атакаки
 
-        squadController.shootingIndicator.SetActive(false);
+        squadController.squadInfo.ShootingIndicator(false);
     }
 }

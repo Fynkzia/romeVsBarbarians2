@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 using UnityEngine.UI;
 using TMPro;
+using Random = UnityEngine.Random;
 
 public class BattleSceneManager : MonoBehaviour
 {
@@ -11,9 +13,11 @@ public class BattleSceneManager : MonoBehaviour
     public ArmyController playerArmy;
     public ArmyController enemyArmy;
 
+    public CityController city;
+
     public MapBattleController mapBattleController;
 
-    public Button toGlobalMapButton;
+   
 
     public SquadControlManager controlController;
     public OfficerSystem officerSystem;
@@ -25,13 +29,14 @@ public class BattleSceneManager : MonoBehaviour
     public GameObject cinemachineGameObject;
     public GameObject lightGameObject;
 
-    public GameObject UIGameObject;
-    public Animator transitionAnimation;
-    public Animator WinEffect;
-    public Animator LoseEffect;
+    
+    
 
     public Transform[] playerSpawnPoints;
     public Transform[] enemySpawnPoints;
+
+    public Transform[] CitySpawnPoints;
+
 
     public GameObject spawnPointPrefab;
     public GameObject formationPointPrefab;
@@ -43,14 +48,162 @@ public class BattleSceneManager : MonoBehaviour
     public Transform enemySquadsParent;
 
     public bool isInit;
+    public bool IsCity;
 
     public bool IsWin;
+    public bool IsDraft;
 
     public float delayFade;
     public float afterBattleDelay;
 
+    public Transform playerHousesParent;
+    public Transform enemyHousesParent;
+    
 
-    public void DiePlayerSquad(SquadController squadController)
+    public Transform fancesParent;
+    public Transform towersParent;
+
+    public ResourceManager resourceManager;
+    
+
+    public event Action<bool> NotAnimate;
+
+
+    public void InitScene()
+    {
+
+
+
+        Debug.Log("InitScene - playerSquads - " + playerSquads.Count);
+        for (int i = 0; i < playerSquads.Count; i++)
+        {
+            playerSquads[i].GetComponent<SquadController>().InitSquad();
+
+        }
+
+        for (int i = 0; i < enemySquads.Count; i++)
+        {
+            enemySquads[i].GetComponent<SquadController>().InitSquad();
+
+        }
+
+        winLoseManager.Init();
+        officerSystem.Init();
+        cameraController.Init();
+        
+
+        cameraController.CamToPoint(playerSquads[0].transform.position);
+
+        
+        isInit = true;
+        InitMap();
+    }
+
+
+    public void InitMap()
+    {
+        if (IsCity)
+        {
+            if (city.isPlayer) { /// тупа для оптимизашки, шоб меньше щелкало ебалом
+
+               
+                playerHousesParent.gameObject.SetActive(true);
+
+                for (int i = 0; i < playerHousesParent.childCount; i++)
+                {
+                    playerHousesParent.GetChild(i).gameObject.SetActive(false);
+                }
+            }
+            else
+            {
+                enemyHousesParent.gameObject.SetActive(true);
+
+                for (int i = 0; i < enemyHousesParent.childCount; i++)
+                {
+                    enemyHousesParent.GetChild(i).gameObject.SetActive(false);
+                }
+            }
+           
+        }
+        else /// потом переделать на узнование какая область игрока или врага
+        {
+            enemyHousesParent.gameObject.SetActive(true);
+
+            for (int i = 0; i < enemyHousesParent.childCount; i++)
+            {
+                enemyHousesParent.GetChild(i).gameObject.SetActive(false);
+            }
+        }
+
+
+        if (IsCity)
+        {
+            int housesCount = city.cityBuildings/3;
+
+            if (city.isPlayer)
+            {
+                for (int i = 0; i < housesCount; i++)
+                {
+                    playerHousesParent.GetChild(i).gameObject.SetActive(true);
+                }
+
+                for (int i = 0; i < playerHousesParent.childCount; i++)
+                {
+                    if (playerHousesParent.GetChild(i).gameObject.activeSelf)
+                    {
+
+                        if (Random.Range(1, 100) > 70)
+                        {
+                            playerHousesParent.GetChild(i).GetComponent<SquadSpawnerController>().Init();
+                        }
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < housesCount; i++)
+                {
+                    enemyHousesParent.GetChild(i).gameObject.SetActive(true);
+                }
+
+                for (int i = 0; i < enemyHousesParent.childCount; i++)
+                {
+                    if (enemyHousesParent.GetChild(i).gameObject.activeSelf)
+                    {
+
+                        if (Random.Range(1, 100) > 70)
+                        {
+                            enemyHousesParent.GetChild(i).GetComponent<SquadSpawnerController>().Init();
+                        }
+                    }
+                }
+            }
+
+
+            
+
+        }
+        else
+        {
+            for (int i = 0; i < enemyHousesParent.childCount; i++)
+            {
+                if (Random.Range(1, 100) > 50)
+                {
+                    enemyHousesParent.GetChild(i).gameObject.SetActive(true);
+                }
+
+                if (Random.Range(1, 100) > 50)
+                {
+                    enemyHousesParent.GetChild(i).GetComponent<SquadSpawnerController>().Init();
+                }
+            }
+
+        }
+
+    }
+
+
+        public void DiePlayerSquad(SquadController squadController)
     {
         playerArmy.squadList.Remove(squadController);
 
@@ -69,7 +222,7 @@ public class BattleSceneManager : MonoBehaviour
             StartCoroutine(EndBattleSiquence());
         }
 
-        
+        resourceManager.ChangeAmountOfCoins(squadController.coinsFromDie);
 
 
     }
@@ -83,19 +236,21 @@ public class BattleSceneManager : MonoBehaviour
             if (playerSquadParent.GetChild(i).gameObject.activeSelf) {
                 SquadController squad = playerSquadParent.GetChild(i).GetComponent<SquadController>();
 
-               
-               
 
-                 playerArmy.squadList.Add(squad);
+                if (!squad.squadDie && !squad.helperSquad)
+                {
 
-                
+                    playerArmy.squadList.Add(squad);
 
+
+                }
                 
             }
         }
 
         for (int i = 0; i < playerArmy.squadList.Count; i++)
         {
+            playerArmy.squadList[i].Reset();
             playerArmy.squadList[i].transform.parent = playerArmy.transform;
             playerArmy.squadList[i].gameObject.SetActive(false);
         }
@@ -108,15 +263,18 @@ public class BattleSceneManager : MonoBehaviour
             {
                 SquadController squad = enemySquadsParent.GetChild(i).GetComponent<SquadController>();
 
-               
-               
 
-                enemyArmy.squadList.Add(squad);
+
+                if (!squad.squadDie && !squad.helperSquad)
+                {
+                    enemyArmy.squadList.Add(squad);
+                }
             }
         }
 
         for (int i = 0; i < enemyArmy.squadList.Count; i++)
         {
+            enemyArmy.squadList[i].Reset();
             enemyArmy.squadList[i].transform.parent = enemyArmy.transform;
             enemyArmy.squadList[i].gameObject.SetActive(false);
         }
@@ -125,13 +283,19 @@ public class BattleSceneManager : MonoBehaviour
         if (playerArmy.squadList.Count == 0) {
 
             IsWin = false;
-            WinEffect.gameObject.SetActive(true);
+            
 
         } else if (enemyArmy.squadList.Count == 0) {
-            LoseEffect.gameObject.SetActive(true);
+           
+
+          
             IsWin = true;
 
-           
+
+        }
+        else
+        {
+            IsDraft = true;
         }
 
         yield return new WaitForSeconds(afterBattleDelay);
@@ -164,62 +328,52 @@ public class BattleSceneManager : MonoBehaviour
 
         Debug.Log("dirEnNorm - " + dirEnNorm);
 
-        Vector3 positionPlayerArmy = (transform.position + offcetToCenter) + dirPlNorm * 120f;
-        Vector3 positionEnemyArmy = (transform.position + offcetToCenter) + dirEnNorm * 120f;
+        Vector3 positionPlayerArmy = (transform.position + offcetToCenter) + dirPlNorm * 100f;
+        Vector3 positionEnemyArmy = (transform.position + offcetToCenter) + dirEnNorm * 100f;
 
-        GameObject newFormation = Instantiate(formationPointPrefab.gameObject, positionPlayerArmy, Quaternion.identity, transform);
 
-        newFormation.transform.rotation = Quaternion.LookRotation(dirPlNorm);
-
-        playerSpawnPoints = new Transform[newFormation.transform.childCount];
-
-        for (int i = 0; i < newFormation.transform.childCount; i++)
+        if (!playerArmy.inCity)
         {
-            newFormation.transform.GetChild(i).GetComponent<SpawnPoint>().isPlayer = true;
-            playerSpawnPoints[i] = newFormation.transform.GetChild(i);
+            GameObject newFormation = Instantiate(formationPointPrefab.gameObject, positionPlayerArmy, Quaternion.identity, transform);
+
+            newFormation.transform.rotation = Quaternion.LookRotation(dirPlNorm);
+
+            playerSpawnPoints = new Transform[newFormation.transform.childCount];
+
+            for (int i = 0; i < newFormation.transform.childCount; i++)
+            {
+                newFormation.transform.GetChild(i).GetComponent<SpawnPoint>().isPlayer = true;
+                playerSpawnPoints[i] = newFormation.transform.GetChild(i);
+            }
+
+        }
+        else
+        {
+            playerSpawnPoints = CitySpawnPoints;
         }
 
-        GameObject newEnFormation = Instantiate(formationPointPrefab.gameObject, positionEnemyArmy, Quaternion.identity, transform);
-
-        newEnFormation.transform.rotation = Quaternion.LookRotation(dirEnNorm);
-
-        enemySpawnPoints = new Transform[newEnFormation.transform.childCount];
-        for (int i = 0; i < newEnFormation.transform.childCount; i++)
+        if (!enemyArmy.inCity)
         {
-            newEnFormation.transform.GetChild(i).GetComponent<SpawnPoint>().isPlayer = false;
-            enemySpawnPoints[i] = newEnFormation.transform.GetChild(i);
+
+            GameObject newEnFormation = Instantiate(formationPointPrefab.gameObject, positionEnemyArmy, Quaternion.identity, transform);
+
+            newEnFormation.transform.rotation = Quaternion.LookRotation(dirEnNorm);
+
+            enemySpawnPoints = new Transform[newEnFormation.transform.childCount];
+            for (int i = 0; i < newEnFormation.transform.childCount; i++)
+            {
+                newEnFormation.transform.GetChild(i).GetComponent<SpawnPoint>().isPlayer = false;
+                enemySpawnPoints[i] = newEnFormation.transform.GetChild(i);
+            }
+        }
+        else
+        {
+            enemySpawnPoints = CitySpawnPoints;
         }
 
     }
 
-        public void InitScene()
-    {
-        
-
-
-        Debug.Log("InitScene - playerSquads - " + playerSquads.Count);
-        for (int i = 0; i < playerSquads.Count; i++)
-        {
-            playerSquads[i].GetComponent<SquadController>().InitSquad();
-          
-        }
-
-        for (int i = 0; i < enemySquads.Count; i++)
-        {
-            enemySquads[i].GetComponent<SquadController>().InitSquad();
-
-        }
-
-        winLoseManager.Init();
-        officerSystem.Init();
-        cameraController.Init();
-
-        cameraController.CamToPoint(playerSquads[0].transform.position);
-
-        toGlobalMapButton.onClick.AddListener(() => ExitBattleSiquence());
-        isInit = true;
-
-    }
+      
 
 
     public void EnterBattleScene()
@@ -229,10 +383,15 @@ public class BattleSceneManager : MonoBehaviour
         cinemachineGameObject.gameObject.SetActive(true);
         cameraController.gameObject.SetActive(true);
         controlController.gameObject.SetActive(true);
-        UIGameObject.gameObject.SetActive(true);
+
+
+
+        NotAnimate?.Invoke(false);
 
        
         EnterBattleSceneAnimation();
+
+        
     }
 
 
@@ -244,16 +403,16 @@ public class BattleSceneManager : MonoBehaviour
         cinemachineGameObject.gameObject.SetActive(false);
         cameraController.gameObject.SetActive(false);
         controlController.gameObject.SetActive(false);
-        UIGameObject.gameObject.SetActive(false);
 
-        SceneLoader.Instance.ExitBattle(sceneIndex);
 
-        
+
+
+        NotAnimate?.Invoke(true);
     }
 
     public void ExitBattleSiquence()
     {
-        transitionAnimation.SetTrigger("In");
+        
         cameraController.CameraMoveToExit();
         StartCoroutine(ExitSiquence());
        
@@ -261,8 +420,7 @@ public class BattleSceneManager : MonoBehaviour
 
     public void EnterBattleSceneAnimation()
     {
-        transitionAnimation.SetTrigger("Out");
-        cameraController.CameraMoveEnter();
+        StartCoroutine(EnterSiquence());
     }
 
     private IEnumerator ExitSiquence()
@@ -273,5 +431,20 @@ public class BattleSceneManager : MonoBehaviour
         yield return new WaitForSeconds(delayFade);
 
         ExitBattleScene();
+    }
+
+    private IEnumerator EnterSiquence()
+    {
+
+        cameraController.CameraSetEnterPoint();
+    
+        
+        
+
+        yield return new WaitForSeconds(0.2f);
+
+        cameraController.CameraMoveEnter();
+
+
     }
 }

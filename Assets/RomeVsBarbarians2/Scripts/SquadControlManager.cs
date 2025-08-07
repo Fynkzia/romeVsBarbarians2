@@ -36,7 +36,7 @@ public class SquadControlManager : MonoBehaviour
     private const string ENEMY_TAG = "Enemy";
 
     private void Awake() {
-        Instance = this;
+      //  Instance = this;
     }
 
     void Update() {
@@ -99,7 +99,12 @@ public class SquadControlManager : MonoBehaviour
                 if (squadController.inBattle)
                 {
                     squadController.SetBattle(false);
-                    squadController.Escape(true); 
+
+                    if (!squadController.inBuildBattle)
+                    {
+                        squadController.Escape(true);
+                    }
+                   
                     
                 }
 
@@ -193,11 +198,34 @@ public class SquadControlManager : MonoBehaviour
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit,1000f,unitLayer)) {
+
+            if(hit.collider.gameObject.layer == 16) // для сtроений
+            {
+
+                if(hit.collider.gameObject.tag == ENEMY_TAG) //вражеское сроение - идем пиздить
+                {
+                    lineRenderer.startColor = attackColor;
+                    lineRenderer.endColor = attackColor;
+
+                    squadController.predictBuild = hit.collider.gameObject.GetComponent<BuildingManager>();
+                    squadController.isGoingToEnemy = true;
+
+                    return;
+                }
+
+
+            }
+
+
+
+
             if (hit.collider.transform.parent.gameObject.tag == ENEMY_TAG) {
                 //lineRenderer.positionCount++;
                 //lineRenderer.SetPosition(lineRenderer.positionCount - 1,hit.collider.gameObject.transform.position);
                 lineRenderer.startColor = attackColor;
                 lineRenderer.endColor = attackColor;
+                
+
                 squadController.predictEnemy = hit.collider;
                 squadController.isGoingToEnemy = true;
             }

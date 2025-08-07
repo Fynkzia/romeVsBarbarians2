@@ -15,12 +15,12 @@ public class WinLoseManager : MonoBehaviour
     public bool isGameOver = false;
     private int reward;
     private int currentLevel;
-    private CoinsController coinsController;
+
 
     public void Init() {
         playerSquadsCount = playerSquads.transform.childCount;
         enemySquadsCount = enemySquads.transform.childCount;
-        coinsController = GameObject.Find("CoinsController").GetComponent<CoinsController>();
+        
       
     }
 

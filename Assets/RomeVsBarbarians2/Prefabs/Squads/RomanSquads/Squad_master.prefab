@@ -102,7 +102,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2835096852102318129
 Transform:
   m_ObjectHideFlags: 0
@@ -187,6 +187,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerSquad: 1
+  isBattleInit: 0
+  helperSquad: 0
   type: 0
   levelSquad: 1
   amountUnits: 42
@@ -196,6 +198,7 @@ MonoBehaviour:
   formationSquad: 7
   maxMorale: 5
   actionTime: 1
+  coinsFromDeath: 1
   actionColliderRadius: 5
   movementSpeed: 4
   boostSpeed: 3
@@ -204,7 +207,7 @@ MonoBehaviour:
   resetDefence: 0.25
   lostMoraleThenRun: 0.03
   lostMoraleThenDie: 0.2
-  lostMoraleThenAttacked: 0.1
+  lostMoraleThenAttacked: 0.08
   addMoraleKillSquad: 1
   addMoraleKillUnit: 0.1
   recoveryMoraleSpeed: 0.06
@@ -224,7 +227,6 @@ MonoBehaviour:
   rightTriggerCoef: 1
   frontTriggerCoef: 0
   backTriggerCoef: 2
-  coinsFromDeath: 1
   isMoved: 0
   isStopRot: 0
   inBattle: 0
@@ -237,6 +239,7 @@ MonoBehaviour:
   canFirstAttack: 1
   isStunned: 0
   inBuildBattle: 0
+  doNotAnimate: 0
   currentAmountUnits: 0
   currentMorale: 0
   currentFormation: 0
@@ -250,6 +253,7 @@ MonoBehaviour:
   movingPositions: []
   indexMove: 0
   calculatedVelocity: {x: 0, y: 0, z: 0}
+  needRotateFormation: 0
   attackCoef: 0
   defenceCoef: 0
   avaliableToAttack: []
@@ -265,29 +269,31 @@ MonoBehaviour:
   currentTimeToUpdateUnit: 0
   animationState: 0
   animatorControllers: []
+  attakedAnimatorControllers: []
   animationIdleUpdateTime: 1.5
-  animationMoveUpdateTime: 0.25
-  animationFightUpdateTime: 0.15
+  animationMoveUpdateTime: 0.2
+  animationFightUpdateTime: 0.2
   moveFX: {fileID: 6031421226976732441, guid: 79ba666800bc1498b9bd72c18e20c9f1, type: 3}
-  bloodFx:
-  - {fileID: 1004307555708668947, guid: 374dfa0c89fe0834bb04274a99223e8f, type: 3}
-  - {fileID: 5513426093337414878, guid: d959c2c6fbc114d1d959d6554165c615, type: 3}
   fightFx:
   - {fileID: 5138954873928106650, guid: 21ba67953203143059e057eca946fbe7, type: 3}
-  - {fileID: 6187213044627984457, guid: 5cc1ce1e29d504183930241295a1890d, type: 3}
   - {fileID: 6092896548596722166, guid: ea1463e712f414cd0b38b7880a9a6667, type: 3}
-  deadFx: {fileID: 3391044420343106369, guid: 1565ab10af3b549f5bbf530b059e2d48, type: 3}
+  - {fileID: 3786161910474304746, guid: da0564d6a3a9a4b0daa44827558deb3a, type: 3}
+  bloodFx: {fileID: 6187213044627984457, guid: 5cc1ce1e29d504183930241295a1890d, type: 3}
+  deadInfoFx: {fileID: 3391044420343106369, guid: 1565ab10af3b549f5bbf530b059e2d48, type: 3}
+  deadFx: {fileID: 5398439653414657636, guid: 342be108d668442d8b1c2ceb148cfe60, type: 3}
   addMoraleFx: {fileID: 3730615119460860335, guid: 3428579618d4447508e3ceb4d0580024, type: 3}
   lostMoraleFx: {fileID: 8408955500383151332, guid: 773e4157dac944788bd1643c9e024a9c, type: 3}
   friendlyFireFx: {fileID: 3825571564101416963, guid: cee9bc7535e474ed4a85c49032df386d, type: 3}
-  moveFxInterval: 0.2
-  moveFXMax: 15
+  coinFX: {fileID: 1907167698180525989, guid: 42b76643cf2c9436897bcaee0205a644, type: 3}
+  moveFxInterval: 0.3
+  moveFXMax: 30
   moveFXlist: []
   ai_squadPower: 0
   ai_groupPower: 0
   ai_needHelp: 0
   ai_currentState: 0
   animTime: 0
+  battleSceneManager: {fileID: 0}
   unitPrefab: {fileID: 0}
   TriggerObject: {fileID: 596614234286191822}
   mainCollider: {fileID: 853298669736795305}
@@ -323,12 +329,11 @@ MonoBehaviour:
   lineRenderer: {fileID: 0}
   unitsNeed: 0
   coinsNeed: 0
+  coinsFromDie: 0
   mapUIPanel: {fileID: 0}
-  UnitInfo: {fileID: 9072971008714615398}
+  squadInfo: {fileID: 2081503818295095477}
   drawingPrefab: {fileID: 3402867912507858967, guid: b9598d3b6662f4b46a667f70dbea15d0, type: 3}
   movementIndicator: {fileID: 1516730008753690456}
-  battleIndicator: {fileID: 7269846196906595299}
-  shootingIndicator: {fileID: 6777582409058437888}
   unitPositions: {fileID: 6467274105814406783}
   shadowObject: {fileID: 9101069042247803612}
   selectObject: {fileID: 1516730008753690456}
@@ -917,7 +922,7 @@ PrefabInstance:
       objectReference: {fileID: 2570471043121216857}
     - target: {fileID: 2146301014428642275, guid: 51bda6881a122479eaf53a17530b2d13, type: 3}
       propertyPath: m_Name
-      value: UnitInfo
+      value: SduadInfo
       objectReference: {fileID: 0}
     - target: {fileID: 3133859145156708938, guid: 51bda6881a122479eaf53a17530b2d13, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1104,23 +1109,19 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 51bda6881a122479eaf53a17530b2d13, type: 3}
+--- !u!114 &2081503818295095477 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3721513570210439712, guid: 51bda6881a122479eaf53a17530b2d13, type: 3}
+  m_PrefabInstance: {fileID: 3406837251700249237}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80a1e28658b8c44bb9b055ea2ca59612, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &6247079536093603239 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8788090585376487218, guid: 51bda6881a122479eaf53a17530b2d13, type: 3}
-  m_PrefabInstance: {fileID: 3406837251700249237}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &6777582409058437888 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8163138420075665813, guid: 51bda6881a122479eaf53a17530b2d13, type: 3}
-  m_PrefabInstance: {fileID: 3406837251700249237}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &7269846196906595299 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5450528691140346230, guid: 51bda6881a122479eaf53a17530b2d13, type: 3}
-  m_PrefabInstance: {fileID: 3406837251700249237}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &9072971008714615398 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 5957751454691457267, guid: 51bda6881a122479eaf53a17530b2d13, type: 3}
   m_PrefabInstance: {fileID: 3406837251700249237}
   m_PrefabAsset: {fileID: 0}
