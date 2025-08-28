@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using TMPro;
+
 
 public class CityController : MonoBehaviour
 {
@@ -37,26 +37,24 @@ public class CityController : MonoBehaviour
 
     public ArmyController armyInCity;
     public ArmyController armyObject;
+    public ArmyController armyEnemyObject;
 
     public Transform armyPoint;
 
     private float currentTime;
     private int untisToBuild;
 
-    [SerializeField] public TextMeshProUGUI cityNameText;
-    [SerializeField] public TextMeshProUGUI buildingsCount;
-    [SerializeField] public TextMeshProUGUI buildingsCountChange;
-    [SerializeField] public TextMeshProUGUI unitsCount;
-    [SerializeField] public TextMeshProUGUI unitsCountChange;
+    
 
     public MapControlManager mapControlManager;
+    public CityToDoController toDoController ;
 
     public event Action<CityController> OnCityCaptured;
 
+    public CityInfo cityInfo;
 
-
-    // Start is called before the first frame update
-    void Start()
+   // Start is called before the first frame update
+   void Start()
     {
         if(mapControlManager == null)
         {
@@ -71,19 +69,18 @@ public class CityController : MonoBehaviour
             AddBuildings();
         }
 
-        buildingsCount.text = "" + cityBuildings;
+       
 
-        if(armyInCity != null)
+        if (armyInCity != null)
         {
             armyInCity.transform.position = armyPoint.position;
         }
 
-       // buildingsCountChange.text = "+" + cityBuildings;
+        cityInfo.SetupInfo(this);
 
-        //unitsCount.text = "" + cityUnits;
-        //unitsCountChange.text = "+" + cityBuildings;
+       
 
-        
+
     }
 
     // Update is called once per frame
@@ -118,11 +115,8 @@ public class CityController : MonoBehaviour
 
 
 
-           
 
-            unitsCount.text = "" + (int)cityUnits;
-
-           // unitsCountChange.text = "+" + cityBuildings / 50f;
+            cityInfo.UpdateCounts(cityBuildings, (int)cityUnits);
 
             currentTime = 0;
         }
@@ -132,7 +126,7 @@ public class CityController : MonoBehaviour
     {
         cityBuildings++;
 
-        buildingsCount.text = "" + cityBuildings;
+        cityInfo.UpdateCounts(cityBuildings, (int)cityUnits);
 
         if (isPlayer)
         {
@@ -185,11 +179,19 @@ public class CityController : MonoBehaviour
             enemyMainBuild.SetActive(false);
 
             Instantiate(captureFx, transform.position, transform.rotation);
+
+            gameObject.tag = "Player";
+            toDoController.enabled = true;
+            isPlayer = true;
         }
         else
         {
             enemyMainBuild.SetActive(true);
             playerMainBuild.SetActive(false);
+
+            gameObject.tag = "Enemy";
+            toDoController.enabled = false;
+            isPlayer = false;
         }
 
 
@@ -201,12 +203,12 @@ public class CityController : MonoBehaviour
         buildings.Clear();
 
         cityBuildings = 0;
-        buildingsCount.text = "" + cityBuildings;
+       
 
         cityUnits = 0;
-        unitsCount.text = "" + (int)cityUnits;
 
-        isPlayer = player;
+
+        cityInfo.SetupInfo(this);
 
     }
 }

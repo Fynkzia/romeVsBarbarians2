@@ -16,11 +16,11 @@ public class SquadInfo : MonoBehaviour
     [SerializeField] public Image defenceFillImage;
 
     [SerializeField] public BarUI moraleBar;
-    [SerializeField] public Image xpBar;
+    [SerializeField] public Transform xpBarObject;
 
-    [SerializeField] public TextMeshProUGUI levelText;
+    [SerializeField] public TextMeshPro levelText;
 
-    [SerializeField] public TextMeshProUGUI countText;
+    [SerializeField] public TextMeshPro countText;
 
     [SerializeField] public LookAtCamera lookAtCamera;
 
@@ -45,10 +45,10 @@ public class SquadInfo : MonoBehaviour
     {
         levelText.text = "" + level;
 
-        xpBar.fillAmount = xp/ xNneed;
-        xpBar.transform.localScale = new Vector3( 0.7f + (0.05f*level), 0.7f + (0.05f * level), 0.7f + (0.05f * level)) ;
+        xpBarObject.localScale = new Vector3(xp / xNneed, 1, 1);
+       // xpBarObject.transform.localScale = new Vector3( 0.7f + (0.05f*level), 0.7f + (0.05f * level), 0.7f + (0.05f * level)) ;
 
-        levelText.transform.localPosition = new Vector3(xpBar.transform.localPosition.x, 0.88f + (0.1f * level), xpBar.transform.localPosition.z);
+        //levelText.transform.localPosition = new Vector3(levelText.transform.localPosition.x, 12.51f + (0.1f * level), levelText.transform.localPosition.z);
     }
 
     public void DefenceFilleUpdate(float fill)

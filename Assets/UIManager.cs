@@ -20,6 +20,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] public Button mapButton;
     [SerializeField] public List<Button> battleButtons;
+    [SerializeField] public Transform activeSceneSprite;
 
     public Animator transitionAnimation;
     public Animator WinEffect;
@@ -31,6 +32,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] public Button campainGoalButton;
 
     public GameObject upperUIPanel;
+
+    ArmyController selectedArmy;
 
 
 
@@ -44,11 +47,25 @@ public class UIManager : MonoBehaviour
         //transitionAnimation.SetTrigger("Out");
     }
 
-    
+    public void UpdateActiveSceneSpritePosition(int activeScene)
+    {
+        Vector3 newPos;
+        if (activeScene == -1)
+        {
+            newPos = new Vector3(mapButton.transform.position.x, activeSceneSprite.position.y, 0f);
+        }
+        else
+        {
+            newPos = new Vector3(battleButtons[activeScene].transform.position.x, activeSceneSprite.position.y, 0f);
+        }
+
+        activeSceneSprite.position = newPos;
+    }
 
     public void CityUIActivation(CityController city)
     {
         cityUIPanel.gameObject.SetActive(true);
+        cityUIPanel.UpdateCityUIPanel(city);
     }
 
     public void ArmyUIActivation(ArmyController army)
@@ -57,6 +74,7 @@ public class UIManager : MonoBehaviour
 
         armyUIPanel.Clear();
 
+        selectedArmy = army;
 
         for (int i = 0; i < army.squadList.Count; i++)
         {
@@ -121,6 +139,11 @@ public class UIManager : MonoBehaviour
         battleUIPanel.BattlePanelClear();
 
         upperUIPanel.SetActive(true);
+
+        if(selectedArmy != null)
+        {
+            selectedArmy.ArmyDeselect();
+        }
     }
 
     public void MapUiActivation(bool active)

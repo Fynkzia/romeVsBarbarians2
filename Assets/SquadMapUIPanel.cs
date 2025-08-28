@@ -37,7 +37,7 @@ public class SquadMapUIPanel : MonoBehaviour
 
         countBar.fillAmount = 1f - (squad.currentAmountUnits / squad.amountUnits);
 
-        moraleBar.ChangeProgress(squad.currentMorale, squad.maxMorale) ;
+        //moraleBar.ChangeProgress(squad.currentMorale, squad.maxMorale) ;
 
     }
 

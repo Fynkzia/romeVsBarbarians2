@@ -10,6 +10,8 @@ public class HireUIPanel : MonoBehaviour
 
     [SerializeField] public TextMeshProUGUI nowDoCount;
 
+    [SerializeField] public GameObject doCountPanel;
+
     [SerializeField] public Button houseButton;
     [SerializeField] public Button[] hireButton;
     [SerializeField] public Transform nowToDoPos;
@@ -18,7 +20,8 @@ public class HireUIPanel : MonoBehaviour
     [SerializeField] public TextMeshProUGUI nowCoins;
     [SerializeField] public Button nowToDoButton;
 
-    [SerializeField] public Button cancelToDoButton;
+    [SerializeField] public Button plusDoButton;
+    [SerializeField] public Button minusDoButton;
     [SerializeField] public Button closePanelButton;
 
     [SerializeField] public Image progressImage;
@@ -82,6 +85,19 @@ public class HireUIPanel : MonoBehaviour
 
 
     nowDoCount.text = "x" + doCount;
+
+        if(doCount > 0)
+        {
+            doCountPanel.gameObject.SetActive(true);
+            minusDoButton.gameObject.SetActive(true);
+            plusDoButton.gameObject.SetActive(true);
+        }
+        else
+        {
+            doCountPanel.gameObject.SetActive(false);
+            minusDoButton.gameObject.SetActive(false);
+            plusDoButton.gameObject.SetActive(false);
+        }
 
     }
 

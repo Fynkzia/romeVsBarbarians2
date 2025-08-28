@@ -13,16 +13,17 @@ public class MapBattleController : MonoBehaviour
 
     public ArmyController playerArmy;
     public ArmyController enemyArmy;
+    public CityController city;
 
     public float startTimeBattle;
 
     public float battleTickTime;
 
-
     public bool playerTick;
     public bool inBattle;
     public bool inAutoBattle;
-   
+    public bool cityBattle;
+
 
     public float currentStartTimeBattle;
 
@@ -36,27 +37,32 @@ public class MapBattleController : MonoBehaviour
     public event Action OnBattleLose;
 
     public ResourceManager resourceManager;
-    MapSceneManager mapSceneManage;
+    public MapSceneManager mapSceneManager;
+
+    private void Start()
+    {
+        mapSceneManager = GameObject.Find("MapSceneManager").GetComponent<MapSceneManager>();
+    }
 
     public void Select(bool select)
     {
         isSelect = select;
         battleInfo.Select(select);
 
-
+        
 
     }
 
     public void SelectThisBattle()
     {
-         if (mapSceneManage != null)
+         if (mapSceneManager != null)
         {
-            mapSceneManage.controlController.SelectBattle(this);
+            mapSceneManager.controlController.SelectBattle(this);
         }
         else
         {
-            mapSceneManage = GameObject.Find("MapSceneManager").GetComponent<MapSceneManager>();
-            mapSceneManage.controlController.SelectBattle(this);
+            mapSceneManager = GameObject.Find("MapSceneManager").GetComponent<MapSceneManager>();
+            mapSceneManager.controlController.SelectBattle(this);
         }
 
 
@@ -67,7 +73,7 @@ public class MapBattleController : MonoBehaviour
 
     public void StartBattle()
     {
-        mapSceneManage.uIManager.BattlePanelDeactivation();
+        mapSceneManager.uIManager.BattlePanelDeactivation();
 
         inBattle = true;
         battleInfo.BattleStart();
@@ -113,7 +119,7 @@ public class MapBattleController : MonoBehaviour
     {
 
         SceneLoader.Instance.ArmyRetreat(sceneIndex);
-        mapSceneManage.uIManager.BattlePanelDeactivation();
+        mapSceneManager.uIManager.BattlePanelDeactivation();
 
 
             enemyArmy.ResetAfterBattle();

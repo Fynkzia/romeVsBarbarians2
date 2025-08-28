@@ -78,21 +78,9 @@ public class AIController : MonoBehaviour
     [SerializeField] public Transform playerObject;
     [SerializeField] public Transform defenceObject;
 
-    [SerializeField] public int waveNow;
-[SerializeField] public int waveMax;
-[SerializeField] public float waveTimer;
-
- [Space(10)]
-[SerializeField] public float[] waveTiming;
-[SerializeField] public SquadController[] wave0;
-[SerializeField] public SquadController[] wave1;
-[SerializeField] public SquadController[] wave2;
-[SerializeField] public SquadController[] wave3;
-[SerializeField] public SquadController[] wave4;
-[SerializeField] public SquadController[] wave5;
 
 
-[SerializeField] public Transform[] spawnPoints;
+
 
 [Header("UI Settings")]
     [Space(10)]
@@ -117,27 +105,6 @@ public class AIController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //SetQueue();
-
-        //if(wave1.Length > 0){
-        //    waveMax ++;
-        //}
-        //if(wave2.Length > 0){
-        //    waveMax ++;
-        //}
-        //if(wave3.Length > 0){
-        //    waveMax ++;
-        //}
-        //if(wave4.Length > 0){
-        //    waveMax ++;
-        //}
-        //if(wave5.Length > 0){
-        //    waveMax ++;
-        //}
-        //supportUI.gameObject.SetActive(false);
-        //supportUIShow = false;
-        //supportUIAlert = false;
-
        
 
 
@@ -187,64 +154,7 @@ public class AIController : MonoBehaviour
 
         }
 
-        //if(waveNow <= waveMax){
-        //     waveTimer += Time.deltaTime;
-
-        //      if(waveTiming[waveNow] - waveTimer < 30){
-        //            if(!supportUIShow){
-        //                supportUI.gameObject.SetActive(true);
-        //                supportUIShow = true;
-
-        //                    int supportSquadsCount = 0;
-
-        //                 if(waveNow == 0){
-        //                    supportSquadsCount = wave0.Length;
-        //                }
-        //                if(waveNow == 1){
-        //                    supportSquadsCount = wave1.Length;
-        //                }
-        //                if(waveNow == 2){
-        //                    supportSquadsCount = wave2.Length;
-        //                }
-        //                if(waveNow == 3){
-        //                    supportSquadsCount = wave3.Length;
-        //                }
-        //                if(waveNow == 4){
-        //                    supportSquadsCount = wave4.Length;
-        //                }
-        //                if(waveNow == 5){
-        //                    supportSquadsCount = wave4.Length;
-        //                }
-
-        //                countSupportUI.text = "x" + supportSquadsCount;
-        //            }
-        //            timerSupportUI.text = "0:" + Mathf.FloorToInt((waveTiming[waveNow] - waveTimer)%60);
-
-        //            supportUIBar.fillAmount = 1f - waveTimer/30f;
-
-        //             if(waveTiming[waveNow] - waveTimer < 10){
-        //                if(!supportUIAlert){
-        //                    supportUI.SetTrigger("Alert");
-        //                    supportUIAlert = true;
-        //                }
-
-        //             }
-        //      }
-
-        //    if(waveTimer > waveTiming[waveNow]){
-        //        SpawnWave(waveNow);
-
-        //        waveNow ++;
-        //        waveTimer = 0;
-        //        supportUI.gameObject.SetActive(false);
-
-        //        supportUIShow = false;
-        //        supportUIAlert = false;
-
-        //     }
-
-
-        //}
+       
 
 
 
@@ -968,67 +878,5 @@ public void DeleteSquads() {
 
 
 
-    public void SpawnWave(int wave){
-
-    Transform point = spawnPoints[Random.Range(0,spawnPoints.Length)]; 
-
-     SquadController[] squads = wave0;
-
-    if(wave == 0){
-         squads = wave0;
-    }
-    if(wave == 1){
-        squads = wave1;
-    }
-    if(wave == 2){
-         squads = wave2;
-    }
-    if(wave == 3){
-         squads = wave3;
-    }
-    if(wave == 4){
-         squads = wave4;
-    }
-    if(wave == 5){
-         squads = wave4;
-    }
-
-                 GameObject[] allPlayerSquads = GameObject.FindGameObjectsWithTag("Squad");
-
-                Vector3 ceterOfSquads = new Vector3(0,0,0);
-                    for (int i = 0; i < allPlayerSquads.Length; i++) {
-                        ceterOfSquads += allPlayerSquads[i].transform.position;
-                    }
-
-                    ceterOfSquads /= allPlayerSquads.Length;
-
-        Vector3 dirLeft = Quaternion.AngleAxis(point.rotation.eulerAngles.y, Vector3.up) * new Vector3(5f,0f,0f);
-        Vector3 dirRight = Quaternion.AngleAxis(point.rotation.eulerAngles.y, Vector3.up) * new Vector3(-5f,0f,0f);
-
-        GameObject sq = Instantiate(squads[0],point.position,point.rotation).gameObject;
-        sq.transform.parent = enemyObject;
-        SquadController spawnedSquad = sq.GetComponent<SquadController>();
-
-        //SquadHalfWayToPoint (spawnedSquad,ceterOfSquads);
-
-        for (int i = 1; i < squads.Length; i++) {
-            if(i % 2 == 0){
-                dirLeft += dirLeft;
-                    sq = Instantiate(squads[i],point.position+dirLeft,point.rotation).gameObject;
-                    sq.transform.parent = enemyObject;
-                    spawnedSquad = sq.GetComponent<SquadController>();
-                   // SquadHalfWayToPoint (spawnedSquad,ceterOfSquads);
-
-            }else{
-                dirRight +=dirRight;
-                sq = Instantiate(squads[i],point.position + dirRight,point.rotation).gameObject;
-                    sq.transform.parent = enemyObject;
-                    spawnedSquad = sq.GetComponent<SquadController>();
-                    ///SquadHalfWayToPoint (spawnedSquad,ceterOfSquads);
-                   
-
-            }
-            }
-
-    }
+    
 }

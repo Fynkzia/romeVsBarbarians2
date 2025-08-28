@@ -49,6 +49,7 @@ public class UnitRetreatController : MonoBehaviour {
         colider.radius = 0.3f;
 
         gameObject.layer = 10; // retreat layer
+       
 
         direction = (transform.position - enemyPos).normalized;
         direction += new Vector3(Random.Range(-0.1f,0.1f),0f, Random.Range(-0.1f, 0.1f));

@@ -349,7 +349,7 @@ public class MapControlManager : MonoBehaviour
                                     cameraMapMovement.Zoom(false);
 
 
-                                    cameraMapMovement.CamToPoint(armyController.targetObject.transform.position, null);
+                                    //cameraMapMovement.CamToPoint(armyController.targetObject.transform.position, null);
                                 }
                             }
                             else
@@ -409,24 +409,24 @@ public class MapControlManager : MonoBehaviour
                 tapToSelected = false;
                 cameraMapMovement.ignoreMovement = false;
 
-                Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
-                if (Physics.Raycast(ray, out hit, 3000f, mapLayer))
-                {
-                    if (hit.collider.gameObject.tag == PLAYER_TAG && hit.collider != selectedCollider && hit.collider.gameObject.layer == 18)
-                    {
-                        armyController.jointArmy = hit.collider.transform.gameObject.GetComponent<ArmyController>();
-                        armyController.goToJoint = true;
-                    }
-                    else if(hit.collider.gameObject.layer == 19)
-                    {
-                        
+                //Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+                //RaycastHit hit;
+                //if (Physics.Raycast(ray, out hit, 3000f, mapLayer))
+                //{
+                //    if (hit.collider.gameObject.tag == PLAYER_TAG && hit.collider != selectedCollider && hit.collider.gameObject.layer == 18)
+                //    {
+                //        armyController.jointArmy = hit.collider.transform.gameObject.GetComponent<ArmyController>();
+                //        armyController.goToJoint = true;
+                //    }
+                //    else if (hit.collider.gameObject.layer == 19)
+                //    {
 
-                        armyController.goToCity = true;
-                    }
 
-                    }
-              }
+                //        armyController.goToCity = true;
+                //    }
+
+                //}
+            }
 
             if (tapBattle)
             {

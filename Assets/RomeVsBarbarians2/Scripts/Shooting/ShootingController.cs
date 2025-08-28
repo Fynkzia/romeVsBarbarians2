@@ -34,7 +34,7 @@ public class ShootingController : MonoBehaviour
 
     private bool isFirstShoot;
     private SphereCollider shotCollider;
-    private Collider currentEnemy;
+    [SerializeField] private Collider currentEnemy;
     private ShotRangeManager shotRangeManager;
     private float rapidityTimer ;
 
@@ -104,13 +104,15 @@ public class ShootingController : MonoBehaviour
     }
 
     private void ShootingSquad() {
-        if (squadController.predictEnemy != null) {
+        if (squadController.predictEnemy != null && squadController.predictEnemy.gameObject.active == true) {
             if (shotRangeManager.enemyColliders.Contains(squadController.predictEnemy)) {
                 squadController.CancelMovement();
                 Shot(squadController.predictEnemy);
+
+                squadController.predictEnemy = null;
             }
         } else {
-            if (currentEnemy == null) {
+            if (currentEnemy == null || currentEnemy.gameObject.active == false) {
                 ShotNearest();
             } else { 
                 Shot(currentEnemy);
@@ -232,11 +234,24 @@ public class ShootingController : MonoBehaviour
         Collider tMin = null;
         float minDist = Mathf.Infinity;
         Vector3 currentPos = transform.position;
+        int index = 0; 
         foreach (Collider t in shotRangeManager.enemyColliders) {
-            if(t == null)
+
+            if (t == null)
+            {
+                shotRangeManager.enemyColliders.RemoveAt(index);
+            }
+
+        
+
+            if (t.gameObject.active == false)
             {
                 squadController.squadInfo.ShootingIndicator(false);
-
+                if(t == squadController.predictEnemy)
+                {
+                    squadController.predictEnemy = null;
+                }
+               
                 return;
             }
             float dist = Vector3.Distance(t.gameObject.transform.position, currentPos);
@@ -244,12 +259,15 @@ public class ShootingController : MonoBehaviour
                 tMin = t;
                 minDist = dist;
             }
+
+            index++;
         }
+
         if(tMin != null) {
             currentEnemy = tMin;
             Shot(tMin);
             squadController.squadInfo.ShootingIndicator(true);
-
+           
         }
         else
         {

@@ -14,7 +14,12 @@ public class MapSceneManager : MonoBehaviour
 
     public CampainManager campainManager;
 
-    
+    public Transform playerArmiesObject;
+    public Transform enemiesArmiesObject;
+
+    public Transform citiesObject;
+
+
 
 
     private void Start()

@@ -1607,8 +1607,12 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3800096980757170583, guid: 9fc645479fdaa49a6b326532b41c64ab, type: 3}
+      propertyPath: mapUIPanel
+      value: 
+      objectReference: {fileID: 7786529878817052060, guid: 10f7afb2feaba48c9b7b2e7e5e6c4128, type: 3}
+    - target: {fileID: 3800096980757170583, guid: 9fc645479fdaa49a6b326532b41c64ab, type: 3}
       propertyPath: powerSquad
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3800096980757170583, guid: 9fc645479fdaa49a6b326532b41c64ab, type: 3}
       propertyPath: unitPrefab
@@ -1620,11 +1624,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3800096980757170583, guid: 9fc645479fdaa49a6b326532b41c64ab, type: 3}
       propertyPath: coinsFromDie
-      value: 5
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 3800096980757170583, guid: 9fc645479fdaa49a6b326532b41c64ab, type: 3}
       propertyPath: defenceSquad
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3800096980757170583, guid: 9fc645479fdaa49a6b326532b41c64ab, type: 3}
       propertyPath: retreatCount
@@ -1636,7 +1640,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3800096980757170583, guid: 9fc645479fdaa49a6b326532b41c64ab, type: 3}
       propertyPath: movementSpeed
-      value: 3.5
+      value: 4.4
       objectReference: {fileID: 0}
     - target: {fileID: 3800096980757170583, guid: 9fc645479fdaa49a6b326532b41c64ab, type: 3}
       propertyPath: colliderRadius
@@ -1652,47 +1656,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3800096980757170583, guid: 9fc645479fdaa49a6b326532b41c64ab, type: 3}
       propertyPath: minimumFormation
-      value: 0.3
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3800096980757170583, guid: 9fc645479fdaa49a6b326532b41c64ab, type: 3}
+      propertyPath: lostMoraleThenRun
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 3800096980757170583, guid: 9fc645479fdaa49a6b326532b41c64ab, type: 3}
       propertyPath: currentAmountUnits
       value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 3800096980757170583, guid: 9fc645479fdaa49a6b326532b41c64ab, type: 3}
-      propertyPath: fightFx.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 3800096980757170583, guid: 9fc645479fdaa49a6b326532b41c64ab, type: 3}
       propertyPath: retreatChanceCount
       value: 17
-      objectReference: {fileID: 0}
-    - target: {fileID: 3800096980757170583, guid: 9fc645479fdaa49a6b326532b41c64ab, type: 3}
-      propertyPath: unitArray.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3800096980757170583, guid: 9fc645479fdaa49a6b326532b41c64ab, type: 3}
-      propertyPath: fightFx.Array.data[2]
-      value: 
-      objectReference: {fileID: 6092896548596722166, guid: ea1463e712f414cd0b38b7880a9a6667, type: 3}
-    - target: {fileID: 3800096980757170583, guid: 9fc645479fdaa49a6b326532b41c64ab, type: 3}
-      propertyPath: coef.Array.data[0].attack
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3800096980757170583, guid: 9fc645479fdaa49a6b326532b41c64ab, type: 3}
-      propertyPath: coef.Array.data[1].attack
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3800096980757170583, guid: 9fc645479fdaa49a6b326532b41c64ab, type: 3}
-      propertyPath: coef.Array.data[2].attack
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3800096980757170583, guid: 9fc645479fdaa49a6b326532b41c64ab, type: 3}
-      propertyPath: coef.Array.data[1].defence
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3800096980757170583, guid: 9fc645479fdaa49a6b326532b41c64ab, type: 3}
-      propertyPath: coef.Array.data[2].defence
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4107535547121123250, guid: 9fc645479fdaa49a6b326532b41c64ab, type: 3}
       propertyPath: m_Sprite

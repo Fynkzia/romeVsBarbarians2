@@ -7,6 +7,7 @@ public class LookAtCamera : MonoBehaviour
     public Camera camera;
     private CameraMovement cameraMovement;
     private CameraMapMovement cameraMapMovement;
+    private MapSceneManager mapSceneManager ;
 
     [SerializeField]private bool battleInfo;
     [SerializeField] private bool mapInfo;
@@ -15,13 +16,19 @@ public class LookAtCamera : MonoBehaviour
     [SerializeField] private float scaleFactor;
 
     [SerializeField] public float[] scales;
+    //[SerializeField] public float[] angels;
 
     public bool isInit = false;
+
+    float timeUpdate = 2f;
+    float curretnTimeUpdate = 2f;
 
 
     private void Awake() {
 
-        camera = Camera.main;
+        mapSceneManager = GameObject.Find("MapSceneManager").GetComponent<MapSceneManager>();
+
+        camera = mapSceneManager.gameCamera;
 
 
         if (!battleInfo && !mapInfo)
@@ -32,7 +39,8 @@ public class LookAtCamera : MonoBehaviour
 
         if (mapInfo)
         {
-            cameraMapMovement = GameObject.Find("MapControlManager").GetComponent<CameraMapMovement>();
+
+            cameraMapMovement = mapSceneManager.cameraMapMovement;
             InitMapInfo(Camera.main, cameraMapMovement);
         }
 
@@ -83,7 +91,8 @@ public class LookAtCamera : MonoBehaviour
     }
 
 
-    private void LateUpdate() {
+    private void LateUpdate()
+    {
         if (isInit)
         {
             // Направление от объекта к камере
@@ -93,11 +102,10 @@ public class LookAtCamera : MonoBehaviour
             directionToCamera.y = 0;
 
             // Если длина направления нулевая, избегаем ошибок
-            if (directionToCamera.sqrMagnitude > 0.001f)
-            {
+           
                 // Устанавливаем поворот объекта так, чтобы он смотрел на камеру
                 transform.rotation = Quaternion.LookRotation(directionToCamera);
-            }
+            
         }
 
     }
@@ -110,6 +118,8 @@ public class LookAtCamera : MonoBehaviour
         {
             float scale = scales[newZoom];
             transform.localScale = new Vector3(-scale, scale, scale);
+
+            //transform.rotation = Quaternion.Euler(angels[newZoom], transform.rotation.y, 0);
         }
        
     }

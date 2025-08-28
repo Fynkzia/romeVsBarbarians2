@@ -21,11 +21,26 @@ public class AnimationController : MonoBehaviour
     [SerializeField] public float shakeFrequency = 200f; // Частота тряски
     private float shakeOffset; // Временной сдвиг для перлин шума
 
+    
+    [SerializeField] float yOffset = 0.001f;
+
+
+    public void PlaceSpriteAtTerrain(Terrain terrain)
+    {
+        Vector3 worldPos = transform.position;
+        float h = terrain.SampleHeight(worldPos);
+        // Учти возможный масштаб террейна по Y (обычно unity terrain уже в мировых единицах)
+        Vector3 pos = new Vector3(worldPos.x, h + yOffset, worldPos.z);
+        transform.position = pos;
+    }
+
 
     void Awake ()
     {
         startPos = meshRenderer.transform.localPosition;
         startScale = meshRenderer.transform.localScale;
+
+        
     }
 
     public void SpriteAnimationChange(int animationindex)
@@ -45,6 +60,8 @@ public class AnimationController : MonoBehaviour
                 damageAnimation = true;
                 StartCoroutine(FlashWhite());
             }
+
+            //PlaceSpriteAtTerrain();
         }
     }
 
@@ -76,7 +93,6 @@ public class AnimationController : MonoBehaviour
 
     public void ShakeAnimation(float intesity)
     {
-        Debug.Log("ShakeAnimation = " + intesity);
 
         float time = Time.time * shakeFrequency + shakeOffset;
 

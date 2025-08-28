@@ -14,6 +14,7 @@ public class ArmyController : MonoBehaviour
     public string armyName;
     public int armyUnits;
     public int armySqaudCount;
+    public int armyUnitsMax;
 
     public int armyPower;
     public float armyMorale;
@@ -46,7 +47,7 @@ public class ArmyController : MonoBehaviour
 
     public Vector3 moveDirection;
 
-    [SerializeField] private NavMeshAgent agent;
+    [SerializeField] public NavMeshAgent agent;
 
     [Header("Morale")]
     [Space(10)]
@@ -84,6 +85,10 @@ public class ArmyController : MonoBehaviour
     private Vector3[] history;     // История позиций родителя
     private int historyLength;
 
+    [Header("Ai Settings")]
+    [Space(10)]
+    public int ai_currentState;
+
     [Header("Other")]
     [Space(10)]
 
@@ -95,10 +100,10 @@ public class ArmyController : MonoBehaviour
     public List<SquadController> selectedSquadList;
 
     public GameObject armyInfoPanel;
-    [SerializeField] public TextMeshProUGUI armyNameText;
+    [SerializeField] public TextMeshPro armyNameText;
     
-    [SerializeField] public TextMeshProUGUI armyUnitsCountText;
-    [SerializeField] public TextMeshProUGUI armyPowerCountText;
+    [SerializeField] public TextMeshPro armyUnitsCountText;
+    [SerializeField] public TextMeshPro armyPowerCountText;
 
     [SerializeField] public BarUI moraleBarImage;
     
@@ -115,9 +120,9 @@ public class ArmyController : MonoBehaviour
     private Queue<Vector3> leaderPositions = new Queue<Vector3>();
 
     [SerializeField] MapControlManager mapControlManager;
-    [SerializeField] MapSceneManager mapSceneManager;
+    [SerializeField] public MapSceneManager mapSceneManager;
     public BoxCollider collider;
-
+    public LayerMask checkMask;
 
     public event Action<ArmyController> OnArmyDestroyed;
 
@@ -125,6 +130,7 @@ public class ArmyController : MonoBehaviour
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        agent.Warp(transform.position);
         lineRenderer = Instantiate(lineRendererPrefab);
 
         mapSceneManager = GameObject.Find("MapSceneManager").GetComponent<MapSceneManager>();
@@ -192,13 +198,16 @@ public class ArmyController : MonoBehaviour
    public int UnitsCountUpdate()
     {
         int count = 0;
+        int max = 0;
         for (int i = 0; i < squadList.Count; i++)
         {
             count += (int)squadList[i].currentAmountUnits;
+            max += (int)squadList[i].amountUnits;
         }
 
         armySqaudCount = squadList.Count;
         armyUnits = count;
+        armyUnitsMax = max;
 
         return count;
     }
@@ -234,12 +243,29 @@ public class ArmyController : MonoBehaviour
        
     }
 
+    public void TargetPointCheck()
+    {
+        Collider[] nearColliders = Physics.OverlapSphere(targetObject.position, 4f, checkMask);
+
+        for (int i = 0; i < nearColliders.Length; i++)
+        {
+            if(nearColliders[i] == collider) { return; }
+            if (nearColliders[i].gameObject.layer == 19 && gameObject.tag == nearColliders[i].gameObject.tag)
+            {
+                goToCity = true;
+            }else 
+            if (nearColliders[i].gameObject.layer == 18 && gameObject.tag == nearColliders[i].gameObject.tag)
+            {
+                goToJoint = true;
+                jointArmy = nearColliders[i].GetComponent<ArmyController>();
+            }
+        }
+     }
 
 
-  
 
 
-    public void SqaudsUpdate()
+        public void SqaudsUpdate()
     {
         ArmyPowerUpdate();
         UnitsCountUpdate();
@@ -281,8 +307,11 @@ public class ArmyController : MonoBehaviour
 
         if (mapControlManager == null)
         {
-
-            mapControlManager = GameObject.Find("MapControlManager").GetComponent<MapControlManager>();
+            if(mapSceneManager == null)
+            {
+                mapSceneManager = mapSceneManager = GameObject.Find("MapSceneManager").GetComponent<MapSceneManager>();
+            }
+            mapControlManager = mapSceneManager.controlController;
         }
 
         if (isSelected)
@@ -338,6 +367,7 @@ public class ArmyController : MonoBehaviour
             if (squadList.Count == 0)
             {
                 ArmyDestroy();
+                return;
             }
         }
         SpeedCalculation();
@@ -470,25 +500,42 @@ public class ArmyController : MonoBehaviour
             {
                 if(other.GetComponent<BoxCollider>() == jointArmy.collider)
                 {
+                    SetMoving(false);
+                    Debug.Log("goToJoint") ;
+
+                    if (isSelected)
+                    {
+
+                        mapControlManager.uiManager.UIReset();
+
+
+
+                    }
+                    int countToDelete = 0;
                     for (int i = 0; i < squadList.Count; i++)
                     {
                         if (jointArmy.squadList.Count < 20)
                         {
-                            jointArmy.AddSquadFromArmy(squadList[0]);
-                            RemoveSquad(squadList[0]);
+                            jointArmy.AddSquadFromArmy(squadList[i]);
+                            countToDelete++;
                         }
                         else
                         {
-                            return;
+                           
                         }
 
                     }
-
-                        goToJoint = false;
-
                    
+                    for (int i = 0; i < countToDelete; i++)
+                    {
+                        RemoveSquad(squadList[0]);
+                    }
 
-                    
+                     goToJoint = false;
+                    return;
+
+
+
                 }
             }
         }
@@ -513,10 +560,10 @@ public class ArmyController : MonoBehaviour
             if (other.tag != tag && other.gameObject.layer == 19) //завахт пустого горада
             {
                 CityController newCity = other.GetComponent<CityController>();
-                if (city.armyInCity == null)
+                if (newCity.armyInCity == null)
                 {
 
-                    city.CityCaptured(isPlayer);
+                    newCity.CityCaptured(isPlayer);
                 }
             }
         }
@@ -529,41 +576,52 @@ public class ArmyController : MonoBehaviour
     {
         if (goToCity)
         {
-            goToCity = false;
 
-            SetMoving(false);
+            
+                goToCity = false;
 
-            targetObject.position = transform.position;
-            targetObject.gameObject.SetActive(false);
+                SetMoving(false);
 
-            collider.enabled = false;
-
-            city = newCity;
-
-            inCity = true;
-            city.armyInCity = this;
+                targetObject.position = transform.position;
+                targetObject.gameObject.SetActive(false);
 
 
-            //agent.nextPosition = city.armyPoint.position;
+                collider.enabled = false;
 
-            agent.transform.position = city.armyPoint.position;
-            //transform.position = city.armyPoint.position;
-            //transform.parent = city.transform;
-
-
-
-
-            if (isSelected)
+            if (newCity.armyInCity == null)
             {
+                city = newCity;
 
-                mapControlManager.SelectCity(city);
+                inCity = true;
+                city.armyInCity = this;
 
 
+                //agent.nextPosition = city.armyPoint.position;
+
+                agent.transform.position = city.armyPoint.position;
+                //transform.position = city.armyPoint.position;
+                //transform.parent = city.transform;
+
+
+
+
+                if (isSelected)
+                {
+
+                    mapControlManager.SelectCity(city);
+
+
+                }
+
+                for (int i = 0; i < squadsOnMap.Count; i++)
+                {
+                    squadsOnMap[i].gameObject.SetActive(false);
+                }
             }
-
-            for (int i = 0; i < squadsOnMap.Count; i++)
+            else
             {
-                squadsOnMap[i].gameObject.SetActive(false);
+
+
             }
         }
 
@@ -867,7 +925,7 @@ public class ArmyController : MonoBehaviour
             isFormated = false;
 
             targetObject.gameObject.SetActive(true);
-
+            TargetPointCheck();
 
         }
         else

@@ -6,7 +6,7 @@ using UnityEngine;
 
 
 public static class GameOptions  {
-    public static float maxLineLength = 70f;
+    public static float maxLineLength = 150f;
     public static float minLineLength = 2f;
     public static float unitsDeadTime = 5f;
     public static float distanceToPoint =0.2f;

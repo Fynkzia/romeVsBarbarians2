@@ -56,9 +56,13 @@ public class SceneLoader : MonoBehaviour
             mapSceneManager.uIManager.battleButtons[i].gameObject.SetActive(true);
 
          }
+
+       
     }
 
-    public void LoadBattleSceneButton(int sceneIndex)
+   
+
+        public void LoadBattleSceneButton(int sceneIndex)
     {
        if(sceneIndex > activeBattleScenes.Count) { return; }
 
@@ -71,6 +75,8 @@ public class SceneLoader : MonoBehaviour
                 StartCoroutine(EnterMapAfterDelay(activeScene));
 
                 activeScene = sceneIndex;
+
+
             }
         }
         else
@@ -100,8 +106,8 @@ public class SceneLoader : MonoBehaviour
 
         }
 
+        mapSceneManager.uIManager.UpdateActiveSceneSpritePosition(activeScene);
 
-       
     }
 
 
@@ -140,6 +146,8 @@ public class SceneLoader : MonoBehaviour
                mapSceneManager.ExitMapScene();
 
                 activeScene = sceneIndex;
+                mapSceneManager.uIManager.UpdateActiveSceneSpritePosition(activeScene);
+
                 i = 5;
 
             }
@@ -153,14 +161,15 @@ public class SceneLoader : MonoBehaviour
     {
 
         // mapSceneManager.ExitMapSceneAnimation();
-        mapSceneManager.uIManager.TransitionAnimation(false);//UI
+        mapSceneManager.uIManager.TransitionAnimation(true);//UI
 
-        Instance.activeBattleScenes[exitSceneIndex].ExitBattleScene();
+        Instance.activeBattleScenes[exitSceneIndex].ExitBattleSiquence();
 
         yield return new WaitForSeconds(battleSceneDelay);
 
         Instance.activeBattleScenes[sceneIndex].EnterBattleScene();
         //mapSceneManager.ExitMapScene();
+        mapSceneManager.uIManager.TransitionAnimation(false);//UI
     }
 
     private IEnumerator EnterBattleFromMap( int sceneIndex)
@@ -175,6 +184,8 @@ public class SceneLoader : MonoBehaviour
         mapSceneManager.ExitMapScene();
 
         activeScene = sceneIndex;
+        mapSceneManager.uIManager.UpdateActiveSceneSpritePosition(activeScene);
+
     }
 
     public void LoadBattleScene(int index, ArmyController army, ArmyController enemyArmy)
@@ -238,8 +249,9 @@ public class SceneLoader : MonoBehaviour
 
             if (army.inCity || enemyArmy.inCity)
             {
-
                 newbattle = Instantiate(citiesScenes[0], new Vector3(activeBattleScenes.Count * 500, 0, 0), battleScenes[0].transform.rotation);
+
+              
             }
             else
             {
@@ -263,11 +275,11 @@ public class SceneLoader : MonoBehaviour
 
                 if (army.inCity)
                 {
-                    newbattle.city = army.transform.parent.GetComponent<CityController>();
+                    newbattle.city = army.city;
                 }
                 else
                 {
-                    newbattle.city = enemyArmy.transform.parent.GetComponent<CityController>();
+                    newbattle.city = enemyArmy.city;
                 }
             }
 
@@ -498,6 +510,16 @@ public class SceneLoader : MonoBehaviour
         newBattleController.playerArmy = army;
         newBattleController.enemyArmy = enemyArmy;
 
+        if (army.inCity)
+        {
+            newBattleController.city = army.city;
+            newBattleController.cityBattle = true;
+        }
+        if (enemyArmy.inCity)
+        {
+            newBattleController.city = enemyArmy.city;
+            newBattleController.cityBattle = true;
+        }
 
         newBattleController.resourceManager = resourceManager;
 

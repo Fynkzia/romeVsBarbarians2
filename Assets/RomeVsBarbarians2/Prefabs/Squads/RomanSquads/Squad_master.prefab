@@ -145,8 +145,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 3
-  m_Center: {x: 0, y: 3, z: 0}
+  m_Radius: 3.47
+  m_Center: {x: 0, y: 3.55, z: 0}
 --- !u!54 &99249113234269805
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -190,7 +190,6 @@ MonoBehaviour:
   isBattleInit: 0
   helperSquad: 0
   type: 0
-  levelSquad: 1
   amountUnits: 42
   powerSquad: 2
   defenceSquad: 2
@@ -198,6 +197,11 @@ MonoBehaviour:
   formationSquad: 7
   maxMorale: 5
   actionTime: 1
+  levelSquad: 1
+  xp: 0
+  xpToNextLevel: 100
+  powerlevelBonus: 0
+  defencelevelBonus: 0
   coinsFromDeath: 1
   actionColliderRadius: 5
   movementSpeed: 4
@@ -207,10 +211,16 @@ MonoBehaviour:
   resetDefence: 0.25
   lostMoraleThenRun: 0.03
   lostMoraleThenDie: 0.2
-  lostMoraleThenAttacked: 0.08
+  lostMoraleThenAttacked: 0.06
   addMoraleKillSquad: 1
   addMoraleKillUnit: 0.1
   recoveryMoraleSpeed: 0.06
+  lostMoralePerRetretUnit: 0.1
+  checkRetretersTime: 1.5
+  currentRetretersTime: 0
+  retretersMask:
+    serializedVersion: 2
+    m_Bits: 1024
   retreatCount: 5
   retreatMinCount: 0
   coef:
@@ -246,6 +256,8 @@ MonoBehaviour:
   currentSpeed: 0
   stunnedTime: 0
   currentTriggerCoef: 0
+  minYtoSet: 0.2
+  lastY: 0
   angleToUpdateFormation: 25
   lossSpeedToStop: 1
   timeToStop: 1
@@ -284,6 +296,7 @@ MonoBehaviour:
   addMoraleFx: {fileID: 3730615119460860335, guid: 3428579618d4447508e3ceb4d0580024, type: 3}
   lostMoraleFx: {fileID: 8408955500383151332, guid: 773e4157dac944788bd1643c9e024a9c, type: 3}
   friendlyFireFx: {fileID: 3825571564101416963, guid: cee9bc7535e474ed4a85c49032df386d, type: 3}
+  panicFx: {fileID: 8515684795205079543, guid: a1973eb544c73476796e434ba8ea3bb8, type: 3}
   coinFX: {fileID: 1907167698180525989, guid: 42b76643cf2c9436897bcaee0205a644, type: 3}
   moveFxInterval: 0.3
   moveFXMax: 30
@@ -1120,8 +1133,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80a1e28658b8c44bb9b055ea2ca59612, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!224 &6247079536093603239 stripped
-RectTransform:
+--- !u!4 &6247079536093603239 stripped
+Transform:
   m_CorrespondingSourceObject: {fileID: 8788090585376487218, guid: 51bda6881a122479eaf53a17530b2d13, type: 3}
   m_PrefabInstance: {fileID: 3406837251700249237}
   m_PrefabAsset: {fileID: 0}

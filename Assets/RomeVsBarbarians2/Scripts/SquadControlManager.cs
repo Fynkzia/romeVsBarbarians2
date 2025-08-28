@@ -164,7 +164,7 @@ public class SquadControlManager : MonoBehaviour
 
                                 if (lineRenderer.positionCount > 2)
                                 {
-                                    if (roundedVector.y - lineRenderer.GetPosition(lineRenderer.positionCount - 2).y  > 1.2f)
+                                    if (roundedVector.y - lineRenderer.GetPosition(lineRenderer.positionCount - 2).y  > 3f)
                                     {
                                        // Debug.Log("roundedVector.y");
                                         currentLineLength = GameOptions.maxLineLength;

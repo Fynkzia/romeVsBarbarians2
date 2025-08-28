@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6399850061684132066}
   - component: {fileID: 8860576566559894263}
   - component: {fileID: 597621554179337066}
+  - component: {fileID: 1051089306577790224}
   - component: {fileID: 2912871237763547815}
   m_Layer: 6
   m_Name: CityInfo
@@ -130,6 +131,27 @@ MonoBehaviour:
   - 0.8
   - 0.9
   - 1.5
+  isInit: 0
+--- !u!114 &1051089306577790224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 171232534534182823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f60caa9d6a14649b2adc56554252617f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cityNameText: {fileID: 6853542557186089697}
+  buildingsCount: {fileID: 3349025169793588043}
+  buildingsCountChange: {fileID: 0}
+  unitsCount: {fileID: 4789956625517411718}
+  unitsCountChange: {fileID: 0}
+  colorLine: {fileID: 6063473710739559595}
+  playerColor: {r: 0.69803923, g: 0.05882353, b: 0.14509805, a: 1}
+  enemyColor: {r: 0.16100036, g: 0.509434, b: 0.24981682, a: 1}
 --- !u!95 &2912871237763547815
 Animator:
   serializedVersion: 5

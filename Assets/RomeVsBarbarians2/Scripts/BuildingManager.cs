@@ -180,7 +180,7 @@ public class BuildingManager : MonoBehaviour
                 }
                 else
                 {
-                    ResourceManager resourceManager = GameObject.Find("MapControlManager").GetComponent<ResourceManager>();
+                    ResourceManager resourceManager = GameObject.Find("ResourceManager").GetComponent<ResourceManager>();
                     resourceManager.ChangeAmountOfCoins(coinCost);
                 }
 

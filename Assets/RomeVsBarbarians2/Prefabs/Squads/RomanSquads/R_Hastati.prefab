@@ -1719,7 +1719,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 3d0a9f594106742619cf5bd6ea0b8313, type: 3}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: coinsNeed
-      value: 100
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: maxMorale
@@ -1743,7 +1743,7 @@ PrefabInstance:
       objectReference: {fileID: 7786529878817052060, guid: c70aea373e71a4adab91692f100c2a82, type: 3}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: powerSquad
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: unitPrefab
@@ -1759,11 +1759,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: retreatCount
-      value: 10
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: movementSpeed
-      value: 3.5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: formationSquad
@@ -1771,11 +1771,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: retreatMinCount
-      value: 30
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: minimumFormation
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
+      propertyPath: lostMoraleThenRun
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: currentAmountUnits
@@ -2026,7 +2030,7 @@ MonoBehaviour:
   shotRange: 14
   shotAmount: 100
   shotSpeed: 15
-  shotDamage: 3.5
+  shotDamage: 3
   shotAccuracy: 2
   shotRapidity: 3.3
   projectilesPerShotCount: 0

@@ -68,6 +68,8 @@ public class BattleSceneManager : MonoBehaviour
 
     public event Action<bool> NotAnimate;
 
+    public Terrain terrain;
+
 
     public void InitScene()
     {
@@ -138,7 +140,7 @@ public class BattleSceneManager : MonoBehaviour
 
         if (IsCity)
         {
-            int housesCount = city.cityBuildings/3;
+            int housesCount = city.cityBuildings/5;
 
             if (city.isPlayer)
             {
@@ -206,6 +208,7 @@ public class BattleSceneManager : MonoBehaviour
         public void DiePlayerSquad(SquadController squadController)
     {
         playerArmy.squadList.Remove(squadController);
+        squadController.gameObject.SetActive(false);
 
         if (playerArmy.squadList.Count == 0 || enemyArmy.squadList.Count == 0)
         {
@@ -318,18 +321,18 @@ public class BattleSceneManager : MonoBehaviour
     public void SpawnFormationPoints()
     {
 
-        Vector3 offcetToCenter = new Vector3(200f, 12f, 200f);
+        Vector3 offcetToCenter = new Vector3(200f, 15f, 200f);
 
-        Vector3 dirPlNorm = Quaternion.Euler(0, 90, 0) * (playerArmy.transform.position - mapBattleController.transform.position).normalized;
-        Vector3 dirEnNorm = Quaternion.Euler(0, 90, 0) * (enemyArmy.transform.position - mapBattleController.transform.position).normalized  ;
+        Vector3 dirPlNorm = Quaternion.Euler(0, 90, 0) * (new Vector3(playerArmy.transform.position.x, mapBattleController.transform.position.y, playerArmy.transform.position.z) - mapBattleController.transform.position).normalized;
+        Vector3 dirEnNorm = Quaternion.Euler(0, 90, 0) * (new Vector3(enemyArmy.transform.position.x, mapBattleController.transform.position.y, enemyArmy.transform.position.z) - mapBattleController.transform.position).normalized  ;
 
 
         Debug.Log("dirPlNorm - " + dirPlNorm);
 
         Debug.Log("dirEnNorm - " + dirEnNorm);
 
-        Vector3 positionPlayerArmy = (transform.position + offcetToCenter) + dirPlNorm * 100f;
-        Vector3 positionEnemyArmy = (transform.position + offcetToCenter) + dirEnNorm * 100f;
+        Vector3 positionPlayerArmy = (transform.position + offcetToCenter) + dirPlNorm * 150f;
+        Vector3 positionEnemyArmy = (transform.position + offcetToCenter) + dirEnNorm * 150f;
 
 
         if (!playerArmy.inCity)

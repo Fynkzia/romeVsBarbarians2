@@ -440,7 +440,6 @@ MonoBehaviour:
   isBattleInit: 0
   helperSquad: 0
   type: 0
-  levelSquad: 1
   amountUnits: 50
   powerSquad: 1
   defenceSquad: 1
@@ -448,6 +447,11 @@ MonoBehaviour:
   formationSquad: 6
   maxMorale: 4
   actionTime: 1
+  levelSquad: 1
+  xp: 0
+  xpToNextLevel: 100
+  powerlevelBonus: 0
+  defencelevelBonus: 0
   coinsFromDeath: 0
   actionColliderRadius: 5
   movementSpeed: 4
@@ -457,10 +461,16 @@ MonoBehaviour:
   resetDefence: 0.25
   lostMoraleThenRun: 0.03
   lostMoraleThenDie: 0.2
-  lostMoraleThenAttacked: 0.08
+  lostMoraleThenAttacked: 0.06
   addMoraleKillSquad: 1
   addMoraleKillUnit: 0.1
   recoveryMoraleSpeed: 0.06
+  lostMoralePerRetretUnit: 0.1
+  checkRetretersTime: 1.5
+  currentRetretersTime: 0
+  retretersMask:
+    serializedVersion: 2
+    m_Bits: 1024
   retreatCount: 15
   retreatMinCount: 36
   coef:
@@ -496,6 +506,8 @@ MonoBehaviour:
   currentSpeed: 0
   stunnedTime: 0
   currentTriggerCoef: 0
+  minYtoSet: 0.2
+  lastY: 0
   angleToUpdateFormation: 25
   lossSpeedToStop: 1
   timeToStop: 2
@@ -534,6 +546,7 @@ MonoBehaviour:
   addMoraleFx: {fileID: 3730615119460860335, guid: 3428579618d4447508e3ceb4d0580024, type: 3}
   lostMoraleFx: {fileID: 8408955500383151332, guid: 773e4157dac944788bd1643c9e024a9c, type: 3}
   friendlyFireFx: {fileID: 3825571564101416963, guid: cee9bc7535e474ed4a85c49032df386d, type: 3}
+  panicFx: {fileID: 8515684795205079543, guid: a1973eb544c73476796e434ba8ea3bb8, type: 3}
   coinFX: {fileID: 1907167698180525989, guid: 42b76643cf2c9436897bcaee0205a644, type: 3}
   moveFxInterval: 0.2
   moveFXMax: 15
@@ -767,6 +780,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5578669096314907647}
     m_Modifications:
+    - target: {fileID: 89153533335418721, guid: 51bda6881a122479eaf53a17530b2d13, type: 3}
+      propertyPath: m_Color.b
+      value: 0.060030267
+      objectReference: {fileID: 0}
+    - target: {fileID: 89153533335418721, guid: 51bda6881a122479eaf53a17530b2d13, type: 3}
+      propertyPath: m_Color.g
+      value: 0.1792453
+      objectReference: {fileID: 0}
+    - target: {fileID: 89153533335418721, guid: 51bda6881a122479eaf53a17530b2d13, type: 3}
+      propertyPath: m_Color.r
+      value: 0.060030267
+      objectReference: {fileID: 0}
+    - target: {fileID: 417103144113667359, guid: 51bda6881a122479eaf53a17530b2d13, type: 3}
+      propertyPath: m_Color.b
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 417103144113667359, guid: 51bda6881a122479eaf53a17530b2d13, type: 3}
+      propertyPath: m_Color.g
+      value: 0.3137255
+      objectReference: {fileID: 0}
+    - target: {fileID: 417103144113667359, guid: 51bda6881a122479eaf53a17530b2d13, type: 3}
+      propertyPath: m_Color.r
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 1266349752194800089, guid: 51bda6881a122479eaf53a17530b2d13, type: 3}
       propertyPath: squad
       value: 
@@ -935,8 +972,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32f36b774ea4c58408008acfb0cad680, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!224 &3054673904323198088 stripped
-RectTransform:
+--- !u!4 &3054673904323198088 stripped
+Transform:
   m_CorrespondingSourceObject: {fileID: 8788090585376487218, guid: 51bda6881a122479eaf53a17530b2d13, type: 3}
   m_PrefabInstance: {fileID: 6021858507052485562}
   m_PrefabAsset: {fileID: 0}

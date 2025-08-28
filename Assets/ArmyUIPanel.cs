@@ -49,6 +49,9 @@ public class ArmyUIPanel : MonoBehaviour
         Debug.Log("squadList count - " + squadList.Length);
         for (int i = 0; i < squadList.Length; i++)
         {
+            if(squadList.Length <= i) { return; }
+            if (squadList[i] == null) { return; }
+            if (squadMapUIPanelList.Count == 0) { return; }
             squadMapUIPanelList[i].UpdateSquadUiPanel(squadList[i]);
         }
 

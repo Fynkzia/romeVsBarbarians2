@@ -71,6 +71,7 @@ public class CameraMovement : MonoBehaviour
 
     public void CameraMoveToExit()
     {
+        exitCam.SetActive(false);
         cams[targetFOVIndex].gameObject.SetActive(false);
         exitCam.SetActive(true);
         gameCamera.GetComponent<CinemachineBrain>().m_DefaultBlend.m_Time = exitCamTime;

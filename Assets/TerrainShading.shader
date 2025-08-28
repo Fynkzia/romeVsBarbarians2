@@ -207,14 +207,18 @@ Shader "Custom/TerrainShadingWithNormals"
                 terrainColor.rgb += brightness;
                 terrainColor.rgb -= darkness;
 
+                 float3 N = normalize(i.worldNormal);
+                float3 L = normalize(_WorldSpaceLightPos0.xyz);
 
+                // скалярное произведение (Lambert)
+                float NdotL = saturate(dot(N, L));
                   
                 float3 normalDirection = i.worldNormal;
                 float atten = _SpecularPower;
 
                 float3 lightDirection = normalize(_WorldSpaceLightPos0.xyz);
 
-			    float3 diffuseReflection = atten * _LightColor0.xyz * dot(normalDirection, lightDirection);
+			    float3 diffuseReflection = atten * _LightColor0.xyz * NdotL;
 
 
                     float shadowFactor = 1.0 - _ShadowTransition; // Factor for shadow, based on light intensity
@@ -222,20 +226,23 @@ Shader "Custom/TerrainShadingWithNormals"
 
                     float dotProduct = dot(normalDirection, lightDirection);
                   float shadowAmount = saturate(1.0 - dotProduct);  // Чем больше угол между нормалью и направлением света, тем сильнее затемнение
-                  fixed3 shadowFinal = lerp(diffuseReflection.rgb, shadowColor, shadowAmount * shadowFactor);
+                  fixed3 shadowFinal = lerp(diffuseReflection.rgb, shadowColor, shadowAmount * shadowFactor  );
 
-                    diffuseReflection.rgb += shadowFinal;
+                    diffuseReflection.rgb += shadowFinal ;
+
+
+               
 
 
 
 
                 float3 lightReflectDirection = reflect(-lightDirection, normalDirection);
-				float3 viewDirection = normalize(float3(float4(_WorldSpaceCameraPos.xyz, 1.0) - i.worldPos.xyz));
-				float3 lightSeeDirection = max(0.0,dot(lightReflectDirection, viewDirection));
+				float3 viewDirection = normalize(float3(float4(_WorldSpaceCameraPos.xyz, 1.0) + i.worldPos.xyz));
+				float3 lightSeeDirection = max(1.0,dot(lightReflectDirection, viewDirection));
 				float3 shininessPower = pow(lightSeeDirection, _Shininess);
 
 
-				float3 specularReflection = atten * _SpecColor.rgb  * shininessPower;
+				float3 specularReflection = terrainColor * NdotL * shininessPower;
 
                    
 
@@ -246,7 +253,7 @@ Shader "Custom/TerrainShadingWithNormals"
                 //float3 color = diffuse + specular * _Metallic;
                   fixed shadow = SHADOW_ATTENUATION(i);
 
-                float3 lightFinal = terrainColor + diffuseReflection + specularReflection;
+                float3 lightFinal = terrainColor + diffuseReflection +  specularReflection;
                 lightFinal *=shadow;
 
                 float4 finalColorWithFog = float4(lightFinal * _LightColor.rgb, 1.0);

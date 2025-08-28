@@ -105,7 +105,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 20
+  m_Radius: 26
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1236461074
 MonoBehaviour:
@@ -1696,7 +1696,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 1aa3b3002671c4746aea439691283d5c, type: 2}
     - target: {fileID: 5732734904892970063, guid: 3cf9f074bb677453281e5482ac5cce92, type: 3}
       propertyPath: ShapeModule.radius.value
-      value: 20
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 5732734904892970063, guid: 3cf9f074bb677453281e5482ac5cce92, type: 3}
       propertyPath: InitialModule.startSize.scalar
@@ -1800,6 +1800,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -1.07
       objectReference: {fileID: 0}
+    - target: {fileID: 1330422226559671822, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 177752984531d4042846396337c02ac1, type: 3}
     - target: {fileID: 1578845287565738774, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1859,6 +1863,22 @@ PrefabInstance:
     - target: {fileID: 2624713457858017611, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: m_LocalPosition.z
       value: 1.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 2689130941364380503, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2.2973073
+      objectReference: {fileID: 0}
+    - target: {fileID: 2689130941364380503, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2.682576
+      objectReference: {fileID: 0}
+    - target: {fileID: 2689130941364380503, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.8734838
+      objectReference: {fileID: 0}
+    - target: {fileID: 2689130941364380503, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 12.13
       objectReference: {fileID: 0}
     - target: {fileID: 2835096852102318129, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: m_RootOrder
@@ -2098,7 +2118,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: coinsNeed
-      value: 80
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: maxMorale
@@ -2142,7 +2162,7 @@ PrefabInstance:
       objectReference: {fileID: 3402867912507858967, guid: b9598d3b6662f4b46a667f70dbea15d0, type: 3}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: movementSpeed
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: unitPositions
@@ -2171,6 +2191,10 @@ PrefabInstance:
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: lostDefenceMoving
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
+      propertyPath: lostMoraleThenRun
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: currentAmountUnits
@@ -2482,10 +2506,10 @@ MonoBehaviour:
   isAttackShooting: 0
   isShootingSquad: 1
   isMovementShooting: 0
-  shotRange: 20
+  shotRange: 26
   shotAmount: 100
   shotSpeed: 15
-  shotDamage: 1.7
+  shotDamage: 1.5
   shotAccuracy: 2
   shotRapidity: 3.3
   projectilesPerShotCount: 10
@@ -2495,6 +2519,7 @@ MonoBehaviour:
   pfArrow: {fileID: 5148241718951807296, guid: 4dedfec59b22d9149adc316ff5c9476d, type: 3}
   squadController: {fileID: 8411451147203699016}
   shootingTrigger: {fileID: 1236461072}
+  currentEnemy: {fileID: 0}
 --- !u!4 &1031025318550376703 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2835096852102318129, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}

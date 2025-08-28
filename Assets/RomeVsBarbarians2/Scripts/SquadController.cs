@@ -77,6 +77,11 @@ public class SquadController : MonoBehaviour {
     [SerializeField] public float recoveryMoraleSpeed;
 
 
+    [SerializeField] public float lostMoralePerRetretUnit;
+    [SerializeField] public float checkRetretersTime;
+    [SerializeField] public float currentRetretersTime;
+    [SerializeField] public LayerMask retretersMask;
+
     [Space(10)]
     [Header("Retreat specs")]
 
@@ -136,6 +141,8 @@ public class SquadController : MonoBehaviour {
 
     [Header("Movement Settings")]
     [Space(10)]
+    [SerializeField] private float minYtoSet = 0.3f;
+    [SerializeField] private float lastY ;
     [SerializeField] private float angleToUpdateFormation = 35f;
     [SerializeField] private float lossSpeedToStop = 2f;
     [SerializeField] private float timeToStop = 2f;
@@ -206,6 +213,7 @@ public class SquadController : MonoBehaviour {
     [SerializeField] private GameObject addMoraleFx;
     [SerializeField] private GameObject lostMoraleFx;
     [SerializeField] private GameObject friendlyFireFx;
+    [SerializeField] private GameObject panicFx;
 
     [SerializeField] private GameObject coinFX;
     [Space(10)]
@@ -298,12 +306,16 @@ public class SquadController : MonoBehaviour {
 
     public event Action<int> OnUnitsCountChange;
 
-    
+     Terrain terrain;
+
+
 
     public void InitOnMap()
     {
         currentAmountUnits = amountUnits;
         currentMorale = maxMorale;
+
+       
     }
 
     public void Reset()
@@ -425,6 +437,9 @@ public class SquadController : MonoBehaviour {
 
         squadInfo.XpUpdate(xp,xpToNextLevel,levelSquad);
 
+        terrain = battleSceneManager.terrain;
+        lastY = transform.position.y;
+
     }
 
     private void FixedUpdate()
@@ -436,9 +451,19 @@ public class SquadController : MonoBehaviour {
 
             animTime += Time.fixedDeltaTime;
 
-                
 
 
+                if (lastY > transform.position.y + minYtoSet || lastY < transform.position.y - minYtoSet)
+                {
+                    for (int i = 0; i < animatorControllers.Count; i++)
+                    {
+
+
+                        animatorControllers[i].PlaceSpriteAtTerrain(terrain);
+
+                    }
+                    lastY = transform.position.y;
+                }
 
 
                 if (!isMoved && !inBattle)
@@ -514,7 +539,7 @@ public class SquadController : MonoBehaviour {
 
                     float rbSpeed = calculatedVelocity.magnitude;
 
-                    if (rbSpeed >= movementSpeed) // елси достигли максимальной скорости - можем врываться
+                    if (rbSpeed >= movementSpeed/2f) // елси достигли максимальной скорости - можем врываться
                     {
                         canFirstAttack = true;
                     }
@@ -620,6 +645,15 @@ public class SquadController : MonoBehaviour {
             }
 
 
+            currentRetretersTime += Time.fixedDeltaTime;
+
+            if(currentRetretersTime > checkRetretersTime)
+            {
+
+                CheckMoraleDebuffs();
+                currentRetretersTime = 0;
+            }
+
             restorTime += Time.fixedDeltaTime;
             if (restorTime > 1f)
             {
@@ -695,10 +729,10 @@ public class SquadController : MonoBehaviour {
                                 if (unitArray[i] != null)
                                 {
 
-                                 
 
+                                    Vector3 newPos = new Vector3(unitPositions.points[newFormationIndex].position.x, unitArray[i].transform.position.y, unitPositions.points[newFormationIndex].position.z);
 
-                                    unitArray[i].transform.position = Vector3.MoveTowards(unitArray[i].transform.position, unitPositions.points[newFormationIndex].position, movementSpeed * 5f * Time.deltaTime);
+                                    unitArray[i].transform.position = Vector3.MoveTowards(unitArray[i].transform.position, newPos, movementSpeed * 5f * Time.deltaTime);
                                     initialPositions[i] = unitArray[i].transform.localPosition;
 
                                     newFormationIndex++;
@@ -726,7 +760,9 @@ public class SquadController : MonoBehaviour {
                                     //{ return; }
 
 
-                                    unitArray[i].transform.position = Vector3.MoveTowards(unitArray[i].transform.position, unitPositions.points[i].position, movementSpeed * 5f * Time.deltaTime);
+                                    Vector3 newPos = new Vector3(unitPositions.points[i].position.x, unitArray[i].transform.position.y, unitPositions.points[i].position.z);
+
+                                    unitArray[i].transform.position = Vector3.MoveTowards(unitArray[i].transform.position, newPos, movementSpeed * 5f * Time.deltaTime);
                                     initialPositions[i] = unitArray[i].transform.localPosition;
 
 
@@ -997,6 +1033,15 @@ public class SquadController : MonoBehaviour {
             else
             {
                 animationState = 0;
+
+                for (int i = 0; i < animatorControllers.Count; i++)
+                {
+
+
+                    animatorControllers[i].PlaceSpriteAtTerrain(terrain);
+
+                }
+                lastY = transform.position.y;
             }
         }
         else
@@ -1066,7 +1111,7 @@ public class SquadController : MonoBehaviour {
                
             }
 
-            canFirstAttack = true;
+            //canFirstAttack = true;
 
 
         }
@@ -1243,8 +1288,44 @@ public class SquadController : MonoBehaviour {
         return 0.5f;
     }
 
-   
 
+    public void CheckMoraleDebuffs()
+    {
+        Collider[] nearColliders = Physics.OverlapSphere(transform.position, actionColliderRadius, retretersMask);
+
+        int count = 0;
+
+        if (nearColliders.Length > 0)
+        {
+           
+            for (int i = 0; i < nearColliders.Length; i++)
+            {
+
+                if (nearColliders[i] != TriggerObject)
+                {
+                    if ((tag == SQUAD_TAG && nearColliders[i].gameObject.tag == SQUAD_TAG) || (tag == ENEMY_TAG && nearColliders[i].gameObject.tag == ENEMY_TAG))
+                    {
+                        count++;
+
+                        if(count <= 3) {
+                            SpawnPanicFX();
+                        }
+                        else
+                        {
+                            if(Random.Range(0,100) > 50)
+                            {
+                                SpawnPanicFX();
+                            }
+                        }
+                       
+                    }
+
+                }
+            }
+        }
+
+        MoraleChange(-count*lostMoralePerRetretUnit);
+    }
 
 
     public void MoraleChange(float morale) {
@@ -1301,6 +1382,11 @@ public class SquadController : MonoBehaviour {
             currentFormation = formationSquad;
             lastFormationValue = 0;
             updateFormation = true;
+        }else if(currentFormation + newDefence < 1)
+        {
+            currentFormation = 1;
+            
+            updateFormation = true;
         }
 
 
@@ -1322,6 +1408,8 @@ public class SquadController : MonoBehaviour {
                 squadInfo.DefenceMaxIndcator(false);
                 squadInfo.DefenceFilledIndcator(true);
             }
+
+            lastFormationValue = currentFormation;
         }
 
 
@@ -1841,26 +1929,54 @@ public class SquadController : MonoBehaviour {
         SquadController enController = null;
 
         enController = enemyController[ enemyController.Count - 1];
+        currentTriggerCoef = AttackTriggerCoef(enController);
 
-        if(currentSpeed-2f > enController.currentSpeed && canFirstAttack)
+        int countToKill = 1;
+
+        if (currentSpeed >= 5f)
         {
-            currentTriggerCoef = AttackTriggerCoef(enController);
+            countToKill += 1;
+        }
 
+        if(enController.currentFormation < 6f)
+        {
+            countToKill += 1;
+        }
 
+        if (enController.currentFormation < 3f)
+        {
+            countToKill += 1;
+        }
 
-            GetUnitDie(-2, 0, currentTriggerCoef*2f, amountUnits - enController.amountUnits);
+        if (currentTriggerCoef > 1f)
+        {
+            countToKill += 1;
+        }
+
+        if (currentSpeed-1f > enController.currentSpeed && canFirstAttack)
+        {
+            
+
+            for (int i = 0; i < countToKill; i++) // берем случайного
+            {
+
+                enController.GetUnitDie(-2, 0, currentTriggerCoef * 2f, amountUnits - enController.amountUnits);
+
+            }
+
+            enController.FormationBonusChange(-(pushSquad / 2f) * ((currentSpeed - enController.currentSpeed)) + currentTriggerCoef + countToKill);
 
             Vector3 dir = (enController.transform.position - transform.position).normalized;
             float force = (15f * pushSquad) + ((currentFormation - enController.currentFormation) * 10f) + ((currentSpeed- enController.currentSpeed)* 5f * pushSquad);
             enController.SquadPush(dir, force);
             SquadPush(dir*1.1f, force);
 
-            enController.FormationBonusChange(-(pushSquad/10f) * (currentSpeed - enController.currentSpeed) - currentTriggerCoef);
+           
 
 
          enController.canFirstAttack = false;
             enController.isStunned = true;
-            enController.stunnedTime = 1.5f;
+            enController.stunnedTime = 0.5f + countToKill;
             
         }
 
@@ -1973,7 +2089,7 @@ public class SquadController : MonoBehaviour {
         if(inBuildBattle){
             predictBuild.GetDamage((amountUnits * powerSquad)* MoraleEffectIndex());
 
-            AddXp(5);
+            AddXp(25f);
         }
     }
 
@@ -2103,7 +2219,7 @@ public class SquadController : MonoBehaviour {
         moraleLost -= Mathf.Pow(lostMoraleThenDie, 0.3f + (currentAmountUnits / amountUnits));
         
         moraleLost -= (countDiff / 100f);
-        moraleLost -= triggerCoef / 10f;
+        moraleLost -= triggerCoef / 2f;
         moraleLost -= bonusMoraleLost;
         moraleLost -= enemyController.Count / 10f;
 
@@ -2198,9 +2314,9 @@ public class SquadController : MonoBehaviour {
         if (currentAmountUnits < retreatMinCount && currentMorale / maxMorale < 0.35f)
         {
 
-            float min = 0f - (2 * currentMorale) - (2 * (currentAmountUnits / amountUnits));
+            float min = 0f - (currentMorale) - (2 * (currentAmountUnits / amountUnits)) - (maxMorale/5);
 
-            float max = 10 + enemyController.Count;
+            float max = 10f + (enemyController.Count*2) ;
 
             int count = 1;
 
@@ -2221,63 +2337,66 @@ public class SquadController : MonoBehaviour {
             RetreatUpdate();
             squadInfo.RetreatIndicator(true);
            // Debug.Log("TryToRetreat min = " + min + "max = " + max);
-            if (Random.Range(min, max) > 4f)
-            {///// зависит от сложности
+            ///// зависит от сложности
 
                 for (int i = 0; i < count; i++)
                 {
-                    if (unitArray[unitArray.Count - i - 1].transform.parent == gameObject.transform)
+                    if (Random.Range(min, max) > 4f)
                     {
-                        Transform currentModel = unitArray[i].transform;
-                        currentModel.gameObject.AddComponent<Rigidbody>();
-                        currentModel.gameObject.AddComponent<SphereCollider>();
-
-                        UnitRetreatController unitRetreatController = currentModel.GetComponent<UnitRetreatController>();
-                        unitRetreatController.enabled = true;
-
-                        if (enemyController.Count > 0)
+                        if (unitArray[unitArray.Count - i - 1].transform.parent == gameObject.transform)
                         {
-                            if (enemyController[0] != null)
-                                unitRetreatController.enemyPos = enemyController[0].transform.position;
-                        }
-                        else
-                        {
-                            if (inBuildBattle)
+                            Transform currentModel = unitArray[i].transform;
+                            currentModel.gameObject.AddComponent<Rigidbody>();
+                            currentModel.gameObject.AddComponent<SphereCollider>();
+
+                            UnitRetreatController unitRetreatController = currentModel.GetComponent<UnitRetreatController>();
+                            unitRetreatController.enabled = true;
+                            currentModel.gameObject.tag = gameObject.tag;
+
+                            if (enemyController.Count > 0)
                             {
-                                unitRetreatController.enemyPos = predictBuild.transform.position;
+                                if (enemyController[0] != null)
+                                    unitRetreatController.enemyPos = enemyController[0].transform.position;
                             }
                             else
                             {
-                                unitRetreatController.enemyPos = new Vector3(0, 0, 0);
+                                if (inBuildBattle)
+                                {
+                                    unitRetreatController.enemyPos = predictBuild.transform.position;
+                                }
+                                else
+                                {
+                                    unitRetreatController.enemyPos = new Vector3(0, 0, 0);
+                                }
                             }
+                            currentModel.parent = null;
+
+
+
+                            currentModel.parent = null;
+
+
+
+                            if (unitArray.Contains(currentModel.gameObject))
+                                unitArray.Remove(currentModel.gameObject);
+
+                            if (avaliableToAttack.Contains(currentModel.gameObject))
+                                avaliableToAttack.Remove(currentModel.gameObject);
+
+
+                            AnimationController anim = currentModel.GetComponent<AnimationController>();
+
+                            if (animatorControllers.Contains(anim))
+                                animatorControllers.Remove(anim);
+
+                            currentAmountUnits--;
+                            OnUnitsCountChange?.Invoke((int)currentAmountUnits);
+
                         }
-                        currentModel.parent = null;
-
-
-
-                        currentModel.parent = null;
-
-
-
-                        if (unitArray.Contains(currentModel.gameObject))
-                            unitArray.Remove(currentModel.gameObject);
-
-                        if (avaliableToAttack.Contains(currentModel.gameObject))
-                            avaliableToAttack.Remove(currentModel.gameObject);
-
-
-                        AnimationController anim = currentModel.GetComponent<AnimationController>();
-
-                        if (animatorControllers.Contains(anim))
-                            animatorControllers.Remove(anim);
-
-                        currentAmountUnits--;
-                        OnUnitsCountChange?.Invoke((int)currentAmountUnits);
-
                     }
                 }
 
-            }
+            
 
 
 
@@ -2288,16 +2407,28 @@ public class SquadController : MonoBehaviour {
                 inBattle = false;
                 squadInfo.BattleIndicator(false);
 
+                if(unitArray.Count == 0 || currentAmountUnits == 0)
+                {
+                    SquadDie();
+                    return;
+                }
+
                 for (int i = 0; i < unitArray.Count; i++)
                 {
+                    if (unitArray.Count == 0 || currentAmountUnits == 0 || unitArray[i] == null) { SquadDie(); return; }
+
+
+
                     if (unitArray[i].transform.parent == gameObject.transform)
                     {
+                        
                         Transform currentModel = unitArray[i].transform;
                         currentModel.gameObject.AddComponent<Rigidbody>();
                         currentModel.gameObject.AddComponent<SphereCollider>();
 
                         UnitRetreatController unitRetreatController = currentModel.GetComponent<UnitRetreatController>();
                         unitRetreatController.enabled = true;
+                        currentModel.gameObject.tag = gameObject.tag;
 
                         if (enemyController.Count > 0)
                         {
@@ -2497,7 +2628,7 @@ public class SquadController : MonoBehaviour {
 
         MoraleChange(addMoraleKillSquad);
 
-        AddXp(50);
+        AddXp(60f);
 
     }
 
@@ -2882,6 +3013,11 @@ public class SquadController : MonoBehaviour {
     public void SpawnFriendlyFireFX()
     {
         Instantiate(friendlyFireFx, unitArray[Random.Range(0, unitArray.Count)].transform.position, friendlyFireFx.transform.rotation);
+
+    }
+    public void SpawnPanicFX()
+    {
+        Instantiate(panicFx, unitArray[Random.Range(0, unitArray.Count)].transform.position, panicFx.transform.rotation);
 
     }
 
