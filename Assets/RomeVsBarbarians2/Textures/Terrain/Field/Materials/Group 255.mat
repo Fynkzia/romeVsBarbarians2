@@ -23,7 +23,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
-  m_LockedProperties: 
+  m_LockedProperties: _LightColor
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -75,7 +75,7 @@ Material:
     m_Floats:
     - _BumpScale: 1
     - _Cutoff: 0.5
-    - _CutoutThreshold: 0.719
+    - _CutoutThreshold: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _GlossMapScale: 1
@@ -91,23 +91,23 @@ Material:
     - _RimMax: 0.85
     - _RimMin: 0.6
     - _RimStrength: 0.5
-    - _ShadowIntensity: 0.54
-    - _ShadowTransition: 0.91
-    - _Smoothness: 0.88
+    - _ShadowIntensity: 0.531
+    - _ShadowTransition: 0.525
+    - _Smoothness: 0.1
     - _SmoothnessTextureChannel: 0
     - _SpecBlend: 1
     - _SpecSmooth: 1
     - _SpecularHighlights: 0
-    - _SpecularStrength: 0.133
+    - _SpecularStrength: 0.65
     - _SrcBlend: 1
     - _TCP2_DISABLE_WRAPPED_LIGHT: 1
     - _TCP2_RAMPTEXT: 0
     - _TCP2_SPEC_TOON: 0
     - _TCP2_STYLIZED_FRESNEL: 0
     - _UVSec: 0
-    - _WindFrameStep: 0.56
+    - _WindFrameStep: 0.3
     - _WindFrequency: 2
-    - _WindSpeed: 1
+    - _WindSpeed: 8.2
     - _WindStrength: 0.1
     - _ZWrite: 1
     m_Colors:
@@ -118,6 +118,6 @@ Material:
     - _LightColor: {r: 1, g: 1, b: 1, a: 1}
     - _RimColor: {r: 0.8, g: 0.8, b: 0.8, a: 0.6}
     - _SColor: {r: 0.25, g: 0.25, b: 0.25, a: 1}
-    - _ShadowColor: {r: 0.6363697, g: 0.6981132, b: 0.45113918, a: 1}
-    - _SpecularColor: {r: 0.7830189, g: 0.7114229, b: 0.53555536, a: 1}
+    - _ShadowColor: {r: 0.059136078, g: 0.2264151, b: 0, a: 1}
+    - _SpecularColor: {r: 0.2735849, g: 0.25140068, b: 0.2000267, a: 1}
   m_BuildTextureStacks: []

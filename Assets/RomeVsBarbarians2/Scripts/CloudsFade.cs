@@ -43,7 +43,7 @@ public class CloudsFade : MonoBehaviour
             {
                 instMat.color += new Color(0, 0, 0, fadeSpeed * Time.deltaTime);
 
-                if (instMat.color.a >= 0.5f)
+                if (instMat.color.a >= 0.75f)
                 {
                     doFade = false;
                 }
