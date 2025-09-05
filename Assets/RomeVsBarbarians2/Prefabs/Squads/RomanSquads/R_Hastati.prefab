@@ -1813,6 +1813,10 @@ PrefabInstance:
       propertyPath: coef.Array.data[2].defence
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 6787641924075962677, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8748810727704169941, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: m_SizeDelta.x
       value: 2.211
@@ -2028,7 +2032,8 @@ MonoBehaviour:
   isShootingSquad: 0
   isMovementShooting: 0
   shotRange: 14
-  shotAmount: 100
+  shotAmount: 1
+  maxShotsAmount: 2
   shotSpeed: 15
   shotDamage: 3
   shotAccuracy: 2
@@ -2040,6 +2045,7 @@ MonoBehaviour:
   pfArrow: {fileID: 5148241718951807296, guid: 4dedfec59b22d9149adc316ff5c9476d, type: 3}
   squadController: {fileID: 9047224651742628108}
   shootingTrigger: {fileID: 4412818212826154968}
+  currentEnemy: {fileID: 0}
 --- !u!4 &539227658572478651 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2835096852102318129, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}

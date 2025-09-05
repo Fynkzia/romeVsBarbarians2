@@ -611,7 +611,7 @@ GameObject:
   m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7029863600529004947
 Transform:
   m_ObjectHideFlags: 0
@@ -3357,7 +3357,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1350556255553353842
 Transform:
   m_ObjectHideFlags: 0
@@ -3461,10 +3461,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7739591156242553201}
-  - component: {fileID: 9140960812241890315}
   - component: {fileID: 2928615289069099057}
   m_Layer: 16
-  m_Name: HouseGroupe
+  m_Name: SmallHousesGroup
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3492,45 +3491,6 @@ Transform:
   - {fileID: 7029863600529004947}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &9140960812241890315
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5820059602494863000}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 105437f4894234bf9a403a15b985c6d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isPlayer: 0
-  isSpawner: 0
-  isHealer: 0
-  isInit: 0
-  buildInGroup:
-  - {fileID: 6562690563391621153}
-  - {fileID: 2926482641526515148}
-  - {fileID: 6237316648341538079}
-  - {fileID: 8135068636864687263}
-  squadSpawnPrefab: {fileID: 4272877637183402022, guid: 55e4a753d33e24f1e9ed1d2d0509a26e, type: 3}
-  spawnedSuadsList: []
-  timeToSpawn: 5
-  timeToHeal: 5
-  squadLimit: 2
-  collider: {fileID: 0}
-  sduadMask:
-    serializedVersion: 2
-    m_Bits: 4096
-  healedSquad: []
-  allVisual: {fileID: 5662109270270332388}
-  spawnPoint: {fileID: 7029863600529004947}
-  spawnerInfoObject: {fileID: 7187097550169943124}
-  spawnTimerImage: {fileID: 0}
-  spawnTimerText: {fileID: 8527648628506667038}
-  healerInfoObject: {fileID: 8075098787256856763}
-  cencelInfoObject: {fileID: 3606305255204017934}
-  battleSceneManager: {fileID: 0}
 --- !u!135 &2928615289069099057
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -5981,14 +5941,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: HouseSmall (23)
       objectReference: {fileID: 0}
-    - target: {fileID: 6761495131840595006, guid: 384c5d1199ea54ec5bfa295956d89527, type: 3}
-      propertyPath: inGroupBuilding
-      value: 1
+    - target: {fileID: 5185996277045338134, guid: 384c5d1199ea54ec5bfa295956d89527, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6761495131840595006, guid: 384c5d1199ea54ec5bfa295956d89527, type: 3}
-      propertyPath: spawnerController
-      value: 
-      objectReference: {fileID: 9140960812241890315}
+      propertyPath: inGroupBuilding
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -6002,17 +5962,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2364428297182640169, guid: 384c5d1199ea54ec5bfa295956d89527, type: 3}
   m_PrefabInstance: {fileID: 488354361775246367}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6562690563391621153 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6761495131840595006, guid: 384c5d1199ea54ec5bfa295956d89527, type: 3}
-  m_PrefabInstance: {fileID: 488354361775246367}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3cea5a3518d1844c79b5876fdff4a7d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &633785812028232035
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6197,12 +6146,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6761495131840595006, guid: 384c5d1199ea54ec5bfa295956d89527, type: 3}
       propertyPath: inGroupBuilding
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6761495131840595006, guid: 384c5d1199ea54ec5bfa295956d89527, type: 3}
-      propertyPath: spawnerController
-      value: 
-      objectReference: {fileID: 9140960812241890315}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -6216,17 +6161,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2364428297182640169, guid: 384c5d1199ea54ec5bfa295956d89527, type: 3}
   m_PrefabInstance: {fileID: 818179099894956321}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6237316648341538079 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6761495131840595006, guid: 384c5d1199ea54ec5bfa295956d89527, type: 3}
-  m_PrefabInstance: {fileID: 818179099894956321}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3cea5a3518d1844c79b5876fdff4a7d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1953364631898809755
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6721,12 +6655,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6761495131840595006, guid: 384c5d1199ea54ec5bfa295956d89527, type: 3}
       propertyPath: inGroupBuilding
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6761495131840595006, guid: 384c5d1199ea54ec5bfa295956d89527, type: 3}
-      propertyPath: spawnerController
-      value: 
-      objectReference: {fileID: 9140960812241890315}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -6867,9 +6797,13 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6879314839310812878, guid: ae0f126fa94d2416da8784253bba770d, type: 3}
-      propertyPath: spawnerController
-      value: 
-      objectReference: {fileID: 9140960812241890315}
+      propertyPath: hitPoints
+      value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 6879314839310812878, guid: ae0f126fa94d2416da8784253bba770d, type: 3}
+      propertyPath: inGroupBuilding
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6880,17 +6814,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2485345533336910553, guid: ae0f126fa94d2416da8784253bba770d, type: 3}
   m_PrefabInstance: {fileID: 3431089492827335249}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8135068636864687263 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6879314839310812878, guid: ae0f126fa94d2416da8784253bba770d, type: 3}
-  m_PrefabInstance: {fileID: 3431089492827335249}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3cea5a3518d1844c79b5876fdff4a7d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &3613796776205273472
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8540,14 +8463,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: HouseSmall (22)
       objectReference: {fileID: 0}
-    - target: {fileID: 6761495131840595006, guid: 384c5d1199ea54ec5bfa295956d89527, type: 3}
-      propertyPath: inGroupBuilding
-      value: 1
+    - target: {fileID: 5185996277045338134, guid: 384c5d1199ea54ec5bfa295956d89527, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6761495131840595006, guid: 384c5d1199ea54ec5bfa295956d89527, type: 3}
-      propertyPath: spawnerController
-      value: 
-      objectReference: {fileID: 9140960812241890315}
+      propertyPath: inGroupBuilding
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -8556,17 +8479,6 @@ PrefabInstance:
       addedObject: {fileID: 452043175187608102}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 384c5d1199ea54ec5bfa295956d89527, type: 3}
---- !u!114 &2926482641526515148 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6761495131840595006, guid: 384c5d1199ea54ec5bfa295956d89527, type: 3}
-  m_PrefabInstance: {fileID: 8451378030230413810}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3cea5a3518d1844c79b5876fdff4a7d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &6168084897368857051 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2364428297182640169, guid: 384c5d1199ea54ec5bfa295956d89527, type: 3}

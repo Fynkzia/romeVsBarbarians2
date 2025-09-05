@@ -16,8 +16,11 @@ public class AIController : MonoBehaviour
     // 2 - идем к подходящему отряду чтоб дать ему песды - если он далеко!
     // 3 - отходим, ссымся. Если в бою - выходим из боя
     // 4 - бежим на помощь союзному отряду
-    // 5 - бежим в точку защиты
-    // 6 - пробуем обойти врага
+    // 5 - бежим в точку выгодную точку (defence zone + small city)
+    // 6 -  пробуем штурмануть группой
+    // 7 - есть вариант комуто зайти в спину?
+    // 8 - нам ничего не угражает - стратегический мув (улучшение позиции)
+
 
     [Space(10)]
 
@@ -70,8 +73,18 @@ public class AIController : MonoBehaviour
 [SerializeField] public float nearRadius;
 [SerializeField] public float nearEnemyRadius;
 
+    [Header("Stategy movements")]
+    [Space(10)]
 
-[Header("Suport waves Settings")]
+    [SerializeField] public int strategyCounter;
+    [SerializeField] public float enemyPower;
+    [SerializeField] public float playerPower;
+
+
+    [SerializeField] private Transform attackFormation;
+    [SerializeField] private Transform defenceFormation;
+
+    [Header("Suport waves Settings")]
     [Space(10)]
 
 [SerializeField] public Transform enemyObject;
@@ -99,6 +112,8 @@ public class AIController : MonoBehaviour
 
     [SerializeField] public Transform targettt;
     LineRenderer lineRenderer;
+
+    [SerializeField] public BattleSceneManager battleSceneManager;
 
 
 
@@ -234,7 +249,7 @@ public class AIController : MonoBehaviour
                     lastPowerToAttack = p;
                     bestIndexToAttack = i;
                 }
-                if (p > 0)
+                if (p > 0) //
                 {
                     countToAttck++;
                 }
@@ -246,6 +261,18 @@ public class AIController : MonoBehaviour
 
             actionPrioruty[2] += countToAttck;//  пересмотрт!!!!!!
             actionPrioruty[2] += lastPowerToAttack / 20;//  пересмотрт!!!!!!
+
+            if(playerFarSquads.Count == 1)
+            {
+
+                actionPrioruty[2] += 1;
+            }
+
+            if (bestSquadToAttack.currentMorale/ bestSquadToAttack.maxMorale < 0.5f)
+            {
+
+                actionPrioruty[2] += 1;
+            }
 
 
             if (squad.predictEnemy != null) /// если чел уже идет к врагу или сражается - множим на 0;
@@ -419,6 +446,8 @@ public class AIController : MonoBehaviour
 
             squad.isGoingToEnemy = true;
             squad.predictEnemy = bestSquadToAttack.TriggerObject;
+
+            battleSceneManager.AttackAlert();
             return;
         }
         if (bestAction == 2) // подтягиваемся к врагам на пол пути

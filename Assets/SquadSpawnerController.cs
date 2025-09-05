@@ -7,15 +7,15 @@ using TMPro;
 
 public class SquadSpawnerController : MonoBehaviour
 {
-    [SerializeField] private bool isPlayer;
+    [SerializeField] public bool isPlayer;
     [SerializeField] private bool isSpawner;
     [SerializeField] private bool isHealer;
     [SerializeField] private bool isInit;
 
 
-    [SerializeField] private List<BuildingManager> buildInGroup;
+   
 
-    [SerializeField] private SquadController squadSpawnPrefab;
+    [SerializeField] public SquadController squadSpawnPrefab;
 
     [SerializeField] private List<SquadController> spawnedSuadsList;
 
@@ -23,13 +23,17 @@ public class SquadSpawnerController : MonoBehaviour
     [SerializeField] private float timeToHeal;
     [SerializeField] private int squadLimit;
 
-    [SerializeField] private SphereCollider collider;
-    [SerializeField] private LayerMask sduadMask;
+
+    [SerializeField] public SquadController playerDefaultSquadHelper;
+    [SerializeField] public SquadController enemyDefaultSquadHelper;
+
+
 
     private float curretntTimeToSpawn;
     private float curretntTimeToHeal;
+    private float curretntTimeToUpdateUi;
 
-    [SerializeField] private List<SquadController> healedSquad;
+    [SerializeField] public List<SquadController> healedSquad;
 
     [SerializeField] private GameObject allVisual;
     [SerializeField] private Transform spawnPoint;
@@ -37,6 +41,10 @@ public class SquadSpawnerController : MonoBehaviour
     [SerializeField] private GameObject spawnerInfoObject;
     [SerializeField] private Image spawnTimerImage;
     [SerializeField] private TextMeshProUGUI spawnTimerText;
+
+    [SerializeField] private Transform squadInfoPanel;
+    [SerializeField] private SquadMapUIPanel newSquadPanel;
+    [SerializeField] private float timeToUpdateUi = 1;
 
     [SerializeField] private GameObject healerInfoObject;
     [SerializeField] private GameObject cencelInfoObject;
@@ -47,15 +55,17 @@ public class SquadSpawnerController : MonoBehaviour
     // Start is called before the first frame update
     public void Init()
     {
-        
+        battleSceneManager = transform.parent.parent.GetComponent<BattleSceneManager>();
         isInit = true;
 
         SetSpawner(true);
 
-        collider = GetComponent<SphereCollider>();
+      
 
         allVisual.SetActive(true);
-        collider.enabled = true;
+
+
+       
     }
 
 
@@ -67,10 +77,11 @@ public class SquadSpawnerController : MonoBehaviour
             if (isSpawner)
             {
                 curretntTimeToSpawn += Time.deltaTime;
+                curretntTimeToUpdateUi += Time.deltaTime;
 
-                if (spawnedSuadsList.Count < squadLimit)
+                if (curretntTimeToUpdateUi > timeToUpdateUi)
                 {
-                    spawnTimerText.text = "" + (int)(timeToSpawn - curretntTimeToSpawn) + " sec";
+                    UpdateSpawnUi();
                 }
 
                     if (curretntTimeToSpawn > timeToSpawn)
@@ -120,7 +131,7 @@ public class SquadSpawnerController : MonoBehaviour
                 {
 
 
-
+                    SquadHeal();
                     curretntTimeToHeal = 0;
                 }
             }
@@ -130,93 +141,25 @@ public class SquadSpawnerController : MonoBehaviour
 
 
     }
-
-    private void OnTriggerEnter(Collider other)
+    public void SquadHeal()
     {
-        if ((tag == "Player" && other.gameObject.tag == "Enemy") || (tag == "Enemy" && other.gameObject.tag == "Player"))
+        if (healedSquad.Count == 0)
         {
-            SetSpawner(false);
-            SetHealer(false);
+            return;
         }
-        else if ((tag == "Enemy" && other.gameObject.tag == "Enemy") || (tag == "Player" && other.gameObject.tag == "Player")) {
+        else
+        {
+            healedSquad[0].AddUnit(1);
 
-            if (other.gameObject.layer == 12) // внутренний коллайдер отряда
+            if(healedSquad[0].currentAmountUnits == healedSquad[0].amountUnits)
             {
-                
-
-                SquadController squad = other.GetComponent<SquadController>();
-
-                if (squad.currentAmountUnits < squad.amountUnits)
-                {
-                    healedSquad.Add(squad);
-
-                    if (healedSquad.Count == 0)
-                    {
-                        SetSpawner(true);
-
-
-
-                    }
-                    else
-                    {
-                        SetHealer(true);
-                    }
-                }
-
+                healedSquad.Remove(healedSquad[0]);
             }
         }
-     }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if ((tag == "Player" && other.gameObject.tag == "Enemy") || (tag == "Enemy" && other.gameObject.tag == "Player"))
-        {
-            if (!EnemySquadCheck()) {
 
 
-                if (healedSquad.Count == 0)
-                {
-                    SetSpawner(true);
-
-
-
-                }
-                else
-                {
-                    SetHealer(true);
-                }
-                
-
-            }
-        }
-        else if ((tag == "Enemy" && other.gameObject.tag == "Enemy") || (tag == "Player" && other.gameObject.tag == "Player"))
-        {
-
-            if (other.gameObject.layer == 12) // внутренний коллайдер отряда
-            {
-                SquadController squad = other.GetComponent<SquadController>();
-
-                if (healedSquad.Contains(squad))
-                {
-                    healedSquad.Remove(squad);
-                }
-
-                if (healedSquad.Count == 0)
-                {
-                    SetSpawner(true);
-
-
-
-                }
-                else
-                {
-                    SetHealer(true);
-                }
-
-                
-            }
-        }
     }
+   
 
     public void SpawnSquad()
     {
@@ -288,23 +231,7 @@ public class SquadSpawnerController : MonoBehaviour
 
     }
 
-    public bool EnemySquadCheck()
-    {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, collider.radius, sduadMask);
-
-        foreach (var hitCollider in hitColliders)
-        {
-
-            if ((tag == "Player" && hitCollider.gameObject.tag == "Enemy") || (tag == "Enemy" && hitCollider.gameObject.tag == "Player"))
-            {
-                cencelInfoObject.gameObject.SetActive(true);
-                return true;
-            }
-
-       }
-        cencelInfoObject.gameObject.SetActive(false);
-        return false;
-    }
+    
 
     public void SpawnedListUpdate()
     {
@@ -321,14 +248,22 @@ public class SquadSpawnerController : MonoBehaviour
         
     }
 
-    public void BuildDestroy(BuildingManager build)
+    public void UpdateSpawnUi()
     {
-
-        buildInGroup.Remove(build);
-
-        if(buildInGroup.Count == 0)
+        if (newSquadPanel == null && squadSpawnPrefab != null)
         {
-            Destroy(gameObject);
+            SquadMapUIPanel newPanel = Instantiate(squadSpawnPrefab.mapUIPanel, squadInfoPanel.position, squadInfoPanel.rotation, squadInfoPanel);
+
+            newSquadPanel = newPanel;
+        }
+        spawnTimerText.text = "" + (int)(timeToSpawn - curretntTimeToSpawn) + " sec";
+    }
+
+    public void ClearSpawnUi()
+    {
+        if(newSquadPanel != null)
+        {
+            Destroy(newSquadPanel.gameObject);
         }
 
     }

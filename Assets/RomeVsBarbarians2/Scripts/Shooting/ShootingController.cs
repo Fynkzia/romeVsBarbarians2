@@ -15,6 +15,7 @@ public class ShootingController : MonoBehaviour
     [Header("Shooting Spec")]
     [SerializeField] float shotRange;
     [SerializeField] int shotAmount;
+    [SerializeField] int maxShotsAmount;
     [SerializeField] float shotSpeed;
     [SerializeField] float shotDamage;
     [SerializeField] float shotAccuracy;
@@ -38,7 +39,14 @@ public class ShootingController : MonoBehaviour
     private ShotRangeManager shotRangeManager;
     private float rapidityTimer ;
 
-    private void Start() {
+    public void InitBattle()
+    {
+        shotAmount = maxShotsAmount;
+        squadController.squadInfo.AmmoUpdate(shotAmount, maxShotsAmount);
+    }
+
+
+        private void Start() {
         isFirstShoot = true;
         rapidityTimer = shotRapidity;
         squadController = GetComponent<SquadController>();
@@ -80,6 +88,9 @@ public class ShootingController : MonoBehaviour
                     ShootingSquad();
                 }
                 rapidityTimer = 0;
+
+                squadController.squadInfo.AmmoUpdate(shotAmount, maxShotsAmount);
+
             }
             else {
                 rapidityTimer += Time.deltaTime;
@@ -164,7 +175,7 @@ public class ShootingController : MonoBehaviour
 
 
                 }
-
+                shotAmount--;
                 ShotMovement.Create(pfArrow, transform.position + new Vector3(0, shotStartOffset, 0), enemyPosition, shotSpeed, projectilesPerShotCount, shotDamage, (distance / shotRange), gameObject.tag, squadController.TriggerObject.radius);
             }
             else
@@ -177,6 +188,8 @@ public class ShootingController : MonoBehaviour
         else
         {
             yield return new WaitForSeconds(shotSpawnDelay);
+
+            
 
             SquadControlManager controlController = GameObject.Find("SquadControlManager").GetComponent<SquadControlManager>();
 
@@ -225,9 +238,22 @@ public class ShootingController : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
+        shotAmount--;
+
         squadController.GoToSquad(squadController.predictEnemy.transform); // идем в рукопашную после выстрела атакаки
 
         squadController.squadInfo.ShootingIndicator(false);
+
+
+        if (shotAmount <= 0)
+        {
+            squadController.squadInfo.ammoBar.gameObject.SetActive(false);
+        }
+        else
+        {
+
+            squadController.squadInfo.AmmoUpdate(shotAmount, maxShotsAmount);
+        }
     }
 
     private void ShotNearest() {

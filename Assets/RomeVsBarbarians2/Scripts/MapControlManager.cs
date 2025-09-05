@@ -249,6 +249,8 @@ public class MapControlManager : MonoBehaviour
                           
                             armyController.ArmySelected();
 
+                            armyController.lineRenderer.gameObject.SetActive(true);
+
                             tapArmy = true;
                             cameraCentred = false;
                             cameraMapMovement.CamToPoint(hit.collider.transform.position, hit.collider.gameObject);
@@ -276,11 +278,11 @@ public class MapControlManager : MonoBehaviour
                             if (cityController.armyInCity != null)
                             {
                                 armyController = cityController.armyInCity;
-                                uiManager.ArmyUIActivation(armyController);
+                                //uiManager.ArmyUIActivation(armyController);
 
 
-                                armyController.ArmySelected();
-                                tapArmy = true;
+                               // armyController.ArmySelected();
+                               // tapArmy = true;
                             }
                             else
                             {
@@ -346,7 +348,7 @@ public class MapControlManager : MonoBehaviour
 
                                 if (currentUnzoomDistance >= unzoomDistance)
                                 {
-                                    cameraMapMovement.Zoom(false);
+                                    //cameraMapMovement.Zoom(false);
 
 
                                     //cameraMapMovement.CamToPoint(armyController.targetObject.transform.position, null);
@@ -386,46 +388,67 @@ public class MapControlManager : MonoBehaviour
                 
             }
 
+            
+               
+            
+
             if (tapArmy && tapToSelected)
             {
+                float targetDistance = Vector3.Distance(armyController.targetObject.transform.position, armyController.transform.position);
 
-                armyController.SetMoving(true);
-
-                if(drawPath)
+                float minimumDisnace = 5;
+                if (targetDistance > minimumDisnace)
                 {
-                    cameraCentred = false;
-                    cameraMapMovement.CamToPoint(armyController.gameObject.transform.position, armyController.gameObject);
+                    armyController.SetMoving(true);
 
-                  
+                    if (drawPath)
+                    {
+                        cameraCentred = false;
+                        cameraMapMovement.CamToPoint(armyController.gameObject.transform.position, armyController.gameObject);
 
-                    
 
-                    cameraMapMovement.Zoom(true);
+
+
+
+                        cameraMapMovement.Zoom(true);
+                    }
+
+
+
+                    drawPath = false;
+                    tapToSelected = false;
+                    cameraMapMovement.ignoreMovement = false;
+
+                    //Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+                    //RaycastHit hit;
+                    //if (Physics.Raycast(ray, out hit, 3000f, mapLayer))
+                    //{
+                    //    if (hit.collider.gameObject.tag == PLAYER_TAG && hit.collider != selectedCollider && hit.collider.gameObject.layer == 18)
+                    //    {
+                    //        armyController.jointArmy = hit.collider.transform.gameObject.GetComponent<ArmyController>();
+                    //        armyController.goToJoint = true;
+                    //    }
+                    //    else if (hit.collider.gameObject.layer == 19)
+                    //    {
+
+
+                    //        armyController.goToCity = true;
+                    //    }
+
+                    //}
                 }
+                else
+                {
+                    drawPath = false;
+                    tapToSelected = false;
+                    cameraMapMovement.ignoreMovement = false;
 
+                    armyController.SetMoving(false);
+                }
+            }
+            else 
+            {
                 
-                
-                drawPath = false;
-                tapToSelected = false;
-                cameraMapMovement.ignoreMovement = false;
-
-                //Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-                //RaycastHit hit;
-                //if (Physics.Raycast(ray, out hit, 3000f, mapLayer))
-                //{
-                //    if (hit.collider.gameObject.tag == PLAYER_TAG && hit.collider != selectedCollider && hit.collider.gameObject.layer == 18)
-                //    {
-                //        armyController.jointArmy = hit.collider.transform.gameObject.GetComponent<ArmyController>();
-                //        armyController.goToJoint = true;
-                //    }
-                //    else if (hit.collider.gameObject.layer == 19)
-                //    {
-
-
-                //        armyController.goToCity = true;
-                //    }
-
-                //}
             }
 
             if (tapBattle)

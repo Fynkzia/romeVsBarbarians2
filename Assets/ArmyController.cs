@@ -21,6 +21,7 @@ public class ArmyController : MonoBehaviour
     public float armyMoraleMax;
 
     public bool isSelected;
+    public GameObject selectedObject;
 
     public bool inCity;
     public CityController city;
@@ -432,15 +433,26 @@ public class ArmyController : MonoBehaviour
     public void ArmySelected()
     {
         isSelected = true;
-    
 
-      
+        selectedObject.SetActive(true);
+
+        if (targetObject == null)
+        {
+            Transform newTarget = Instantiate(targetObjectPrefab, transform.position, transform.rotation);
+            targetObject = newTarget;
+            targetObject.gameObject.SetActive(false);
+        }
+
+        targetObject.gameObject.SetActive(true);
+
     }
 
     public void ArmyDeselect()
     {
         isSelected = false;
-        
+
+        selectedObject.SetActive(false);
+        targetObject.gameObject.SetActive(false);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -732,6 +744,7 @@ public class ArmyController : MonoBehaviour
         collider.enabled = false;
         //armyInfoPanel.SetActive(false);
         targetObject.gameObject.SetActive(false);
+        lineRenderer.gameObject.SetActive(false);
 
         SetFormation(Vector3.zero);
     }
@@ -768,7 +781,7 @@ public class ArmyController : MonoBehaviour
 
         collider.enabled = true;
         armyInfoPanel.SetActive(true);
-        targetObject.gameObject.SetActive(true);
+        //targetObject.gameObject.SetActive(true);
 
         SpeedCalculation();
     }
@@ -893,13 +906,14 @@ public class ArmyController : MonoBehaviour
             {
                 SetMoving(false);
                 SetFormation(moveDirection);
+                lineRenderer.gameObject.SetActive(false);
             }
         }
 
 
 
         lineRenderer.SetPosition(0,transform.position);
-        lineRenderer.SetPosition(1, targetObject.transform.position);
+       // lineRenderer.SetPosition(1, targetObject.transform.position);
 
 
     }
@@ -927,11 +941,31 @@ public class ArmyController : MonoBehaviour
             targetObject.gameObject.SetActive(true);
             TargetPointCheck();
 
+
+            NavMeshPath path = agent.path;
+
+            agent.CalculatePath(targetObject.position, path);
+
+            if (path.corners.Length < 2)
+            { // если путь ещё не построен
+
+                
+            }
+            else
+            {
+                
+            }
+            Debug.Log("path.corners " + path.corners.Length);
+
+            lineRenderer.positionCount = path.corners.Length;
+            lineRenderer.SetPositions(path.corners);
+            lineRenderer.gameObject.SetActive(true);
         }
         else
         {
             agent.Stop();
             targetObject.gameObject.SetActive(false);
+            
         }
 
         if (inCity)

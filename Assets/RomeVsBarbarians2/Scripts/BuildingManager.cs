@@ -10,6 +10,7 @@ public class BuildingManager : MonoBehaviour
     [SerializeField] public bool isDestroed;
 
     [SerializeField] private SquadSpawnerController spawnerController;
+    [SerializeField] private SmallCityController smallCityController;
 
     [SerializeField] public float hitPoints;
 
@@ -138,7 +139,15 @@ public class BuildingManager : MonoBehaviour
         }
     }
 
-    public void GetDamage(float damage)
+    public void Build()
+    {
+        isDestroed = false;
+        gameObject.SetActive(true);
+
+       
+    }
+
+        public void GetDamage(float damage)
     {
 
         if (!isDestroed)
@@ -156,10 +165,12 @@ public class BuildingManager : MonoBehaviour
 
                 //squadController.SetBattle(false);
                 //Destroy(gameObject);
-                meshObject.gameObject.SetActive(false);
-                destroyObject.gameObject.SetActive(true);
+                //meshObject.gameObject.SetActive(false);
+                //destroyObject.gameObject.SetActive(true);
 
-                destroyObject.transform.parent = null;
+
+
+                //destroyObject.transform.parent = null;
 
                 for (int i = 0; i < coinCost; i++)
                 {
@@ -174,7 +185,7 @@ public class BuildingManager : MonoBehaviour
 
                 if (inGroupBuilding)
                 {
-                    spawnerController.BuildDestroy(this);
+                    smallCityController.BuildDestroy(this);
 
                     spawnerController.battleSceneManager.resourceManager.ChangeAmountOfCoins(coinCost);
                 }
@@ -185,8 +196,12 @@ public class BuildingManager : MonoBehaviour
                 }
 
                 isDestroed = true;
-                GetComponent<BoxCollider>().enabled = false;
+                //GetComponent<BoxCollider>().enabled = false;
                 //Destroy(gameObject,2f);
+
+                gameObject.SetActive(false);
+                GameObject destroy = Instantiate(destroyObject, transform.position,transform.rotation,transform.parent);
+                destroy.SetActive(true);
 
             }
             else

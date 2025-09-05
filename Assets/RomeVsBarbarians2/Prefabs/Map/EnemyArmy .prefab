@@ -61,6 +61,7 @@ MonoBehaviour:
   armyMorale: 0
   armyMoraleMax: 0
   isSelected: 0
+  selectedObject: {fileID: 0}
   inCity: 0
   city: {fileID: 0}
   retreat: 0
@@ -77,7 +78,7 @@ MonoBehaviour:
   targetObject: {fileID: 0}
   moveDirection: {x: 0, y: 0, z: 0}
   agent: {fileID: 3860714907935432885}
-  moraleUpdateTime: 0
+  moraleUpdateTime: 1
   currentMoraleUpdateTime: 0
   inBattle: 0
   enemyArmy: {fileID: 0}
@@ -106,7 +107,7 @@ MonoBehaviour:
   formationObject: {fileID: 8763037553685157344}
   SquadMapPrefabs:
   - {fileID: 8856954130716601290, guid: d6137cebf29ac41a7a3a3bb84e69e016, type: 3}
-  offset: 1
+  offset: 5
   ai_currentState: 0
   squadStartList: []
   squadList: []

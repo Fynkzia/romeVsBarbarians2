@@ -2236,6 +2236,10 @@ PrefabInstance:
       propertyPath: coef.Array.data[2].defence
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6787641924075962677, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6940223560567865726, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.1
@@ -2507,7 +2511,8 @@ MonoBehaviour:
   isShootingSquad: 1
   isMovementShooting: 0
   shotRange: 26
-  shotAmount: 100
+  shotAmount: 25
+  maxShotsAmount: 25
   shotSpeed: 15
   shotDamage: 1.5
   shotAccuracy: 2

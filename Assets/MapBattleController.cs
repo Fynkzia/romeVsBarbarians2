@@ -97,6 +97,7 @@ public class MapBattleController : MonoBehaviour
             enemyArmy.city.CityCaptured(true);
         }
 
+
         enemyArmy.ArmyDestroy();
         playerArmy.ResetAfterBattle();
 

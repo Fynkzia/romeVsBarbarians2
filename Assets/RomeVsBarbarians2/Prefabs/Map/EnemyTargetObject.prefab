@@ -678,7 +678,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &746284793265959373
 RectTransform:
   m_ObjectHideFlags: 0
@@ -778,12 +778,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32f36b774ea4c58408008acfb0cad680, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  banner: 0
+  camera: {fileID: 0}
+  battleInfo: 0
+  mapInfo: 0
   scaleFactor: 0.2
   scales:
   - 0.8
   - 0.9
   - 1.5
+  isInit: 0
 --- !u!95 &2543822794348190047
 Animator:
   serializedVersion: 5

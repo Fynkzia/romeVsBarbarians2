@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Random = UnityEngine.Random;
 using UnityEngine.UI;
 using TMPro;
 
@@ -249,13 +249,13 @@ public class SceneLoader : MonoBehaviour
 
             if (army.inCity || enemyArmy.inCity)
             {
-                newbattle = Instantiate(citiesScenes[0], new Vector3(activeBattleScenes.Count * 500, 0, 0), battleScenes[0].transform.rotation);
+                newbattle = Instantiate(citiesScenes[Random.RandomRange(0, citiesScenes.Length)], new Vector3(activeBattleScenes.Count * 500, 0, 0), battleScenes[0].transform.rotation);
 
               
             }
             else
             {
-                newbattle = Instantiate(battleScenes[0], new Vector3(activeBattleScenes.Count * 500, 0, 0), battleScenes[0].transform.rotation);
+                newbattle = Instantiate(battleScenes[Random.RandomRange(0, battleScenes.Length)], new Vector3(activeBattleScenes.Count * 500, 0, 0), battleScenes[0].transform.rotation);
             }
 
 
@@ -389,9 +389,10 @@ public class SceneLoader : MonoBehaviour
         activeBattleScenes.Remove(deleteScene);
         mapBattleControllers.RemoveAt(sceneIndex);
 
-       
+        mapSceneManager.EnterMapScene();
+        mapSceneManager.uIManager.TransitionAnimation(false);
 
-        
+
         Destroy(deleteScene.gameObject);
     }
     public void BattleLose(int sceneIndex)
@@ -413,10 +414,11 @@ public class SceneLoader : MonoBehaviour
        
         mapBattleControllers.RemoveAt(sceneIndex);
 
-       
+        mapSceneManager.EnterMapScene();
+        mapSceneManager.uIManager.TransitionAnimation(false);
 
-        
-       
+
+
     }
 
     public void ArmyRetreat(int sceneIndex)
@@ -540,4 +542,15 @@ public class SceneLoader : MonoBehaviour
             newBattleController.SelectThisBattle();
         }
     }
+
+
+
+    public void MapAttackAlert(int index)
+    {
+        if (activeScene != index)
+        {
+            mapSceneManager.uIManager.alertObject[index].SetActive(true);
+        }
+    }
+
 }

@@ -22,7 +22,7 @@ public class BattleSceneManager : MonoBehaviour
     public SquadControlManager controlController;
     public OfficerSystem officerSystem;
     public AIController aIController;
-    public WinLoseManager winLoseManager;
+  
 
      public Camera gameCamera;
     public CameraMovement cameraController;
@@ -58,7 +58,9 @@ public class BattleSceneManager : MonoBehaviour
 
     public Transform playerHousesParent;
     public Transform enemyHousesParent;
-    
+
+  
+
 
     public Transform fancesParent;
     public Transform towersParent;
@@ -69,6 +71,7 @@ public class BattleSceneManager : MonoBehaviour
     public event Action<bool> NotAnimate;
 
     public Terrain terrain;
+
 
 
     public void InitScene()
@@ -89,7 +92,7 @@ public class BattleSceneManager : MonoBehaviour
 
         }
 
-        winLoseManager.Init();
+        
         officerSystem.Init();
         cameraController.Init();
         
@@ -192,17 +195,24 @@ public class BattleSceneManager : MonoBehaviour
                 if (Random.Range(1, 100) > 50)
                 {
                     enemyHousesParent.GetChild(i).gameObject.SetActive(true);
+
+               if (enemyHousesParent.GetChild(i).GetComponent<SquadSpawnerController>()){
+                enemyHousesParent.GetChild(i).GetComponent<SquadSpawnerController>().Init();
+                        enemyHousesParent.GetChild(i).GetComponent<SmallCityController>().Init();
+                    }
                 }
 
                 if (Random.Range(1, 100) > 50)
                 {
-                    enemyHousesParent.GetChild(i).GetComponent<SquadSpawnerController>().Init();
+                    
                 }
             }
 
         }
 
     }
+
+   
 
 
         public void DiePlayerSquad(SquadController squadController)
@@ -301,7 +311,9 @@ public class BattleSceneManager : MonoBehaviour
             IsDraft = true;
         }
 
-        yield return new WaitForSeconds(afterBattleDelay);
+        mapBattleController.mapSceneManager.uIManager.BattleWinLoose(IsWin);
+
+         yield return new WaitForSeconds(afterBattleDelay);
         ExitBattleSiquence();
 
         yield return new WaitForSeconds(delayFade + 1f);
@@ -331,8 +343,8 @@ public class BattleSceneManager : MonoBehaviour
 
         Debug.Log("dirEnNorm - " + dirEnNorm);
 
-        Vector3 positionPlayerArmy = (transform.position + offcetToCenter) + dirPlNorm * 150f;
-        Vector3 positionEnemyArmy = (transform.position + offcetToCenter) + dirEnNorm * 150f;
+        Vector3 positionPlayerArmy = (transform.position + offcetToCenter) + dirPlNorm * 120f;
+        Vector3 positionEnemyArmy = (transform.position + offcetToCenter) + dirEnNorm * 120f;
 
 
         if (!playerArmy.inCity)
@@ -449,5 +461,10 @@ public class BattleSceneManager : MonoBehaviour
         cameraController.CameraMoveEnter();
 
 
+    }
+
+    public void AttackAlert()
+    {
+        SceneLoader.Instance.MapAttackAlert(sceneIndex);
     }
 }

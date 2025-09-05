@@ -35,7 +35,7 @@ public class BarUI : MonoBehaviour
 
     public void ChangeProgress(float current, float maximum) {
 
-        barObject.localScale = new Vector3(1, current/maximum,1);
+        barObject.localScale = new Vector3(1f, current/maximum,1f);
 
         barSprite.color = gradient.Evaluate(current / maximum);
     }

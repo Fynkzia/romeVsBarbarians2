@@ -26,6 +26,11 @@ public class SquadMapUIPanel : MonoBehaviour
     [SerializeField]  Color defaultPriceColor;
     [SerializeField] Color redPriceColor;
 
+    [SerializeField] public Image buyButton;
+
+    [SerializeField] Color defaultButtonColor;
+    [SerializeField] Color redButtonColor;
+
 
     public void UpdateSquadUiPanel(SquadController squad)
     {
@@ -53,6 +58,8 @@ public class SquadMapUIPanel : MonoBehaviour
 
     public void UpdateToDoPriceColors(bool units, bool coins)
     {
+
+       
         if (units)
         {
             nowUnits.color = redPriceColor;
@@ -72,7 +79,16 @@ public class SquadMapUIPanel : MonoBehaviour
             nowCoins.color = defaultPriceColor;
         }
 
+        if (coins || units)
+        {
 
+            buyButton.color = redButtonColor;
+            Debug.Log("UpdateToDoPriceColors");
+        }
+        else
+        {
+            buyButton.color = defaultButtonColor;
+        }
 
     }
 

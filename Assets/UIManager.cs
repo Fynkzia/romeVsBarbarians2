@@ -20,6 +20,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] public Button mapButton;
     [SerializeField] public List<Button> battleButtons;
+    [SerializeField] public List<GameObject> alertObject;
     [SerializeField] public Transform activeSceneSprite;
 
     public Animator transitionAnimation;
@@ -57,9 +58,16 @@ public class UIManager : MonoBehaviour
         else
         {
             newPos = new Vector3(battleButtons[activeScene].transform.position.x, activeSceneSprite.position.y, 0f);
+
+            if (alertObject[activeScene].active == true)
+            {
+                alertObject[activeScene].SetActive(false);
+            }
         }
 
         activeSceneSprite.position = newPos;
+
+        
     }
 
     public void CityUIActivation(CityController city)
@@ -144,6 +152,9 @@ public class UIManager : MonoBehaviour
         {
             selectedArmy.ArmyDeselect();
         }
+
+        WinEffect.gameObject.SetActive(false);
+        LoseEffect.gameObject.SetActive(false);
     }
 
     public void MapUiActivation(bool active)
@@ -174,6 +185,17 @@ public class UIManager : MonoBehaviour
         else
         {
             campainLoseScreen.SetActive(true);
+        }
+    }
+    public void BattleWinLoose(bool win)
+    {
+        if (win)
+        {
+            WinEffect.gameObject.SetActive(true);
+        }
+        else
+        {
+            LoseEffect.gameObject.SetActive(true);
         }
     }
 }

@@ -16,6 +16,7 @@ public class SquadInfo : MonoBehaviour
     [SerializeField] public Image defenceFillImage;
 
     [SerializeField] public BarUI moraleBar;
+    [SerializeField] public BarUI ammoBar;
     [SerializeField] public Transform xpBarObject;
 
     [SerializeField] public TextMeshPro levelText;
@@ -28,6 +29,11 @@ public class SquadInfo : MonoBehaviour
     public void MoraleUpdate(float min, float max )
     {
         moraleBar.ChangeProgress(min,max) ;
+    }
+
+    public void AmmoUpdate(float min, float max)
+    {
+        ammoBar.ChangeProgress(min, max);
     }
 
     public void Reset()

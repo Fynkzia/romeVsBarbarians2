@@ -9,6 +9,8 @@ public class CityToDoController : MonoBehaviour
     CityController city;
     public ResourceManager resourceManager;
 
+    public List<int> doQueue;
+
     public int doCount;
 
     public bool doHire;
@@ -53,73 +55,95 @@ public class CityToDoController : MonoBehaviour
 
     void Update()
     {
-        if (doHouse || doHire)
+        if (doQueue.Count > 0)
         {
             curentToDoTime += Time.deltaTime;
 
-            
-        }
 
-        if (doHouse)
-        {
-           
 
-            if (curentToDoTime > doHouseTime)
+
+
+
+            if (doQueue[0] == -1) // дом
             {
 
-                city.AddBuildings();
 
-                doCount--;
-                curentToDoTime = 0;
-
-                if(doCount <= 0)
+                if (curentToDoTime > doHouseTime)
                 {
-                    doHouse = false;
+
+                    city.AddBuildings();
+
+                    doQueue.RemoveAt(0);
+                    curentToDoTime = 0;
 
                     if (isSelected)
                     {
-                        mapSceneManager.uIManager.hireUIPanel.DeleteToDoPanel();
+                        mapSceneManager.uIManager.hireUIPanel.SetQueue(doQueue.ToArray(), this);
+
+                        PriceUpdate();
+
+                        if (doQueue.Count == 0)
+                        {
+                            mapSceneManager.uIManager.hireUIPanel.progressImage.gameObject.SetActive(false);
+                        }
                     }
+
+
+                    //if (isSelected)
+                    //{
+                    //    mapSceneManager.uIManager.hireUIPanel.DeleteToDoPanel();
+                    //}
+
+
                 }
-              
+
+                // if (isSelected)
+                //{
+                //    mapSceneManager.uIManager.hireUIPanel.DoProgress(1f - curentToDoTime / doHouseTime);
+                //    mapSceneManager.uIManager.hireUIPanel.UpdateUI(doCount);
+                //}
             }
 
-             if (isSelected)
+            if (doQueue[0] >= 0)
             {
-                mapSceneManager.uIManager.hireUIPanel.DoProgress(1f - curentToDoTime / doHouseTime);
-                mapSceneManager.uIManager.hireUIPanel.UpdateUI(doCount);
-            }
-        }
 
-        if (doHire)
-        {
 
-            
-            if (curentToDoTime > doHireTime)
-            {
-                AddSquad();
-
-                doCount--;
-                curentToDoTime = 0;
-
-                if (doCount <= 0)
+                if (curentToDoTime > doHireTime)
                 {
-                    doHire = false;
+                    toDoSquadIndex = doQueue[0] ;
+                    toDoSquad = squadHireListInCity[toDoSquadIndex];
+
+                    AddSquad();
+
+                    doQueue.RemoveAt(0);
+                    curentToDoTime = 0;
+
+
 
                     if (isSelected)
                     {
-                        mapSceneManager.uIManager.hireUIPanel.DeleteToDoPanel();
+                        mapSceneManager.uIManager.hireUIPanel.SetQueue(doQueue.ToArray(), this);
+
+                        PriceUpdate();
+
+                        if (doQueue.Count == 0)
+                        {
+                            mapSceneManager.uIManager.hireUIPanel.progressImage.gameObject.SetActive(false);
+                        }
                     }
 
 
-                    toDoSquad = null;
+                    //toDoSquad = null;
 
-                    toDoSquadIndex = -1;
+                    //toDoSquadIndex = -1;
                 }
 
-               
+
 
             }
+        }
+
+
             if (isSelected)
             {
                 mapSceneManager.uIManager.hireUIPanel.DoProgress(1f - curentToDoTime / doHireTime);
@@ -128,7 +152,7 @@ public class CityToDoController : MonoBehaviour
 
 
         }
-    }
+    
 
     void AddSquad()
     {
@@ -157,7 +181,7 @@ public class CityToDoController : MonoBehaviour
 
             if (isSelected)
             {
-                city.armyInCity.ArmySelected();
+                //city.armyInCity.ArmySelected();
             }
 
             newArmy.gameObject.SetActive(true);
@@ -181,51 +205,62 @@ public class CityToDoController : MonoBehaviour
 
     public void AiDoHouse() {
 
-        CencelToDo();
-        doHouse = true;
+       // CencelToDo();
+        //doHouse = true;
 
-        doCount = 1;
+        //doCount = 1;
     }
 
     public void AddToDoHouse()
     {
         if (doHouseCost <= resourceManager.AmountOfCoins())
         {
-            
 
-           
 
-            if (doHouse)
+            doQueue.Add(-1);
+            resourceManager.ChangeAmountOfCoins(-doHouseCost);
+
+            mapSceneManager.uIManager.hireUIPanel.SetQueue(doQueue.ToArray(), this);
+
+            PriceUpdate();
+
+            if (isSelected && doQueue.Count <= 1)
             {
-                doCount++;
-            }
-            else
-            {
-
-                if (doHire)
-                {
-                    CencelToDo();
-                }
-
-                doHouse = true;
-
-                doCount = 1;
-
-
-                if (isSelected)
-                {
-                    mapSceneManager.uIManager.hireUIPanel.CreateToDoHouse();
-                }
+                mapSceneManager.uIManager.hireUIPanel.progressImage.gameObject.SetActive(true);
+                mapSceneManager.uIManager.hireUIPanel.progressImage.transform.position = mapSceneManager.uIManager.hireUIPanel.nowToDoPanel.GetChild(0).position;
             }
 
-            if (isSelected)
-            {
-                mapSceneManager.uIManager.hireUIPanel.UpdateUI(doCount);
+            //if (doHouse)
+            //{
+            //    doCount++;
+            //}
+            //else
+            //{
+
+            //    if (doHire)
+            //    {
+            //        CencelToDo();
+            //    }
+
+            //    doHouse = true;
+
+            //    doCount = 1;
 
 
-                resourceManager.ChangeAmountOfCoins(-doHouseCost);
-            }
-           
+            //    if (isSelected)
+            //    {
+            //        mapSceneManager.uIManager.hireUIPanel.CreateToDoHouse();
+            //    }
+            //}
+
+            //if (isSelected)
+            //{
+            //    mapSceneManager.uIManager.hireUIPanel.UpdateUI(doCount);
+
+
+            //    
+            //}
+
         }
 
     }
@@ -234,62 +269,79 @@ public class CityToDoController : MonoBehaviour
     public void AiToDoSquad(SquadController squad,int index)
     {
 
-        CencelToDo();
-        doHire = true;
+//        CencelToDo();
+       // doHire = true;
 
-        doCount = 1;
+       // doCount = 1;
 
         toDoSquad = squad;
         toDoSquadIndex = index;
     }
 
-    public void AddToDoSquad(SquadController squad, int index)
+    public void AddToDoSquad( int index)
     {
-        if (squad.coinsNeed <= resourceManager.AmountOfCoins())
+        if (squadHireListInCity[index].coinsNeed <= resourceManager.AmountOfCoins())
         {
 
-            if (squad.unitsNeed <= city.cityUnits)
+            if (squadHireListInCity[index].unitsNeed <= city.cityUnits)
             {
-                if (isSelected)
+
+                doQueue.Add(index);
+
+                mapSceneManager.uIManager.hireUIPanel.SetQueue(doQueue.ToArray(), this);
+
+                city.cityUnits -= squadHireListInCity[index].unitsNeed;
+                resourceManager.ChangeAmountOfCoins(-squadHireListInCity[index].coinsNeed);
+                mapControlManager.uiManager.cityUIPanel.UpdateCityUIPanel(city);
+
+                PriceUpdate();
+
+                if (isSelected && doQueue.Count <= 1)
                 {
-                    city.cityUnits -= squad.unitsNeed;
-                    resourceManager.ChangeAmountOfCoins(-squad.coinsNeed);
-                    mapControlManager.uiManager.cityUIPanel.UpdateCityUIPanel(city);
+                    mapSceneManager.uIManager.hireUIPanel.progressImage.gameObject.SetActive(true);
+                    mapSceneManager.uIManager.hireUIPanel.progressImage.transform.position = mapSceneManager.uIManager.hireUIPanel.nowToDoPanel.GetChild(0).position;
                 }
 
-
-                if (doHire && toDoSquad == squad)
-                {
-                    doCount++;
-                }
-                else
-                {
-
-                    
-                        CencelToDo();
-                    
-
-                    doHire = true;
-
-                    toDoSquad = squad;
-                    toDoSquadIndex = index;
-
-                    doCount = 1;
-
-                    if (isSelected)
-                    {
-                        mapSceneManager.uIManager.hireUIPanel.CreateToDoSquad(index);
-                    }
-                }
+                //if (isSelected)
+                //{
+                //    city.cityUnits -= squad.unitsNeed;
+                //   
+                //    mapControlManager.uiManager.cityUIPanel.UpdateCityUIPanel(city);
+                //}
 
 
+                //if (doHire && toDoSquad == squad)
+                //{
+                //    doCount++;
+                //}
+                //else
+                //{
 
 
-                if (isSelected)
-                {
-                    mapSceneManager.uIManager.hireUIPanel.UpdateUI(doCount);
-                }
-             
+                //        CencelToDo();
+
+
+                //    doHire = true;
+
+                //    toDoSquad = squad;
+                //    toDoSquadIndex = index;
+
+                //    doCount = 1;
+
+                //    if (isSelected)
+                //    {
+                //        mapSceneManager.uIManager.hireUIPanel.CreateToDoSquad(index);
+                //    }
+                //}
+
+
+
+
+                //if (isSelected)
+                //{
+                //    mapSceneManager.uIManager.hireUIPanel.UpdateUI(doCount);
+                //}
+
 
             }
         }
@@ -299,54 +351,7 @@ public class CityToDoController : MonoBehaviour
     
 
 
-        public void ChangeDoCount( int addCount)
-    {
-        
-
-        if (doHire)
-        {
-            if(addCount > 0)
-            {
-                AddToDoSquad(toDoSquad, toDoSquadIndex);
-            }
-            else
-            {
-                city.cityUnits += toDoSquad.unitsNeed;
-                resourceManager.ChangeAmountOfCoins(toDoSquad.coinsNeed);
-                doCount += addCount;
-
-                mapSceneManager.uIManager.cityUIPanel.UpdateCityUIPanel(city);
-            }
-
-
-        }
-
-        if (doHouse)
-        {
-
-            if (addCount > 0)
-            {
-                AddToDoHouse();
-            }
-            else
-            {
-                resourceManager.ChangeAmountOfCoins(doHouseCost);
-                doCount += addCount;
-            }
-
-        }
-
-        if (doCount <= 0)
-        {
-
-            CencelToDo();
-        }
-
-        
-      
-
-
-    }
+       
 
         public void CitySelected()
     {
@@ -360,78 +365,95 @@ public class CityToDoController : MonoBehaviour
         {
             int index = i;
             mapSceneManager.uIManager.hireUIPanel.hireButton[i].onClick.RemoveAllListeners();
-            mapSceneManager.uIManager.hireUIPanel.hireButton[i].onClick.AddListener(() => this.AddToDoSquad(this.squadHireListInCity[index], index));
+            mapSceneManager.uIManager.hireUIPanel.hireButton[i].onClick.AddListener(() => this.AddToDoSquad(index));
 
             SquadMapUIPanel squadPanel = mapSceneManager.uIManager.hireUIPanel.hireButton[i].gameObject.GetComponent<SquadMapUIPanel>();
 
             squadPanel.UpdateToDoCosts(squadHireListInCity[index].unitsNeed, squadHireListInCity[index].coinsNeed);
 
 
-            //squadPanel.UpdateToDoPriceColors(squadHireListInCity[index].unitsNeed, squadHireListInCity[index].coinsNeed);
+           
         }
-
+        PriceUpdate();
 
         mapSceneManager.uIManager.hireUIPanel.houseButton.onClick.AddListener(() => AddToDoHouse());
 
-        mapSceneManager.uIManager.hireUIPanel.plusDoButton.onClick.AddListener(() => ChangeDoCount(1));
-        mapSceneManager.uIManager.hireUIPanel.minusDoButton.onClick.AddListener(() => ChangeDoCount(-1));
+       
+        mapSceneManager.uIManager.hireUIPanel.SetQueue(doQueue.ToArray(),this);
 
-        if (toDoSquad != null)
+     if(doQueue.Count > 0)
         {
-            mapSceneManager.uIManager.hireUIPanel.CreateToDoSquad(toDoSquadIndex);
+            mapSceneManager.uIManager.hireUIPanel.progressImage.gameObject.SetActive(true);
         }
-
-        if (doHouse)
-        {
-            mapSceneManager.uIManager.hireUIPanel.CreateToDoHouse();
-        }
+        
 
 
-
-        isSelected = true;
+            isSelected = true;
 
     }
 
-    public void CencelToDo()
+    public void PriceUpdate()
+    {
+        bool lowCoins = false;
+        bool lowUnits = false;
+
+        for (int i = 0; i < mapSceneManager.uIManager.hireUIPanel.hireButton.Length; i++)
+        {
+           
+
+            SquadMapUIPanel squadPanel = mapSceneManager.uIManager.hireUIPanel.hireButton[i].gameObject.GetComponent<SquadMapUIPanel>();
+
+            if(squadHireListInCity[i].unitsNeed > city.cityUnits)
+            {
+                lowUnits = true;
+            }
+            else
+            {
+                lowUnits = false;
+            }
+
+            if (squadHireListInCity[i].coinsNeed > resourceManager.AmountOfCoins())
+            {
+                lowCoins = true;
+            }
+            else
+            {
+                lowCoins = false;
+            }
+
+
+            squadPanel.UpdateToDoPriceColors(lowUnits, lowCoins);
+        }
+
+    }
+    public void CencelToDo(int index)
     {
         if (isSelected)
         {
-            if (doHouse)
+            if (doQueue[index] == -1)
             {
-                resourceManager.ChangeAmountOfCoins(doHouseCost * doCount);
+                resourceManager.ChangeAmountOfCoins(doHouseCost);
             }
 
-            if (doHire)
+            if (doQueue[index] >= 0)
             {
-                city.cityUnits += toDoSquad.unitsNeed * doCount;
-                resourceManager.ChangeAmountOfCoins(toDoSquad.coinsNeed * doCount);
+                city.cityUnits += squadHireListInCity[doQueue[index]].unitsNeed ;
+                resourceManager.ChangeAmountOfCoins(squadHireListInCity[doQueue[index]].unitsNeed);
             }
 
-            mapSceneManager.uIManager.hireUIPanel.DeleteToDoPanel();
+            doQueue.RemoveAt(index);
+
+
             mapSceneManager.uIManager.hireUIPanel.UpdateUI(doCount);
 
-            mapSceneManager.uIManager.hireUIPanel.DoProgress(0f);
+            mapSceneManager.uIManager.hireUIPanel.SetQueue(doQueue.ToArray(), this);
+
+            //mapSceneManager.uIManager.hireUIPanel.DoProgress(0f);
         }
 
-        if (doHouse || doHire)
+        if(index == 0)
         {
-            doHouse = false;
-            doHire = false;
-            doTower = false;
-            doWall = false;
-
-            
-
-            doCount = 0;
             curentToDoTime = 0;
-
-           
-
-            toDoSquad = null;
-
-            toDoSquadIndex = -1;
-
-           
         }
 
        
@@ -444,8 +466,8 @@ public class CityToDoController : MonoBehaviour
 
         if (toDoSquad != null)
         {
-          
-            mapSceneManager.uIManager.hireUIPanel.DeleteToDoPanel();
+
+            //mapSceneManager.uIManager.hireUIPanel.DeleteToDoPanel();
         }
         mapSceneManager.uIManager.hireUIPanel.gameObject.SetActive(false);
        
