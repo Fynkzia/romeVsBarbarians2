@@ -104,7 +104,7 @@ public class CityToDoController : MonoBehaviour
                 //}
             }
 
-            if (doQueue[0] >= 0)
+            if (doQueue.Count > 0 && doQueue[0] >= 0)
             {
 
 

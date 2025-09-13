@@ -250,7 +250,7 @@ public class SquadController : MonoBehaviour {
     public BattleSceneManager battleSceneManager;
     
     [Space(10)]
-    [SerializeField] private GameObject unitPrefab;
+    [SerializeField] public GameObject unitPrefab;
     [Space(10)]
 
     [SerializeField] public SphereCollider TriggerObject;
@@ -295,7 +295,7 @@ public class SquadController : MonoBehaviour {
     [HideInInspector] public int tapCount = 0;
 
     private const string ENEMY_TAG = "Enemy";
-    private const string SQUAD_TAG = "Squad";
+    private const string SQUAD_TAG = "Player";
     private const string ENEMY_TRIGGER_TAG = "EnemyTrigger";
     private const string SQUAD_TRIGGER_TAG = "SquadTrigger";
 
@@ -576,7 +576,7 @@ public class SquadController : MonoBehaviour {
 
                         }
 
-                        if (rbSpeed + lossSpeedToStop < lastSpeed)
+                        if (rbSpeed > 0 && rbSpeed <1f)
                         {
                             currentTimeToStop += Time.deltaTime;
 
@@ -1997,7 +1997,7 @@ public class SquadController : MonoBehaviour {
             for (int i = 0; i < countToKill; i++) // берем случайного
             {
 
-                enController.GetUnitDie(-2, 0, currentTriggerCoef * 2f, amountUnits - enController.amountUnits);
+                enController.GetUnitDie(-2, countToKill, currentTriggerCoef , currentAmountUnits - enController.currentAmountUnits);
 
             }
 
@@ -2078,7 +2078,7 @@ public class SquadController : MonoBehaviour {
             {
                
 
-                enController.GetUnitDie(-1,0, currentTriggerCoef, amountUnits - enController.amountUnits);
+                enController.GetUnitDie(-1,0, currentTriggerCoef, currentAmountUnits - enController.currentAmountUnits);
 
                 Vector3 dir = (enController.transform.position - transform.position).normalized;
                 float force = (20f* pushSquad) + ((FormationEffectIndex() - enController.FormationEffectIndex())*150f);
@@ -2097,7 +2097,7 @@ public class SquadController : MonoBehaviour {
                 {
                     //enController.GetDamage(currentAmountUnits - enController.currentAmountUnits);
 
-                    enController.GetDamage(0, currentTriggerCoef, amountUnits - enController.amountUnits); // сюда павер? + currentTriggerCoef+ количество?
+                    enController.GetDamage(0, currentTriggerCoef, currentAmountUnits - enController.currentAmountUnits); // сюда павер? + currentTriggerCoef+ количество?
 
                 }
             }
@@ -2144,10 +2144,10 @@ public class SquadController : MonoBehaviour {
 
         
             moraleLost -= Mathf.Pow(lostMoraleThenAttacked, 0.3f + (currentAmountUnits / amountUnits));
-            moraleLost -= (countDiff/100f);
-            moraleLost -= triggerCoef /10f;
-            moraleLost -= bonusMoraleLost;
-            moraleLost -= enemyController.Count / 10f;
+            moraleLost -= (-countDiff/100f);
+            moraleLost -= triggerCoef /2f;
+            moraleLost -= bonusMoraleLost/5f;
+            moraleLost -= enemyController.Count / 15f;
 
      //finalLost -= (moraleLostCoef *0.01f) - (0.75f - (currentAmountUnits / amountUnits)); /// переделать на павер?? /// и количество и павер с коеэфицентами
 
@@ -2259,11 +2259,14 @@ public class SquadController : MonoBehaviour {
         float moraleLost = 0;
 
         moraleLost -= Mathf.Pow(lostMoraleThenDie, 0.3f + (currentAmountUnits / amountUnits));
-        
-        moraleLost -= (countDiff / 100f);
-        moraleLost -= triggerCoef / 2f;
-        moraleLost -= bonusMoraleLost;
-        moraleLost -= enemyController.Count / 10f;
+
+        if (countDiff < 0)
+        {
+            moraleLost -= (-countDiff / 100f);
+        }
+        moraleLost -= triggerCoef /2f;
+        moraleLost -= bonusMoraleLost/5f;
+        moraleLost -= enemyController.Count / 15f;
 
         MoraleChange(moraleLost);
 

@@ -22,6 +22,7 @@ public class ArmyController : MonoBehaviour
 
     public bool isSelected;
     public GameObject selectedObject;
+    public GameObject baseObject;
 
     public bool inCity;
     public CityController city;
@@ -86,6 +87,9 @@ public class ArmyController : MonoBehaviour
     private Vector3[] history;     // История позиций родителя
     private int historyLength;
 
+    [SerializeField] float minDistance = 2f; // минимальное расстояние между отрядами
+    [SerializeField] bool[] isActive;
+
     [Header("Ai Settings")]
     [Space(10)]
     public int ai_currentState;
@@ -115,21 +119,31 @@ public class ArmyController : MonoBehaviour
 
     
 
-    public List<Transform> squadsOnMap;  // Остальные отряды просто меняют Transform
-     // Скорость передвижения следователей
+    public List<Transform> squadsOnMap;  
+                                         
+    Quaternion unitRotation = Quaternion.Euler(0,-90,0);
+
+    Vector3 unitSize = new Vector3(1.3f, 1.3f, 1.3f);
+    Vector3 infoLocalPosition;
+
+    Vector3 lastPositionToOffset;
 
     private Queue<Vector3> leaderPositions = new Queue<Vector3>();
 
     [SerializeField] MapControlManager mapControlManager;
+    [SerializeField] GridManager grid;
     [SerializeField] public MapSceneManager mapSceneManager;
     public BoxCollider collider;
     public LayerMask checkMask;
 
     public event Action<ArmyController> OnArmyDestroyed;
 
+
+
     // Start is called before the first frame update
     void Start()
     {
+
         agent = GetComponent<NavMeshAgent>();
         agent.Warp(transform.position);
         lineRenderer = Instantiate(lineRendererPrefab);
@@ -154,9 +168,11 @@ public class ArmyController : MonoBehaviour
 
             newSquadController.InitOnMap();
 
-            GameObject newSquad = Instantiate(SquadMapPrefabs[0], transform.position,transform.rotation, transform);
-            squadsOnMap.Add(newSquad.transform);
+
+
+            
         }
+        CreateArmyOnMap();
 
         SetFormation(Vector3.zero);
         UpdateArmyInfo();
@@ -164,7 +180,7 @@ public class ArmyController : MonoBehaviour
         SpeedCalculation();
 
 
-        historyLength = squadsOnMap.Count * 50; // Чем больше - тем плавнее шаг
+        historyLength = squadsOnMap.Count *50; // Чем больше - тем плавнее шаг
         history = new Vector3[historyLength];
 
         // Заполняем стартовыми значениями
@@ -172,11 +188,30 @@ public class ArmyController : MonoBehaviour
         {
             history[i] = transform.position;
         }
+
+        grid = mapSceneManager.gridManager;
+
+        infoLocalPosition = armyInfoPanel.transform.localPosition;
     }
 
+    public void CreateArmyOnMap()
+    {
+        for (int i = 0; i < squadList.Count; i++)
+        {
+            GameObject newSquad = Instantiate(squadList[i].unitPrefab, transform.position, unitRotation);
+            newSquad.transform.localScale = unitSize;
+            newSquad.transform.GetChild(1).gameObject.SetActive(true);
+
+            squadsOnMap.Add(newSquad.transform);
+        }
+
+     }
+
+   
 
 
-    public void UpdateArmyInfo()
+
+        public void UpdateArmyInfo()
     {
         ArmyMoraleUpdate();
 
@@ -303,7 +338,10 @@ public class ArmyController : MonoBehaviour
 
         newSquadController.InitOnMap();
 
-        GameObject newSquad = Instantiate(SquadMapPrefabs[0], transform.position, transform.rotation);
+        GameObject newSquad = Instantiate(squad.unitPrefab, transform.position,  unitRotation);
+        newSquad.transform.localScale = unitSize;
+        newSquad.transform.GetChild(1).gameObject.SetActive(true);
+
         squadsOnMap.Add(newSquad.transform);
 
         if (mapControlManager == null)
@@ -336,8 +374,11 @@ public class ArmyController : MonoBehaviour
         newSquadController.transform.parent = transform;
         squadList.Add(newSquadController);
 
-        GameObject newSquad = Instantiate(SquadMapPrefabs[0], transform.position, transform.rotation);
+        GameObject newSquad = Instantiate(squad.unitPrefab, transform.position, unitRotation);
+        newSquad.transform.localScale = unitSize;
+        newSquad.transform.GetChild(1).gameObject.SetActive(true);
         squadsOnMap.Add(newSquad.transform);
+        
 
 
 
@@ -354,11 +395,21 @@ public class ArmyController : MonoBehaviour
 
     public void RemoveSquad(SquadController squad)
     {
+        int indexToRemove = 0;
+        for (int i = 0; i < squadList.Count; i++)
+        {
+            if(squad == squadList[i])
+            {
+                indexToRemove = i;
+            }
+        }
+
+
         squadList.Remove(squad);
 
             
-        Destroy(squadsOnMap[0].gameObject);
-        squadsOnMap.RemoveAt(0);
+        Destroy(squadsOnMap[indexToRemove].gameObject);
+        squadsOnMap.RemoveAt(indexToRemove);
 
 
 
@@ -563,7 +614,7 @@ public class ArmyController : MonoBehaviour
                 {
                     SetMoving(false);
 
-                    mapControlManager.AddSquadsToArmy(true, this);
+                    mapControlManager.AddSquadsToArmy(isPlayer, this);
                 }
                
 
@@ -576,6 +627,32 @@ public class ArmyController : MonoBehaviour
                 {
 
                     newCity.CityCaptured(isPlayer);
+                    goToCity = true;
+                    EnterToCity(newCity);
+                }
+                else
+                {
+                    if (isPlayer)
+                    {
+                       
+                        SceneLoader.Instance.CreateBattleInfo(this, newCity.armyInCity);
+                    }
+                    else
+                    {
+                        SceneLoader.Instance.CreateBattleInfo(newCity.armyInCity, this);
+                    }
+
+
+
+
+                    newCity.armyInCity.enemyArmy = this;
+                    enemyArmy = newCity.armyInCity;
+
+                    RedyToBattle();
+                    newCity.armyInCity.RedyToBattle();
+
+
+
                 }
             }
         }
@@ -593,12 +670,27 @@ public class ArmyController : MonoBehaviour
                 goToCity = false;
 
                 SetMoving(false);
+            SetFormation(Vector3.zero);
 
-                targetObject.position = transform.position;
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+
+            targetObject.position = transform.position;
                 targetObject.gameObject.SetActive(false);
 
+            Vector3 offset = new Vector3(0,5,0);
 
-                collider.enabled = false;
+            lineRenderer.positionCount = 2;
+            lineRenderer.SetPosition(0, newCity.armyPoint.position );
+            lineRenderer.SetPosition(1, newCity.transform.position + offset);
+            lineRenderer.gameObject.SetActive(true);
+
+            armyInfoPanel.transform.parent = newCity.transform;
+
+            armyInfoPanel.transform.position = newCity.armyInfoPoint.transform.position;
+
+            newCity.armyInfoObject.SetActive(true);
+
+            //collider.enabled = false;
 
             if (newCity.armyInCity == null)
             {
@@ -614,7 +706,7 @@ public class ArmyController : MonoBehaviour
                 //transform.position = city.armyPoint.position;
                 //transform.parent = city.transform;
 
-
+              
 
 
                 if (isSelected)
@@ -627,7 +719,7 @@ public class ArmyController : MonoBehaviour
 
                 for (int i = 0; i < squadsOnMap.Count; i++)
                 {
-                    squadsOnMap[i].gameObject.SetActive(false);
+                    //squadsOnMap[i].gameObject.SetActive(false);
                 }
             }
             else
@@ -655,6 +747,9 @@ public class ArmyController : MonoBehaviour
             targetObject.gameObject.SetActive(true);
             collider.enabled = true;
 
+            armyInfoPanel.transform.parent = transform;
+
+            armyInfoPanel.transform.localPosition = infoLocalPosition;
 
 
 
@@ -675,7 +770,7 @@ public class ArmyController : MonoBehaviour
 
             for (int i = 0; i < squadsOnMap.Count; i++)
             {
-                squadsOnMap[i].gameObject.SetActive(true);
+                //squadsOnMap[i].gameObject.SetActive(true);
             }
         }
     }
@@ -761,7 +856,7 @@ public class ArmyController : MonoBehaviour
 
         Vector3 dir = transform.position - battlePos;
 
-        targetObject.position = targetObject.position + dir.normalized * 15f;
+        targetObject.position = targetObject.position + dir.normalized * 7f;
         SetMoving(true);
 
         collider.enabled = true;
@@ -879,36 +974,83 @@ public class ArmyController : MonoBehaviour
         // Расставляем сегменты по истории с интервалом
         for (int i = 0; i < squadsOnMap.Count; i++)
         {
-            int index = Mathf.Min((i + 1) * Mathf.RoundToInt(offset * 10), historyLength - 1);
+            int index = Mathf.Min((i + 1) * Mathf.RoundToInt(offset*15f*armySpeed), historyLength - 1);
 
-           
-                squadsOnMap[i].position = history[index];
 
-                // Поворот к следующей точке истории (просто для вида)
-                Vector3 dir = history[index - 1] - history[index];
-                if (dir.sqrMagnitude > 0.001f)
-                {
-                    squadsOnMap[i].rotation = Quaternion.LookRotation(dir);
-                }
-
-            if (Vector3.Distance(squadsOnMap[i].position, targetObject.position) < 0.2f)
+            if(i > isActive.Length)
             {
-                squadsOnMap[i].transform.position = formationPoints[i].position;
+                isActive = new bool[squadsOnMap.Count];
+
+                    return;
             }
 
-         }
+            if (!isActive[i] && i > 0)
+            {
+                if (isActive[i - 1] == true)
+                {
 
+                    if (Vector3.Distance(lastPositionToOffset, transform.position) >= offset * armySpeed)
+                    {
+                        isActive[i] = true;
+                        lastPositionToOffset = transform.position;
+                        return;
+                    }
+                }
+            }
+
+            if (isActive[i])
+            {
+               
+
+                // Поворот к следующей точке истории (просто для вида)
+                //Vector3 dir = history[index - 1] - history[index];
+                //if (dir.sqrMagnitude > 0.001f)
+                //{
+                //    //ssquadsOnMap[i].rotation = Quaternion.LookRotation(dir);
+                //}
+
+                if (Vector3.Distance(squadsOnMap[i].position, targetObject.position) < minDistance)
+                {
+                    squadsOnMap[i].transform.position = formationPoints[i].position;
+                    isActive[i] = false;
+                }
+                else
+                {
+                    squadsOnMap[i].position = history[index];
+                }
+            }
+            else
+            {
+                if (Vector3.Distance(lastPositionToOffset, targetObject.position) > offset)
+                {
+                    squadsOnMap[i].transform.position = Vector3.MoveTowards(squadsOnMap[i].transform.position, lastPositionToOffset, armySpeed / 2 * Time.deltaTime);
+                }
+            }
+
+            
+        }
 
         // Когда хвост близко и агент остановился — выравниваем формацию
-        if (Vector3.Distance(squadsOnMap[^1].position, transform.position) < 0.2f)
+        if (Vector3.Distance(targetObject.position, transform.position) <= minDistance)
         {
             if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance && agent.velocity.sqrMagnitude == 0f)
             {
+                //
+
+                for (int i = 0; i < isActive.Length; i++)
+                {
+                    isActive[i] = false;
+
+
+                }
+
                 SetMoving(false);
                 SetFormation(moveDirection);
                 lineRenderer.gameObject.SetActive(false);
             }
         }
+
+
 
 
 
@@ -939,6 +1081,7 @@ public class ArmyController : MonoBehaviour
             isFormated = false;
 
             targetObject.gameObject.SetActive(true);
+            baseObject.gameObject.SetActive(false);
             TargetPointCheck();
 
 
@@ -960,12 +1103,28 @@ public class ArmyController : MonoBehaviour
             lineRenderer.positionCount = path.corners.Length;
             lineRenderer.SetPositions(path.corners);
             lineRenderer.gameObject.SetActive(true);
+
+            isActive = new bool[squadsOnMap.Count];
+            isActive[0] = true; // первый сразу активен
         }
         else
         {
             agent.Stop();
             targetObject.gameObject.SetActive(false);
+            baseObject.gameObject.SetActive(true);
+
             
+
+
+            GridCell c = grid.GetCellAt(transform.position);
+            if (c != null)
+            {
+                if ((!c.isPlayer && isPlayer) || (c.isPlayer && !isPlayer))
+                {
+                    c.Capture(isPlayer);
+                }
+            }
+
         }
 
         if (inCity)
@@ -991,7 +1150,7 @@ public class ArmyController : MonoBehaviour
         for (int i = 0; i < squadsOnMap.Count; i++)
         {
             squadsOnMap[i].transform.position = formationPoints[i].position;
-            squadsOnMap[i].transform.rotation = formationPoints[i].rotation;
+           // squadsOnMap[i].transform.rotation = formationPoints[i].rotation;
 
 
             yield return new WaitForSeconds(delay); // Ждем перед следующим юнитом
@@ -1019,6 +1178,6 @@ public class ArmyController : MonoBehaviour
 
         }
 
-        StartCoroutine(SquadsToFormation(0.1f));
+        StartCoroutine(SquadsToFormation(0.05f));
     }
 }

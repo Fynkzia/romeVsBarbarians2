@@ -44,7 +44,7 @@ public class ShotMovement : MonoBehaviour
     private bool arrived = false;
 
     private const string ENEMY_TAG = "Enemy";
-    private const string SQUAD_TAG = "Squad";
+    private const string SQUAD_TAG = "Player";
 
 
     private void Setup(Vector3 target, float speed, float arrowsAmount,float damage, float accuracy, string tag, float radius) {
@@ -179,9 +179,9 @@ public class ShotMovement : MonoBehaviour
 
                 for (int i = 0; i < arrowsAmount/ hitColliders.Length; i++) // равномерно распределятеся по всем отрядам
                 {
-                    float min = 0f - (enController.defenceSquad * 0.1f) - (enController.defenceCoef) - (-enController.unitArray.Count * 0.1f) - (distance * 0.4f);
+                    float min = 0f - (enController.defenceSquad * 0.1f) - (enController.defenceCoef) - (-enController.unitArray.Count * 0.1f) - (distance * 0.3f);
 
-                    float max = 10f + ((damage - enController.defenceSquad) * 1.1f) + (accuracy * 0.5f);
+                    float max = 10f + ((damage - enController.defenceSquad) * 1.1f) + (accuracy * 0.6f);
                    
 
                     float r = Random.Range(min, max);
@@ -189,13 +189,13 @@ public class ShotMovement : MonoBehaviour
                     if (r > 8.8f)
                     {
 
-                        enController.GetUnitDie(-2, 0,0, arrowsAmount / hitColliders.Length);
+                        enController.GetUnitDie(-2, 1, 0,0 );
                     }
                     else
                     {
                         if (r > 5f)
                         {
-                            enController.GetDamage(0,0, arrowsAmount / hitColliders.Length);
+                            enController.GetDamage(1, 0f, 0);
                         }
                     }
                     //enController.MoraleChange(-enController.lostMoraleThenDie / 5f); 

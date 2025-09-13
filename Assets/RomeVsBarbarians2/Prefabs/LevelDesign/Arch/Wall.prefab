@@ -646,8 +646,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 6.621727, y: 3.3048553, z: 2.2729797}
-  m_Center: {x: -0.3121376, y: 1.1524279, z: -1.4007721}
+  m_Size: {x: 9.707195, y: 5.107897, z: 2.2729797}
+  m_Center: {x: -0.13854027, y: 2.0539484, z: -1.4007721}
 --- !u!114 &6220289749528412243
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -664,6 +664,7 @@ MonoBehaviour:
   inGroupBuilding: 0
   isDestroed: 0
   spawnerController: {fileID: 0}
+  smallCityController: {fileID: 0}
   hitPoints: 700
   buildingSize: 2
   shootingBuilding: 0
@@ -699,11 +700,11 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 3.28, y: 0.98, z: 1.46}
+  m_Extents: {x: 4.81, y: 1.725, z: 1.46}
   m_MoveThreshold: 0.1
   m_Carve: 1
   m_CarveOnlyStationary: 1
-  m_Center: {x: -0.26, y: 0.28, z: -1.42}
+  m_Center: {x: -0.26, y: 1.39, z: -1.42}
   m_TimeToStationary: 0.5
 --- !u!1 &7122401479201125311
 GameObject:
@@ -1032,8 +1033,8 @@ Transform:
   m_GameObject: {fileID: 7283027674558492675}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.49246216, y: 1.3898034, z: -0.41}
-  m_LocalScale: {x: 72.3492, y: 116.789986, z: 207.66676}
+  m_LocalPosition: {x: -0.49246216, y: 1.94, z: -0.41}
+  m_LocalScale: {x: 119.6091, y: 156.72047, z: 207.66676}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 906446602868390137}
@@ -1267,7 +1268,7 @@ Transform:
   m_GameObject: {fileID: 8330092364626498471}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 1, z: -0, w: -0.00000037252897}
-  m_LocalPosition: {x: 0.006392101, y: 0, z: -0.010256784}
+  m_LocalPosition: {x: 0.006392101, y: 0, z: -0.0071}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

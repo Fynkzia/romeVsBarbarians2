@@ -147,7 +147,24 @@ public class BuildingManager : MonoBehaviour
        
     }
 
-        public void GetDamage(float damage)
+    public void SetOwner( bool isPlayer)
+    {
+        if (isPlayer)
+        {
+            playerBuilding = true;
+            gameObject.tag = "Player";
+        }
+        else
+        {
+            playerBuilding = false;
+            gameObject.tag = "Enemy";
+        }
+        
+
+
+    }
+
+    public void GetDamage(float damage)
     {
 
         if (!isDestroed)

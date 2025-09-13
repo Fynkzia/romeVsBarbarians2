@@ -245,6 +245,8 @@ MonoBehaviour:
   - 0
   - 0
   - 0
+  - 0
+  - 0
   actionQueueArray: []
   allEnemiesList: []
   allPlayerList: []
@@ -258,6 +260,8 @@ MonoBehaviour:
   bestSquadToRetreat: {fileID: 0}
   bestSquadToHelp: {fileID: 0}
   bestDefencePoints: {fileID: 0}
+  allEnemyPower: 0
+  allPlayerPower: 0
   nearEnemyPower: 0
   nearPlayerPower: 0
   squadsToDelete: []
@@ -274,6 +278,15 @@ MonoBehaviour:
   farRadius: 50
   nearRadius: 25
   nearEnemyRadius: 25
+  strategyCounter: 0
+  strategyMoveAttemp: 0
+  enemyPower: 0
+  playerPower: 0
+  attackSpacing: []
+  attackFormation: []
+  defenceFormation: []
+  strategyMove: 0
+  squadFormationIndex: 0
   enemyObject: {fileID: 0}
   playerObject: {fileID: 0}
   defenceObject: {fileID: 7183375367243586529}

@@ -55,7 +55,7 @@ public static class GameOptions  {
         return max;
     }
 
-    public static float PowerCalculate(SquadController squad)
+    public static float PowerCalculate(SquadController squad) /// power условная хуня считаеющая только силу * на количество юнитов
     {
         float power = 10f;
 

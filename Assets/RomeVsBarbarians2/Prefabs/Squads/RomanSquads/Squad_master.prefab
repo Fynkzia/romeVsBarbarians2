@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 6750266649210976646}
   m_Layer: 12
   m_Name: Squad_master
-  m_TagString: Squad
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -204,19 +204,19 @@ MonoBehaviour:
   defencelevelBonus: 0
   coinsFromDeath: 1
   actionColliderRadius: 5
-  movementSpeed: 4
+  movementSpeed: 3
   boostSpeed: 3
   minimumFormation: 0.3
   lostDefenceMoving: 0.1
   resetDefence: 0.25
   lostMoraleThenRun: 0.03
-  lostMoraleThenDie: 0.2
-  lostMoraleThenAttacked: 0.06
+  lostMoraleThenDie: 0.12
+  lostMoraleThenAttacked: 0.03
   addMoraleKillSquad: 1
   addMoraleKillUnit: 0.1
-  recoveryMoraleSpeed: 0.06
-  lostMoralePerRetretUnit: 0.1
-  checkRetretersTime: 1.5
+  recoveryMoraleSpeed: 0.03
+  lostMoralePerRetretUnit: 0.06
+  checkRetretersTime: 3
   currentRetretersTime: 0
   retretersMask:
     serializedVersion: 2
@@ -551,7 +551,7 @@ GameObject:
   - component: {fileID: 4412510041063393334}
   m_Layer: 11
   m_Name: SquadTrigger
-  m_TagString: Squad
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

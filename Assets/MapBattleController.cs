@@ -49,6 +49,16 @@ public class MapBattleController : MonoBehaviour
         isSelect = select;
         battleInfo.Select(select);
 
+        if (select)
+        {
+            playerArmy.armyInfoPanel.gameObject.SetActive(false);
+            enemyArmy.armyInfoPanel.gameObject.SetActive(false);
+        }
+        else
+        {
+            playerArmy.armyInfoPanel.gameObject.SetActive(true);
+            enemyArmy.armyInfoPanel.gameObject.SetActive(true);
+        }
         
 
     }
@@ -153,7 +163,20 @@ public class MapBattleController : MonoBehaviour
         }
         else
         {
-            
+            for (int i = 0; i < army.squadList.Count; i++)
+            {
+                if (enemyArmy.squadList.Count < 20)
+                {
+                    enemyArmy.AddSquadFromArmy(army.squadList[i]);
+
+
+                    squadListToAdd.Add(army.squadList[i]);
+                }
+                else
+                {
+                    return;
+                }
+            }
         }
 
         for (int i = 0; i < squadListToAdd.Count; i++)
@@ -163,7 +186,11 @@ public class MapBattleController : MonoBehaviour
             
         }
 
-        SceneLoader.Instance.LoadNewSqads(sceneIndex, squadListToAdd.ToArray());
+        if (inBattle)
+        {
+
+            SceneLoader.Instance.LoadNewSqads(sceneIndex, squadListToAdd.ToArray());
+        }
 
     }
 

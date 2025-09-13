@@ -11,6 +11,7 @@ public class LookAtCamera : MonoBehaviour
 
     [SerializeField]private bool battleInfo;
     [SerializeField] private bool mapInfo;
+    [SerializeField] private GameObject objectZoom;
 
 
     [SerializeField] private float scaleFactor;
@@ -120,6 +121,19 @@ public class LookAtCamera : MonoBehaviour
             transform.localScale = new Vector3(-scale, scale, scale);
 
             //transform.rotation = Quaternion.Euler(angels[newZoom], transform.rotation.y, 0);
+
+            if (mapInfo && objectZoom != null)
+            {
+                if(newZoom == 0)
+                {
+                    objectZoom.SetActive(false);
+                }
+                else
+                {
+                    objectZoom.SetActive(true);
+                }
+
+            }
         }
        
     }

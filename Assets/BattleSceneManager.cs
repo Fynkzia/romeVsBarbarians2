@@ -49,6 +49,7 @@ public class BattleSceneManager : MonoBehaviour
 
     public bool isInit;
     public bool IsCity;
+    public bool isSmallCity;
 
     public bool IsWin;
     public bool IsDraft;
@@ -59,7 +60,9 @@ public class BattleSceneManager : MonoBehaviour
     public Transform playerHousesParent;
     public Transform enemyHousesParent;
 
-  
+    public List<SmallCityController> smallCities;
+
+
 
 
     public Transform fancesParent;
@@ -130,20 +133,24 @@ public class BattleSceneManager : MonoBehaviour
             }
            
         }
-        else /// потом переделать на узнование какая область игрока или врага
+        else if(isSmallCity) /// потом переделать на узнование какая область игрока или врага
         {
-            enemyHousesParent.gameObject.SetActive(true);
 
-            for (int i = 0; i < enemyHousesParent.childCount; i++)
+            if (!city.isPlayer)
             {
-                enemyHousesParent.GetChild(i).gameObject.SetActive(false);
+                enemyHousesParent.gameObject.SetActive(true);
+
+                for (int i = 0; i < enemyHousesParent.childCount; i++)
+                {
+                    enemyHousesParent.GetChild(i).gameObject.SetActive(false);
+                }
             }
         }
 
 
-        if (IsCity)
+        if (IsCity && !isSmallCity)
         {
-            int housesCount = city.cityBuildings/5;
+            int housesCount = city.cityBuildings / 5;
 
             if (city.isPlayer)
             {
@@ -152,17 +159,27 @@ public class BattleSceneManager : MonoBehaviour
                     playerHousesParent.GetChild(i).gameObject.SetActive(true);
                 }
 
-                for (int i = 0; i < playerHousesParent.childCount; i++)
+                for(int i = 0; i < fancesParent.childCount; i++)
                 {
-                    if (playerHousesParent.GetChild(i).gameObject.activeSelf)
-                    {
-
-                        if (Random.Range(1, 100) > 70)
-                        {
-                            playerHousesParent.GetChild(i).GetComponent<SquadSpawnerController>().Init();
-                        }
-                    }
+                    fancesParent.GetChild(i).GetComponent<BuildingManager>().SetOwner(true);
                 }
+
+                for (int i = 0; i < towersParent.childCount; i++)
+                {
+                    towersParent.GetChild(i).GetComponent<BuildingManager>().SetOwner(true);
+                }
+
+                
+                    smallCities[0].SetOwner(true);
+                
+               
+               
+
+                smallCities[0].unitCount = (int)city.cityUnits;
+                smallCities[0].buildCount = (int)city.cityBuildings;
+
+                smallCities[0].Init();
+                smallCities[0].squadSpawnerController.Init();
             }
             else
             {
@@ -171,40 +188,70 @@ public class BattleSceneManager : MonoBehaviour
                     enemyHousesParent.GetChild(i).gameObject.SetActive(true);
                 }
 
-                for (int i = 0; i < enemyHousesParent.childCount; i++)
+                for (int i = 0; i < fancesParent.childCount; i++)
                 {
-                    if (enemyHousesParent.GetChild(i).gameObject.activeSelf)
-                    {
-
-                        if (Random.Range(1, 100) > 70)
-                        {
-                            enemyHousesParent.GetChild(i).GetComponent<SquadSpawnerController>().Init();
-                        }
-                    }
+                    fancesParent.GetComponent<BuildingManager>().SetOwner(false);
                 }
+                for (int i = 0; i < towersParent.childCount; i++)
+                {
+                    towersParent.GetComponent<BuildingManager>().SetOwner(false);
+                }
+
+                smallCities[0].SetOwner(false) ;
+
+                
+
+                smallCities[0].unitCount = (int)city.cityUnits;
+                smallCities[0].buildCount = (int)city.cityBuildings;
+
+                smallCities[0].Init();
+                smallCities[0].squadSpawnerController.Init();
             }
 
 
-            
+
 
         }
-        else
+        else if (isSmallCity && IsCity)
         {
-            for (int i = 0; i < enemyHousesParent.childCount; i++)
+            SmallCityController smallCity =  smallCities[Random.Range(0, smallCities.Count)];
+
+            smallCity.gameObject.SetActive(true);
+
+            if (city.isPlayer)
             {
-                if (Random.Range(1, 100) > 50)
+                smallCity.SetOwner(true);
+            }
+            else
+            {
+                smallCity.SetOwner(false);
+
+            }
+           
+
+
+            smallCity.unitCount = (int)city.cityUnits;
+            smallCity.buildCount = (int)city.cityBuildings;
+
+            smallCity.Init();
+            smallCity.squadSpawnerController.Init();
+
+
+            int houses = (smallCity.buildCount / 5) + (smallCity.unitCount/50);
+
+
+            for (int i = 0; i < houses ; i++)
+            {
+                if (i < enemyHousesParent.childCount)
                 {
+                    if (Random.Range(1, 100) > 50)
+                    {
+                        
+
+                    }
+
                     enemyHousesParent.GetChild(i).gameObject.SetActive(true);
 
-               if (enemyHousesParent.GetChild(i).GetComponent<SquadSpawnerController>()){
-                enemyHousesParent.GetChild(i).GetComponent<SquadSpawnerController>().Init();
-                        enemyHousesParent.GetChild(i).GetComponent<SmallCityController>().Init();
-                    }
-                }
-
-                if (Random.Range(1, 100) > 50)
-                {
-                    
                 }
             }
 
@@ -240,13 +287,21 @@ public class BattleSceneManager : MonoBehaviour
 
     }
 
-    private IEnumerator EndBattleSiquence() {
+    public void PlayerRetreat()
+    {
+        EndBattle();
+    }
 
+
+
+        private void EndBattle()
+    {
         playerArmy.squadList.Clear();
-        Debug.Log("EndBattleSiquence " + playerSquadParent.childCount);  
+        Debug.Log("EndBattleSiquence " + playerSquadParent.childCount);
         for (int i = 0; i < playerSquadParent.childCount; i++)
         {
-            if (playerSquadParent.GetChild(i).gameObject.activeSelf) {
+            if (playerSquadParent.GetChild(i).gameObject.activeSelf)
+            {
                 SquadController squad = playerSquadParent.GetChild(i).GetComponent<SquadController>();
 
 
@@ -257,7 +312,7 @@ public class BattleSceneManager : MonoBehaviour
 
 
                 }
-                
+
             }
         }
 
@@ -291,7 +346,12 @@ public class BattleSceneManager : MonoBehaviour
             enemyArmy.squadList[i].transform.parent = enemyArmy.transform;
             enemyArmy.squadList[i].gameObject.SetActive(false);
         }
+    }
 
+        private IEnumerator EndBattleSiquence() {
+
+
+        EndBattle();
 
         if (playerArmy.squadList.Count == 0) {
 
@@ -347,7 +407,7 @@ public class BattleSceneManager : MonoBehaviour
         Vector3 positionEnemyArmy = (transform.position + offcetToCenter) + dirEnNorm * 120f;
 
 
-        if (!playerArmy.inCity)
+        if ((!playerArmy.inCity || isSmallCity))
         {
             GameObject newFormation = Instantiate(formationPointPrefab.gameObject, positionPlayerArmy, Quaternion.identity, transform);
 
@@ -362,12 +422,13 @@ public class BattleSceneManager : MonoBehaviour
             }
 
         }
-        else
+        else if (playerArmy.inCity && !isSmallCity)
+
         {
             playerSpawnPoints = CitySpawnPoints;
         }
 
-        if (!enemyArmy.inCity)
+        if (!enemyArmy.inCity || isSmallCity )
         {
 
             GameObject newEnFormation = Instantiate(formationPointPrefab.gameObject, positionEnemyArmy, Quaternion.identity, transform);
@@ -381,7 +442,7 @@ public class BattleSceneManager : MonoBehaviour
                 enemySpawnPoints[i] = newEnFormation.transform.GetChild(i);
             }
         }
-        else
+        else if(enemyArmy.inCity && !isSmallCity)
         {
             enemySpawnPoints = CitySpawnPoints;
         }

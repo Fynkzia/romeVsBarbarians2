@@ -45,6 +45,11 @@ public class AIController : MonoBehaviour
     [SerializeField] private SquadController bestSquadToHelp;
     [SerializeField] private AIDefencePoint bestDefencePoints;
 
+
+    [SerializeField] public float allEnemyPower;
+
+    [SerializeField] public float allPlayerPower;
+
     [SerializeField] public float nearEnemyPower;
 
     [SerializeField] public float nearPlayerPower;
@@ -77,17 +82,25 @@ public class AIController : MonoBehaviour
     [Space(10)]
 
     [SerializeField] public int strategyCounter;
+    [SerializeField] public int strategyMoveAttemp;
     [SerializeField] public float enemyPower;
     [SerializeField] public float playerPower;
 
+    [SerializeField] public float[] attackSpacing;
 
-    [SerializeField] private Transform attackFormation;
-    [SerializeField] private Transform defenceFormation;
+    [SerializeField] private List<Vector3> attackFormation;
+    [SerializeField] private List<Vector3> defenceFormation;
 
-    [Header("Suport waves Settings")]
-    [Space(10)]
 
-[SerializeField] public Transform enemyObject;
+    [SerializeField] private bool strategyMove;
+    [SerializeField] private bool defenceMove;
+    [SerializeField] private bool attackMove;
+    [SerializeField] private int squadFormationIndex;
+
+    List<SquadController> squadListToStrategy;
+
+
+    [SerializeField] public Transform enemyObject;
     [SerializeField] public Transform playerObject;
     [SerializeField] public Transform defenceObject;
 
@@ -159,12 +172,17 @@ public class AIController : MonoBehaviour
                 {
                     DeleteSquads();
                 }
-                
+
+                SetAllEnemiesList();
+
 
                 SetQueue();
                 PlayerSquadsCollectToGroup();
                 SetAllDefencePoint();
                 // actions = 0;
+                strategyMove = false;
+                attackMove = false;
+                defenceMove = false;
             }
 
         }
@@ -176,7 +194,8 @@ public class AIController : MonoBehaviour
     }
 
 
-    public void AiAction(SquadController squad) {
+    public void AiAction(SquadController squad)
+    {
 
         for (int i = 0; i < actionPrioruty.Length; i++) ///// очистка
         {
@@ -186,13 +205,24 @@ public class AIController : MonoBehaviour
         if (squad.squadDie) { return; }
 
         // познаем обстановку вокруг оттряда
-         FarPlayerSquadList(squad);
-         NearPlayerSquadList(squad); 
-         NearEnemySquadList(squad);
+        FarPlayerSquadList(squad);
+        NearPlayerSquadList(squad);
+        NearEnemySquadList(squad);
+        //глобальные
+        AllPowerCalculate();
 
 
-        actionPrioruty[0] += enemyNearSquads.Count; // рядом с союзниками стоять комфортно
-        actionPrioruty[0] += 10/squad.currentMorale ; // мало морали - лучще постоять
+        actionPrioruty[0] += enemyNearSquads.Count*0.7f; // рядом с союзниками стоять комфортно
+        if (squad.currentMorale / squad.maxMorale < 0.6)
+        {
+            actionPrioruty[0] += (1-(squad.currentMorale / squad.maxMorale)) * 10; // мало морали - лучще постоять
+        }
+
+        if (allPlayerPower > allEnemyPower)
+        {
+            actionPrioruty[0] += 1; // лучше постоять если мы лохи по паверу
+
+        }
 
         float lastPowerToAttack = -2000f;
         int bestIndexToAttack = 0;
@@ -200,7 +230,7 @@ public class AIController : MonoBehaviour
 
         if (playerNearSquads.Count > 0) //  1 - бежим в атаку на конкретный отряда - если он близко!
         {
-            
+
 
             for (int i = 0; i < playerNearSquads.Count; i++)
             {
@@ -220,16 +250,17 @@ public class AIController : MonoBehaviour
             bestSquadToAttack = playerNearSquads[bestIndexToAttack];
 
             actionPrioruty[1] += countToAttck;//  пересмотрт!!!!!!
-            actionPrioruty[1] += lastPowerToAttack/10;//  пересмотрт!!!!!!
+            actionPrioruty[1] += lastPowerToAttack / 10;//  пересмотрт!!!!!!
 
 
             if (squad.predictEnemy != null) /// если чел уже идет к врагу или сражается - множим на 0;
             {
-                if(squad.isMoved || squad.inBattle){
+                if (squad.isMoved || squad.inBattle)
+                {
 
-                    if(squad.predictEnemy.transform.parent.gameObject == bestSquadToAttack.gameObject)
+                    if (squad.predictEnemy.transform.parent.gameObject == bestSquadToAttack.gameObject)
                     {
-                        actionPrioruty[1] *= 0f ;
+                        actionPrioruty[1] *= 0f;
                     }
                 }
             }
@@ -239,7 +270,7 @@ public class AIController : MonoBehaviour
 
         if (playerFarSquads.Count > 0 && playerNearSquads.Count == 0) //  2 - идем к подходящему отряду чтоб дать ему песды - если он далеко!
         {
-            
+
 
             for (int i = 0; i < playerFarSquads.Count; i++)
             {
@@ -262,13 +293,19 @@ public class AIController : MonoBehaviour
             actionPrioruty[2] += countToAttck;//  пересмотрт!!!!!!
             actionPrioruty[2] += lastPowerToAttack / 20;//  пересмотрт!!!!!!
 
-            if(playerFarSquads.Count == 1)
+            if (playerFarSquads.Count == 1) // если один отряд - хотим сильнее напасть
             {
 
                 actionPrioruty[2] += 1;
             }
 
-            if (bestSquadToAttack.currentMorale/ bestSquadToAttack.maxMorale < 0.5f)
+            if (bestSquadToAttack.currentMorale / bestSquadToAttack.maxMorale < 0.5f) // если мало морали - хотим сильнее напасть
+            {
+
+                actionPrioruty[2] += 1;
+            }
+
+            if (bestSquadToAttack.ai_squadPower < allPlayerPower / allPlayerList.Count) // если есредний павер ниже чем у всех - хотим еще сильнее
             {
 
                 actionPrioruty[2] += 1;
@@ -318,32 +355,32 @@ public class AIController : MonoBehaviour
             actionPrioruty[3] += countToRetreat;//  пересмотрт!!!!!!
             actionPrioruty[3] += -lastPowerToRetreat / 10;//  пересмотрт!!!!!!
 
-                if (squad.inBattle )
-                {
+            if (squad.inBattle)
+            {
 
-                     actionPrioruty[3] *= 0f;
+                actionPrioruty[3] *= 0f;
                 actionPrioruty[0] *= 0f; /// переделать!!!
 
-                float powerCoef =  (squad.enemyController[0].ai_squadPower / squad.ai_squadPower)/10f;
+                float powerCoef = (squad.enemyController[0].ai_squadPower / squad.ai_squadPower) / 10f;
 
-                    if (squad.currentMorale / squad.maxMorale < 0.35f + powerCoef)// пересмотрт!!!!!!
-                    {
-                        actionPrioruty[3] += squad.enemyController.Count;
+                if (squad.currentMorale / squad.maxMorale < 0.35f + powerCoef)// пересмотрт!!!!!!
+                {
+                    actionPrioruty[3] += squad.enemyController.Count;
 
-                        actionPrioruty[3] += 10 / squad.currentMorale;
+                    actionPrioruty[3] += 10 / squad.currentMorale;
 
-                    }
+                }
 
 
-                 }
-            
+            }
+
         }
 
         if (squad.squadDie) { return; }
 
         float lastPowerToHelp = 0;
         int bestIndexToHelp = 0;
-        
+
 
         if (enemyNearSquads.Count > 0) // 4 - бежим на помощь союзному отряду
         {
@@ -355,21 +392,21 @@ public class AIController : MonoBehaviour
                     float p = PowerСomparison(enemyNearSquads[i], enemyNearSquads[i].enemyController[0]);
                     float p2 = PowerСomparison(squad, enemyNearSquads[i].enemyController[0]);
 
-                    if (p+ p2 > lastPowerToHelp)
+                    if (p + p2 > lastPowerToHelp)
                     {
                         lastPowerToHelp = p + p2;
                         bestIndexToHelp = i;
 
-                        actionPrioruty[4] ++;//  пересмотрт!!!!!!
+                        actionPrioruty[4]++;//  пересмотрт!!!!!!
                     }
-                   
+
                 }
 
             }
 
             bestSquadToHelp = enemyNearSquads[bestIndexToHelp];
 
-           
+
             actionPrioruty[4] += lastPowerToHelp / 10; // пересмотрт!!!!!!
 
         }
@@ -384,20 +421,20 @@ public class AIController : MonoBehaviour
         {
             for (int i = 0; i < defencePoints.Count; i++)
             {
-                
 
-                    float p = defencePoints[i].defencePriority;
-                    
 
-                    if (p  > lastPriorityToDefence)
-                    {
-                    lastPriorityToDefence = p ;
+                float p = defencePoints[i].defencePriority;
+
+
+                if (p > lastPriorityToDefence)
+                {
+                    lastPriorityToDefence = p;
                     bestIndexToDefence = i;
 
 
-                    }
+                }
 
-                
+
 
             }
 
@@ -411,20 +448,130 @@ public class AIController : MonoBehaviour
 
         if (squad.squadDie) { return; }
 
+        if (actionQueueArray.Count == allEnemiesList.Count) //  8 - стратегический мув!
+        {
+            squadListToStrategy = new List<SquadController>();
+
+            for (int i = 0; i < allEnemiesList.Count; i++)
+            {
+                if (!allEnemiesList[i].inBattle)
+                {
+                    if (allEnemiesList[i].ai_currentState != 1 && allEnemiesList[i].ai_currentState != 4)
+                    {
+                        squadListToStrategy.Add(allEnemiesList[i]);
+                    }
+
+                }
+                else
+                {
+
+                    strategyMoveAttemp = 0;
+                }
+            }
+
+
+
+
+            if (squadListToStrategy.Count >= 0)
+            {
+
+                //strategyCounter = 0;
+                strategyMoveAttemp++;
+                strategyMove = true;
+                squadFormationIndex = 0;
+
+                
+               
+
+
+                 
+
+                attackFormation = GenerateAttackFormation(squadListToStrategy.Count);
+                defenceFormation = GenerateDefenseFormation(squadListToStrategy.Count);
+
+
+                if (allEnemyPower >= allPlayerPower + 300f)
+                {
+                    attackMove = true;
+                    defenceMove = false;
+                    
+                }
+                else if (allEnemyPower >= allPlayerPower)
+                {
+                    attackMove = true;
+                    defenceMove = false;
+                }
+                else if (allEnemyPower+300 <= allPlayerPower)
+                {
+
+                    attackMove = false;
+                    defenceMove = true;
+                }
+                else if (allEnemyPower <= allPlayerPower)
+                {
+
+                    if (Random.Range(0, 100) > 50)
+                    {
+                        attackMove = true;
+                        defenceMove = false;
+                    }
+                    else
+                    {
+                        attackMove = false;
+                        defenceMove = true;
+                    }
+                }
+
+
+                //for (int i = 0; i < squadListToStrategy.Count; i++)
+                //{
+
+                //    if (strategyMoveAttemp >= 5)
+                //    {
+
+                //        DrawPathAndGo(squadListToStrategy[i], squadListToStrategy[i].transform.position, attackFormation[i], 2);
+                //    }
+                //    else
+                //    {
+                //        DrawPathAndGo(squadListToStrategy[i], squadListToStrategy[i].transform.position, attackFormation[i], 1);
+                //    }
+
+                //}
+
+
+
+
+
+
+
+                //return; // все делают стратегический мув - конец!!!
+
+            }
+
+        }
+
+        if (strategyMove && squadListToStrategy.Contains(squad))
+        {
+            actionPrioruty[8] = 10;
+
+        }
+
+        if (squad.squadDie) { return; }
+
         float lastPriority = -10f;
         int bestAction = 0;
         for (int i = 0; i < actionPrioruty.Length; i++) ///// финальное решение
         {
-            if(actionPrioruty[i] > lastPriority)
+            if (actionPrioruty[i] > lastPriority)
             {
                 lastPriority = actionPrioruty[i];
                 bestAction = i;
             }
         }
 
-        
 
-        if(bestAction == squad.ai_currentState)
+
+        if (bestAction == squad.ai_currentState)
         {
             squad.ai_currentState = 0;
             return;
@@ -439,10 +586,10 @@ public class AIController : MonoBehaviour
         }
 
 
-        if (bestAction == 1 ) // идием пиздицца
+        if (bestAction == 1) // идием пиздицца
         {
             squad.ai_currentState = 1;
-            DrawPathAndGo(squad, squad.transform.position, bestSquadToAttack.transform.position,1);
+            DrawPathAndGo(squad, squad.transform.position, bestSquadToAttack.transform.position, 1);
 
             squad.isGoingToEnemy = true;
             squad.predictEnemy = bestSquadToAttack.TriggerObject;
@@ -453,7 +600,7 @@ public class AIController : MonoBehaviour
         if (bestAction == 2) // подтягиваемся к врагам на пол пути
         {
             squad.ai_currentState = 2;
-            DrawPathAndGo(squad, squad.transform.position, bestSquadToAttack.transform.position,2); // пол пути
+            DrawPathAndGo(squad, squad.transform.position, bestSquadToAttack.transform.position, 2); // пол пути
             return;
         }
         if (bestAction == 3) //отходим, ссымся.Если в бою - выходим из боя
@@ -462,21 +609,22 @@ public class AIController : MonoBehaviour
             squad.ai_currentState = 3;
             Vector3 backVector;
 
-            if (bestSquadToRetreat != null) {
+            if (bestSquadToRetreat != null)
+            {
                 backVector = Vector3.Normalize(squad.transform.position - bestSquadToRetreat.transform.position);
             }
             else
             {
                 backVector = Vector3.Normalize(squad.transform.position - squad.enemyController[0].transform.position);
             }
-            
+
 
             DrawPathAndGo(squad, squad.transform.position, squad.transform.position + (backVector * nearRadius), 1);
             return;
         }
         if (bestAction == 4) // бежим на помощь союзному отряду
         {
-            squad.ai_currentState = 4 ;
+            squad.ai_currentState = 4;
             DrawPathAndGo(squad, squad.transform.position, bestSquadToHelp.transform.position, 1);
             return;
         }
@@ -487,13 +635,26 @@ public class AIController : MonoBehaviour
             bestDefencePoints.defencePriority -= 0.5f; // понижаем приоритет шоб много туда не бежало
 
             float defRadius = bestDefencePoints.radius;
-            Vector3 randomPos = new Vector3(Random.Range(-defRadius, defRadius),0f, Random.Range(-defRadius, defRadius));
+            Vector3 randomPos = new Vector3(Random.Range(-defRadius, defRadius), 0f, Random.Range(-defRadius, defRadius));
 
             DrawPathAndGo(squad, squad.transform.position, bestDefencePoints.transform.position + randomPos, 1);
             return;
         }
 
+        if (bestAction == 8) // // 8 - нам ничего не угражает - стратегический мув (улучшение позиции)
+        {
+            if (attackMove == true)
+            {
 
+                DrawPathAndGo(squad, squad.transform.position, attackFormation[squadFormationIndex], 1);
+            }else if(defenceMove == true)
+            {
+                DrawPathAndGo(squad, squad.transform.position, defenceFormation[squadFormationIndex], 1);
+            }
+
+            squadFormationIndex++;
+            return;
+        }
     }
 
 
@@ -566,6 +727,29 @@ public void SetAllEnemiesList()
             }
         }
 
+
+    }
+
+    public void AllPowerCalculate()
+    {
+        allEnemyPower = 0;
+        allPlayerPower = 0;
+
+        for (int i = 0; i < allEnemiesList.Count; i++)
+        {
+            allEnemyPower += allEnemiesList[i].AiPowerCalculate();
+
+           
+
+        }
+
+        for (int i = 0; i < allPlayerList.Count; i++)
+        {
+            allPlayerPower += allPlayerList[i].AiPowerCalculate();
+
+
+
+        }
 
     }
 
@@ -903,9 +1087,115 @@ public void DeleteSquads() {
     }
 
 
+    List<Vector3> GenerateAttackFormation(int unitCount)
+    {
+        float minDistance = 20f ;
+        float spacing =  unitCount;
+        Vector3 playerPos = new Vector3();
+        Vector3 center = new Vector3();
+
+       if(spacing > 40)
+        {
+            spacing = 40;
+        }
+        for (int i = 0; i < allPlayerList.Count; i++)
+        {
+            playerPos += allPlayerList[i].transform.position;
+
+        }
+        playerPos /= allPlayerList.Count;
+
+
+        for (int i = 0; i < allEnemiesList.Count; i++)
+        {
+            center += allEnemiesList[i].transform.position;
+
+        }
+        center /= allEnemiesList.Count;
+
+        //center += playerPos - dirToPlayer * distance;
+
+
+        List<Vector3> positions = new List<Vector3>();
+
+        // направление на игрока
+        Vector3 dirToPlayer = (playerPos - center).normalized;
+
+        // перпендикуляр для линии
+        Vector3 right = Vector3.Cross(Vector3.up, dirToPlayer);
+
+        center = Vector3.MoveTowards(center, playerPos, 20f * strategyMoveAttemp);
+
+        if(strategyMoveAttemp > 10)
+        {
+            center = playerPos - dirToPlayer * minDistance;
+        }
+
+
+        // center = playerPos;
+
+        
+
+
+        int half = unitCount / 2;
+        for (int i = 0; i < unitCount; i++)
+        {
+            int offset = i - half;
+            Vector3 pos = center + right * offset * spacing;
+            positions.Add(pos);
+        }
+
+        return positions;
+    }
+
+    List<Vector3> GenerateDefenseFormation(  int unitCount )
+    {
+        List<Vector3> positions = new List<Vector3>();
+
+
+        float radius = 5f * unitCount;
+        Vector3 playerPos = new Vector3();
+        Vector3 center = new Vector3();
+
+
+        for (int i = 0; i < allPlayerList.Count; i++)
+        {
+            playerPos += allPlayerList[i].transform.position;
+
+        }
+        playerPos /= allPlayerList.Count;
+
+
+        for (int i = 0; i < allEnemiesList.Count; i++)
+        {
+            center += allEnemiesList[i].transform.position;
+
+        }
+        center /= allEnemiesList.Count;
+
+        // направление на игрока
+        Vector3 dirToPlayer = (playerPos - center).normalized;
+        float baseAngle = Mathf.Atan2(dirToPlayer.z, dirToPlayer.x);
+
+        // угол разлёта (полукруг)
+        float startAngle = baseAngle - Mathf.PI / 2f;
+        float endAngle = baseAngle + Mathf.PI / 2f;
+
+        for (int i = 0; i < unitCount; i++)
+        {
+            float t = (float)i / (unitCount - 1);
+            float angle = Mathf.Lerp(startAngle, endAngle, t);
+
+            Vector3 pos = center + new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * radius;
+            positions.Add(pos);
+        }
+
+        return positions;
+    }
 
 
 
 
-    
+
+
 }

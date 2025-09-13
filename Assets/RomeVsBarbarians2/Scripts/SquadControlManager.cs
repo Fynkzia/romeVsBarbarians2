@@ -31,7 +31,7 @@ public class SquadControlManager : MonoBehaviour
 
     private float currentLineLength = 0;
 
-    private const string SQUAD_TAG = "Squad";
+    private const string SQUAD_TAG = "Player";
     private const string TERRAIN_TAG = "Terrain";
     private const string ENEMY_TAG = "Enemy";
 

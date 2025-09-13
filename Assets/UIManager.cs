@@ -19,6 +19,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] public RawImage rawBattleUiPanel;
 
     [SerializeField] public Button mapButton;
+    [SerializeField] public Button newBattleButton;
     [SerializeField] public List<Button> battleButtons;
     [SerializeField] public List<GameObject> alertObject;
     [SerializeField] public Transform activeSceneSprite;
@@ -48,7 +49,21 @@ public class UIManager : MonoBehaviour
         //transitionAnimation.SetTrigger("Out");
     }
 
-    public void UpdateActiveSceneSpritePosition(int activeScene)
+    public void NewBattleButtonActivate(int sceneIndex,bool active)
+    {
+        if (active)
+        {
+            newBattleButton.gameObject.SetActive(true);
+         
+        }
+        else
+        {
+            newBattleButton.gameObject.SetActive(false);
+        }
+
+    }
+
+        public void UpdateActiveSceneSpritePosition(int activeScene)
     {
         Vector3 newPos;
         if (activeScene == -1)

@@ -9,6 +9,8 @@ public class CityController : MonoBehaviour
 {
     public bool isSelected;
 
+    public bool isSmallCity;
+
     public bool isPlayer = true;
     public bool isCampainTarget = false;
 
@@ -40,6 +42,8 @@ public class CityController : MonoBehaviour
     public ArmyController armyEnemyObject;
 
     public Transform armyPoint;
+    public Transform armyInfoPoint;
+    public GameObject armyInfoObject;
 
     private float currentTime;
     private int untisToBuild;
@@ -94,8 +98,16 @@ public class CityController : MonoBehaviour
             {
                 cityUnits += cityBuildings/120f; // чтоб получить 0.5 юнита в минуту
 
-
+                
                
+            }
+
+            if ( cityBuildingsMax > cityBuildings+1)
+            {
+                if (isSmallCity)
+                {
+                    AddBuildings();
+                }
             }
 
             if (cityUnits > 0)
@@ -130,12 +142,12 @@ public class CityController : MonoBehaviour
 
         if (isPlayer)
         {
-            GameObject newBuild = Instantiate(playerBuild, spawnPoints[cityBuildings]);
+            GameObject newBuild = Instantiate(playerBuild, spawnPoints[cityBuildings].position, spawnPoints[cityBuildings].rotation,transform);
             buildings.Add(newBuild);
         }
         else
         {
-            GameObject newBuild = Instantiate(enemyBuild, spawnPoints[cityBuildings]);
+            GameObject newBuild = Instantiate(enemyBuild, spawnPoints[cityBuildings].position, spawnPoints[cityBuildings].rotation, transform);
             buildings.Add(newBuild);
         }
 
@@ -146,12 +158,13 @@ public class CityController : MonoBehaviour
 
     public void CitySelected()
     {
-        
 
 
-        isSelected = true;
+        if (!isSmallCity)
+        {
+            isSelected = true;
 
-
+        }
        
 
        
@@ -162,7 +175,10 @@ public class CityController : MonoBehaviour
 
     public void CityDeselect()
     {
-        isSelected = false;
+        if (!isSmallCity)
+        {
+            isSelected = false;
+        }
 
       
 
@@ -181,7 +197,10 @@ public class CityController : MonoBehaviour
             Instantiate(captureFx, transform.position, transform.rotation);
 
             gameObject.tag = "Player";
-            toDoController.enabled = true;
+            if (!isSmallCity)
+            {
+                toDoController.enabled = true;
+            }
             isPlayer = true;
         }
         else
@@ -190,7 +209,10 @@ public class CityController : MonoBehaviour
             playerMainBuild.SetActive(false);
 
             gameObject.tag = "Enemy";
-            toDoController.enabled = false;
+
+            if (!isSmallCity) { 
+                toDoController.enabled = false;
+        }
             isPlayer = false;
         }
 
@@ -202,7 +224,7 @@ public class CityController : MonoBehaviour
 
         buildings.Clear();
 
-        cityBuildings = 0;
+        cityBuildings = 1;
        
 
         cityUnits = 0;

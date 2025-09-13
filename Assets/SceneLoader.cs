@@ -32,6 +32,8 @@ public class SceneLoader : MonoBehaviour
     public float battleSceneDelay;
     public float mapSceneDelay;
 
+    public int newBattleSceneIndex;
+
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -57,10 +59,30 @@ public class SceneLoader : MonoBehaviour
 
          }
 
+        if (activeScene >= newBattleSceneIndex || mapBattleControllers.Count <= newBattleSceneIndex)
+        {
+            mapSceneManager.uIManager.NewBattleButtonActivate(0, false);
+            newBattleSceneIndex = -2;
+        }
        
     }
 
-   
+    public void NewBattleButton(int sceneIndex)
+    {
+        if(activeScene == -1)
+        {
+            mapSceneManager.controlController.SelectBattle(mapBattleControllers[sceneIndex]);
+            //mapSceneManager.cameraMapMovement.CamToPoint.transform.position,null);
+        }
+        else if(activeScene >= 0 )
+        {
+            StartCoroutine(EnterMapAndSelectBattle(activeScene, sceneIndex));
+            activeScene = -1;
+          
+            //mapSceneManager.controlController.SelectBattle(mapBattleControllers[sceneIndex]);
+        }
+
+    }
 
         public void LoadBattleSceneButton(int sceneIndex)
     {
@@ -110,6 +132,24 @@ public class SceneLoader : MonoBehaviour
 
     }
 
+    private IEnumerator EnterMapAndSelectBattle(int sceneIndex,int newBattleIndex)
+    {
+        mapSceneManager.uIManager.TransitionAnimation(true);
+        activeBattleScenes[sceneIndex].cameraController.CameraMoveToExit();
+
+
+        yield return new WaitForSeconds(mapSceneDelay);
+        // mapSceneManager.EnterMapSceneAnimation();
+
+        activeBattleScenes[sceneIndex].ExitBattleScene();
+        mapSceneManager.EnterMapScene();
+        mapSceneManager.uIManager.TransitionAnimation(false);
+
+        yield return new WaitForSeconds(mapSceneDelay);
+
+        mapSceneManager.controlController.SelectBattle(mapBattleControllers[newBattleIndex]);
+    }
+
 
     private IEnumerator EnterMapAfterDelay(int sceneIndex)
     {
@@ -132,29 +172,35 @@ public class SceneLoader : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         Instance.LoadBattleScene(sceneIndex, army, enemyArmy);
 
-       
+
 
         for (int i = 0; i < 5; i++)
         {
             yield return new WaitForSeconds(0.5f);
 
-            if (Instance.activeBattleScenes[sceneIndex].isInit)
+            if (Instance.activeBattleScenes.Count >= sceneIndex + 1)
             {
+                if (Instance.activeBattleScenes[sceneIndex].isInit)
+                {
 
-                Instance.activeBattleScenes[sceneIndex].EnterBattleScene();
-                mapSceneManager.uIManager.TransitionAnimation(false);
-               mapSceneManager.ExitMapScene();
+                    Instance.activeBattleScenes[sceneIndex].EnterBattleScene();
+                    mapSceneManager.uIManager.TransitionAnimation(false);
+                    mapSceneManager.ExitMapScene();
 
-                activeScene = sceneIndex;
-                mapSceneManager.uIManager.UpdateActiveSceneSpritePosition(activeScene);
+                    activeScene = sceneIndex;
 
-                i = 5;
+                    UpdateBattleButtons();
+                    mapSceneManager.uIManager.UpdateActiveSceneSpritePosition(activeScene);
 
+                    i = 5;
+
+                }
             }
         }
-            
 
-       
+
+        
+
     }
 
     private IEnumerator EnterBattleFromBattle(int exitSceneIndex, int sceneIndex)
@@ -222,7 +268,7 @@ public class SceneLoader : MonoBehaviour
                 spawn = scene.enemySpawnPoints[scene.enemySquads.Count]; // Циклически используем точки
                 
 
-                squadGO.transform.parent = scene.playerSquadParent;
+                squadGO.transform.parent = scene.enemySquadsParent;
                 scene.enemySquads.Add(squadGO);
             }
 
@@ -247,15 +293,41 @@ public class SceneLoader : MonoBehaviour
         {
             BattleSceneManager newbattle;
 
-            if (army.inCity || enemyArmy.inCity)
+            if (army.inCity )
             {
-                newbattle = Instantiate(citiesScenes[Random.RandomRange(0, citiesScenes.Length)], new Vector3(activeBattleScenes.Count * 500, 0, 0), battleScenes[0].transform.rotation);
+                
+                if (army.city.isSmallCity)
+                {
 
-              
+                    newbattle = Instantiate(battleScenes[Random.RandomRange(0, battleScenes.Length)], new Vector3(activeBattleScenes.Count * 700, 0, 0), battleScenes[0].transform.rotation);
+
+                }
+                else
+                {
+                   
+                    newbattle = Instantiate(citiesScenes[Random.RandomRange(0, citiesScenes.Length)], new Vector3(activeBattleScenes.Count * 700, 0, 0), battleScenes[0].transform.rotation);
+                }
+            }
+            else if(enemyArmy.inCity)
+            {
+                if (enemyArmy.city.isSmallCity)
+                {
+
+                    newbattle = Instantiate(battleScenes[Random.RandomRange(0, battleScenes.Length)], new Vector3(activeBattleScenes.Count * 700, 0, 0), battleScenes[0].transform.rotation);
+
+                }
+                else
+                {
+
+                    newbattle = Instantiate(citiesScenes[Random.RandomRange(0, citiesScenes.Length)], new Vector3(activeBattleScenes.Count * 700, 0, 0), battleScenes[0].transform.rotation);
+                }
+
+
+
             }
             else
             {
-                newbattle = Instantiate(battleScenes[Random.RandomRange(0, battleScenes.Length)], new Vector3(activeBattleScenes.Count * 500, 0, 0), battleScenes[0].transform.rotation);
+                newbattle = Instantiate(battleScenes[Random.RandomRange(0, battleScenes.Length)], new Vector3(activeBattleScenes.Count * 700, 0, 0), battleScenes[0].transform.rotation);
             }
 
 
@@ -269,18 +341,33 @@ public class SceneLoader : MonoBehaviour
             newbattle.mapBattleController = mapBattleControllers[index];
             newbattle.resourceManager = resourceManager;
 
+            
             if (army.inCity || enemyArmy.inCity)
             {
-                newbattle.IsCity = true;
+                    CityController c;
+               
 
                 if (army.inCity)
                 {
-                    newbattle.city = army.city;
+                        c = army.city;
+
+
                 }
                 else
                 {
-                    newbattle.city = enemyArmy.city;
+                        c = enemyArmy.city;
                 }
+
+                    newbattle.city = c;
+
+                newbattle.IsCity = true;
+                if (c.isSmallCity) {
+                    
+                
+                
+                    newbattle.isSmallCity = true;
+                }
+
             }
 
 
@@ -314,7 +401,7 @@ public class SceneLoader : MonoBehaviour
            
 
 
-            UpdateBattleButtons();
+          
 
         }
 
@@ -392,6 +479,11 @@ public class SceneLoader : MonoBehaviour
         mapSceneManager.EnterMapScene();
         mapSceneManager.uIManager.TransitionAnimation(false);
 
+        activeScene = -1;
+
+        UpdateBattleButtons();
+        mapSceneManager.uIManager.UpdateActiveSceneSpritePosition(activeScene);
+
 
         Destroy(deleteScene.gameObject);
     }
@@ -414,6 +506,11 @@ public class SceneLoader : MonoBehaviour
        
         mapBattleControllers.RemoveAt(sceneIndex);
 
+        activeScene = -1;
+
+        UpdateBattleButtons();
+        mapSceneManager.uIManager.UpdateActiveSceneSpritePosition(activeScene);
+
         mapSceneManager.EnterMapScene();
         mapSceneManager.uIManager.TransitionAnimation(false);
 
@@ -423,20 +520,29 @@ public class SceneLoader : MonoBehaviour
 
     public void ArmyRetreat(int sceneIndex)
     {
+       
 
-        if (activeBattleScenes[sceneIndex] != null)
+        if (activeBattleScenes.Count >= sceneIndex + 1)
         {
-            BattleSceneManager deleteScene = activeBattleScenes[sceneIndex];
-            Destroy(deleteScene.gameObject);
-            activeBattleScenes.RemoveAt(sceneIndex);
-        }
-        else
-        {
-            activeBattleScenes.RemoveAt(sceneIndex);
+            if (activeBattleScenes[sceneIndex] != null)
+            {
+                BattleSceneManager deleteScene = activeBattleScenes[sceneIndex];
+
+                deleteScene.PlayerRetreat();
+
+               
+                activeBattleScenes.RemoveAt(sceneIndex);
+
+                Destroy(deleteScene.gameObject);
+            }
+            else
+            {
+                activeBattleScenes.RemoveAt(sceneIndex);
+            }
         }
 
 
-        mapBattleControllers[sceneIndex].PlayerRetreat();
+       // 
 
        
         mapBattleControllers.RemoveAt(sceneIndex);
@@ -529,13 +635,16 @@ public class SceneLoader : MonoBehaviour
         Instance.activeBattleScenes.Add(null);
 
         newBattleController.sceneIndex = Instance.activeBattleScenes.Count - 1;
+
+
+        newBattleSceneIndex = newBattleController.sceneIndex;
+        mapSceneManager.uIManager.newBattleButton.onClick.RemoveAllListeners();
+
+        mapSceneManager.uIManager.newBattleButton.onClick.AddListener(() => NewBattleButton(newBattleSceneIndex));
         
 
-       
+        mapSceneManager.uIManager.NewBattleButtonActivate(newBattleSceneIndex, true);
 
-       
-
-      
 
         if (army.isSelected)
         {

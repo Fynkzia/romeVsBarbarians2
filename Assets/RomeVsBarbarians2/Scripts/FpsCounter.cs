@@ -8,11 +8,12 @@ public class FpsCounter : MonoBehaviour {
 
     private float _timer;
 
-    private void Update() {
-        if (Time.unscaledTime > _timer) {
-            int fps = (int)(1f / Time.unscaledDeltaTime);
-            _fpsText.text = "FPS: " + fps;
-            _timer = Time.unscaledTime + _hudRefreshRate;
-        }
+    private float _fps;
+
+    private void Update()
+    {
+        float currentFps = 1f / Time.unscaledDeltaTime;
+        _fps = Mathf.Lerp(_fps, currentFps, 0.1f); // сглаживание
+        _fpsText.text = "FPS: " + Mathf.RoundToInt(_fps);
     }
 }

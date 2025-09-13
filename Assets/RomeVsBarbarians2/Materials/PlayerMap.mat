@@ -7,15 +7,14 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Gold
-  m_Shader: {fileID: 4800000, guid: a6da473b89caeb1409bac856668af764, type: 3}
+  m_Name: PlayerMap
+  m_Shader: {fileID: 4800000, guid: ccfc7d68845db8341944b3091b59be55, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
-  m_InvalidKeywords:
-  - TCP2_SPEC
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
+  m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -71,31 +70,22 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _GlossMapScale: 1
-    - _Glossiness: 0.5
+    - _Glossiness: 0
     - _GlossyReflections: 1
-    - _Metallic: 0
+    - _Metallic: 0.385
     - _Mode: 0
     - _OcclusionStrength: 1
-    - _Offset1: 0
-    - _Offset2: 0
-    - _Outline: 14.86
     - _Parallax: 0.02
-    - _RampSmooth: 0.367
-    - _RampThreshold: 0.918
-    - _Shininess: 0.06
+    - _RampSmooth: 1
+    - _RampThreshold: 1
     - _SmoothnessTextureChannel: 0
-    - _SpecSmooth: 0.05
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _TexLod: 5
     - _UVSec: 0
-    - _ZSmooth: -3
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.8301887, g: 0.72722167, b: 0.4816661, a: 1}
+    - _Color: {r: 0.6132076, g: 0.0028924954, b: 0.0028924954, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _HColor: {r: 1, g: 0.9475236, b: 0.5801887, a: 1}
-    - _OutlineColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-    - _SColor: {r: 0.5372549, g: 0.20947605, b: 0.05882352, a: 1}
-    - _SpecColor: {r: 1, g: 0.9855524, b: 0.6650944, a: 1}
+    - _HColor: {r: 1, g: 0.92633253, b: 0.6084906, a: 1}
+    - _SColor: {r: 0.2830189, g: 0.025364893, b: 0.2830189, a: 1}
   m_BuildTextureStacks: []

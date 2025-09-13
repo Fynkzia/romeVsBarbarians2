@@ -19,6 +19,7 @@ public class MapSceneManager : MonoBehaviour
 
     public Transform citiesObject;
 
+    public GridManager gridManager;
 
 
 

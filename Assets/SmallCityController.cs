@@ -9,12 +9,12 @@ public class SmallCityController : MonoBehaviour
 {
 
     [SerializeField] private bool isInit;
-    [SerializeField] private bool isPlayer;
+    [SerializeField] public bool isPlayer;
 
 
-    [SerializeField] private int buildCount;
+    [SerializeField] public int buildCount;
 
-    [SerializeField] private int unitCount;
+    [SerializeField] public int unitCount;
 
     [SerializeField] private float timeToBuild;
     [SerializeField] private float timeToAddUnit;
@@ -235,6 +235,31 @@ public class SmallCityController : MonoBehaviour
             }
 
         }
+    }
+
+    public void SetOwner(bool player)
+    {
+        if (player)
+        {
+            isPlayer = true;
+            gameObject.tag = "Player";
+            squadSpawnerController.isPlayer = true;
+            buildInGroup = playerBuilds;
+
+            squadSpawnerController.squadSpawnPrefab = squadSpawnerController.playerDefaultSquadHelper;
+        }
+        else
+        {
+            isPlayer = false;
+            gameObject.tag = "Enemy";
+            squadSpawnerController.isPlayer = false;
+            buildInGroup = enemyBuilds;
+            squadSpawnerController.squadSpawnPrefab = squadSpawnerController.enemyDefaultSquadHelper;
+
+        }
+
+        squadSpawnerController.ClearSpawnUi();
+
     }
 
     public void Capture()

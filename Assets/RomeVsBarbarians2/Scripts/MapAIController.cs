@@ -140,8 +140,15 @@ public class MapAIController : MonoBehaviour
             if (allEnemiesCityList.Count == 0)
             {
                 SetAllEnemyCityList();
+
             }
             AiCitiesAction();
+
+
+
+            if (allPlayerCityList.Count == 0) { 
+                SetAllPlayersCityList();
+             }
 
 
             cityTimeAction = 0;
@@ -293,9 +300,19 @@ public class MapAIController : MonoBehaviour
         NearPlayerCitySearch(army);
         // NearEnemySquadList(squad);
 
+        if (enemyNearArmies.Count >= 0)
+        {
+            armyActionPriority[0] += 1;
+        }// рядом с союзниками стоять комфортно, но не сильно
 
-        armyActionPriority[0] += enemyNearArmies.Count; // рядом с союзниками стоять комфортно
-        armyActionPriority[0] += army.armyMorale/army.armyMoraleMax ; // мало морали - лучще постоять
+        armyActionPriority[0] += (1- army.armyMorale/army.armyMoraleMax)*2f; // мало морали - лучще постоять
+
+        if (army.inCity) // в городе стоять круто++
+        {
+            armyActionPriority[0] += 1;
+        }
+
+       
 
         float lastPowerToAttack = -2000f;
         int bestIndexToAttack = 0;
@@ -325,18 +342,20 @@ public class MapAIController : MonoBehaviour
             }
             bestArmyToAttack = playerNearArmies[bestIndexToAttack];
 
-            armyActionPriority[1] += lastPowerToAttack/500f;//  чем больше разница паверов тем больше хочется напасть +1 за каждые 500;
+            armyActionPriority[1] += lastPowerToAttack/200f;//  чем больше разница паверов тем больше хочется напасть +1 за каждые 200;
+
+            armyActionPriority[1] += (1 - bestArmyToAttack.armyMorale/bestArmyToAttack.armyMoraleMax) * 2; // если у армии морали 5
 
             // тут можно вписать сложность
 
 
-          
+
         }
 
         if (army == null) { return; }
 
 
-        if (playerFarArmies.Count > 0 &&playerNearArmies.Count == 0) //  2 - подтягиваесмя к выгодной цели - типа на пол пути
+        if (playerFarArmies.Count > 0 && playerNearArmies.Count == 0) //  2 - подтягиваесмя к выгодной цели - типа на пол пути
         {
 
 
@@ -594,6 +613,11 @@ public class MapAIController : MonoBehaviour
                 if (army.armyPower > allPlayerPower)
                 {
                     armyActionPriority[8] += 2f;
+
+                    if(bestCityToAttackFromFar == null)
+                    {
+                        bestCityToAttackFromFar = allPlayerCityList[0];
+                    }
                 }
 
 
@@ -708,7 +732,7 @@ public class MapAIController : MonoBehaviour
         {
             army.ai_currentState = 8;
 
-            DrawHalfPathAndGo(army, bestCityToAttack.transform.position);
+            DrawHalfPathAndGo(army, bestCityToAttackFromFar.transform.position);
         }
 
 
@@ -790,6 +814,25 @@ public class MapAIController : MonoBehaviour
                 allPlayerList.Add(mapSceneManager.playerArmiesObject.transform.GetChild(i).GetComponent<ArmyController>());
             }
 
+        }
+
+
+    }
+
+    public void SetAllPlayersCityList()
+    {
+
+        allPlayerCityList = new List<CityController>();
+
+
+
+        for (int i = 0; i < mapSceneManager.citiesObject.transform.childCount; i++)
+        {
+            GameObject city = mapSceneManager.citiesObject.transform.GetChild(i).gameObject;
+            if (city.activeSelf && city.tag == "Player")
+            {
+                allPlayerCityList.Add(mapSceneManager.citiesObject.transform.GetChild(i).GetComponent<CityController>());
+            }
         }
 
 
