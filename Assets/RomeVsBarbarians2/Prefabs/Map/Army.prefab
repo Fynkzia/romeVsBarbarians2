@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3022378427661874948
 Transform:
   m_ObjectHideFlags: 0
@@ -149,6 +149,7 @@ MonoBehaviour:
   baseObject: {fileID: 5343152278452425385}
   inCity: 0
   city: {fileID: 0}
+  predictCity: {fileID: 0}
   retreat: 0
   retreatTime: 5
   retreatCurrentTime: 0
@@ -157,8 +158,9 @@ MonoBehaviour:
   goToBattle: 0
   goToCity: 0
   armySpeed: 0.5
+  armyTimeToCaptureGrid: 1
   armySpeedMin: 1
-  armySpeedMax: 2.5
+  armySpeedMax: 2
   targetObjectPrefab: {fileID: 3434900785505542650, guid: 6cd2d389770b448d6ab57b6fd347e4ba, type: 3}
   targetObject: {fileID: 0}
   moveDirection: {x: 0, y: 0, z: 0}

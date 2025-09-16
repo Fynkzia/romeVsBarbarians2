@@ -3526,10 +3526,12 @@ MonoBehaviour:
   isPlayer: 1
   isCampainTarget: 0
   cityName: Rome
-  cityTickTime: 1
+  cityTickTime: 4
   cityBuildingsStart: 15
   cityBuildings: 0
   cityUnits: 170
+  coinsAdd: 0
+  coinTime: 60
   cityBuildingsMax: 100
   cityUnitsMax: 500
   playerMainBuild: {fileID: 3497993961179278018}
@@ -3666,11 +3668,15 @@ MonoBehaviour:
   doQueue: 
   doCount: 0
   doHire: 0
-  squadHireListInCity:
+  playerSquadList:
   - {fileID: 6267811169567408480, guid: df8afda60b1504e069c93bb2d02a4c71, type: 3}
   - {fileID: 9047224651742628108, guid: 18dc4b2cd80684bf1ad2da7a9f3b7851, type: 3}
-  - {fileID: 5753992093546786718, guid: 4260892d84b4b46ca89f1589e072e969, type: 3}
   - {fileID: 8411451147203699016, guid: 07f6d6b4692254f73aed00e7d3471a46, type: 3}
+  - {fileID: 5753992093546786718, guid: 4260892d84b4b46ca89f1589e072e969, type: 3}
+  enemySquadList:
+  - {fileID: 4272877637183402022, guid: 76cd6464bd93d4265be772539e27adee, type: 3}
+  - {fileID: 4272877637183402022, guid: c5538c34f965a4dad862d13972ed47ad, type: 3}
+  - {fileID: 4272877637183402022, guid: 2dd0bf8bf62ae4f8f81f138fc2550c14, type: 3}
   toDoSquad: {fileID: 0}
   doHireTime: 10
   doHouse: 0

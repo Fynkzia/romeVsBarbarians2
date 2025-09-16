@@ -3505,7 +3505,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -6216,7 +6216,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -10209,7 +10209,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2068645174}
   m_HandleRect: {fileID: 2068645173}
   m_Direction: 2
-  m_Value: 1.5064765
+  m_Value: 1.5064762
   m_Size: 0.4191007
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -11667,7 +11667,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -13920,7 +13920,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3767470429002138604, guid: d53bd59910eba4b739213d60e367544b, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 436.09998
+      value: 311.5
       objectReference: {fileID: 0}
     - target: {fileID: 3767470429002138604, guid: d53bd59910eba4b739213d60e367544b, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -14812,6 +14812,10 @@ PrefabInstance:
       propertyPath: isCampainTarget
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7282161847926186055, guid: 49ac463d7d3d5491596051f4e383ffc9, type: 3}
+      propertyPath: resourceManager
+      value: 
+      objectReference: {fileID: 1278466217}
     - target: {fileID: 7282161847926186055, guid: 49ac463d7d3d5491596051f4e383ffc9, type: 3}
       propertyPath: cityBuildingsMax
       value: 80
@@ -15730,7 +15734,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -17337,7 +17341,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3767470429002138604, guid: d53bd59910eba4b739213d60e367544b, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 311.5
+      value: 436.09998
       objectReference: {fileID: 0}
     - target: {fileID: 3767470429002138604, guid: d53bd59910eba4b739213d60e367544b, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -20054,7 +20058,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -31034,8 +31038,8 @@ MonoBehaviour:
   hireButton:
   - {fileID: 5507378481417081080}
   - {fileID: 1489004993}
-  - {fileID: 211798895}
   - {fileID: 183956694}
+  - {fileID: 211798895}
   nowToDoPanel: {fileID: 932087937}
   nowUnits: {fileID: 0}
   nowCoins: {fileID: 0}
@@ -50323,6 +50327,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7282161847926186055, guid: 49ac463d7d3d5491596051f4e383ffc9, type: 3}
+      propertyPath: resourceManager
+      value: 
+      objectReference: {fileID: 1278466217}
+    - target: {fileID: 7282161847926186055, guid: 49ac463d7d3d5491596051f4e383ffc9, type: 3}
       propertyPath: cityBuildingsMax
       value: 10
       objectReference: {fileID: 0}
@@ -56132,8 +56140,8 @@ RectTransform:
   m_Children:
   - {fileID: 5507378481417081079}
   - {fileID: 1356862502}
-  - {fileID: 211798894}
   - {fileID: 183956693}
+  - {fileID: 211798894}
   - {fileID: 730578855}
   - {fileID: 2063145778}
   m_Father: {fileID: 833727494}
@@ -106733,6 +106741,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7282161847926186055, guid: 49ac463d7d3d5491596051f4e383ffc9, type: 3}
+      propertyPath: resourceManager
+      value: 
+      objectReference: {fileID: 1278466217}
+    - target: {fileID: 7282161847926186055, guid: 49ac463d7d3d5491596051f4e383ffc9, type: 3}
       propertyPath: cityBuildingsMax
       value: 10
       objectReference: {fileID: 0}
@@ -107814,7 +107826,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8553ecd8b32054cd79f9433e3a32363f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startCampainCoins: 400
+  startCampainCoins: 200
   coins: 0
 --- !u!4 &1278466218
 Transform:
@@ -109729,8 +109741,7 @@ MonoBehaviour:
   targetPointPrefab: {fileID: 5210485445404986642, guid: 355cdd5a7388c4ef1bca9d3e398cfecd, type: 3}
   enemyCities:
   - {fileID: 1770005242}
-  enemyArmies:
-  - {fileID: 2118931297}
+  enemyArmies: []
   defenceCities:
   - {fileID: 971450046}
   defenceTarget: 0
@@ -135778,7 +135789,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -138930,7 +138941,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -139863,6 +139874,10 @@ PrefabInstance:
       propertyPath: isCampainTarget
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7282161847926186055, guid: 49ac463d7d3d5491596051f4e383ffc9, type: 3}
+      propertyPath: resourceManager
+      value: 
+      objectReference: {fileID: 1278466217}
     - target: {fileID: 7282161847926186055, guid: 49ac463d7d3d5491596051f4e383ffc9, type: 3}
       propertyPath: cityBuildingsMax
       value: 80
@@ -144564,7 +144579,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -148463,7 +148478,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -149315,6 +149330,10 @@ PrefabInstance:
       propertyPath: isCampainTarget
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7282161847926186055, guid: 49ac463d7d3d5491596051f4e383ffc9, type: 3}
+      propertyPath: resourceManager
+      value: 
+      objectReference: {fileID: 1278466217}
     - target: {fileID: 7282161847926186055, guid: 49ac463d7d3d5491596051f4e383ffc9, type: 3}
       propertyPath: cityBuildingsMax
       value: 80
@@ -165465,7 +165484,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 912077542548467714, guid: 8276e31e3d1f54854b19429961d12ea0, type: 3}
       propertyPath: squadStartList.Array.size
-      value: 11
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 912077542548467714, guid: 8276e31e3d1f54854b19429961d12ea0, type: 3}
       propertyPath: squadStartList.Array.data[0]
@@ -165486,15 +165505,15 @@ PrefabInstance:
     - target: {fileID: 912077542548467714, guid: 8276e31e3d1f54854b19429961d12ea0, type: 3}
       propertyPath: squadStartList.Array.data[4]
       value: 
-      objectReference: {fileID: 4272877637183402022, guid: c5538c34f965a4dad862d13972ed47ad, type: 3}
+      objectReference: {fileID: 4272877637183402022, guid: 2dd0bf8bf62ae4f8f81f138fc2550c14, type: 3}
     - target: {fileID: 912077542548467714, guid: 8276e31e3d1f54854b19429961d12ea0, type: 3}
       propertyPath: squadStartList.Array.data[5]
       value: 
-      objectReference: {fileID: 4272877637183402022, guid: c5538c34f965a4dad862d13972ed47ad, type: 3}
+      objectReference: {fileID: 4272877637183402022, guid: 2dd0bf8bf62ae4f8f81f138fc2550c14, type: 3}
     - target: {fileID: 912077542548467714, guid: 8276e31e3d1f54854b19429961d12ea0, type: 3}
       propertyPath: squadStartList.Array.data[6]
       value: 
-      objectReference: {fileID: 4272877637183402022, guid: c5538c34f965a4dad862d13972ed47ad, type: 3}
+      objectReference: {fileID: 4272877637183402022, guid: 2dd0bf8bf62ae4f8f81f138fc2550c14, type: 3}
     - target: {fileID: 912077542548467714, guid: 8276e31e3d1f54854b19429961d12ea0, type: 3}
       propertyPath: squadStartList.Array.data[7]
       value: 
@@ -165521,7 +165540,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1976154457070609906, guid: 8276e31e3d1f54854b19429961d12ea0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -30.6
+      value: -44.5
       objectReference: {fileID: 0}
     - target: {fileID: 1976154457070609906, guid: 8276e31e3d1f54854b19429961d12ea0, type: 3}
       propertyPath: m_LocalPosition.y
@@ -165529,7 +165548,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1976154457070609906, guid: 8276e31e3d1f54854b19429961d12ea0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5.8
+      value: -13.6
       objectReference: {fileID: 0}
     - target: {fileID: 1976154457070609906, guid: 8276e31e3d1f54854b19429961d12ea0, type: 3}
       propertyPath: m_LocalRotation.w
@@ -165680,18 +165699,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cityActionPatern:
-  - 0
   - -1
-  - 0
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - 2
+  - -1
+  - -1
+  - 2
+  - -1
+  - -1
+  - 2
   - -1
   - -1
   - 1
   - -1
   - -1
-  - 1
-  - 0
-  - 1
-  - 0
   - -1
   cityIndex: 0
   cityActionIndex: 0
@@ -165741,8 +165766,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 524288
   drawingPrefab: {fileID: 0}
-  timeToGetActions: 4
-  timeToGetCityActions: 8
+  timeToGetActions: 10
+  timeToGetCityActions: 5
   difficulty: 0
   farRadius: 45
   nearRadius: 20
@@ -175593,17 +175618,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2116428546}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &2118931297 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 912077542548467714, guid: 8276e31e3d1f54854b19429961d12ea0, type: 3}
-  m_PrefabInstance: {fileID: 2343665627167850284}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9596bd1eaf7e7461ab11cc5171f4b1d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &2118931298 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1976154457070609906, guid: 8276e31e3d1f54854b19429961d12ea0, type: 3}
@@ -190318,7 +190332,15 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 180606293151239880, guid: d9138f49d563045ec9e9fa019eddcb61, type: 3}
+      propertyPath: m_colorMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 180606293151239880, guid: d9138f49d563045ec9e9fa019eddcb61, type: 3}
       propertyPath: m_fontStyle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 180606293151239880, guid: d9138f49d563045ec9e9fa019eddcb61, type: 3}
+      propertyPath: m_enableVertexGradient
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 454891261714620907, guid: d9138f49d563045ec9e9fa019eddcb61, type: 3}
@@ -190365,6 +190387,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1367248854321429020, guid: d9138f49d563045ec9e9fa019eddcb61, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.4329
+      objectReference: {fileID: 0}
+    - target: {fileID: 1367248854321429020, guid: d9138f49d563045ec9e9fa019eddcb61, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 5.88
+      objectReference: {fileID: 0}
     - target: {fileID: 1486237595846364968, guid: d9138f49d563045ec9e9fa019eddcb61, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -190403,6 +190433,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4412814962431319662, guid: d9138f49d563045ec9e9fa019eddcb61, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4656271265110094303, guid: d9138f49d563045ec9e9fa019eddcb61, type: 3}
+      propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5353755966736073346, guid: d9138f49d563045ec9e9fa019eddcb61, type: 3}
@@ -195005,20 +195039,20 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 912077542548467714, guid: 8276e31e3d1f54854b19429961d12ea0, type: 3}
       propertyPath: squadStartList.Array.size
-      value: 6
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 912077542548467714, guid: 8276e31e3d1f54854b19429961d12ea0, type: 3}
       propertyPath: squadStartList.Array.data[0]
       value: 
-      objectReference: {fileID: 4272877637183402022, guid: 2dd0bf8bf62ae4f8f81f138fc2550c14, type: 3}
+      objectReference: {fileID: 4272877637183402022, guid: c5538c34f965a4dad862d13972ed47ad, type: 3}
     - target: {fileID: 912077542548467714, guid: 8276e31e3d1f54854b19429961d12ea0, type: 3}
       propertyPath: squadStartList.Array.data[1]
       value: 
-      objectReference: {fileID: 4272877637183402022, guid: 2dd0bf8bf62ae4f8f81f138fc2550c14, type: 3}
+      objectReference: {fileID: 4272877637183402022, guid: 76cd6464bd93d4265be772539e27adee, type: 3}
     - target: {fileID: 912077542548467714, guid: 8276e31e3d1f54854b19429961d12ea0, type: 3}
       propertyPath: squadStartList.Array.data[2]
       value: 
-      objectReference: {fileID: 4272877637183402022, guid: c5538c34f965a4dad862d13972ed47ad, type: 3}
+      objectReference: {fileID: 4272877637183402022, guid: 76cd6464bd93d4265be772539e27adee, type: 3}
     - target: {fileID: 912077542548467714, guid: 8276e31e3d1f54854b19429961d12ea0, type: 3}
       propertyPath: squadStartList.Array.data[3]
       value: 
@@ -214545,20 +214579,32 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1750517688}
     - target: {fileID: 7282161847926186055, guid: 49ac463d7d3d5491596051f4e383ffc9, type: 3}
+      propertyPath: coinTime
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7282161847926186055, guid: 49ac463d7d3d5491596051f4e383ffc9, type: 3}
       propertyPath: captureFx
       value: 
       objectReference: {fileID: 4278167464277228950, guid: 54431968920cf4bf883b5f62f1804605, type: 3}
     - target: {fileID: 7282161847926186055, guid: 49ac463d7d3d5491596051f4e383ffc9, type: 3}
       propertyPath: cityUnits
-      value: 350
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 7282161847926186055, guid: 49ac463d7d3d5491596051f4e383ffc9, type: 3}
       propertyPath: toDoController
       value: 
       objectReference: {fileID: 1903271049}
     - target: {fileID: 7282161847926186055, guid: 49ac463d7d3d5491596051f4e383ffc9, type: 3}
+      propertyPath: resourceManager
+      value: 
+      objectReference: {fileID: 1278466217}
+    - target: {fileID: 7282161847926186055, guid: 49ac463d7d3d5491596051f4e383ffc9, type: 3}
       propertyPath: cityBuildingsMax
       value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 7282161847926186055, guid: 49ac463d7d3d5491596051f4e383ffc9, type: 3}
+      propertyPath: cityBuildingsStart
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 7282161847926186055, guid: 49ac463d7d3d5491596051f4e383ffc9, type: 3}
       propertyPath: spawnPoints.Array.size

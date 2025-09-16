@@ -13,6 +13,8 @@ public class CityInfo : MonoBehaviour
     [SerializeField] public TextMeshProUGUI unitsCount;
     [SerializeField] public TextMeshProUGUI unitsCountChange;
 
+    [SerializeField] public TextMeshProUGUI coinsText;
+
     [SerializeField] public Image colorLine;
 
     [SerializeField] public Color playerColor;
@@ -20,10 +22,12 @@ public class CityInfo : MonoBehaviour
 
 
     // Start is called before the first frame update
-    public void UpdateCounts(int buildings, int units)
+    public void UpdateCounts(int buildings, int units, int coins)
     {
         unitsCount.text = "" + units;
         buildingsCount.text = "" + buildings;
+
+        coinsText.text = "+" + coins + "";
     }
 
     // Update is called once per frame

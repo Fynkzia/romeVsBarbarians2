@@ -14,7 +14,9 @@ public class CityToDoController : MonoBehaviour
     public int doCount;
 
     public bool doHire;
-    public SquadController[] squadHireListInCity;
+    public SquadController[] playerSquadList;
+    public SquadController[] enemySquadList;
+
     public SquadController toDoSquad;
     private int toDoSquadIndex;
     public float doHireTime;
@@ -111,7 +113,14 @@ public class CityToDoController : MonoBehaviour
                 if (curentToDoTime > doHireTime)
                 {
                     toDoSquadIndex = doQueue[0] ;
-                    toDoSquad = squadHireListInCity[toDoSquadIndex];
+                    if (city.isPlayer)
+                    {
+                        toDoSquad = playerSquadList[toDoSquadIndex];
+                    }
+                    else
+                    {
+                        toDoSquad = enemySquadList[toDoSquadIndex];
+                    }
 
                     AddSquad();
 
@@ -205,10 +214,7 @@ public class CityToDoController : MonoBehaviour
 
     public void AiDoHouse() {
 
-       // CencelToDo();
-        //doHouse = true;
-
-        //doCount = 1;
+        doQueue.Add(-1);
     }
 
     public void AddToDoHouse()
@@ -266,32 +272,77 @@ public class CityToDoController : MonoBehaviour
     }
 
 
-    public void AiToDoSquad(SquadController squad,int index)
+    public void AiToDoSquad(int index)
     {
 
-//        CencelToDo();
-       // doHire = true;
+        //        CencelToDo();
+        // doHire = true;
 
-       // doCount = 1;
+        // doCount = 1;
 
-        toDoSquad = squad;
-        toDoSquadIndex = index;
+        SquadController squad;
+
+
+        if (city.isPlayer)
+        {
+            squad = playerSquadList[index];
+        }
+        else
+        {
+            squad = enemySquadList[index];
+        }
+
+        if (squad.unitsNeed <= city.cityUnits)
+        {
+
+            doQueue.Add(index);
+
+            city.cityUnits -= squad.unitsNeed;
+
+           // toDoSquad = squad;
+
+           // toDoSquadIndex = index;
+        }
     }
 
     public void AddToDoSquad( int index)
     {
-        if (squadHireListInCity[index].coinsNeed <= resourceManager.AmountOfCoins())
+        SquadController squad;
+
+        if (city.isPlayer)
+        {
+            squad = playerSquadList[index];
+        }
+        else
+        {
+            squad = enemySquadList[index];
+        }
+
+
+
+        if (squad.coinsNeed <= resourceManager.AmountOfCoins())
         {
 
-            if (squadHireListInCity[index].unitsNeed <= city.cityUnits)
+            if (squad.unitsNeed <= city.cityUnits)
             {
 
                 doQueue.Add(index);
 
                 mapSceneManager.uIManager.hireUIPanel.SetQueue(doQueue.ToArray(), this);
 
-                city.cityUnits -= squadHireListInCity[index].unitsNeed;
-                resourceManager.ChangeAmountOfCoins(-squadHireListInCity[index].coinsNeed);
+                if (city.isPlayer)
+                {
+                    city.cityUnits -= playerSquadList[index].unitsNeed;
+                }
+                else
+                {
+                    city.cityUnits -= enemySquadList[index].unitsNeed;
+                }
+
+              
+
+
+                resourceManager.ChangeAmountOfCoins(-squad.coinsNeed);
                 mapControlManager.uiManager.cityUIPanel.UpdateCityUIPanel(city);
 
                 PriceUpdate();
@@ -369,7 +420,7 @@ public class CityToDoController : MonoBehaviour
 
             SquadMapUIPanel squadPanel = mapSceneManager.uIManager.hireUIPanel.hireButton[i].gameObject.GetComponent<SquadMapUIPanel>();
 
-            squadPanel.UpdateToDoCosts(squadHireListInCity[index].unitsNeed, squadHireListInCity[index].coinsNeed);
+            squadPanel.UpdateToDoCosts(playerSquadList[index].unitsNeed, playerSquadList[index].coinsNeed);
 
 
            
@@ -403,7 +454,7 @@ public class CityToDoController : MonoBehaviour
 
             SquadMapUIPanel squadPanel = mapSceneManager.uIManager.hireUIPanel.hireButton[i].gameObject.GetComponent<SquadMapUIPanel>();
 
-            if(squadHireListInCity[i].unitsNeed > city.cityUnits)
+            if(playerSquadList[i].unitsNeed > city.cityUnits)
             {
                 lowUnits = true;
             }
@@ -412,7 +463,7 @@ public class CityToDoController : MonoBehaviour
                 lowUnits = false;
             }
 
-            if (squadHireListInCity[i].coinsNeed > resourceManager.AmountOfCoins())
+            if (playerSquadList[i].coinsNeed > resourceManager.AmountOfCoins())
             {
                 lowCoins = true;
             }
@@ -430,6 +481,9 @@ public class CityToDoController : MonoBehaviour
     {
         if (isSelected)
         {
+
+
+
             if (doQueue[index] == -1)
             {
                 resourceManager.ChangeAmountOfCoins(doHouseCost);
@@ -437,8 +491,20 @@ public class CityToDoController : MonoBehaviour
 
             if (doQueue[index] >= 0)
             {
-                city.cityUnits += squadHireListInCity[doQueue[index]].unitsNeed ;
-                resourceManager.ChangeAmountOfCoins(squadHireListInCity[doQueue[index]].unitsNeed);
+                SquadController squad;
+
+                if (city.isPlayer)
+                {
+                    squad = playerSquadList[doQueue[index]];
+                }
+                else
+                {
+                    squad = enemySquadList[doQueue[index]];
+                }
+
+
+                city.cityUnits += squad.unitsNeed ;
+                resourceManager.ChangeAmountOfCoins(squad.unitsNeed);
             }
 
             doQueue.RemoveAt(index);

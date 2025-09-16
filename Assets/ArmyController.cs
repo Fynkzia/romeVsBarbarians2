@@ -26,6 +26,7 @@ public class ArmyController : MonoBehaviour
 
     public bool inCity;
     public CityController city;
+    public CityController predictCity;
 
     public bool retreat;
     public float retreatTime;
@@ -39,6 +40,8 @@ public class ArmyController : MonoBehaviour
     public bool goToCity;
 
     public float armySpeed;
+    public float armyTimeToCaptureGrid;
+     float currentTimeToCaptureGrid;
 
     public float armySpeedMin;
     public float armySpeedMax;
@@ -281,15 +284,18 @@ public class ArmyController : MonoBehaviour
 
     public void TargetPointCheck()
     {
-        Collider[] nearColliders = Physics.OverlapSphere(targetObject.position, 4f, checkMask);
+        Collider[] nearColliders = Physics.OverlapSphere(targetObject.position, 3f, checkMask);
 
         for (int i = 0; i < nearColliders.Length; i++)
         {
-            if(nearColliders[i] == collider) { return; }
+            if(nearColliders[i] == collider || nearColliders[i].gameObject.tag != tag) { return; }
+
             if (nearColliders[i].gameObject.layer == 19 && gameObject.tag == nearColliders[i].gameObject.tag)
             {
                 goToCity = true;
-            }else 
+                predictCity = nearColliders[i].GetComponent<CityController>();
+            }
+            else 
             if (nearColliders[i].gameObject.layer == 18 && gameObject.tag == nearColliders[i].gameObject.tag)
             {
                 goToJoint = true;
@@ -502,9 +508,15 @@ public class ArmyController : MonoBehaviour
     {
         isSelected = false;
 
-        selectedObject.SetActive(false);
-        targetObject.gameObject.SetActive(false);
+        if (selectedObject != null)
+        {
+            selectedObject.SetActive(false);
+            targetObject.gameObject.SetActive(false);
+        }
     }
+
+
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -550,7 +562,11 @@ public class ArmyController : MonoBehaviour
             {
                 CityController newCity = other.GetComponent<CityController>();
 
-                EnterToCity(newCity);
+                if (predictCity = newCity)
+                {
+
+                    EnterToCity(newCity);
+                }
             }
 
         }
@@ -677,18 +693,18 @@ public class ArmyController : MonoBehaviour
             targetObject.position = transform.position;
                 targetObject.gameObject.SetActive(false);
 
-            Vector3 offset = new Vector3(0,5,0);
+            Vector3 offset = new Vector3(0,2,0);
 
             lineRenderer.positionCount = 2;
             lineRenderer.SetPosition(0, newCity.armyPoint.position );
             lineRenderer.SetPosition(1, newCity.transform.position + offset);
             lineRenderer.gameObject.SetActive(true);
 
-            armyInfoPanel.transform.parent = newCity.transform;
+            //armyInfoPanel.transform.parent = newCity.transform;
 
-            armyInfoPanel.transform.position = newCity.armyInfoPoint.transform.position;
+           // armyInfoPanel.transform.position = newCity.armyInfoPoint.transform.position;
 
-            newCity.armyInfoObject.SetActive(true);
+            //newCity.armyInfoObject.SetActive(true);
 
             //collider.enabled = false;
 
@@ -740,11 +756,11 @@ public class ArmyController : MonoBehaviour
 
             Vector3 dir = transform.position - city.transform.position;
 
-            Debug.Log("dir = " + dir.normalized);
-            targetObject.position = targetObject.position + (dir.normalized * 5f);
-            SetMoving(true);
+           // Debug.Log("dir = " + dir.normalized);
+            //targetObject.position = targetObject.position + (dir.normalized * 5f);
+            //SetMoving(true);
 
-            targetObject.gameObject.SetActive(true);
+            //targetObject.gameObject.SetActive(true);
             collider.enabled = true;
 
             armyInfoPanel.transform.parent = transform;
@@ -759,8 +775,10 @@ public class ArmyController : MonoBehaviour
 
                 city.CityDeselect();
 
-                city.gameObject.GetComponent<CityToDoController>().CityDeselect();
-
+                if (!city.isSmallCity)
+                {
+                    city.gameObject.GetComponent<CityToDoController>().CityDeselect();
+                }
 
             }
 
@@ -936,7 +954,7 @@ public class ArmyController : MonoBehaviour
             {
                 for (int i = 0; i < squadList.Count; i++)
                 {
-                    squadList[i].MoraleChange(-squadList[i].lostMoraleThenRun);
+                    squadList[i].MoraleChange(-squadList[i].lostMoraleThenRun*5f);
                 }
                 UpdateArmyInfo();
             }
@@ -952,6 +970,9 @@ public class ArmyController : MonoBehaviour
                     UpdateArmyInfo();
                 }
             }
+
+
+
                  
             currentMoraleUpdateTime = 0;
         }
@@ -963,6 +984,22 @@ public class ArmyController : MonoBehaviour
         moveDirection = (transform.position - targetObject.position).normalized;
 
         agent.SetDestination(targetObject.position);
+
+        currentTimeToCaptureGrid += Time.deltaTime;
+
+        if(currentTimeToCaptureGrid > armyTimeToCaptureGrid)
+        {
+            GridCell c = grid.GetCellAt(transform.position);
+            if (c != null)
+            {
+                if ((!c.isPlayer && isPlayer) || (c.isPlayer && !isPlayer))
+                {
+                    c.Capture(isPlayer);
+                }
+            }
+
+            currentTimeToCaptureGrid = 0;
+        }
 
         // Сдвигаем историю назад и записываем новую позицию в начало
         for (int i = historyLength - 1; i > 0; i--)
@@ -993,6 +1030,10 @@ public class ArmyController : MonoBehaviour
                     {
                         isActive[i] = true;
                         lastPositionToOffset = transform.position;
+
+
+                        
+
                         return;
                     }
                 }
@@ -1023,7 +1064,7 @@ public class ArmyController : MonoBehaviour
             {
                 if (Vector3.Distance(lastPositionToOffset, targetObject.position) > offset)
                 {
-                    squadsOnMap[i].transform.position = Vector3.MoveTowards(squadsOnMap[i].transform.position, lastPositionToOffset, armySpeed / 2 * Time.deltaTime);
+                    squadsOnMap[i].transform.position = Vector3.MoveTowards(squadsOnMap[i].transform.position, lastPositionToOffset, armySpeed / 3 * Time.deltaTime);
                 }
             }
 
@@ -1050,7 +1091,7 @@ public class ArmyController : MonoBehaviour
             }
         }
 
-
+        
 
 
 
@@ -1076,7 +1117,7 @@ public class ArmyController : MonoBehaviour
         if (move)
         {
 
-            agent.Resume();
+            agent.isStopped = false;
             formationIndex = 0;
             isFormated = false;
 
@@ -1109,7 +1150,7 @@ public class ArmyController : MonoBehaviour
         }
         else
         {
-            agent.Stop();
+            agent.isStopped = true;
             targetObject.gameObject.SetActive(false);
             baseObject.gameObject.SetActive(true);
 

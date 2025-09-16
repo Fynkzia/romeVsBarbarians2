@@ -264,46 +264,49 @@ public class MapControlManager : MonoBehaviour
                             uiManager.ArmyUIActivation(armyController);
 
                         }
-                        else if (hit.collider.gameObject.GetComponent<CityController>() != null)
+                        else if (hit.collider.gameObject.GetComponent<CityController>() != null )
                         {
 // нажали на город
                             cityController = hit.collider.transform.gameObject.GetComponent<CityController>();
 
-                            uiManager.CityUIActivation(cityController);
-
-                           
-
-                            cityController.CitySelected();
-
-                            if (cityController.armyInCity != null)
+                            if (!cityController.isSmallCity)
                             {
-                                armyController = cityController.armyInCity;
-                                //uiManager.ArmyUIActivation(armyController);
+                                uiManager.CityUIActivation(cityController);
 
 
-                               // armyController.ArmySelected();
-                               // tapArmy = true;
+
+                                cityController.CitySelected();
+
+                                if (cityController.armyInCity != null)
+                                {
+                                    armyController = cityController.armyInCity;
+                                    //uiManager.ArmyUIActivation(armyController);
+
+
+                                    // armyController.ArmySelected();
+                                    // tapArmy = true;
+                                }
+                                else
+                                {
+
+
+                                }
+
+                                toDoController = hit.collider.transform.gameObject.GetComponent<CityToDoController>();
+
+
+
+                                toDoController.CitySelected();
+                                tapCity = true;
+                                cameraCentred = false;
+                                cameraMapMovement.CamToPoint(hit.collider.transform.position, null);
+
+                                selectedCollider = hit.collider;
+
+                                cameraMapMovement.Zoom(true);
+
+                                Debug.Log("CITY TAP");
                             }
-                            else
-                            {
-
-                               
-                            }
-
-                            toDoController = hit.collider.transform.gameObject.GetComponent<CityToDoController>();
-
-                            
-
-                            toDoController.CitySelected();
-                            tapCity = true;
-                            cameraCentred = false;
-                            cameraMapMovement.CamToPoint(hit.collider.transform.position, null);
-
-                            selectedCollider = hit.collider;
-
-                            cameraMapMovement.Zoom(true);
-
-                            Debug.Log("CITY TAP");
                         }
 
 
@@ -474,7 +477,10 @@ public class MapControlManager : MonoBehaviour
 
         if (tapArmy)
         {
-            armyController.ArmyDeselect();
+            if (armyController != null)
+            {
+                armyController.ArmyDeselect();
+            }
         }
 
         if (tapCity)
@@ -569,20 +575,23 @@ public class MapControlManager : MonoBehaviour
 
         }
 
-        toDoController = cityController.gameObject.GetComponent<CityToDoController>();
+        if (!cityController.isSmallCity)
+        {
+            toDoController = cityController.gameObject.GetComponent<CityToDoController>();
 
 
 
-        toDoController.CitySelected();
-        tapCity = true;
-        cameraCentred = false;
-        cameraMapMovement.CamToPoint(cityController.gameObject.transform.position, null);
+            toDoController.CitySelected();
+            tapCity = true;
+            cameraCentred = false;
+            cameraMapMovement.CamToPoint(cityController.gameObject.transform.position, null);
 
-        selectedCollider = cityController.GetComponent<Collider>();
+            selectedCollider = cityController.GetComponent<Collider>();
 
-        cameraMapMovement.Zoom(true);
+            cameraMapMovement.Zoom(true);
 
-        Debug.Log("CITY Select");
+            Debug.Log("CITY Select");
+        }
 
     }
 

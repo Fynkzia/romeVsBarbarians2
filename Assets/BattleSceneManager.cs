@@ -190,11 +190,11 @@ public class BattleSceneManager : MonoBehaviour
 
                 for (int i = 0; i < fancesParent.childCount; i++)
                 {
-                    fancesParent.GetComponent<BuildingManager>().SetOwner(false);
+                    fancesParent.GetChild(i).GetComponent<BuildingManager>().SetOwner(false);
                 }
                 for (int i = 0; i < towersParent.childCount; i++)
                 {
-                    towersParent.GetComponent<BuildingManager>().SetOwner(false);
+                    towersParent.GetChild(i).GetComponent<BuildingManager>().SetOwner(false);
                 }
 
                 smallCities[0].SetOwner(false) ;

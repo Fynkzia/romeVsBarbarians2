@@ -246,8 +246,9 @@ public class SceneLoader : MonoBehaviour
 
     private IEnumerator LoadNewSqadsSequence(int index, SquadController[] squads)
     {
+        Debug.LogError("LoadNewSqadsSequence " + index);
 
-         BattleSceneManager scene = activeBattleScenes[index];
+        BattleSceneManager scene = activeBattleScenes[index];
 
         for (int i = 0; i < squads.Length; i++)
         {

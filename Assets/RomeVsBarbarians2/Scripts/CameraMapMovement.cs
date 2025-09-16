@@ -247,7 +247,7 @@ public class CameraMapMovement : MonoBehaviour
 
                         if (Vector3.Distance(cinemachineFollowObject.transform.position, followTarget) > 0.1f)
                         {
-                            Debug.Log("CamToPoint - stop " + Vector3.Distance(cinemachineFollowObject.transform.position, followTarget));
+                            //Debug.Log("CamToPoint - stop " + Vector3.Distance(cinemachineFollowObject.transform.position, followTarget));
 
                             isFollow = false;
                             Zoom(false);

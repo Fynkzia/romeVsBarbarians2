@@ -23,6 +23,11 @@ public class CityController : MonoBehaviour
     public int cityBuildings;
     public float cityUnits;
 
+    public float coinsAdd;
+    public float coinTime = 60f;
+    float currentCoinTime;
+
+
     public int cityBuildingsMax;
     public int cityUnitsMax;
 
@@ -46,7 +51,7 @@ public class CityController : MonoBehaviour
     public GameObject armyInfoObject;
 
     private float currentTime;
-    private int untisToBuild;
+    
 
     
 
@@ -56,6 +61,7 @@ public class CityController : MonoBehaviour
     public event Action<CityController> OnCityCaptured;
 
     public CityInfo cityInfo;
+    public ResourceManager resourceManager;
 
    // Start is called before the first frame update
    void Start()
@@ -91,15 +97,34 @@ public class CityController : MonoBehaviour
     void Update()
     {
         currentTime += Time.deltaTime;
+        currentCoinTime += Time.deltaTime;
+
+        if (currentCoinTime > coinTime)
+        {
+
+            if (isPlayer)
+            {
+                resourceManager.ChangeAmountOfCoins((int)coinsAdd);
+            }
+
+            currentCoinTime = 0;
+
+        }
+
 
         if (currentTime > cityTickTime)
         {
             if (cityUnits < cityUnitsMax)
             {
-                cityUnits += cityBuildings/120f; // чтоб получить 0.5 юнита в минуту
+                cityUnits += cityBuildings/5f; 
 
-                
-               
+                cityUnitsMax = cityBuildings * 5;
+
+                coinsAdd = cityBuildings * 0.01f + cityUnits * 0.05f;
+
+
+
+
             }
 
             if ( cityBuildingsMax > cityBuildings+1)
@@ -128,7 +153,7 @@ public class CityController : MonoBehaviour
 
 
 
-            cityInfo.UpdateCounts(cityBuildings, (int)cityUnits);
+            cityInfo.UpdateCounts(cityBuildings, (int)cityUnits, (int)coinsAdd);
 
             currentTime = 0;
         }
@@ -138,7 +163,11 @@ public class CityController : MonoBehaviour
     {
         cityBuildings++;
 
-        cityInfo.UpdateCounts(cityBuildings, (int)cityUnits);
+        cityUnitsMax = cityBuildings * 5;
+
+        coinsAdd = cityBuildings * 0.01f + cityUnits * 0.05f;
+
+        cityInfo.UpdateCounts(cityBuildings, (int)cityUnits, (int)coinsAdd);
 
         if (isPlayer)
         {

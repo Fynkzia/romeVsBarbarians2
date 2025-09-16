@@ -228,7 +228,7 @@ public class MapAIController : MonoBehaviour
                 {
                     if (enemyCoins > 50 && allEnemiesCityList[cityIndex].cityUnits > 50)
                     {
-                        allEnemiesCityList[cityIndex].toDoController.AiToDoSquad(squadHireListInCity[0],0);
+                        allEnemiesCityList[cityIndex].toDoController.AiToDoSquad(0);
 
                         enemyCoins -= 50f;
                     allEnemiesCityList[cityIndex].cityUnits -= 50;
@@ -243,7 +243,7 @@ public class MapAIController : MonoBehaviour
             {
                 if (enemyCoins > 100f && allEnemiesCityList[cityIndex].cityUnits > 50f)
                 {
-                    allEnemiesCityList[cityIndex].toDoController.AiToDoSquad(squadHireListInCity[1], 1);
+                    allEnemiesCityList[cityIndex].toDoController.AiToDoSquad( 1);
 
                     enemyCoins -= 100f;
                     allEnemiesCityList[cityIndex].cityUnits -= 50f;
@@ -310,6 +310,16 @@ public class MapAIController : MonoBehaviour
         if (army.inCity) // в городе стоять круто++
         {
             armyActionPriority[0] += 1;
+
+            if(army.armyPower < allPlayerPower)
+            {
+                armyActionPriority[0] += 4;
+
+                if (playerNearArmies.Count > 0)
+                {
+                    armyActionPriority[0] += playerNearArmies.Count;
+                }
+            }
         }
 
        
@@ -342,7 +352,7 @@ public class MapAIController : MonoBehaviour
             }
             bestArmyToAttack = playerNearArmies[bestIndexToAttack];
 
-            armyActionPriority[1] += lastPowerToAttack/200f;//  чем больше разница паверов тем больше хочется напасть +1 за каждые 200;
+            armyActionPriority[1] += lastPowerToAttack/100f;//  чем больше разница паверов тем больше хочется напасть +1 за каждые 200;
 
             armyActionPriority[1] += (1 - bestArmyToAttack.armyMorale/bestArmyToAttack.armyMoraleMax) * 2; // если у армии морали 5
 
@@ -447,7 +457,10 @@ public class MapAIController : MonoBehaviour
             
             armyActionPriority[4] += -lastPowerToRetret/500f;//  чем больше разница паверов тем больше хочется свалить от них подальше +1 за каждые 500;
 
-
+            if (army.inCity) /// если уже в городе - хуйня идея
+            {
+                armyActionPriority[4] = 0;
+            }
 
         }
 
@@ -476,9 +489,14 @@ public class MapAIController : MonoBehaviour
                 armyActionPriority[5] += -lastPowerToRetret / 150f;
             }
 
+            if (army.inCity) /// если уже в городе - хуйня идея
+            {
+                armyActionPriority[4] = 0;
+            }
 
 
-            if(army.armyMorale/ army.armyMoraleMax < 0.6f)// 6 - идем в город бо выгодно
+
+            if (army.armyMorale/ army.armyMoraleMax < 0.6f)// 6 - идем в город бо выгодно
             {
                 armyActionPriority[6] += (1f - (army.armyMorale / army.armyMoraleMax)) * 2f;
             }
@@ -534,6 +552,11 @@ public class MapAIController : MonoBehaviour
 
             }
 
+                if (army.inCity) /// если уже в городе - хуйня идея
+                {
+                    armyActionPriority[6] = 0;
+                }
+
             }
 
             if(nearPlayerCityList.Count > 0)  // 7 - атакуем вражеский город 
@@ -569,7 +592,7 @@ public class MapAIController : MonoBehaviour
 
                    
                 }
-                armyActionPriority[7] += lastPowerToAttackCity/100f;
+                armyActionPriority[7] += lastPowerToAttackCity/50f;
 
                 if (army.armyPower > allPlayerPower) {
                     armyActionPriority[7] += 1f;
@@ -608,7 +631,7 @@ public class MapAIController : MonoBehaviour
 
 
                 }
-                armyActionPriority[8] += lastPowerToAttackCity / 200f;
+                armyActionPriority[8] += lastPowerToAttackCity / 50;
 
                 if (army.armyPower > allPlayerPower)
                 {
@@ -650,7 +673,7 @@ public class MapAIController : MonoBehaviour
 
         if(bestAction == army.ai_currentState)
         {
-            return;
+            //return;
         }
 
 
@@ -962,10 +985,15 @@ public class MapAIController : MonoBehaviour
 
     private void DrawHalfPathAndGo(ArmyController army, Vector3 targetPos)
     {
-        Vector3 between = Vector3.Lerp(army.transform.position, targetPos, 0.5f);
+
+
+        Vector3 dir = (targetPos - army.transform.position).normalized;
+        float distance = 17f; // сколько шагнуть
+        Vector3 between = army.transform.position + dir * distance;
+
         army.targetObject.transform.position = between;
         army.SetMoving(true);
-
+        Debug.Log("DrawHalfPathAndGo = "+ between);
     }
 
 
