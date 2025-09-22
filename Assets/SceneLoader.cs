@@ -239,16 +239,18 @@ public class SceneLoader : MonoBehaviour
         StartCoroutine(LoadBattleSceneAsync(index, army, enemyArmy));
     }
 
-    public void LoadNewSqads(int index,SquadController[] squads)
+    public void LoadNewSqads(int index,SquadController[] squads, ArmyController army)
     {
-        StartCoroutine(LoadNewSqadsSequence(index, squads));
+        StartCoroutine(LoadNewSqadsSequence(index, squads,  army));
     }
 
-    private IEnumerator LoadNewSqadsSequence(int index, SquadController[] squads)
+    private IEnumerator LoadNewSqadsSequence(int index, SquadController[] squads, ArmyController army)
     {
-        Debug.LogError("LoadNewSqadsSequence " + index);
+        //Debug.LogError("LoadNewSqadsSequence " + index);
 
         BattleSceneManager scene = activeBattleScenes[index];
+
+        scene.SpawnNewFormationPoints(army);
 
         for (int i = 0; i < squads.Length; i++)
         {

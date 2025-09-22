@@ -12,8 +12,10 @@ public class SquadSpawnerController : MonoBehaviour
     [SerializeField] private bool isHealer;
     [SerializeField] private bool isInit;
 
+    
 
-   
+
+
 
     [SerializeField] public SquadController squadSpawnPrefab;
 
@@ -41,6 +43,7 @@ public class SquadSpawnerController : MonoBehaviour
     [SerializeField] private GameObject spawnerInfoObject;
     [SerializeField] private Image spawnTimerImage;
     [SerializeField] private TextMeshProUGUI spawnTimerText;
+    [SerializeField] private TextMeshProUGUI countSquadsText;
 
     [SerializeField] private Transform squadInfoPanel;
     [SerializeField] private SquadMapUIPanel newSquadPanel;
@@ -48,6 +51,8 @@ public class SquadSpawnerController : MonoBehaviour
 
     [SerializeField] private GameObject healerInfoObject;
     [SerializeField] private GameObject cencelInfoObject;
+
+    [SerializeField] private SmallCityController smallCityController;
 
 
     public BattleSceneManager battleSceneManager;
@@ -101,26 +106,11 @@ public class SquadSpawnerController : MonoBehaviour
                     curretntTimeToSpawn = 0;
                 }
             }
-            else if(!isHealer)
-            {
-                curretntTimeToSpawn += Time.deltaTime;
-
-                if (curretntTimeToSpawn > timeToSpawn)
-                {
-                    SpawnedListUpdate();
-
-                    if (spawnedSuadsList.Count < squadLimit)
-                    {
-                        SetSpawner(true);
-                    }
-
-                        curretntTimeToSpawn = 0;
-                }
-             }
+            
 
             if (isHealer)
             {
-                if (healedSquad.Count == 0)
+                if (healedSquad.Count == 0 || smallCityController.unitCount <= 0)
                 {
                     SetHealer(false);
                 }
@@ -143,13 +133,15 @@ public class SquadSpawnerController : MonoBehaviour
     }
     public void SquadHeal()
     {
-        if (healedSquad.Count == 0)
+        if (healedSquad.Count == 0 || smallCityController.unitCount <= 0)
         {
             return;
         }
         else
         {
             healedSquad[0].AddUnit(1);
+
+            smallCityController.unitCount--;
 
             if(healedSquad[0].currentAmountUnits == healedSquad[0].amountUnits)
             {
@@ -199,13 +191,23 @@ public class SquadSpawnerController : MonoBehaviour
 
         if (isSpawner)
         {
-            isHealer = false;
+            
             spawnerInfoObject.gameObject.SetActive(true);
-            healerInfoObject.gameObject.SetActive(false);
+
+
+            if (smallCityController.isDanger == false)
+            {
+                cencelInfoObject.gameObject.SetActive(false);
+            }
         }
         else
         {
             spawnerInfoObject.gameObject.SetActive(false);
+
+            if (smallCityController.isDanger == true)
+            {
+                cencelInfoObject.gameObject.SetActive(true);
+            }
         }
 
         
@@ -219,13 +221,13 @@ public class SquadSpawnerController : MonoBehaviour
 
         if (isHealer)
         {
-            isSpawner = false;
+            
             healerInfoObject.gameObject.SetActive(true);
-            spawnerInfoObject.gameObject.SetActive(false);
+           
         }
         else
         {
-            spawnerInfoObject.gameObject.SetActive(true);
+          
             healerInfoObject.gameObject.SetActive(false);
         }
 
@@ -250,21 +252,22 @@ public class SquadSpawnerController : MonoBehaviour
 
     public void UpdateSpawnUi()
     {
-        if (newSquadPanel == null && squadSpawnPrefab != null)
-        {
-            SquadMapUIPanel newPanel = Instantiate(squadSpawnPrefab.mapUIPanel, squadInfoPanel.position, squadInfoPanel.rotation, squadInfoPanel);
+        //if (newSquadPanel == null && squadSpawnPrefab != null)
+        //{
+        //    SquadMapUIPanel newPanel = Instantiate(squadSpawnPrefab.mapUIPanel, squadInfoPanel.position, squadInfoPanel.rotation, squadInfoPanel);
 
-            newSquadPanel = newPanel;
-        }
-        spawnTimerText.text = "" + (int)(timeToSpawn - curretntTimeToSpawn) + " sec";
+        //    newSquadPanel = newPanel;
+        //}
+        spawnTimerText.text = "" + (int)(timeToSpawn - curretntTimeToSpawn) + " s";
+        countSquadsText.text = "" + spawnedSuadsList.Count + "/" + squadLimit;
     }
 
     public void ClearSpawnUi()
     {
-        if(newSquadPanel != null)
-        {
-            Destroy(newSquadPanel.gameObject);
-        }
+        //if(newSquadPanel != null)
+        //{
+        //    Destroy(newSquadPanel.gameObject);
+        //}
 
     }
 }

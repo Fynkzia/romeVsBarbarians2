@@ -386,7 +386,7 @@ public class ArmyController : MonoBehaviour
         squadsOnMap.Add(newSquad.transform);
         
 
-
+         isActive = new bool[squadsOnMap.Count];
 
         if (isSelected)
         {
@@ -571,50 +571,59 @@ public class ArmyController : MonoBehaviour
 
         }
 
-        Debug.Log("OnTriggerEnter");
-        if (goToJoint)
+       
+        if (jointArmy != null)
         {
-           
-            if (other.tag == tag)
+            if (goToJoint && jointArmy.gameObject == other.gameObject)
             {
-                if(other.GetComponent<BoxCollider>() == jointArmy.collider)
+                ArmyController otherArmy = other.GetComponent<ArmyController>();
+                if (otherArmy == null) return;
+
+
+                if (this.GetInstanceID() > otherArmy.GetInstanceID()) return;
+
+                if (other.tag == tag)
                 {
-                    SetMoving(false);
-                    Debug.Log("goToJoint") ;
-
-                    if (isSelected)
+                    if (other.GetComponent<BoxCollider>() == jointArmy.collider)
                     {
+                        SetMoving(false);
+                        jointArmy.SetMoving(false);
+                        Debug.Log("goToJoint");
 
-                        mapControlManager.uiManager.UIReset();
-
-
-
-                    }
-                    int countToDelete = 0;
-                    for (int i = 0; i < squadList.Count; i++)
-                    {
-                        if (jointArmy.squadList.Count < 20)
+                        if (isSelected)
                         {
-                            jointArmy.AddSquadFromArmy(squadList[i]);
-                            countToDelete++;
+
+                            mapControlManager.uiManager.UIReset();
+
+
+
                         }
-                        else
+                        int countToDelete = 0;
+                        for (int i = 0; i < squadList.Count; i++)
                         {
-                           
+                            if (jointArmy.squadList.Count < 20)
+                            {
+                                jointArmy.AddSquadFromArmy(squadList[i]);
+                                countToDelete++;
+                            }
+                            else
+                            {
+
+                            }
+
                         }
 
+                        for (int i = 0; i < countToDelete; i++)
+                        {
+                            RemoveSquad(squadList[0]);
+                        }
+
+                        goToJoint = false;
+                        return;
+
+
+
                     }
-                   
-                    for (int i = 0; i < countToDelete; i++)
-                    {
-                        RemoveSquad(squadList[0]);
-                    }
-
-                     goToJoint = false;
-                    return;
-
-
-
                 }
             }
         }
@@ -1125,6 +1134,7 @@ public class ArmyController : MonoBehaviour
             baseObject.gameObject.SetActive(false);
             TargetPointCheck();
 
+            //SetFormation(moveDirection);
 
             NavMeshPath path = agent.path;
 

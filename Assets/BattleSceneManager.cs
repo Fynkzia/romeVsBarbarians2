@@ -389,8 +389,64 @@ public class BattleSceneManager : MonoBehaviour
     }
 
 
+    public void SpawnNewFormationPoints(ArmyController army)
+    {
+        ArmyController newEnemyArmy;
 
-    public void SpawnFormationPoints()
+        if (army.isPlayer)
+        {
+            newEnemyArmy = enemyArmy;
+        }
+        else
+        {
+            newEnemyArmy = playerArmy;
+        }
+
+        Vector3 offcetToCenter = new Vector3(200f, 15f, 200f);
+
+        Vector3 dirPlNorm = Quaternion.Euler(0, 90, 0) * (new Vector3(army.transform.position.x, mapBattleController.transform.position.y, army.transform.position.z) - mapBattleController.transform.position).normalized;
+        Vector3 dirEnNorm = Quaternion.Euler(0, 90, 0) * (new Vector3(newEnemyArmy.transform.position.x, newEnemyArmy.transform.position.y, newEnemyArmy.transform.position.z) - mapBattleController.transform.position).normalized;
+
+        Vector3 positionArmy = (transform.position + offcetToCenter) + dirPlNorm * 120f;
+        //Vector3 positionEnemyArmy = (transform.position + offcetToCenter) + dirEnNorm * 120f;
+
+
+       
+
+        if (army.isPlayer)
+        {
+            GameObject newFormation = Instantiate(formationPointPrefab.gameObject, positionArmy, Quaternion.identity, transform);
+
+            newFormation.transform.rotation = Quaternion.LookRotation(dirPlNorm);
+
+            playerSpawnPoints = new Transform[newFormation.transform.childCount];
+
+            for (int i = 0; i < newFormation.transform.childCount; i++)
+            {
+                newFormation.transform.GetChild(i).GetComponent<SpawnPoint>().isPlayer = true;
+                playerSpawnPoints[i] = newFormation.transform.GetChild(i);
+            }
+        }
+        else
+        {
+            GameObject newEnFormation = Instantiate(formationPointPrefab.gameObject, positionArmy, Quaternion.identity, transform);
+
+            newEnFormation.transform.rotation = Quaternion.LookRotation(dirEnNorm);
+
+            enemySpawnPoints = new Transform[newEnFormation.transform.childCount];
+            for (int i = 0; i < newEnFormation.transform.childCount; i++)
+            {
+                newEnFormation.transform.GetChild(i).GetComponent<SpawnPoint>().isPlayer = false;
+                enemySpawnPoints[i] = newEnFormation.transform.GetChild(i);
+            }
+        }
+
+       
+
+        
+    }
+
+        public void SpawnFormationPoints()
     {
 
         Vector3 offcetToCenter = new Vector3(200f, 15f, 200f);

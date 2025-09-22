@@ -189,6 +189,7 @@ public class MapControlManager : MonoBehaviour
                             if(armyController != null)
                             {
                                 armyController.SetMoving(false);
+                                armyController.SetFormation(armyController.moveDirection);
                             }
                         }
                     }
@@ -560,20 +561,20 @@ public class MapControlManager : MonoBehaviour
 
         cityController.CitySelected();
 
-        if (cityController.armyInCity != null)
-        {
-            armyController = cityController.armyInCity;
-            uiManager.ArmyUIActivation(armyController);
+        //if (cityController.armyInCity != null)
+        //{
+        //    armyController = cityController.armyInCity;
+        //    uiManager.ArmyUIActivation(armyController);
 
 
-            armyController.ArmySelected();
-            tapArmy = true;
-        }
-        else
-        {
+        //    armyController.ArmySelected();
+        //    tapArmy = true;
+        //}
+        //else
+        //{
 
 
-        }
+        //}
 
         if (!cityController.isSmallCity)
         {

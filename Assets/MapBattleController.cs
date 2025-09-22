@@ -188,8 +188,8 @@ public class MapBattleController : MonoBehaviour
 
         if (inBattle)
         {
-
-            SceneLoader.Instance.LoadNewSqads(sceneIndex, squadListToAdd.ToArray());
+           
+            SceneLoader.Instance.LoadNewSqads(sceneIndex, squadListToAdd.ToArray(),army);
         }
 
     }

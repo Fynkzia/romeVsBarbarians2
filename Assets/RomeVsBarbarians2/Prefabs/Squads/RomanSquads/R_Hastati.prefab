@@ -1723,7 +1723,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: maxMorale
-      value: 4
+      value: 4.5
       objectReference: {fileID: 0}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: pushSquad
@@ -1759,7 +1759,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: retreatCount
-      value: 15
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: movementSpeed
@@ -1778,10 +1778,6 @@ PrefabInstance:
       value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
-      propertyPath: lostMoraleThenRun
-      value: 0.02
-      objectReference: {fileID: 0}
-    - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: currentAmountUnits
       value: 50
       objectReference: {fileID: 0}
@@ -1790,32 +1786,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
-      propertyPath: lostMoraleThenAttacked
-      value: 0.06
-      objectReference: {fileID: 0}
-    - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
-      propertyPath: coef.Array.data[0].attack
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: coef.Array.data[1].attack
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
-      propertyPath: coef.Array.data[2].attack
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
-      propertyPath: coef.Array.data[0].defence
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: coef.Array.data[1].defence
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
-      propertyPath: coef.Array.data[2].defence
-      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6787641924075962677, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: m_IsActive

@@ -1970,17 +1970,17 @@ public class SquadController : MonoBehaviour {
 
         int countToKill = 1;
 
-        if (currentSpeed >= 5f)
+        if (currentSpeed >= 6f)
         {
             countToKill += 1;
         }
 
-        if(enController.currentFormation < 6f)
-        {
-            countToKill += 1;
-        }
+        //if(enController.currentFormation < 6f)
+        //{
+        //    countToKill += 1;
+        //}
 
-        if (enController.currentFormation < 3f)
+        if (enController.currentFormation < 4f)
         {
             countToKill += 1;
         }
@@ -2004,7 +2004,7 @@ public class SquadController : MonoBehaviour {
             enController.FormationBonusChange(-(pushSquad / 2f) * ((currentSpeed - enController.currentSpeed)) + currentTriggerCoef + countToKill);
 
             Vector3 dir = (enController.transform.position - transform.position).normalized;
-            float force = (15f * pushSquad) + ((currentFormation - enController.currentFormation) * 10f) + ((currentSpeed- enController.currentSpeed)* 5f * pushSquad);
+            float force = (20f * pushSquad) + ((currentFormation - enController.currentFormation) * 10f) + ((currentSpeed- enController.currentSpeed)* 5f * pushSquad);
             enController.SquadPush(dir, force);
             SquadPush(dir*1.05f, force);
 
@@ -2043,7 +2043,9 @@ public class SquadController : MonoBehaviour {
 
         enController = enemyController[Random.Range(0, enemyController.Count)];
 
-        currentTriggerCoef = AttackTriggerCoef(enController); 
+        currentTriggerCoef = AttackTriggerCoef(enController);
+
+        Debug.Log("currentTriggerCoef - " + currentTriggerCoef, gameObject);
 
 
         if (enController == null)
@@ -2144,14 +2146,18 @@ public class SquadController : MonoBehaviour {
 
         
             moraleLost -= Mathf.Pow(lostMoraleThenAttacked, 0.3f + (currentAmountUnits / amountUnits));
-            moraleLost -= (-countDiff/100f);
-            moraleLost -= triggerCoef /2f;
-            moraleLost -= bonusMoraleLost/5f;
-            moraleLost -= enemyController.Count / 15f;
+
+        if (countDiff > 0)
+        {
+            moraleLost -= (countDiff / 100f);
+        }
+        moraleLost -= triggerCoef /10f;
+        moraleLost -= bonusMoraleLost/10f;
+        moraleLost -= enemyController.Count / 10f;
 
      //finalLost -= (moraleLostCoef *0.01f) - (0.75f - (currentAmountUnits / amountUnits)); /// переделать на павер?? /// и количество и павер с коеэфицентами
 
-        Debug.Log("GetDamage moraleLost - " + moraleLost, gameObject);
+       
 
 
     
@@ -2168,7 +2174,7 @@ public class SquadController : MonoBehaviour {
         float moraleLost = 0;
 
 
-        moraleLost -= Mathf.Pow(lostMoraleThenAttacked, 0.3f + (currentAmountUnits / amountUnits));
+       
 
 
         currentAmountUnits -= 1 * multiplayer;
@@ -2178,7 +2184,7 @@ public class SquadController : MonoBehaviour {
 
 
 
-        MoraleChange(moraleLost);
+        MoraleChange(moraleLost * multiplayer);
 
         FormationBonusChange(-lostDefenceMoving / 10f);
 
@@ -2260,13 +2266,13 @@ public class SquadController : MonoBehaviour {
 
         moraleLost -= Mathf.Pow(lostMoraleThenDie, 0.3f + (currentAmountUnits / amountUnits));
 
-        if (countDiff < 0)
+        if (countDiff > 0)
         {
-            moraleLost -= (-countDiff / 100f);
+            moraleLost -= (countDiff / 100f);
         }
-        moraleLost -= triggerCoef /2f;
-        moraleLost -= bonusMoraleLost/5f;
-        moraleLost -= enemyController.Count / 15f;
+        moraleLost -= triggerCoef /10f;
+        moraleLost -= bonusMoraleLost/10f;
+        moraleLost -= enemyController.Count / 10f;
 
         MoraleChange(moraleLost);
 

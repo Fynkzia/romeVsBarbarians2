@@ -87,6 +87,7 @@ public class UIManager : MonoBehaviour
 
     public void CityUIActivation(CityController city)
     {
+        armyUIPanel.gameObject.SetActive(false);
         cityUIPanel.gameObject.SetActive(true);
         cityUIPanel.UpdateCityUIPanel(city);
     }

@@ -15,7 +15,7 @@ public static class GameOptions  {
     public static float powerBalanceCoef = 0.4f;
     public static float specDiffBalanceCoef = 0.4f;
 
-    public static float typeBalanceCoef = 0.3f;
+    public static float typeBalanceCoef = 1f;
     public static float moraleBalanceCoef = 0.2f;
     public static float formationBalanceCoef = 0.1f;
     public static float tacktickBalanceCoef = 0.1f;

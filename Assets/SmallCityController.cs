@@ -8,8 +8,10 @@ using TMPro;
 public class SmallCityController : MonoBehaviour
 {
 
-    [SerializeField] private bool isInit;
+    [SerializeField] public bool isInit;
     [SerializeField] public bool isPlayer;
+
+    [SerializeField] public bool isDanger;
 
 
     [SerializeField] public int buildCount;
@@ -77,29 +79,60 @@ public class SmallCityController : MonoBehaviour
 
         if (currentTimeToAddUnit > timeToAddUnit)
         {
-            if(unitCount < buildCount * 5 )
-            unitCount++;
+            
+                if (EnemySquadCheck() == false)
+                {
+                    if (unitCount < buildCount * 5)
+                    {
+                        unitCount++;
+                        UpdateInfoPanel();
+                    }
 
-            currentTimeToAddUnit = 0;
+                    if (isDanger)
+                    {
+                        isDanger = false;
+                        SquadsCheck();
 
-            UpdateInfoPanel();
+                        squadSpawnerController.SetSpawner(true);
+                        squadSpawnerController.SetHealer(true);
+                    }
+
+            }
+                else
+                {
+                    isDanger = true;
+
+                    squadSpawnerController.SetSpawner(false);
+                    squadSpawnerController.SetHealer(false);
+
+
+                }
+            
+            
+          
+
+                currentTimeToAddUnit = 0;
 
         }
 
         if (currentTimeToBuild > timeToBuild)
         {
-            if (buildCount < buildInGroup.Count)
+            if (!isDanger)
             {
-                if (EnemySquadCheck() == false)
+                if (buildCount < buildInGroup.Count)
                 {
 
-                    buildCount++;
+                    if (EnemySquadCheck() == false)
+                    {
 
-                    AddBuild();
+                        buildCount++;
 
-                    UpdateInfoPanel();
+                        AddBuild();
+
+                        UpdateInfoPanel();
 
 
+                    }
                 }
 
 
@@ -112,8 +145,12 @@ public class SmallCityController : MonoBehaviour
     {
         if ((tag == "Player" && other.gameObject.tag == "Enemy") || (tag == "Enemy" && other.gameObject.tag == "Squad"))
         {
+
+            isDanger = true;
             squadSpawnerController.SetSpawner(false);
             squadSpawnerController.SetHealer(false);
+
+            
         }
         else if ((tag == "Enemy" && other.gameObject.tag == "Enemy") || (tag == "Player" && other.gameObject.tag == "Squad"))
         {
@@ -128,17 +165,7 @@ public class SmallCityController : MonoBehaviour
                 {
                     squadSpawnerController.healedSquad.Add(squad);
 
-                    if (squadSpawnerController.healedSquad.Count == 0)
-                    {
-                        squadSpawnerController.SetSpawner(true);
-
-
-
-                    }
-                    else
-                    {
-                        squadSpawnerController.SetHealer(true);
-                    }
+                    
                 }
 
             }
@@ -149,53 +176,87 @@ public class SmallCityController : MonoBehaviour
     {
         if ((tag == "Player" && other.gameObject.tag == "Enemy") || (tag == "Enemy" && other.gameObject.tag == "Player"))
         {
-            if (!EnemySquadCheck())
+            if (isDanger)
             {
-
-
-                if (squadSpawnerController.healedSquad.Count == 0)
+                if (EnemySquadCheck() == false)
                 {
+
+                    isDanger = false;
+
                     squadSpawnerController.SetSpawner(true);
-
-
-
-                }
-                else
-                {
                     squadSpawnerController.SetHealer(true);
+
+                    //if (squadSpawnerController.healedSquad.Count == 0)
+                    //{
+
+
+
+                    // }
+                    // else
+                    //{
+
+                    //}
+
+
                 }
-
-
             }
         }
-        else if ((tag == "Enemy" && other.gameObject.tag == "Enemy") || (tag == "Player" && other.gameObject.tag == "Squad"))
+        else if ((tag == "Enemy" && other.gameObject.tag == "Enemy") || (tag == "Player" && other.gameObject.tag == "Player"))
         {
 
             if (other.gameObject.layer == 12) // внутренний коллайдер отряда
             {
                 SquadController squad = other.GetComponent<SquadController>();
 
+
                 if (squadSpawnerController.healedSquad.Contains(squad))
                 {
                     squadSpawnerController.healedSquad.Remove(squad);
-                }
-
-                if (squadSpawnerController.healedSquad.Count == 0)
-                {
-                    squadSpawnerController.SetSpawner(true);
-
 
 
                 }
-                else
-                {
-                    squadSpawnerController.SetHealer(true);
-                }
+
 
 
             }
         }
     }
+
+    public void SquadsCheck()
+    {
+        Collider[] hitColliders = Physics.OverlapBox(transform.position + checkCollider.center, checkCollider.size, transform.rotation, sduadMask);
+
+
+
+        squadSpawnerController.healedSquad.Clear();
+
+        foreach (var hitCollider in hitColliders)
+        {
+            
+            if ((tag == "Player" && hitCollider.gameObject.tag == "Player") || (tag == "Enemy" && hitCollider.gameObject.tag == "Enemy"))
+            {
+
+
+                SquadController squad = hitCollider.gameObject.GetComponent<SquadController>();
+
+                if (squad.currentAmountUnits < squad.amountUnits)
+                {
+                    squadSpawnerController.healedSquad.Add(squad);
+
+
+                }
+
+
+
+            }
+
+        }
+        //cencelInfoObject.gameObject.SetActive(false);
+
+
+       
+    }
+
 
     public bool EnemySquadCheck()
     {
@@ -208,7 +269,7 @@ public class SmallCityController : MonoBehaviour
         foreach (var hitCollider in hitColliders)
         {
             Debug.Log("EnemySquadCheck " + hitCollider.gameObject.name);
-            if ((tag == "Player" && hitCollider.gameObject.tag == "Enemy") || (tag == "Enemy" && hitCollider.gameObject.tag == "Squad"))
+            if ((tag == "Player" && hitCollider.gameObject.tag == "Enemy") || (tag == "Enemy" && hitCollider.gameObject.tag == "Player"))
             {
                 // cencelInfoObject.gameObject.SetActive(true);
                
@@ -309,6 +370,8 @@ public class SmallCityController : MonoBehaviour
         }
         squadSpawnerController.ClearSpawnUi();
 
+        SquadsCheck();
+
     }
 
 
@@ -330,6 +393,8 @@ public class SmallCityController : MonoBehaviour
     {
         buildCountText.text = "" + buildCount ;
         unitsCountText.text = "" + unitCount;
+
+       
     }
 
 }
