@@ -207,6 +207,8 @@ public class SquadSpawnerController : MonoBehaviour
             if (smallCityController.isDanger == true)
             {
                 cencelInfoObject.gameObject.SetActive(true);
+
+                battleSceneManager.AttackAlert();
             }
         }
 

@@ -45,7 +45,7 @@ public class BuildingManager : MonoBehaviour
     [Space(10)]
     [Header("FX Setup")]
     [SerializeField] private GameObject[] damageFx;
-    [SerializeField] private GameObject coinFx;
+    [SerializeField] private AddCoinsEffect coinFx;
 
     [SerializeField] private float shakeDuration = 1f; // Длительность тряски
     [SerializeField] private float shakeIntensity = 1f; // Интенсивность тряски
@@ -189,14 +189,15 @@ public class BuildingManager : MonoBehaviour
 
                 //destroyObject.transform.parent = null;
 
-                for (int i = 0; i < coinCost; i++)
+                if (coinCost > 0)
                 {
-                    GameObject coin = Instantiate(coinFx, transform.parent.parent);
+                    AddCoinsEffect coins = Instantiate(coinFx, transform.parent.parent.transform);
 
+                    coins.transform.position = transform.position;
 
-                    coin.transform.position = transform.position;
-                    coin.transform.rotation = Quaternion.Euler(0f, Random.Range(0, 360f), 0f);
+                    coins.SetEffect(coinCost);
                 }
+
 
                 
 

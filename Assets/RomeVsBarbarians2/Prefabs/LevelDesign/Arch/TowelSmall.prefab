@@ -381,6 +381,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerBuilding: 0
+  inGroupBuilding: 0
+  isDestroed: 0
+  spawnerController: {fileID: 0}
+  smallCityController: {fileID: 0}
   hitPoints: 1000
   buildingSize: 2
   shootingBuilding: 1
@@ -391,6 +395,7 @@ MonoBehaviour:
   shotAccuracy: 10
   shotRapidity: 2
   projectilesPerShotCount: 2
+  coinCost: 10
   shotStartOffset: 5
   shotSpawnDelay: 0.8
   shotHalfDelay: 0
@@ -399,6 +404,7 @@ MonoBehaviour:
   shootingIndicator: {fileID: 8011069949519629195}
   damageFx:
   - {fileID: 629658438064200395}
+  coinFx: {fileID: 1532882434809049373, guid: 42b76643cf2c9436897bcaee0205a644, type: 3}
   shakeDuration: 0.6
   shakeIntensity: 0.25
   decayRate: 1
@@ -716,7 +722,6 @@ GameObject:
   - component: {fileID: 5776736899974656261}
   - component: {fileID: 8880332711950736655}
   - component: {fileID: 2811803836417879053}
-  - component: {fileID: 2221544929776097063}
   - component: {fileID: 7788002957082682918}
   m_Layer: 6
   m_Name: UnitInfo
@@ -724,7 +729,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7581306752491581075
 RectTransform:
   m_ObjectHideFlags: 0
@@ -808,20 +813,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &2221544929776097063
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4796090657960836447}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32f36b774ea4c58408008acfb0cad680, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  banner: 1
-  scaleFactor: 0.2
 --- !u!95 &7788002957082682918
 Animator:
   serializedVersion: 5

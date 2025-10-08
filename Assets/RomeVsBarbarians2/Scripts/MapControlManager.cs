@@ -241,9 +241,9 @@ public class MapControlManager : MonoBehaviour
 
 
 // нажали на армию
-                        if (hit.collider.gameObject.GetComponent<ArmyController>() != null)
+                        if (hit.collider.transform.parent.GetComponent<ArmyController>() != null)
                         {
-                            armyController = hit.collider.transform.gameObject.GetComponent<ArmyController>();
+                            armyController = hit.collider.transform.parent.GetComponent<ArmyController>();
 
                             
 

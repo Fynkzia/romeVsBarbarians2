@@ -179,9 +179,9 @@ public class ShotMovement : MonoBehaviour
 
                 for (int i = 0; i < arrowsAmount/ hitColliders.Length; i++) // равномерно распределятеся по всем отрядам
                 {
-                    float min = 0f - (enController.defenceSquad * 0.1f) - (enController.defenceCoef) - (-enController.unitArray.Count * 0.1f) - (distance * 0.3f);
+                    float min = 0f - (enController.defenceSquad) - (-enController.unitArray.Count * 0.1f) - (distance * 0.5f);
 
-                    float max = 10f + ((damage - enController.defenceSquad) * 1.1f) + (accuracy * 0.6f);
+                    float max = 10f + damage + ((damage - enController.defenceSquad)) + (accuracy * 0.6f);
                    
 
                     float r = Random.Range(min, max);
@@ -193,7 +193,7 @@ public class ShotMovement : MonoBehaviour
                     }
                     else
                     {
-                        if (r > 5f)
+                        if (r > 4f)
                         {
                             enController.GetDamage(1, 0f, 0);
                         }

@@ -7,6 +7,8 @@ using TMPro;
 public class SquadMapUIPanel : MonoBehaviour
 {
     // Start is called before the first frame update
+    Button button;
+
     [SerializeField] public TextMeshProUGUI unitsAmmount;
     [SerializeField] public TextMeshProUGUI unitsMaxAmmount;
     [SerializeField] public TextMeshProUGUI levelText;
@@ -14,7 +16,9 @@ public class SquadMapUIPanel : MonoBehaviour
     [SerializeField] public TextMeshProUGUI squadName;
     [SerializeField] public Image unitType;
     [SerializeField] public Image countBar;
-    [SerializeField] public BarUI moraleBar;
+    [SerializeField] public Transform moraleBar;
+    [SerializeField] public Image moraleBarImage;
+    [SerializeField] private Gradient moraleGradient;
 
     [SerializeField] public Image createProgressBar;
 
@@ -43,10 +47,40 @@ public class SquadMapUIPanel : MonoBehaviour
         countBar.fillAmount = 1f - (squad.currentAmountUnits / squad.amountUnits);
 
         //moraleBar.ChangeProgress(squad.currentMorale, squad.maxMorale) ;
+        moraleBar.localScale = new Vector3(1f, squad.currentMorale / squad.maxMorale, 1f);
+        moraleBarImage.color = moraleGradient.Evaluate(squad.currentMorale / squad.maxMorale);
+
 
     }
 
-    public void UpdateToDoCosts(float units, float coins)
+    public void CanShowStats(bool canShow, SquadController squad,UIManager uimanager)
+    {
+        if(button == null)
+        {
+            button = GetComponent<Button>();
+        }
+
+        if (canShow)
+        {
+
+            button.onClick.RemoveAllListeners();
+
+            button.onClick.AddListener(()=> ShowStatButton(squad, uimanager));
+        }
+        else
+        {
+
+        }
+    }
+
+    public void ShowStatButton(SquadController squad, UIManager uimanager)
+    {
+
+        uimanager.StatsUIPanelActivation(squad);
+    }
+
+
+        public void UpdateToDoCosts(float units, float coins)
     {
         nowUnits.text = "" + units;
 

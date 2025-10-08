@@ -38,6 +38,11 @@ public class ArmyController : MonoBehaviour
     public bool goToJoint;
     public bool goToBattle;
     public bool goToCity;
+    public bool isCapturing;
+
+    public float capturingTime;
+    public float capturingCurrentTime;
+    public CityController capturingCity;
 
     public float armySpeed;
     public float armyTimeToCaptureGrid;
@@ -137,6 +142,7 @@ public class ArmyController : MonoBehaviour
     [SerializeField] GridManager grid;
     [SerializeField] public MapSceneManager mapSceneManager;
     public BoxCollider collider;
+    public SphereCollider selectCollider;
     public LayerMask checkMask;
 
     public event Action<ArmyController> OnArmyDestroyed;
@@ -284,7 +290,10 @@ public class ArmyController : MonoBehaviour
 
     public void TargetPointCheck()
     {
+       
         Collider[] nearColliders = Physics.OverlapSphere(targetObject.position, 3f, checkMask);
+
+        Debug.Log("TargetPointCheck " + nearColliders.Length);  
 
         for (int i = 0; i < nearColliders.Length; i++)
         {
@@ -301,8 +310,27 @@ public class ArmyController : MonoBehaviour
                 goToJoint = true;
                 jointArmy = nearColliders[i].GetComponent<ArmyController>();
             }
+            else
+            {
+                goToCity = false;
+                goToJoint = false;
+                jointArmy = null;
+                predictCity = null;
+            }
         }
-     }
+
+
+        if (nearColliders.Length == 0)
+        {
+            goToCity = false;
+            goToJoint = false;
+            jointArmy = null;
+            predictCity = null;
+
+        }
+    }
+
+ 
 
 
 
@@ -520,7 +548,7 @@ public class ArmyController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!retreat)
+        if (!retreat && !inBattle)
         {
             if ((tag == "Player" && other.gameObject.tag == "Enemy"))//|| (tag == "Enemy" && other.gameObject.tag == "Player")
             {
@@ -537,34 +565,38 @@ public class ArmyController : MonoBehaviour
                 }
 
 
-                if (enemy != null)
+                if (enemy != null )
                 {
-                    enemyArmy = enemy;
-                    SceneLoader.Instance.CreateBattleInfo(this, enemy);
+                    if (!enemy.inBattle )
+                    {
+                        enemyArmy = enemy;
+                        SceneLoader.Instance.CreateBattleInfo(this, enemy);
 
 
-                    RedyToBattle();
+                        RedyToBattle();
 
-                    enemy.enemyArmy = this;
-                    enemy.RedyToBattle();
-                    // enemy.collider.enabled = false;
+                        enemy.enemyArmy = this;
+                        enemy.RedyToBattle();
+                        // enemy.collider.enabled = false;
 
-                    // enemy.armyInfoPanel.SetActive(false);
-                    // enemy.targetObject.gameObject.SetActive(false);
+                        // enemy.armyInfoPanel.SetActive(false);
+                        // enemy.targetObject.gameObject.SetActive(false);
+                    }
 
                 }
             }
         }
 
-        if (goToCity)
+        if (goToCity && !inBattle)
         {
+
             if (other.tag == tag && other.gameObject.layer == 19)
             {
                 CityController newCity = other.GetComponent<CityController>();
 
-                if (predictCity = newCity)
+                if (predictCity == newCity)
                 {
-
+                    
                     EnterToCity(newCity);
                 }
             }
@@ -572,7 +604,7 @@ public class ArmyController : MonoBehaviour
         }
 
        
-        if (jointArmy != null)
+        if (jointArmy != null && !inBattle)
         {
             if (goToJoint && jointArmy.gameObject == other.gameObject)
             {
@@ -580,55 +612,30 @@ public class ArmyController : MonoBehaviour
                 if (otherArmy == null) return;
 
 
-                if (this.GetInstanceID() > otherArmy.GetInstanceID()) return;
+                //if (GetInstanceID() > otherArmy.GetInstanceID())
+                //{
 
-                if (other.tag == tag)
-                {
-                    if (other.GetComponent<BoxCollider>() == jointArmy.collider)
+                   
+                    if (other.tag == tag)
                     {
-                        SetMoving(false);
-                        jointArmy.SetMoving(false);
-                        Debug.Log("goToJoint");
-
-                        if (isSelected)
-                        {
-
-                            mapControlManager.uiManager.UIReset();
+                        JointToArmy();
+                        // SetMoving(false);
+                        // jointArmy.SetMoving(false);
 
 
 
-                        }
-                        int countToDelete = 0;
-                        for (int i = 0; i < squadList.Count; i++)
-                        {
-                            if (jointArmy.squadList.Count < 20)
-                            {
-                                jointArmy.AddSquadFromArmy(squadList[i]);
-                                countToDelete++;
-                            }
-                            else
-                            {
 
-                            }
-
-                        }
-
-                        for (int i = 0; i < countToDelete; i++)
-                        {
-                            RemoveSquad(squadList[0]);
-                        }
-
-                        goToJoint = false;
                         return;
 
 
 
+
                     }
-                }
+                //}
             }
         }
 
-        if (isMoved)
+        if (isMoved && !inBattle)
         {
             if (other.gameObject.layer == 20) // in battle map
             {
@@ -645,36 +652,41 @@ public class ArmyController : MonoBehaviour
 
             }
 
-            if (other.tag != tag && other.gameObject.layer == 19) //завахт пустого горада
+            if (!retreat && !isCapturing && other.tag != tag && other.gameObject.layer == 19) //завахт пустого горада
             {
                 CityController newCity = other.GetComponent<CityController>();
                 if (newCity.armyInCity == null)
                 {
+                    SetMoving(false);
+                    isCapturing = true;
+                    capturingCity = newCity;
 
-                    newCity.CityCaptured(isPlayer);
-                    goToCity = true;
-                    EnterToCity(newCity);
+
                 }
-                else
+                else 
                 {
-                    if (isPlayer)
+
+                    if (!newCity.armyInCity.inBattle)
                     {
-                       
-                        SceneLoader.Instance.CreateBattleInfo(this, newCity.armyInCity);
+                        if (isPlayer)
+                        {
+
+                            SceneLoader.Instance.CreateBattleInfo(this, newCity.armyInCity);
+                        }
+                        else
+                        {
+                            SceneLoader.Instance.CreateBattleInfo(newCity.armyInCity, this);
+                        }
+
+
+
+
+                        newCity.armyInCity.enemyArmy = this;
+                        enemyArmy = newCity.armyInCity;
+
+                        RedyToBattle();
+                        newCity.armyInCity.RedyToBattle();
                     }
-                    else
-                    {
-                        SceneLoader.Instance.CreateBattleInfo(newCity.armyInCity, this);
-                    }
-
-
-
-
-                    newCity.armyInCity.enemyArmy = this;
-                    enemyArmy = newCity.armyInCity;
-
-                    RedyToBattle();
-                    newCity.armyInCity.RedyToBattle();
 
 
 
@@ -749,6 +761,8 @@ public class ArmyController : MonoBehaviour
             }
             else
             {
+                jointArmy = newCity.armyInCity;
+                JointToArmy();
 
 
             }
@@ -848,6 +862,11 @@ public class ArmyController : MonoBehaviour
                 multiplayerCount++;
             }
 
+            if (isPlayer)
+            {
+                multiplayerCount++;
+            }
+
             randomSquad.AutoBattle_GetUnitDie(multiplayerCount);
         }
         //SqaudsUpdate();
@@ -859,11 +878,16 @@ public class ArmyController : MonoBehaviour
     {
         inBattle = true;
         isMoved = false;
+        isCapturing = false;
 
         targetObject.position = transform.position;
         agent.Stop();
 
         collider.enabled = false;
+        if (selectCollider != null)
+        {
+            selectCollider.enabled = false;
+        }
         //armyInfoPanel.SetActive(false);
         targetObject.gameObject.SetActive(false);
         lineRenderer.gameObject.SetActive(false);
@@ -902,6 +926,10 @@ public class ArmyController : MonoBehaviour
         agent.Stop();
 
         collider.enabled = true;
+        if (selectCollider != null)
+        {
+            selectCollider.enabled = true;
+        }
         armyInfoPanel.SetActive(true);
         //targetObject.gameObject.SetActive(true);
 
@@ -953,6 +981,50 @@ public class ArmyController : MonoBehaviour
                     }
                 }
             }
+
+            if (isCapturing && !inBattle)
+            {
+                capturingCurrentTime += Time.deltaTime;
+
+                if (capturingCurrentTime > capturingTime)
+                {
+                    capturingCity.GetDamage(armyPower);
+
+                    if (capturingCity.armyInCity != null && !capturingCity.armyInCity.inBattle)
+                    {
+                        if (isPlayer)
+                        {
+
+                            SceneLoader.Instance.CreateBattleInfo(this, capturingCity.armyInCity);
+                        }
+                        else
+                        {
+                            SceneLoader.Instance.CreateBattleInfo(capturingCity.armyInCity, this);
+                        }
+
+                        capturingCity.armyInCity.enemyArmy = this;
+                        enemyArmy = capturingCity.armyInCity;
+
+                        RedyToBattle();
+                        capturingCity.armyInCity.RedyToBattle();
+
+                        isCapturing = false;
+                    }
+
+                    if (capturingCity.cityBuildings == 0)
+                    {
+                        capturingCity.CityCaptured(isPlayer);
+                        goToCity = true;
+                        EnterToCity(capturingCity);
+
+                        isCapturing = false;
+                    }
+
+                    capturingCurrentTime = 0;
+                }
+
+            }
+            
         }
 
         currentMoraleUpdateTime += Time.deltaTime;
@@ -963,7 +1035,7 @@ public class ArmyController : MonoBehaviour
             {
                 for (int i = 0; i < squadList.Count; i++)
                 {
-                    squadList[i].MoraleChange(-squadList[i].lostMoraleThenRun*5f);
+                    squadList[i].MoraleChange(-squadList[i].lostMoraleThenRun*4f);
                 }
                 UpdateArmyInfo();
             }
@@ -973,7 +1045,7 @@ public class ArmyController : MonoBehaviour
                 {
                     for (int i = 0; i < squadList.Count; i++)
                     {
-                        squadList[i].MoraleChange(squadList[i].recoveryMoraleSpeed);
+                        squadList[i].MoraleChange(squadList[i].recoveryMoraleSpeed * 4f);
                     }
                     
                     UpdateArmyInfo();
@@ -992,7 +1064,7 @@ public class ArmyController : MonoBehaviour
         //Vector3 targetPos = Vector3.MoveTowards(transform.position, targetObject.position, armySpeed * Time.fixedDeltaTime);
         moveDirection = (transform.position - targetObject.position).normalized;
 
-        agent.SetDestination(targetObject.position);
+       // agent.SetDestination(targetObject.position);
 
         currentTimeToCaptureGrid += Time.deltaTime;
 
@@ -1081,38 +1153,125 @@ public class ArmyController : MonoBehaviour
         }
 
         // Когда хвост близко и агент остановился — выравниваем формацию
-        if (Vector3.Distance(targetObject.position, transform.position) <= minDistance)
+
+        if (goToJoint && jointArmy != null)
         {
-            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance && agent.velocity.sqrMagnitude == 0f)
+            if (Vector3.Distance(jointArmy.transform.position, transform.position) <= 4f)
             {
-                //
+                SetMoving(false);
+                JointToArmy();
+            }
 
-                for (int i = 0; i < isActive.Length; i++)
+            targetObject.transform.position = jointArmy.transform.position;
+
+           if(!isPlayer && armyMorale/ armyMoraleMax < 0.5f)
+            {
+                SetMoving(false);
+            }
+
+            }
+        else
+        {
+            if (Vector3.Distance(targetObject.position, transform.position) <= minDistance || (!agent.hasPath || agent.velocity.sqrMagnitude == 0f))
+            {
+                if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
                 {
-                    isActive[i] = false;
 
+
+                    //
+
+                    for (int i = 0; i < isActive.Length; i++)
+                    {
+                        isActive[i] = false;
+
+
+                    }
+
+                    SetMoving(false);
+                    SetFormation(moveDirection);
+                    lineRenderer.gameObject.SetActive(false);
 
                 }
-
-                SetMoving(false);
-                SetFormation(moveDirection);
-                lineRenderer.gameObject.SetActive(false);
             }
         }
 
-        
 
 
 
-        lineRenderer.SetPosition(0,transform.position);
+        if (lineRenderer.positionCount > 0)
+        {
+            lineRenderer.SetPosition(0, transform.position);
+        }
        // lineRenderer.SetPosition(1, targetObject.transform.position);
 
 
     }
 
-    
 
-  
+    public void JointToArmy()
+    {
+        if(jointArmy == null )
+        {
+            return;
+        }
+        if (jointArmy.goToJoint)
+        {
+            if (gameObject.GetInstanceID() > jointArmy.gameObject.GetInstanceID())
+            {
+
+                Debug.Log("jointArmy triger " + GetInstanceID() + " + " + jointArmy.GetInstanceID(), gameObject);
+                return; // эта армия проигрывает, ждет
+            }
+        }
+
+
+       
+            Debug.Log("goToJoint " + Vector3.Distance(jointArmy.transform.position, transform.position));
+        if (Vector3.Distance(jointArmy.transform.position, transform.position) <= 7f || (jointArmy.inCity && Vector3.Distance(jointArmy.transform.position, transform.position) <= 15f))
+        {
+
+            // jointArmy.SetMoving(false);
+            
+
+            if (isSelected)
+            {
+
+                mapControlManager.uiManager.UIReset();
+
+
+
+            }
+            int countToDelete = 0;
+            for (int i = 0; i < squadList.Count; i++)
+            {
+                if (jointArmy.squadList.Count < 20)
+                {
+                    jointArmy.AddSquadFromArmy(squadList[i]);
+                    countToDelete++;
+                }
+                else
+                {
+
+                }
+
+            }
+
+            for (int i = 0; i < countToDelete; i++)
+            {
+                RemoveSquad(squadList[0]);
+            }
+
+            goToJoint = false;
+            jointArmy = null;
+        }
+        else
+        {
+            //goToJoint = false;
+            //jointArmy = null;
+        }
+    }
+
+
 
     public void SetMoving(bool move)
     {
@@ -1126,7 +1285,7 @@ public class ArmyController : MonoBehaviour
         if (move)
         {
 
-            agent.isStopped = false;
+           
             formationIndex = 0;
             isFormated = false;
 
@@ -1134,11 +1293,32 @@ public class ArmyController : MonoBehaviour
             baseObject.gameObject.SetActive(false);
             TargetPointCheck();
 
+            if (isCapturing)
+            {
+                isCapturing = false;
+            }
+
             //SetFormation(moveDirection);
 
             NavMeshPath path = agent.path;
 
-            agent.CalculatePath(targetObject.position, path);
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(targetObject.position, out hit, 100f, NavMesh.AllAreas))
+            {
+                // Проверяем путь
+              
+                if (agent.CalculatePath(hit.position, path) && path.status != NavMeshPathStatus.PathInvalid)
+                {
+                    // Ура, есть путь
+                    agent.SetDestination(hit.position);
+                    targetObject.position = path.corners[path.corners.Length-1];
+                }
+            }
+
+            
+        
+
+        //agent.CalculatePath(targetObject.position, path);
 
             if (path.corners.Length < 2)
             { // если путь ещё не построен
@@ -1157,6 +1337,36 @@ public class ArmyController : MonoBehaviour
 
             isActive = new bool[squadsOnMap.Count];
             isActive[0] = true; // первый сразу активен
+
+            agent.isStopped = false;
+
+            if (goToJoint && jointArmy != null)
+            {
+                JointToArmy();
+            }
+
+            if (goToCity && predictCity != null)
+            {
+
+
+
+                if (Vector3.Distance(predictCity.transform.position, transform.position) <= 4f)
+                {
+                    EnterToCity(predictCity);
+                }
+                    
+                
+
+            }
+
+            if (inCity)
+            {
+                if (Vector3.Distance(targetObject.transform.position, transform.position) > 4f)
+                {
+                    ExitFromCity();
+
+                }
+            }
         }
         else
         {
@@ -1165,6 +1375,26 @@ public class ArmyController : MonoBehaviour
             baseObject.gameObject.SetActive(true);
 
             
+            //if (goToJoint && jointArmy != null)
+            //{
+            //    JointToArmy();
+            //}
+
+
+            if (goToCity && predictCity != null)
+            {
+
+
+
+                if (Vector3.Distance(predictCity.transform.position, transform.position) <= 4f)
+                {
+                    EnterToCity(predictCity);
+                }
+
+
+
+            }
+
 
 
             GridCell c = grid.GetCellAt(transform.position);
@@ -1178,10 +1408,7 @@ public class ArmyController : MonoBehaviour
 
         }
 
-        if (inCity)
-        {
-            ExitFromCity();
-        }
+        
 
 
 

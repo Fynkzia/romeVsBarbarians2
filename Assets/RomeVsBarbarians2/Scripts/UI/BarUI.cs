@@ -7,14 +7,14 @@ public enum BarType { Stamina, Morale };
 public class BarUI : MonoBehaviour
 {
     [SerializeField] private bool isUiBar;
-    [SerializeField] private GameObject squad;
+   
 
     [SerializeField] private Transform barObject;
     [SerializeField] private SpriteRenderer barSprite;
     [SerializeField] private Image backImage;
     
     [SerializeField] private Gradient gradient;
-    private SquadController squadController;
+   
 
     private void Awake() {
         if (!isUiBar)

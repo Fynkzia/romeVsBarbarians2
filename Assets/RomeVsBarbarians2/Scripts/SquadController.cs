@@ -27,7 +27,10 @@ public class SquadController : MonoBehaviour {
     [Header("Balance specs")]
 
     [SerializeField] public SquadType type;
- 
+
+    [SerializeField] public String squadName;
+    [SerializeField] public Sprite squadTypeSprite;
+
     [SerializeField] public float amountUnits;
     [Space(10)]
     [SerializeField] public float powerSquad;
@@ -48,8 +51,7 @@ public class SquadController : MonoBehaviour {
     [SerializeField] public float defencelevelBonus = 0f;
 
 
-    [Header("Economy specs")]
-    [SerializeField] private int coinsFromDeath;
+  
 
     [Space(10)]
     [SerializeField] public float actionColliderRadius;
@@ -215,7 +217,7 @@ public class SquadController : MonoBehaviour {
     [SerializeField] private GameObject friendlyFireFx;
     [SerializeField] private GameObject panicFx;
 
-    [SerializeField] private GameObject coinFX;
+    [SerializeField] private AddCoinsEffect addCoinsEffect;
     [Space(10)]
     [SerializeField] public float moveFxInterval = 0.5f; 
     [SerializeField] public int moveFXMax = 0;
@@ -973,7 +975,7 @@ public class SquadController : MonoBehaviour {
 
                 
 
-                MoraleChange(-(lostMoraleThenRun *Time.deltaTime));
+                MoraleChange(-(lostMoraleThenRun *Time.deltaTime * (currentSpeed/10)));
 
             }
             else
@@ -1335,10 +1337,10 @@ public class SquadController : MonoBehaviour {
                         }
                         else
                         {
-                            if(Random.Range(0,100) > 50)
-                            {
-                                SpawnPanicFX();
-                            }
+                            //if(Random.Range(0,100) > 50)
+                            //{
+                            //    SpawnPanicFX();
+                            //}
                         }
                        
                     }
@@ -1518,7 +1520,7 @@ public class SquadController : MonoBehaviour {
             {
                 Destroy(lineRenderer.gameObject);
             }
-            Debug.Log("GoToSquad", gameObject);
+         
 
         }
         moveDir = squad.position;
@@ -1545,7 +1547,50 @@ public class SquadController : MonoBehaviour {
         {
             SetMoving(true);
         }
+
+        Debug.Log("GoToSquad", gameObject);
+
+    }
+
+    public void GoToDirection(Vector3 dir, float dist)
+    {
+        if (isMoved)
+        {
+            indexMove = 0;
+            movingPositions = null;
+            // CancelMovement();
+            if (lineRenderer != null)
+            {
+                Destroy(lineRenderer.gameObject);
+            }
+           
+
+        }
+        moveDir = dir;
        
+
+        GameObject drawing = Instantiate(drawingPrefab);
+        LineRenderer _lineRenderer = drawing.GetComponent<LineRenderer>();
+        lineRenderer = _lineRenderer;
+
+        Vector3 norm = Vector3.Normalize( dir - transform.position );
+
+        lineRenderer.positionCount++;
+        lineRenderer.SetPosition(lineRenderer.positionCount - 1, transform.position + norm);
+
+
+        lineRenderer.positionCount++;
+        lineRenderer.SetPosition(lineRenderer.positionCount - 1, transform.position + (norm * dist));
+
+        if (inBattle)
+        {
+            // battleMove = true;
+        }
+        else
+        {
+            SetMoving(true);
+        }
+        Debug.Log("GoToDirection", gameObject);
     }
 
     public void SpriteRotate(Vector3 target, Transform unit)
@@ -1970,24 +2015,44 @@ public class SquadController : MonoBehaviour {
 
         int countToKill = 1;
 
-        if (currentSpeed >= 6f)
+        if (currentSpeed+1 >= movementSpeed)
         {
             countToKill += 1;
         }
+
+        //if (currentSpeed >= 6f)
+        //{
+        //    countToKill += 1;
+        //}
 
         //if(enController.currentFormation < 6f)
         //{
         //    countToKill += 1;
         //}
 
-        if (enController.currentFormation < 4f)
+        if (enController.currentFormation < 2f)
         {
             countToKill += 1;
         }
 
-        if (currentTriggerCoef > 1f)
+        if (currentFormation > 8f)
         {
             countToKill += 1;
+        }
+
+
+
+        if (currentTriggerCoef >= 2f)
+        {
+            if(currentFormation > 8f)
+            {
+                countToKill += 2;
+            }
+            else
+            {
+                countToKill += 1;
+            }
+           
         }
 
         if (currentSpeed-1f > enController.currentSpeed && canFirstAttack)
@@ -2001,7 +2066,8 @@ public class SquadController : MonoBehaviour {
 
             }
 
-            enController.FormationBonusChange(-(pushSquad / 2f) * ((currentSpeed - enController.currentSpeed)) + currentTriggerCoef + countToKill);
+            enController.FormationBonusChange(-1 - (pushSquad / 3f) - currentTriggerCoef);
+            FormationBonusChange(-1 - (enController.pushSquad / 3f) + currentTriggerCoef);
 
             Vector3 dir = (enController.transform.position - transform.position).normalized;
             float force = (20f * pushSquad) + ((currentFormation - enController.currentFormation) * 10f) + ((currentSpeed- enController.currentSpeed)* 5f * pushSquad);
@@ -2271,7 +2337,7 @@ public class SquadController : MonoBehaviour {
             moraleLost -= (countDiff / 100f);
         }
         moraleLost -= triggerCoef /10f;
-        moraleLost -= bonusMoraleLost/10f;
+        moraleLost -= bonusMoraleLost/20f;
         moraleLost -= enemyController.Count / 10f;
 
         MoraleChange(moraleLost);
@@ -2644,16 +2710,14 @@ public class SquadController : MonoBehaviour {
             }
             else
             {
+
                 
 
-                for (int i = 0; i < coinsFromDie; i++)
-                {
-                    GameObject coin = Instantiate(coinFX, battleSceneManager.transform);
+                     AddCoinsEffect coins = Instantiate(addCoinsEffect, battleSceneManager.transform);
 
+                coins.transform.position = transform.position;
 
-                    coin.transform.position = transform.position;
-                    coin.transform.rotation = Quaternion.Euler(0f, Random.Range(0, 360f), 0f);
-                }
+                coins.SetEffect(coinsFromDie);
 
                 aIController.DeleteSquadFromQueue(this);
                 battleSceneManager.DieEnemySquad(this);
@@ -3063,12 +3127,32 @@ public class SquadController : MonoBehaviour {
     //fx
     public void SpawnFriendlyFireFX()
     {
-        Instantiate(friendlyFireFx, unitArray[Random.Range(0, unitArray.Count)].transform.position, friendlyFireFx.transform.rotation);
+        int random = Random.Range(0, unitArray.Count - 1);
+
+        if (random <= unitArray.Count - 1)
+        {
+            if (unitArray[random] != null)
+            {
+                Vector3 pos = unitArray[random].transform.position;
+                Instantiate(friendlyFireFx, pos, friendlyFireFx.transform.rotation);
+
+            }
+        }
 
     }
     public void SpawnPanicFX()
     {
-        Instantiate(panicFx, unitArray[Random.Range(0, unitArray.Count)].transform.position, panicFx.transform.rotation);
+        int random = Random.Range(0, unitArray.Count-1);
+
+        if (random <= unitArray.Count - 1)
+        {
+            if (unitArray[random] != null)
+            {
+                Vector3 pos = unitArray[random].transform.position;
+
+                Instantiate(panicFx, pos, panicFx.transform.rotation);
+            }
+        }
 
     }
 

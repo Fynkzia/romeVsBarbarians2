@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1236461074}
   m_Layer: 15
   m_Name: ShootingTriggers
-  m_TagString: Squad
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -105,7 +105,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 26
+  m_Radius: 30
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1236461074
 MonoBehaviour:
@@ -1696,7 +1696,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 1aa3b3002671c4746aea439691283d5c, type: 2}
     - target: {fileID: 5732734904892970063, guid: 3cf9f074bb677453281e5482ac5cce92, type: 3}
       propertyPath: ShapeModule.radius.value
-      value: 25
+      value: 27
       objectReference: {fileID: 0}
     - target: {fileID: 5732734904892970063, guid: 3cf9f074bb677453281e5482ac5cce92, type: 3}
       propertyPath: InitialModule.startSize.scalar
@@ -2129,6 +2129,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
+      propertyPath: squadName
+      value: Velites
+      objectReference: {fileID: 0}
+    - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: unitsNeed
       value: 30
       objectReference: {fileID: 0}
@@ -2162,7 +2166,7 @@ PrefabInstance:
       objectReference: {fileID: 3402867912507858967, guid: b9598d3b6662f4b46a667f70dbea15d0, type: 3}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: movementSpeed
-      value: 4.5
+      value: 4.6
       objectReference: {fileID: 0}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: unitPositions
@@ -2184,6 +2188,10 @@ PrefabInstance:
       propertyPath: retreatMinCount
       value: 18
       objectReference: {fileID: 0}
+    - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
+      propertyPath: squadTypeSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 177752984531d4042846396337c02ac1, type: 3}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: minimumFormation
       value: 0.1
@@ -2494,14 +2502,15 @@ MonoBehaviour:
   isAttackShooting: 0
   isShootingSquad: 1
   isMovementShooting: 0
-  shotRange: 26
-  shotAmount: 25
+  shotRange: 30
+  shotAmount: 30
   maxShotsAmount: 25
   shotSpeed: 15
-  shotDamage: 1.5
+  shotDamage: 1.8
   shotAccuracy: 2
   shotRapidity: 3.3
   projectilesPerShotCount: 10
+  checkMoveTime: 1
   shotStartOffset: 4
   shotSpawnDelay: 0.7
   shotHalfDelay: 0

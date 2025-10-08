@@ -182,7 +182,7 @@ public class SquadControlManager : MonoBehaviour
                         mousePrevPos = mousePos;
                     }
                 }
-            }
+            } 
 
         }
         else
@@ -226,7 +226,7 @@ public class SquadControlManager : MonoBehaviour
                 lineRenderer.endColor = attackColor;
                 
 
-                squadController.predictEnemy = hit.collider;
+                squadController.predictEnemy = hit.collider.transform.parent.GetComponent<Collider>();
                 squadController.isGoingToEnemy = true;
             }
             else

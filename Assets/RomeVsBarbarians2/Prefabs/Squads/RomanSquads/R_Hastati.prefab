@@ -573,7 +573,7 @@ GameObject:
   - component: {fileID: 3126588489855621096}
   m_Layer: 15
   m_Name: ShootingTriggers
-  m_TagString: Squad
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -662,7 +662,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 14
+  m_Radius: 17
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &3126588489855621096
 MonoBehaviour:
@@ -1730,6 +1730,10 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
+      propertyPath: squadName
+      value: Hastati
+      objectReference: {fileID: 0}
+    - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: unitsNeed
       value: 50
       objectReference: {fileID: 0}
@@ -1773,6 +1777,10 @@ PrefabInstance:
       propertyPath: retreatMinCount
       value: 40
       objectReference: {fileID: 0}
+    - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
+      propertyPath: squadTypeSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 3d0a9f594106742619cf5bd6ea0b8313, type: 3}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: minimumFormation
       value: 0.1
@@ -2011,7 +2019,7 @@ MonoBehaviour:
   isAttackShooting: 1
   isShootingSquad: 0
   isMovementShooting: 0
-  shotRange: 14
+  shotRange: 17
   shotAmount: 1
   maxShotsAmount: 2
   shotSpeed: 15
@@ -2019,6 +2027,7 @@ MonoBehaviour:
   shotAccuracy: 2
   shotRapidity: 3.3
   projectilesPerShotCount: 0
+  checkMoveTime: 0
   shotStartOffset: 4
   shotSpawnDelay: 0.7
   shotHalfDelay: 0.2

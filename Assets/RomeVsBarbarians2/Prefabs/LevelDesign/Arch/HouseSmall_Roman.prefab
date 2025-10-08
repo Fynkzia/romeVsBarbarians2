@@ -238,7 +238,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerBuilding: 1
   inGroupBuilding: 0
+  isDestroed: 0
   spawnerController: {fileID: 0}
+  smallCityController: {fileID: 0}
   hitPoints: 100
   buildingSize: 2
   shootingBuilding: 0
@@ -249,6 +251,7 @@ MonoBehaviour:
   shotAccuracy: 0
   shotRapidity: 0
   projectilesPerShotCount: 0
+  coinCost: 0
   shotStartOffset: 0
   shotSpawnDelay: 0
   shotHalfDelay: 0
@@ -257,7 +260,7 @@ MonoBehaviour:
   shootingIndicator: {fileID: 0}
   damageFx:
   - {fileID: 8824388088711293524}
-  coinFx: {fileID: 1907167698180525989, guid: 42b76643cf2c9436897bcaee0205a644, type: 3}
+  coinFx: {fileID: 1532882434809049373, guid: 42b76643cf2c9436897bcaee0205a644, type: 3}
   shakeDuration: 1
   shakeIntensity: 1
   decayRate: 1

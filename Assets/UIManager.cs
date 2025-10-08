@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] public CityUIPanel cityUIPanel;
     [SerializeField] public HireUIPanel hireUIPanel;
     [SerializeField] public BattleUIPanel battleUIPanel;
+    [SerializeField] public SquadStatsUIPanel squadStatsUIPanel;
 
     [SerializeField] public CoinsInfo coinsUIPanel;
     [SerializeField] public GameObject mapUiObject;
@@ -47,6 +48,20 @@ public class UIManager : MonoBehaviour
 
         //transitionAnimation.SetTrigger("In");
         //transitionAnimation.SetTrigger("Out");
+    }
+
+
+    public void StatsUIPanelActivation(SquadController squad)
+    {
+       // UIReset();
+        squadStatsUIPanel.gameObject.SetActive(true);
+        squadStatsUIPanel.UpdateStatUIPanle(squad);
+    }
+
+    public void StatsUIPanelDeactivtion()
+    {
+        squadStatsUIPanel.gameObject.SetActive(false);
+        
     }
 
     public void NewBattleButtonActivate(int sceneIndex,bool active)
@@ -105,7 +120,8 @@ public class UIManager : MonoBehaviour
             SquadMapUIPanel newSquadPanel = armyUIPanel.AddSquad(army.squadList[i].mapUIPanel);
 
             int index = i;
-            newSquadPanel.GetComponent<Button>().onClick.AddListener(() => army.SquadSelect(index));
+            //newSquadPanel.GetComponent<Button>().onClick.AddListener(() => army.SquadSelect(index));
+            newSquadPanel.CanShowStats(true, army.squadList[i], this);
         }
 
         armyUIPanel.UpdateSquadsInfo(army.squadList.ToArray(), army.UnitsCountUpdate(), army.ArmyPowerUpdate());
@@ -159,6 +175,7 @@ public class UIManager : MonoBehaviour
         cityUIPanel.gameObject.SetActive(false);
         hireUIPanel.gameObject.SetActive(false);
         battleUIPanel.gameObject.SetActive(false);
+        squadStatsUIPanel.gameObject.SetActive(false);
 
         battleUIPanel.BattlePanelClear();
 

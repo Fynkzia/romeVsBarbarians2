@@ -15,8 +15,8 @@ public class ShotRangeManager : MonoBehaviour
 
 
     private void OnTriggerEnter(Collider other) {
-        if (((transform.parent.gameObject.tag == "Player" && other.gameObject.tag == "Enemy") || (transform.parent.tag == "Enemy" && other.gameObject.tag == "Squad"))
-            && !enemyColliders.Contains(other) && other.isTrigger)
+        if (((transform.parent.gameObject.tag == "Player" && other.gameObject.tag == "Enemy") || (transform.parent.tag == "Enemy" && other.gameObject.tag == "Player"))
+            && !enemyColliders.Contains(other))
         {
             enemyColliders.Add(other);
 

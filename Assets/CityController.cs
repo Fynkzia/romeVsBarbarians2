@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Random = UnityEngine.Random;
+
 
 
 public class CityController : MonoBehaviour
@@ -51,9 +53,19 @@ public class CityController : MonoBehaviour
     public GameObject armyInfoObject;
 
     private float currentTime;
+
+    [SerializeField] private float shakeDuration = 1f; // Длительность тряски
+    [SerializeField] private float shakeIntensity = 1f; // Интенсивность тряски
+    [SerializeField] private float decayRate = 1f;
+
+    [SerializeField] private GameObject meshObject;
     
 
-    
+    private float currentShakeDuration; // Оставшееся время тряски
+    private Vector3 originalPosition; // Исходное положение объекта
+
+
+
 
     public MapControlManager mapControlManager;
     public CityToDoController toDoController ;
@@ -88,7 +100,10 @@ public class CityController : MonoBehaviour
 
         cityInfo.SetupInfo(this);
 
-       
+        cityBuildingsMax = spawnPoints.Length-1;
+
+        originalPosition = meshObject.transform.localPosition;
+        currentShakeDuration = 0;
 
 
     }
@@ -157,7 +172,51 @@ public class CityController : MonoBehaviour
 
             currentTime = 0;
         }
+
+
+        if (currentShakeDuration > 0)
+        {
+            // Рассчитываем смещение тряски
+            float damping = Mathf.Clamp01(currentShakeDuration / shakeDuration);
+            float offsetX = Random.Range(-1f, 1f) * shakeIntensity * damping;
+            float offsetY = Random.Range(-1f, 1f) * shakeIntensity * damping;
+
+            // Применяем смещение к объекту
+            meshObject.transform.localPosition = originalPosition + new Vector3(offsetX, offsetY, 0f);
+
+            // Уменьшаем время тряски с учетом затухания
+            currentShakeDuration -= Time.deltaTime * decayRate;
+
+            // Если тряска закончилась, возвращаем объект на исходную позицию
+            if (currentShakeDuration <= 0)
+            {
+                meshObject.transform.localPosition = originalPosition;
+            }
+        }
     }
+
+    public void GetDamage(int armypower)
+    {
+        int multiplayer = 1 + (armypower / 300);
+
+            cityUnits -= 1 * multiplayer;
+
+
+        if (cityBuildings > 0)
+        {
+
+            cityBuildings--;
+
+            Destroy(buildings[buildings.Count - 1]);
+
+            buildings.RemoveAt(buildings.Count - 1);
+
+            cityInfo.UpdateCounts(cityBuildings, (int)cityUnits, (int)coinsAdd);
+
+            currentShakeDuration = shakeDuration;
+        }
+    }
+
 
     public void AddBuildings()
     {

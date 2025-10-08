@@ -20,6 +20,11 @@ public class CityInfo : MonoBehaviour
     [SerializeField] public Color playerColor;
     [SerializeField] public Color enemyColor;
 
+    [SerializeField] public SpriteRenderer regionSprite;
+
+    [SerializeField] public Color regionPlayerColor;
+    [SerializeField] public Color regionEnemyColor;
+
 
     // Start is called before the first frame update
     public void UpdateCounts(int buildings, int units, int coins)
@@ -41,10 +46,14 @@ public class CityInfo : MonoBehaviour
         if (city.isPlayer)
         {
             colorLine.color = playerColor;
+            regionSprite.color = regionPlayerColor;
         }
         else
         {
             colorLine.color = enemyColor;
+            regionSprite.color = regionEnemyColor;
         }
+
+
     }
 }

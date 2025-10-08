@@ -437,7 +437,7 @@ RectTransform:
   m_GameObject: {fileID: 703714446421789111}
   m_LocalRotation: {x: 0.49615583, y: -0.50381464, z: 0.5038152, w: 0.49615574}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 11.769332, y: 11.769334, z: 11.76933}
+  m_LocalScale: {x: 13.141876, y: 13.141879, z: 13.141874}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 272814251360650626}
@@ -968,7 +968,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2515259561354106570
 Transform:
   m_ObjectHideFlags: 0
@@ -4450,8 +4450,8 @@ MonoBehaviour:
   playerArmy: {fileID: 0}
   enemyArmy: {fileID: 0}
   city: {fileID: 0}
-  startTimeBattle: 20
-  battleTickTime: 2
+  startTimeBattle: 25
+  battleTickTime: 4
   playerTick: 0
   inBattle: 0
   inAutoBattle: 0
@@ -4460,6 +4460,9 @@ MonoBehaviour:
   currentBattleTickTime: 0
   resourceManager: {fileID: 0}
   mapSceneManager: {fileID: 0}
+  armyMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &6930015433849990595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4497,8 +4500,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 10.622589, y: 10.81, z: 7.88}
-  m_Center: {x: -0.18870544, y: 0, z: 0}
+  m_Size: {x: 12.988464, y: 7.045089, z: 12.826904}
+  m_Center: {x: -0.22454834, y: 1.8824552, z: -0.035827637}
 --- !u!1001 &2294046188825148362
 PrefabInstance:
   m_ObjectHideFlags: 0

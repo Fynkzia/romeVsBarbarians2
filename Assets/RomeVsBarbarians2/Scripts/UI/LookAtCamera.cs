@@ -27,9 +27,7 @@ public class LookAtCamera : MonoBehaviour
 
     private void Awake() {
 
-        mapSceneManager = GameObject.Find("MapSceneManager").GetComponent<MapSceneManager>();
-
-        camera = mapSceneManager.gameCamera;
+        
 
 
         if (!battleInfo && !mapInfo)
@@ -40,9 +38,12 @@ public class LookAtCamera : MonoBehaviour
 
         if (mapInfo)
         {
+            mapSceneManager = GameObject.Find("MapSceneManager").GetComponent<MapSceneManager>();
+
+            camera = mapSceneManager.gameCamera;
 
             cameraMapMovement = mapSceneManager.cameraMapMovement;
-            InitMapInfo(Camera.main, cameraMapMovement);
+            InitMapInfo(camera, cameraMapMovement);
         }
 
     }
@@ -122,15 +123,28 @@ public class LookAtCamera : MonoBehaviour
 
             //transform.rotation = Quaternion.Euler(angels[newZoom], transform.rotation.y, 0);
 
-            if (mapInfo && objectZoom != null)
+            if (objectZoom != null)
             {
-                if(newZoom == 0)
+                if (mapInfo)
                 {
-                    objectZoom.SetActive(false);
-                }
-                else
+                    if (newZoom == 0)
+                    {
+                        objectZoom.SetActive(false);
+                    }
+                    else
+                    {
+                        objectZoom.SetActive(true);
+                    }
+                }else if (battleInfo)
                 {
-                    objectZoom.SetActive(true);
+                    if (newZoom == 2)
+                    {
+                        objectZoom.SetActive(false);
+                    }
+                    else
+                    {
+                        objectZoom.SetActive(true);
+                    }
                 }
 
             }

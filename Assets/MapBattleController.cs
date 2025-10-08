@@ -39,10 +39,58 @@ public class MapBattleController : MonoBehaviour
     public ResourceManager resourceManager;
     public MapSceneManager mapSceneManager;
 
+    [SerializeField] private LayerMask armyMask;
+
     private void Start()
     {
         mapSceneManager = GameObject.Find("MapSceneManager").GetComponent<MapSceneManager>();
     }
+
+
+    public void ArmyCheck()
+    {
+        BoxCollider coll = GetComponent<BoxCollider>();
+        Collider[] hitColliders = Physics.OverlapBox(transform.position + coll.center, coll.size*2, transform.rotation, armyMask);
+
+
+
+        
+
+        foreach (var hitCollider in hitColliders)
+        {
+
+            if ( (hitCollider.gameObject.tag == "Player") || (hitCollider.gameObject.tag == "Enemy" ))
+            {
+
+                ArmyController newArmy = hitCollider.gameObject.GetComponent<ArmyController>();
+
+                if (newArmy.isPlayer)
+                {
+                   if(playerArmy != newArmy)
+                    {
+                        AddSquadsToArmy(true, newArmy);
+                    }
+
+                }
+                else
+                {
+                    if (enemyArmy != newArmy)
+                    {
+                        AddSquadsToArmy(false, newArmy);
+                    }
+                }
+
+
+
+            }
+
+        }
+        //cencelInfoObject.gameObject.SetActive(false);
+
+
+
+    }
+
 
     public void Select(bool select)
     {
@@ -85,7 +133,12 @@ public class MapBattleController : MonoBehaviour
     {
         mapSceneManager.uIManager.BattlePanelDeactivation();
 
-        inBattle = true;
+
+        
+            SceneLoader.Instance.EnterBattle(sceneIndex, playerArmy, enemyArmy);
+            inBattle = true;
+        
+       
         battleInfo.BattleStart();
 
         BattleStart?.Invoke();
@@ -96,6 +149,8 @@ public class MapBattleController : MonoBehaviour
 
         inAutoBattle = true;
         battleInfo.AutoBattleStart();
+
+        SceneLoader.Instance.StartAutoBattle(sceneIndex);
 
         AutoBattleStart?.Invoke();
     }
@@ -205,7 +260,7 @@ public class MapBattleController : MonoBehaviour
                 if (enemyArmy.squadList[i].squadDie)
                 {
 
-                    resourceManager.ChangeAmountOfCoins(enemyArmy.squadList[i].coinsFromDie);
+                    resourceManager.ChangeAmountOfCoins(enemyArmy.squadList[i].coinsFromDie/2);
                 }
             }
 

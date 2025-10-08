@@ -37,9 +37,9 @@ public class MapSceneManager : MonoBehaviour
         uIManager.MapUiActivation(true);
 
         controlController.gameObject.SetActive(true);
-       
 
 
+        controlController.CencelSelection();
         cameraMapMovement.ExitFromBattle();
 
        

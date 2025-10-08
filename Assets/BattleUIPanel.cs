@@ -19,6 +19,8 @@ public class BattleUIPanel : MonoBehaviour
     [SerializeField] private TextMeshProUGUI playerArmyPowerText;
     [SerializeField] private TextMeshProUGUI enemyArmyPowerText;
 
+    [SerializeField] private TextMeshProUGUI rewardText;
+
 
     [SerializeField] private Image startbattleTimer;
 
@@ -29,6 +31,11 @@ public class BattleUIPanel : MonoBehaviour
     [SerializeField] private GameObject autoBattleButtonObject;
     [SerializeField] private GameObject autoBattlePanel;
     [SerializeField] private GameObject battlePanel;
+
+    [SerializeField] private GameObject victoryBar;
+    [SerializeField] private TextMeshProUGUI victoryChanseText;
+
+    float vicChanse;
 
 
     void OnDisable()
@@ -58,6 +65,8 @@ public class BattleUIPanel : MonoBehaviour
     {
         BattlePanelClear();
 
+        int reward = 0;
+
         for (int i = 0; i < mapBattleController.playerArmy.squadList.Count; i++)
         {
             SquadController squad = mapBattleController.playerArmy.squadList[i];
@@ -68,6 +77,7 @@ public class BattleUIPanel : MonoBehaviour
         {
             SquadController squad = mapBattleController.enemyArmy.squadList[i];
             enemyArmyPanel.AddSquad(squad.mapUIPanel);
+            reward += squad.coinsFromDie;
         }
 
         playerArmyPanel.UpdateSquadsInfo(mapBattleController.playerArmy.squadList.ToArray(), mapBattleController.playerArmy.UnitsCountUpdate(), mapBattleController.playerArmy.ArmyPowerUpdate());
@@ -80,34 +90,56 @@ public class BattleUIPanel : MonoBehaviour
         //playerArmyPowerText.text = "" + mapBattleController.playerArmy.ArmyPowerUpdate();
 
         //enemyArmyPowerText.text = "" + mapBattleController.enemyArmy.ArmyPowerUpdate();
+
+        rewardText.text = "" + reward;
+
+       
+
+
+
+        float playerP = mapBattleController.playerArmy.ArmyPowerUpdate();
+        float enemyP = mapBattleController.enemyArmy.ArmyPowerUpdate();
+
+
+
+         vicChanse = playerP / (playerP + enemyP);
+
+        victoryBar.transform.localScale = new Vector3(vicChanse, 0, 0);
+
+        victoryChanseText.text = Mathf.RoundToInt(vicChanse * 100f) + "%";
+
     }
+
+
+
 
         public void BattlePanelActivate()
     {
-        for (int i = 0; i < mapBattleController.playerArmy.squadList.Count; i++)
-        {
-            SquadController squad = mapBattleController.playerArmy.squadList[i];
-            playerArmyPanel.AddSquad(squad.mapUIPanel);
-        }
+        //for (int i = 0; i < mapBattleController.playerArmy.squadList.Count; i++)
+        //{
+        //    SquadController squad = mapBattleController.playerArmy.squadList[i];
+        //    playerArmyPanel.AddSquad(squad.mapUIPanel);
+        //}
 
-        for (int i = 0; i < mapBattleController.enemyArmy.squadList.Count; i++)
-        {
-            SquadController squad = mapBattleController.enemyArmy.squadList[i];
-            enemyArmyPanel.AddSquad(squad.mapUIPanel);
-        }
+        //for (int i = 0; i < mapBattleController.enemyArmy.squadList.Count; i++)
+        //{
+        //    SquadController squad = mapBattleController.enemyArmy.squadList[i];
+        //    enemyArmyPanel.AddSquad(squad.mapUIPanel);
+        //}
 
-        playerArmyPanel.UpdateSquadsInfo(mapBattleController.playerArmy.squadList.ToArray(), mapBattleController.playerArmy.UnitsCountUpdate(), mapBattleController.playerArmy.ArmyPowerUpdate());
-        enemyArmyPanel.UpdateSquadsInfo(mapBattleController.enemyArmy.squadList.ToArray(), mapBattleController.enemyArmy.UnitsCountUpdate(), mapBattleController.enemyArmy.ArmyPowerUpdate());
+        // playerArmyPanel.UpdateSquadsInfo(mapBattleController.playerArmy.squadList.ToArray(), mapBattleController.playerArmy.UnitsCountUpdate(), mapBattleController.playerArmy.ArmyPowerUpdate());
+        // enemyArmyPanel.UpdateSquadsInfo(mapBattleController.enemyArmy.squadList.ToArray(), mapBattleController.enemyArmy.UnitsCountUpdate(), mapBattleController.enemyArmy.ArmyPowerUpdate());
 
-        
+        BattlePanelUpdate();
 
         toBattleButton.onClick.RemoveAllListeners();
         retreatBattleButton.onClick.RemoveAllListeners();
 
         toBattleButton.onClick.AddListener(() => mapBattleController.StartBattle());
-        toBattleButton.onClick.AddListener(() => SceneLoader.Instance.EnterBattle(mapBattleController.sceneIndex, mapBattleController.playerArmy, mapBattleController.enemyArmy));
+       
 
         retreatBattleButton.onClick.AddListener(() => mapBattleController.PlayerRetreat());
+        autoBattleButton.onClick.AddListener(() => mapBattleController.StartAutoBattle());
 
         battlePanel.SetActive(false);
         autoBattlePanel.SetActive(false);
@@ -115,7 +147,7 @@ public class BattleUIPanel : MonoBehaviour
 
         Debug.Log("BattlePanelActivate");
 
-        if (!mapBattleController.inAutoBattle)
+        if (!mapBattleController.inAutoBattle && !mapBattleController.inBattle)
         {
             
             battlePanel.SetActive(true);
@@ -127,15 +159,37 @@ public class BattleUIPanel : MonoBehaviour
             }
             else
             {
+               // autoBattleButtonObject.SetActive(true);
+            }
+
+
+            if (vicChanse > 0.75f)
+            {
                 autoBattleButtonObject.SetActive(true);
             }
-        }
+            else
+            {
+                autoBattleButtonObject.SetActive(false);
+            }
 
-        if (mapBattleController.inAutoBattle)
+
+        }
+        else
         {
-            autoBattlePanel.SetActive(true);
+            if (mapBattleController.inAutoBattle)
+            {
+                autoBattlePanel.SetActive(true);
+            }
 
         }
+
+        
+       
+
+
+
+       
+
     }
 
     public void StartBattleTimerUpdate(float fillAmount)

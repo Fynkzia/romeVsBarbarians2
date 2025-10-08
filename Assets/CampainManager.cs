@@ -107,6 +107,13 @@ public class CampainManager : MonoBehaviour
             enemyArmies[i].OnArmyDestroyed += EnemyArmyDestroy;
         }
 
+        for (int i = 0; i < defenceCities.Count; i++)
+        {
+
+
+            defenceCities[i].OnCityCaptured += CityCptured;
+        }
+
     }
 
     public void CampainButton()

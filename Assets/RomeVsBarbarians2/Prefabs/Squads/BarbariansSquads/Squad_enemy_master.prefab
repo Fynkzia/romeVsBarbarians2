@@ -367,6 +367,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2765663143426108066}
+  - {fileID: 807422551744644582}
   - {fileID: 8847965869447370925}
   - {fileID: 3638279387896862007}
   - {fileID: 2938882179266553139}
@@ -440,6 +441,8 @@ MonoBehaviour:
   isBattleInit: 0
   helperSquad: 0
   type: 0
+  squadName: 
+  squadTypeSprite: {fileID: 0}
   amountUnits: 50
   powerSquad: 1
   defenceSquad: 1
@@ -452,14 +455,13 @@ MonoBehaviour:
   xpToNextLevel: 100
   powerlevelBonus: 0
   defencelevelBonus: 0
-  coinsFromDeath: 0
   actionColliderRadius: 5
   movementSpeed: 3.5
   boostSpeed: 3
   minimumFormation: 0.3
   lostDefenceMoving: 0.1
   resetDefence: 0.25
-  lostMoraleThenRun: 0.03
+  lostMoraleThenRun: 0.06
   lostMoraleThenDie: 0.12
   lostMoraleThenAttacked: 0.03
   addMoraleKillSquad: 1
@@ -547,7 +549,7 @@ MonoBehaviour:
   lostMoraleFx: {fileID: 8408955500383151332, guid: 773e4157dac944788bd1643c9e024a9c, type: 3}
   friendlyFireFx: {fileID: 3825571564101416963, guid: cee9bc7535e474ed4a85c49032df386d, type: 3}
   panicFx: {fileID: 8515684795205079543, guid: a1973eb544c73476796e434ba8ea3bb8, type: 3}
-  coinFX: {fileID: 1907167698180525989, guid: 42b76643cf2c9436897bcaee0205a644, type: 3}
+  addCoinsEffect: {fileID: 1532882434809049373, guid: 42b76643cf2c9436897bcaee0205a644, type: 3}
   moveFxInterval: 0.2
   moveFXMax: 15
   moveFXlist: []
@@ -597,6 +599,111 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 3
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &8927562264174124469
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 807422551744644582}
+  - component: {fileID: 4594739575270474612}
+  - component: {fileID: 1450931332045133580}
+  - component: {fileID: 5850452900586005531}
+  m_Layer: 22
+  m_Name: TouchCollider
+  m_TagString: Enemy
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &807422551744644582
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8927562264174124469}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5578669096314907647}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &4594739575270474612
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8927562264174124469}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &1450931332045133580
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8927562264174124469}
+  m_Enabled: 0
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!135 &5850452900586005531
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8927562264174124469}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 5.63
+  m_Center: {x: 0, y: 1.45, z: 0}
 --- !u!1 &9155204992570062777
 GameObject:
   m_ObjectHideFlags: 0

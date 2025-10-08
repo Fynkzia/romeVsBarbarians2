@@ -1114,7 +1114,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: coinsNeed
-      value: 80
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: maxMorale
@@ -1125,12 +1125,16 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
+      propertyPath: squadName
+      value: Roman Cavalery
+      objectReference: {fileID: 0}
+    - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: unitsNeed
       value: 28
       objectReference: {fileID: 0}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: boostSpeed
-      value: 6
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: mapUIPanel
@@ -1173,11 +1177,15 @@ PrefabInstance:
       value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
+      propertyPath: squadTypeSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 07089eb39c84a49a6bdbbc2db8d2d89b, type: 3}
+    - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: minimumFormation
       value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
-      propertyPath: lostMoraleThenRun
+      propertyPath: addMoraleKillUnit
       value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
@@ -1199,10 +1207,6 @@ PrefabInstance:
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: angleToUpdateFormation
       value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
-      propertyPath: lostMoraleThenAttacked
-      value: 0.02
       objectReference: {fileID: 0}
     - target: {fileID: 6750266649210976646, guid: 7307a9722dc7d45c68239cafa25a5853, type: 3}
       propertyPath: animationIdleUpdateTime

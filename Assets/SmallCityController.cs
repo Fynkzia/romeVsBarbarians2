@@ -69,6 +69,9 @@ public class SmallCityController : MonoBehaviour
 
         }
 
+       // squadSpawnerController.SetSpawner(true);
+      //  squadSpawnerController.SetHealer(true);
+
     }
 
     // Update is called once per frame
@@ -88,10 +91,15 @@ public class SmallCityController : MonoBehaviour
                         UpdateInfoPanel();
                     }
 
-                    if (isDanger)
+                if (squadSpawnerController.healedSquad.Count == 0)
+                {
+                    SquadsCheck();
+                }
+
+                if (isDanger)
                     {
                         isDanger = false;
-                        SquadsCheck();
+                      
 
                         squadSpawnerController.SetSpawner(true);
                         squadSpawnerController.SetHealer(true);
@@ -143,7 +151,7 @@ public class SmallCityController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if ((tag == "Player" && other.gameObject.tag == "Enemy") || (tag == "Enemy" && other.gameObject.tag == "Squad"))
+        if ((tag == "Player" && other.gameObject.tag == "Enemy") || (tag == "Enemy" && other.gameObject.tag == "Player"))
         {
 
             isDanger = true;
@@ -152,7 +160,7 @@ public class SmallCityController : MonoBehaviour
 
             
         }
-        else if ((tag == "Enemy" && other.gameObject.tag == "Enemy") || (tag == "Player" && other.gameObject.tag == "Squad"))
+        else if ((tag == "Enemy" && other.gameObject.tag == "Enemy") || (tag == "Player" && other.gameObject.tag == "Player"))
         {
 
             if (other.gameObject.layer == 12) // внутренний коллайдер отряда
@@ -226,8 +234,7 @@ public class SmallCityController : MonoBehaviour
     {
         Collider[] hitColliders = Physics.OverlapBox(transform.position + checkCollider.center, checkCollider.size, transform.rotation, sduadMask);
 
-
-
+      
         squadSpawnerController.healedSquad.Clear();
 
         foreach (var hitCollider in hitColliders)
@@ -236,6 +243,7 @@ public class SmallCityController : MonoBehaviour
             if ((tag == "Player" && hitCollider.gameObject.tag == "Player") || (tag == "Enemy" && hitCollider.gameObject.tag == "Enemy"))
             {
 
+                Debug.Log("SquadsCheck " + hitCollider.gameObject.name);
 
                 SquadController squad = hitCollider.gameObject.GetComponent<SquadController>();
 
@@ -253,8 +261,12 @@ public class SmallCityController : MonoBehaviour
         }
         //cencelInfoObject.gameObject.SetActive(false);
 
+        if (squadSpawnerController.healedSquad.Count > 0)
+        {
+            squadSpawnerController.SetHealer(true);
+        }
 
-       
+
     }
 
 
@@ -268,7 +280,7 @@ public class SmallCityController : MonoBehaviour
 
         foreach (var hitCollider in hitColliders)
         {
-            Debug.Log("EnemySquadCheck " + hitCollider.gameObject.name);
+           
             if ((tag == "Player" && hitCollider.gameObject.tag == "Enemy") || (tag == "Enemy" && hitCollider.gameObject.tag == "Player"))
             {
                 // cencelInfoObject.gameObject.SetActive(true);

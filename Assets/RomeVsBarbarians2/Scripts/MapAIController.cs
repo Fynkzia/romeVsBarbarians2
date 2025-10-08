@@ -145,7 +145,7 @@ public class MapAIController : MonoBehaviour
         cityTimeAction += Time.deltaTime;
 
 
-        if (cityTimeAction > timeToGetCityActions)
+        if (cityTimeAction > timeToGetCityActions *( allEnemiesCityList.Count+1))
         {
             //city actions
             if (allEnemiesCityList.Count == 0)
@@ -154,6 +154,7 @@ public class MapAIController : MonoBehaviour
 
             }
             AiCitiesAction();
+             
 
 
 
@@ -212,8 +213,7 @@ public class MapAIController : MonoBehaviour
     {
         
 
-            if (!allEnemiesCityList[cityIndex].toDoController.doHire && !allEnemiesCityList[cityIndex].toDoController.doHouse)
-            {
+            
 
 
                 if (cityActionPatern[cityActionIndex] == 0)// ничего не делаем
@@ -229,14 +229,15 @@ public class MapAIController : MonoBehaviour
                         allEnemiesCityList[cityIndex].toDoController.AiDoHouse();
                         enemyCoins -= 10f;
 
-                        cityActionIndex++;
+                       
                         cityIndex++;
                     }
-
-                }
+                cityActionIndex++;
+            }
                 else
-                if (cityActionPatern[cityActionIndex] == 1)// делаем отряд 1
+                if (cityActionPatern[cityActionIndex] == 1 && allEnemyPower < allPlayerPower * 2)// делаем отряд 0
                 {
+
                     if (enemyCoins > 50 && allEnemiesCityList[cityIndex].cityUnits > 50)
                     {
                         allEnemiesCityList[cityIndex].toDoController.AiToDoSquad(0);
@@ -244,13 +245,13 @@ public class MapAIController : MonoBehaviour
                         enemyCoins -= 50f;
                     allEnemiesCityList[cityIndex].cityUnits -= 50;
 
-                         cityActionIndex++;
+                      
                         cityIndex++;
                     }
-
-                }
+                cityActionIndex++;
+            }
             else
-                if (cityActionPatern[cityActionIndex] == 2)// делаем отряд 1
+                if (cityActionPatern[cityActionIndex] == 2 && allEnemyPower < allPlayerPower * 2)// делаем отряд 1
             {
                 if (enemyCoins > 50f && allEnemiesCityList[cityIndex].cityUnits > 50f)
                 {
@@ -259,13 +260,14 @@ public class MapAIController : MonoBehaviour
                     enemyCoins -= 50f;
                     allEnemiesCityList[cityIndex].cityUnits -= 50f;
 
-                    cityActionIndex++;
+                   
                     cityIndex++;
                 }
+                cityActionIndex++;
 
             }
             else
-                if (cityActionPatern[cityActionIndex] == 3)// делаем отряд 2
+                if (cityActionPatern[cityActionIndex] == 3 && allEnemyPower < allPlayerPower * 2)// делаем отряд 2
             {
                 if (enemyCoins > 50f && allEnemiesCityList[cityIndex].cityUnits > 50f)
                 {
@@ -274,21 +276,21 @@ public class MapAIController : MonoBehaviour
                     enemyCoins -= 50f;
                     allEnemiesCityList[cityIndex].cityUnits -= 50f;
 
-                    cityActionIndex++;
                     cityIndex++;
                 }
 
+                 cityActionIndex++;
+                }
+            else
+            {
+                cityActionIndex++;
             }
 
 
 
 
 
-        }
-        else
-        {
-            cityIndex++;
-        }
+        
 
 
         if (cityIndex >= allEnemiesCityList.Count)
@@ -329,47 +331,57 @@ public class MapAIController : MonoBehaviour
 
         army.ArmyPowerUpdate();
 
-        if (army.armyPower < allPlayerPower / 3) { } // слишком маленькие
+        if (army.armyPower < allPlayerPower / 4) { } // слишком маленькие
 
-        if ((army.armyPower > allPlayerPower / 4 && army.armyPower < allPlayerPower/2) && army.armyMorale/ army.armyMoraleMax > 0.8f) //армия свежая и павер больше 1/4 от среднего по игрокам - готов к стратегическуму муву
-        {
-
-            if (allEnemyPower > allPlayerPower) //10 - идем в стратегическую атаку
+        
+            //10 - идем в стратегическую атаку - 
+            if (allEnemyPower > allPlayerPower/1.2 && //павера больше чем у игрока - 20%
+                (army.armyPower > allPlayerPower / 5) &&
+                army.armyMorale / army.armyMoraleMax > 0.6f
+                ) 
             {
 
 
-                float lastPowerToAttackStrategy = -2000f;
+                    float lastPowerToAttackStrategy = -2000f;
 
 
 
-                if (allPlayerList.Count > 0)
-                {
-
-
-                    for (int i = 0; i < allPlayerList.Count; i++)
+                    if (allPlayerList.Count > 0)   //10 - нападаем на самый слабый отряд игрока
                     {
-                        // вычесляем лучшего для аттаки 
-                        float p = army.armyPower - allPlayerList[i].armyPower;
-                        if (p > lastPowerToAttackStrategy)
+
+
+                        for (int i = 0; i < allPlayerList.Count; i++)
                         {
-                            lastPowerToAttackStrategy = p;
-                            bestArmyToStrategyAttack = allPlayerList[i];
+                            // вычесляем лучшего для аттаки 
+                            float p = army.armyPower - allPlayerList[i].armyPower;
+                            if (p > lastPowerToAttackStrategy)
+                            {
+                                lastPowerToAttackStrategy = p;
+                                bestArmyToStrategyAttack = allPlayerList[i];
+                            }
+
+
+
+
+                        }
+                        if (bestArmyToStrategyAttack != null)
+                        {
+                            armyActionPriority[10] += 6;
                         }
 
-
-
-
                     }
-                    if (bestArmyToStrategyAttack != null)
-                    {
-                        armyActionPriority[10] += 6;
-                    }
-
-                }
 
                 
 
             }
+
+
+        //11 - микро подкреп
+        if (allEnemyPower > allPlayerPower / 2 && //павера больше чем у игрока - 50%
+           (army.armyPower > allPlayerPower / 5 && army.armyPower < allPlayerPower / 2) &&
+           army.armyMorale / army.armyMoraleMax > 0.6f
+           )
+        {
 
             bestArmyToStrategyMove = null;
             if (SceneLoader.Instance.mapBattleControllers.Count > 0)// коенретно идем баттл помочь
@@ -386,11 +398,11 @@ public class MapAIController : MonoBehaviour
                     {
                         bestArmyToStrategyMove = battle.enemyArmy;
 
-                      
+
 
                     }
 
-                    
+
 
                 }
             }
@@ -399,13 +411,13 @@ public class MapAIController : MonoBehaviour
             {
                 armyActionPriority[11] += 7;
             }
-            else
+            else if(army.ai_currentState != 11) // если уже идет подкруп - пропускаем
             {
-
+                // отсылаем микро подкреп
 
                 for (int i = 0; i < allEnemiesList.Count; i++)
                 {
-                    if (army != allEnemiesList[i] && allEnemiesList[i].armyPower < allPlayerPower / 1.5)
+                    if (army != allEnemiesList[i] && allEnemiesList[i].armyPower < allPlayerPower / 1.2)
                     {
                         if (bestArmyToStrategyMove != null)
                         {
@@ -431,11 +443,10 @@ public class MapAIController : MonoBehaviour
                     armyActionPriority[11] += 7;
                 }
             }
-
-        }else if(army.armyPower > allPlayerPower / 3 && allEnemyPower > allPlayerPower)
-        {
-
         }
+            
+
+        
 
         if (army.armyPower < allPlayerPower/2) //9- соединяемся с другой БЛИЖАЙШЕЙ армией когда у обоих меньше павера чем 2 раза от игрока
         {
@@ -478,13 +489,13 @@ public class MapAIController : MonoBehaviour
 
            
 
-        armyActionPriority[0] += (1- army.armyMorale/army.armyMoraleMax)*10f; // мало морали - лучще постоять
+        armyActionPriority[0] += (1- army.armyMorale/army.armyMoraleMax)*20f; // мало морали - лучще постоять
 
         if (army.inCity) // в городе стоять круто++
         {
             armyActionPriority[0] += 1;
 
-            if(army.armyPower < allPlayerPower)
+            if(army.armyPower < allPlayerPower/ allPlayerList.Count)
             {
                 armyActionPriority[0] += 3;
 
@@ -561,7 +572,7 @@ public class MapAIController : MonoBehaviour
             bestArmyToAttack = playerFarArmies[bestIndexToAttack];
 
          
-            armyActionPriority[2] += lastPowerToAttack / 100f;//  чем больше разница паверов тем больше хочется напасть +1 за каждые 100;
+            armyActionPriority[2] += (lastPowerToAttack / 50f) *2;//  чем больше разница паверов тем больше хочется напасть +1 за каждые 100;
 
 
 
@@ -621,7 +632,7 @@ public class MapAIController : MonoBehaviour
            // armyActionPriority[3] += lastPowerToHelp / 100f;
 
         }
-        float lastPowerToRetret = 0;
+        float lastPowerToRetret = -2000f;
         int bestIndexToRetret = 0;
 
       
@@ -647,11 +658,12 @@ public class MapAIController : MonoBehaviour
             bestArmyToRetret = playerNearArmies[bestIndexToRetret];
 
             
-            armyActionPriority[4] += -lastPowerToRetret/100f;//  чем больше разница паверов тем больше хочется свалить от них подальше +1 за каждые 100;
+            armyActionPriority[4] += -lastPowerToRetret/50f;//  чем больше разница паверов тем больше хочется свалить от них подальше +1 за каждые 100;
 
             if (army.inCity) /// если уже в городе - хуйня идея
             {
                 armyActionPriority[4] = 0;
+                armyActionPriority[0] += 7f; // оставаться на месте получается лучше +10
             }
 
         }
@@ -664,8 +676,7 @@ public class MapAIController : MonoBehaviour
 
                 for (int i = 0; i < allEnemiesCityList.Count; i++)
                 {
-                    if (allEnemiesCityList[i].armyInCity == null)
-                    {
+                   
                         float dist = Vector3.Distance(allEnemiesCityList[i].transform.position, army.transform.position);
 
                         if (dist < minDistanceToCity)
@@ -673,12 +684,25 @@ public class MapAIController : MonoBehaviour
                             bestCityToRetret = allEnemiesCityList[i];
                             minDistanceToCity = dist;
                         }
-                    }
+                    
 
 
                 }
 
-                armyActionPriority[5] += -lastPowerToRetret / 150f;
+                armyActionPriority[5] += -lastPowerToRetret / 50f;
+
+
+                if(minDistanceToCity <= 50f)
+                {
+                    armyActionPriority[5] += 5f;//заходим в город
+                }
+
+                if (minDistanceToCity <= 100f)
+                {
+                    armyActionPriority[5] += 2f;//заходим в город
+                }
+
+
             }
 
             if (army.inCity) /// если уже в городе - хуйня идея
@@ -686,6 +710,8 @@ public class MapAIController : MonoBehaviour
                 armyActionPriority[5] = 0;
             }
 
+
+            // 6 - идем в город бо выгодно
 
 
             //if (army.armyMorale/ army.armyMoraleMax < 0.6f)// 6 - идем в город бо выгодно
@@ -695,20 +721,20 @@ public class MapAIController : MonoBehaviour
 
             if (army.armyUnits / army.armyUnitsMax < 0.6f)
             {
-                armyActionPriority[6] += (1f - (army.armyUnits / army.armyUnitsMax)) * 4f;
+                armyActionPriority[6] += (1f - (army.armyUnits / army.armyUnitsMax)) * 10f;
             }
 
            
-            if (army.armyPower < allPlayerPower/2)
+            if (army.armyPower < allPlayerPower/allPlayerList.Count)
             {
-                armyActionPriority[6] += 1f;
+                armyActionPriority[6] += 3f;
 
                 
             }
 
-            if (army.armyPower < allPlayerPower / 3)
+            if (army.armyPower < allPlayerPower / 5)
             {
-                armyActionPriority[6] += 1f;
+                armyActionPriority[6] += 5f;
 
 
             }
@@ -735,14 +761,16 @@ public class MapAIController : MonoBehaviour
 
             if (bestCityToGo.armyInCity != null)
             {
-                if (bestCityToGo.armyInCity.armyPower < army.armyPower)
+                if (bestCityToGo.armyInCity.armyPower > army.armyPower)
                 {
-                    armyActionPriority[6] += 1f;
+                    armyActionPriority[6] += 2f;
                 }
 
-                if (playerNearArmies.Count > 0) 
+                    
+
+                    if (playerNearArmies.Count > 0) 
                 {
-                    armyActionPriority[6] += 1f;
+                    armyActionPriority[6] += 4f;
                 }
             }
             else
@@ -758,16 +786,16 @@ public class MapAIController : MonoBehaviour
 
             }
 
-            if(nearPlayerCityList.Count > 0)  // 7 - атакуем вражеский город 
+            if (nearPlayerCityList.Count > 0)  // 7 - атакуем вражеский город 
             {
 
                 float lastPowerToAttackCity = 0;
-               
+
 
 
                 for (int i = 0; i < nearPlayerCityList.Count; i++)
                 {
-                    if (nearPlayerCityList[i].armyInCity == null ) // сразу тригиримся на пустой город
+                    if (nearPlayerCityList[i].armyInCity == null) // сразу тригиримся на пустой город
                     {
                         bestCityToAttack = nearPlayerCityList[i];
                         armyActionPriority[7] += 5f;
@@ -785,64 +813,72 @@ public class MapAIController : MonoBehaviour
                             bestCityToAttack = nearPlayerCityList[i];
                         }
 
-                        
+
 
                     }
 
-                   
-                }
-                armyActionPriority[7] += lastPowerToAttackCity/50f;
 
-                if (army.armyPower > allPlayerPower) {
-                    armyActionPriority[7] += 1f;
-                  }
+                }
+                armyActionPriority[7] += lastPowerToAttackCity / 50f;
+
+                if (army.armyPower > allPlayerPower)
+                {
+                    armyActionPriority[7] += 10f;
+                }
+
+                if (army.armyPower > allPlayerPower/allPlayerList.Count)
+                {
+                    armyActionPriority[7] += 3f;
+                }
 
             }
             else // нет рядом городов  - подходим к выгодному городу
             {
                 float lastPowerToAttackCity = 0;
-
-
-
-                for (int i = 0; i < allPlayerCityList.Count; i++)
+                if (army.ai_currentState != 8)
                 {
-                    if (allPlayerCityList[i].armyInCity == null) // сразу тригиримся на пустой город
+
+
+                    for (int i = 0; i < allPlayerCityList.Count; i++)
                     {
-                        bestCityToAttackFromFar = allPlayerCityList[i];
-                        armyActionPriority[8] += 5f;
-
-
-                        i = allPlayerCityList.Count;
-
-                    }
-                    else
-                    {
-                        float p = army.armyPower - allPlayerCityList[i].armyInCity.armyPower;
-                        if (p > lastPowerToAttackCity)
+                        if (allPlayerCityList[i].armyInCity == null) // сразу тригиримся на пустой город
                         {
-                            lastPowerToAttackCity = p;
                             bestCityToAttackFromFar = allPlayerCityList[i];
+                            armyActionPriority[8] += 5f;
+
+
+                            i = allPlayerCityList.Count;
+
+                        }
+                        else
+                        {
+                            float p = army.armyPower - allPlayerCityList[i].armyInCity.armyPower;
+                            if (p > lastPowerToAttackCity)
+                            {
+                                lastPowerToAttackCity = p;
+                                bestCityToAttackFromFar = allPlayerCityList[i];
+                            }
+
+
+
                         }
 
 
-
                     }
+                    armyActionPriority[8] += lastPowerToAttackCity / 50f;
 
-
-                }
-                armyActionPriority[8] += lastPowerToAttackCity / 50;
-
-                if (army.armyPower > allPlayerPower)
-                {
-                    armyActionPriority[8] += 2f;
-
-                    if(bestCityToAttackFromFar == null)
+                    if (army.armyPower > allPlayerPower/allPlayerList.Count)
                     {
-                        bestCityToAttackFromFar = allPlayerCityList[0];
+                        armyActionPriority[8] += 3f;
+
+                        if (bestCityToAttackFromFar == null)
+                        {
+                            bestCityToAttackFromFar = allPlayerCityList[0];
+                        }
                     }
+
+
                 }
-
-
             }
 
         }
@@ -887,7 +923,7 @@ public class MapAIController : MonoBehaviour
         if (bestAction == 1) // 1 - идем на вражескую армию - если она близко
         {
             army.ai_currentState = 1;
-            DrawPathAndGo(army, bestArmyToAttack.transform.position);
+            DrawPathAndGo(army, bestArmyToAttack.transform.position,null);
 
           
             return;
@@ -903,7 +939,7 @@ public class MapAIController : MonoBehaviour
         {
 
             army.ai_currentState = 3;
-            DrawPathAndGo(army, bestArmyToHelp.transform.position);
+            DrawPathAndGo(army, bestArmyToHelp.transform.position, null);
 
            
 
@@ -920,7 +956,7 @@ public class MapAIController : MonoBehaviour
             if (bestArmyToRetret != null)
             {
                 backVector = Vector3.Normalize(army.transform.position - bestArmyToRetret.transform.position);
-                DrawPathAndGo(army, army.transform.position + (backVector * nearRadius));
+                DrawPathAndGo(army, army.transform.position + (backVector * nearRadius), null);
                 army.ai_currentState = 4;
             }
             else
@@ -936,19 +972,19 @@ public class MapAIController : MonoBehaviour
         {
             army.ai_currentState = 5;
             army.goToCity = true;
-            DrawPathAndGo(army, bestCityToRetret.transform.position);
+            DrawPathAndGo(army, bestCityToRetret.transform.position, null);
         }
         if (bestAction == 6) //6 - идем в город бо выгодно
         {
             army.ai_currentState = 6;
             army.goToCity = true;
-            DrawPathAndGo(army, bestCityToGo.transform.position);
+            DrawPathAndGo(army, bestCityToGo.transform.position, null);
         }
         if (bestAction == 7) // 7 - атакуем вражеский город 
         {
             army.ai_currentState = 7;
             
-            DrawPathAndGo(army, bestCityToAttack.transform.position);
+            DrawPathAndGo(army, bestCityToAttack.transform.position, null);
         }
         if (bestAction == 8) // //8 -  нет рядом городов  - подходим к выгодному городу
         {
@@ -960,7 +996,7 @@ public class MapAIController : MonoBehaviour
         {
             army.ai_currentState = 9;
 
-            DrawPathAndGo(army, bestArmyToHelp.transform.position);
+            DrawPathAndGo(army, bestArmyToJoint.transform.position, bestArmyToJoint);
         }
         if (bestAction == 10) // //10[strategy move] 
         {
@@ -975,7 +1011,7 @@ public class MapAIController : MonoBehaviour
         {
             army.ai_currentState = 11;
 
-            DrawPathAndGo(army, bestArmyToStrategyMove.transform.position);
+            DrawPathAndGo(army, bestArmyToStrategyMove.transform.position, null);
         }
 
 
@@ -1211,11 +1247,16 @@ public class MapAIController : MonoBehaviour
 
 
 
-    private void DrawPathAndGo(ArmyController army, Vector3 targetPos)
+    private void DrawPathAndGo(ArmyController army, Vector3 targetPos, ArmyController jointArmy)
 {
         army.targetObject.transform.position = targetPos;
         army.SetMoving(true);
 
+        if(jointArmy != null)
+        {
+            army.goToJoint = true;
+            army.jointArmy = jointArmy;
+        }
     }
 
     private void DrawHalfPathAndGo(ArmyController army, Vector3 targetPos)
@@ -1223,7 +1264,7 @@ public class MapAIController : MonoBehaviour
 
 
         Vector3 dir = (targetPos - army.transform.position).normalized;
-        float distance = 17f; // сколько шагнуть
+        float distance = 15f; // сколько шагнуть
         Vector3 between = army.transform.position + dir * distance;
 
         army.targetObject.transform.position = between;

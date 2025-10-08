@@ -22,6 +22,8 @@ public class ShootingController : MonoBehaviour
     [SerializeField] float shotRapidity;
     [SerializeField] int projectilesPerShotCount;
 
+    [SerializeField] float checkMoveTime;
+
     [Space(10)]
     [Header("Shooting Setup")]
     [SerializeField] float shotStartOffset;
@@ -38,6 +40,7 @@ public class ShootingController : MonoBehaviour
     [SerializeField] private Collider currentEnemy;
     private ShotRangeManager shotRangeManager;
     private float rapidityTimer ;
+    private float checkMoveTimer;
 
     public void InitBattle()
     {
@@ -76,25 +79,67 @@ public class ShootingController : MonoBehaviour
         }
 
         if (shotAmount > 0) {
-           
-            if (rapidityTimer >= shotRapidity && !squadController.inBattle) {
 
-                if (isShootingSquad && !squadController.isMoved) {
-                    ShootingSquad();
-                }
+            //checkMoveTimer += Time.deltaTime;
 
-                if (isMovementShooting && squadController.isMoved)
-                {
-                    ShootingSquad();
-                }
-                rapidityTimer = 0;
+            //if (checkMoveTimer >= checkMoveTime && !squadController.inBattle)
+            //{
 
-                squadController.squadInfo.AmmoUpdate(shotAmount, maxShotsAmount);
+            //    checkMoveTimer = 0;
 
-            }
-            else {
+            //    if (!squadController.isMoved)
+            //    {
+            //        if (isShootingSquad && squadController.predictEnemy != null)
+            //        {
+
+
+            //            float dist = Vector3.Distance(squadController.predictEnemy.transform.position, transform.position);
+
+            //            if (dist > shotRange)
+            //            {
+            //                if (!squadController.isMoved)
+            //                {
+            //                    Debug.Log("GoToDirection " + dist);
+            //                    squadController.GoToDirection(squadController.predictEnemy.transform.position, shotRange * 0.5f);
+            //                }
+            //            }
+            //            else if (dist < shotRange * 0.9f)
+            //            {
+            //                if (squadController.isMoved)
+            //                {
+            //                    squadController.CancelMovement();
+            //                    //Shot(squadController.predictEnemy);
+            //                    // squadController.predictEnemy = null;
+
+            //                    Debug.Log("dist stop!!! " + dist);
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+
+
+                if (rapidityTimer >= shotRapidity && !squadController.inBattle) {
+
+                    if (isShootingSquad && !squadController.isMoved) {
+                        ShootingSquad();
+                    }
+
+                    if (isMovementShooting )
+                    {
+                        ShootingSquad();
+                    }
+                    rapidityTimer = 0;
+
+                    squadController.squadInfo.AmmoUpdate(shotAmount, maxShotsAmount);
+
+                 }
+                else {
                 rapidityTimer += Time.deltaTime;
-            }
+
+                
+
+                }
         }
     }
 
@@ -115,18 +160,66 @@ public class ShootingController : MonoBehaviour
     }
 
     private void ShootingSquad() {
-        if (squadController.predictEnemy != null && squadController.predictEnemy.gameObject.active == true) {
-            if (shotRangeManager.enemyColliders.Contains(squadController.predictEnemy)) {
-                squadController.CancelMovement();
-                Shot(squadController.predictEnemy);
+        if (squadController.predictEnemy != null) {
 
+            if(squadController.predictEnemy.gameObject.activeSelf == false)
+            {
                 squadController.predictEnemy = null;
+
+                return;
+            }
+
+            if (shotRangeManager.enemyColliders.Contains(squadController.predictEnemy)) {
+                //squadController.CancelMovement();
+                //Shot(squadController.predictEnemy);
+
+
+                float dist = Vector3.Distance(squadController.predictEnemy.transform.position, transform.position);
+
+                if (dist > shotRange * 1.2f)
+                {
+                    //
+                    //squadController.CancelMovement();
+
+                    Debug.Log("ShootingSquad + dist > shotRange  GoToSquad!! " + dist);
+
+                    squadController.GoToSquad(squadController.predictEnemy.transform);
+                }
+                else
+                {
+                    squadController.CancelMovement();
+                    Shot(squadController.predictEnemy);
+
+                    Debug.Log("ShootingSquad + CancelMovement + Shot  " + dist);
+                    // squadController.predictEnemy = null;
+                }
+
+
+                //squadController.predictEnemy = null;
+            }
+            else
+            {
+                squadController.squadInfo.ShootingIndicator(false);
+
+                if (squadController.predictEnemy != null)
+                {
+                    //ector3 pointToGo = (squadController.predictEnemy.transform.position + transform.position) / 2f;
+
+
+                    squadController.GoToSquad(squadController.predictEnemy.transform);
+                    Debug.Log("ShootingSquad + GoToSquad   " + squadController.predictEnemy.name );
+
+
+                }
             }
         } else {
             if (currentEnemy == null || currentEnemy.gameObject.active == false) {
                 ShotNearest();
+
+                Debug.Log("ShotNearest   " );
             } else { 
                 Shot(currentEnemy);
+                Debug.Log("Shot   ");
             }
         }
     }
@@ -167,6 +260,7 @@ public class ShootingController : MonoBehaviour
 
             if (distance > 10f)
             {
+                Debug.Log("Shot   distance > 10f");
 
                 for (int i = 0; i < projectilesPerShotCount; i++)
                 {
@@ -180,20 +274,16 @@ public class ShootingController : MonoBehaviour
             }
             else
             {
-                SquadControlManager controlController = GameObject.Find("SquadControlManager").GetComponent<SquadControlManager>();
-
-                controlController.SquadWayToPoint(squadController, enemyPosition); // идем в рукопашную вместо атакаки
+                squadController.GoToSquad(predictEnemy.transform);
             }
         }
         else
         {
             yield return new WaitForSeconds(shotSpawnDelay);
 
-            
 
-            SquadControlManager controlController = GameObject.Find("SquadControlManager").GetComponent<SquadControlManager>();
 
-            controlController.SquadWayToPoint(squadController, enemyPosition); // идем в рукопашную вместо атакаки
+            squadController.GoToSquad(predictEnemy.transform);
 
         }
     }
@@ -260,7 +350,8 @@ public class ShootingController : MonoBehaviour
         Collider tMin = null;
         float minDist = Mathf.Infinity;
         Vector3 currentPos = transform.position;
-        int index = 0; 
+        int index = 0;
+
         foreach (Collider t in shotRangeManager.enemyColliders) {
 
             if (t == null)
@@ -268,22 +359,29 @@ public class ShootingController : MonoBehaviour
                 shotRangeManager.enemyColliders.RemoveAt(index);
             }
 
-        
 
-            if (t.gameObject.active == false)
+
+            if (t.gameObject.activeSelf == false)
             {
+                shotRangeManager.enemyColliders.RemoveAt(index);
+
                 squadController.squadInfo.ShootingIndicator(false);
-                if(t == squadController.predictEnemy)
+                if (t == squadController.predictEnemy)
                 {
                     squadController.predictEnemy = null;
                 }
-               
-                return;
+
+                //return;
             }
-            float dist = Vector3.Distance(t.gameObject.transform.position, currentPos);
-            if (dist < minDist) {
-                tMin = t;
-                minDist = dist;
+            else
+            {
+
+                float dist = Vector3.Distance(t.gameObject.transform.position, currentPos);
+                if (dist < minDist)
+                {
+                    tMin = t;
+                    minDist = dist;
+                }
             }
 
             index++;
@@ -297,7 +395,7 @@ public class ShootingController : MonoBehaviour
         }
         else
         {
-            squadController.squadInfo.ShootingIndicator(false);
+            
         }
     }
 
@@ -321,9 +419,12 @@ public class ShootingController : MonoBehaviour
             {
                 if (isShootingSquad)
                 {
-                    squadController.CancelMovement();
-                    ShootingSquad();
-                    rapidityTimer = 0;
+                    if (squadController.isMoved && shotRangeManager.enemyColliders.Contains(squadController.predictEnemy))
+                    {
+                        squadController.CancelMovement();
+                    }
+                   // ShootingSquad();
+                    //rapidityTimer = 0;
 
                     squadController.squadInfo.ShootingIndicator(true);
 
