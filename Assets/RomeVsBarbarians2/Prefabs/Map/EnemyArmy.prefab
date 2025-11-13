@@ -114,7 +114,11 @@ MonoBehaviour:
   formationObject: {fileID: 8763037553685157344}
   SquadMapPrefabs:
   - {fileID: 8856954130716601290, guid: d6137cebf29ac41a7a3a3bb84e69e016, type: 3}
-  offset: 2
+  baseSpacing: 2.5
+  minSpacing: 0.7
+  minDistanceStep: 0.2
+  maxHistoryPoints: 400
+  smoothSpacingChange: 1
   minDistance: 2
   isActive: 
   ai_currentState: 0
@@ -133,9 +137,10 @@ MonoBehaviour:
   grid: {fileID: 0}
   mapSceneManager: {fileID: 0}
   collider: {fileID: 0}
+  selectCollider: {fileID: 0}
   checkMask:
     serializedVersion: 2
-    m_Bits: 786432
+    m_Bits: 1835008
 --- !u!195 &3860714907935432885
 NavMeshAgent:
   m_ObjectHideFlags: 0

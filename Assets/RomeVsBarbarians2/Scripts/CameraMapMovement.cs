@@ -32,8 +32,11 @@ public class CameraMapMovement : MonoBehaviour
 
 
     private Vector3 lastMousePosition;
-
     
+    private float prevTouchDeltaMag;
+    private float deltaMagnitudeDiff;
+
+
     private float screenWidth;
     private float screenHeight;
 
@@ -117,17 +120,35 @@ public class CameraMapMovement : MonoBehaviour
     {
         if (Input.touchCount == 2)
         {
-            
+            HandleCameraZoomTouch();
         }
         else
         {
             
                 HandleCameraMovement();
+
+
             
             
         }
 
-// выключаем облака
+        if (Input.GetKeyDown(KeyCode.UpArrow) && zoomedCam.activeSelf)
+        {
+
+
+            Zoom(false);
+
+
+        }
+        if (Input.GetKeyDown(KeyCode.DownArrow) && !zoomedCam.activeSelf)
+        {
+
+            Zoom(true);
+
+        }
+
+
+        // выключаем облака
 
         Vector3 origin = Camera.main.transform.position;
         Vector3 direction = Camera.main.transform.forward;
@@ -207,14 +228,16 @@ public class CameraMapMovement : MonoBehaviour
         if (!ignoreMovement)
         {
 
-            if (IsPointerClickingOnUI())
-            {
-                return;
-            }
+            
 
             if (Input.GetMouseButtonDown(0) )
             {
                 lastMousePosition = Input.mousePosition;
+
+                if (IsPointerClickingOnUI())
+                {
+                    return;
+                }
             }
 
 
@@ -302,6 +325,59 @@ public class CameraMapMovement : MonoBehaviour
 
             }
         }
+    }
+
+    private void HandleCameraZoomTouch()
+    {
+
+        Touch touch1 = Input.GetTouch(0);
+        Touch touch2 = Input.GetTouch(1);
+
+        Vector2 touch1PrevPos = touch1.position - touch1.deltaPosition;
+        Vector2 touch2PrevPos = touch2.position - touch2.deltaPosition;
+
+        prevTouchDeltaMag = (touch1PrevPos - touch2PrevPos).magnitude;
+
+        float touchDeltaMag = (touch1.position - touch2.position).magnitude;
+
+        deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
+
+        
+
+        
+
+            if (deltaMagnitudeDiff > 0 && zoomedCam.activeSelf)
+            {
+              
+
+                Zoom(false);
+
+
+            }
+            if (deltaMagnitudeDiff < 0 && !zoomedCam.activeSelf)
+            {
+
+            Zoom(true);
+
+        }
+
+
+
+        
+
+        if (touch1.phase == TouchPhase.Ended)
+        {
+          
+            lastMousePosition = touch2.position;
+        }
+
+        if (touch2.phase == TouchPhase.Ended)
+        {
+           
+            lastMousePosition = touch1.position;
+        }
+
+
     }
 
 

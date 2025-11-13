@@ -7,6 +7,7 @@ using TMPro;
 public class SquadInfo : MonoBehaviour
 {
     [SerializeField] public Animator squadInfoAnimator;
+    [SerializeField] public Animator squadCountAnimator;
 
     [SerializeField] public GameObject battleIndicator;
     [SerializeField] public GameObject shootingIndicator;

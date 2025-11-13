@@ -93,7 +93,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3945514823423078119}
-  - component: {fileID: -9158016795926385703}
   - component: {fileID: 1532882434809049373}
   - component: {fileID: 920288988998820847}
   m_Layer: 0
@@ -119,19 +118,6 @@ Transform:
   - {fileID: 7442056522650945847}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-9158016795926385703
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1907167698180525989}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2af5f75ccbc624118a8f87ae5ea40d04, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  delay: 3
 --- !u!114 &1532882434809049373
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146,6 +132,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   coinPrefab: {fileID: 1907167698180525989, guid: e015ff5e65106410084f696cb769af72, type: 3}
   coinsText: {fileID: 4319915571684146859}
+  spawnTime: 1.5
+  groupDelay: 5
+  groupCount: 0.2
 --- !u!95 &920288988998820847
 Animator:
   serializedVersion: 5

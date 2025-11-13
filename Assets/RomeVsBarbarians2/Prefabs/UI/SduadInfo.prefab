@@ -1229,6 +1229,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   squadInfoAnimator: {fileID: 5957751454691457267}
+  squadCountAnimator: {fileID: 950146886269805110}
   battleIndicator: {fileID: 5450528691140346230}
   shootingIndicator: {fileID: 8163138420075665813}
   retreatIndicator: {fileID: 6548273085954693437}
@@ -2752,6 +2753,7 @@ GameObject:
   - component: {fileID: 6059932183184725867}
   - component: {fileID: 5317457272459548237}
   - component: {fileID: 4927467780983710655}
+  - component: {fileID: 950146886269805110}
   m_Layer: 0
   m_Name: CountText
   m_TagString: Untagged
@@ -2912,6 +2914,27 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 5317457272459548237}
   m_maskType: 0
+--- !u!95 &950146886269805110
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4676864888149378916}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1741d0ed4262b465bb8e2ac7fae0ea11, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &4785814274880111595
 GameObject:
   m_ObjectHideFlags: 0

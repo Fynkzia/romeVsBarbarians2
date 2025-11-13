@@ -34,6 +34,7 @@ public class BattleUIPanel : MonoBehaviour
 
     [SerializeField] private GameObject victoryBar;
     [SerializeField] private TextMeshProUGUI victoryChanseText;
+    [SerializeField] private Gradient victoryChanseGradient;
 
     float vicChanse;
 
@@ -61,27 +62,19 @@ public class BattleUIPanel : MonoBehaviour
 
     }
 
-    public void BattlePanelUpdate()
+    public void BattlePanelCreate()
     {
         BattlePanelClear();
+        StartCoroutine(SpawnSquadsPanel());
+    }
 
-        int reward = 0;
+        public void BattlePanelUpdate()
+    {
+        //BattlePanelClear();
 
-        for (int i = 0; i < mapBattleController.playerArmy.squadList.Count; i++)
-        {
-            SquadController squad = mapBattleController.playerArmy.squadList[i];
-            playerArmyPanel.AddSquad(squad.mapUIPanel);
-        }
+        //int reward = 0;
 
-        for (int i = 0; i < mapBattleController.enemyArmy.squadList.Count; i++)
-        {
-            SquadController squad = mapBattleController.enemyArmy.squadList[i];
-            enemyArmyPanel.AddSquad(squad.mapUIPanel);
-            reward += squad.coinsFromDie;
-        }
-
-        playerArmyPanel.UpdateSquadsInfo(mapBattleController.playerArmy.squadList.ToArray(), mapBattleController.playerArmy.UnitsCountUpdate(), mapBattleController.playerArmy.ArmyPowerUpdate());
-        enemyArmyPanel.UpdateSquadsInfo(mapBattleController.enemyArmy.squadList.ToArray(), mapBattleController.enemyArmy.UnitsCountUpdate(), mapBattleController.enemyArmy.ArmyPowerUpdate());
+        //StartCoroutine(SpawnSquadsPanel());
 
         //playerArmyUnitsCountText.text = "" + mapBattleController.playerArmy.UnitsCountUpdate();
         //enemyArmyUnitsCountText.text = "" + mapBattleController.enemyArmy.UnitsCountUpdate();
@@ -91,29 +84,54 @@ public class BattleUIPanel : MonoBehaviour
 
         //enemyArmyPowerText.text = "" + mapBattleController.enemyArmy.ArmyPowerUpdate();
 
-        rewardText.text = "" + reward;
-
-       
+        //rewardText.text = "" + reward;
 
 
+        playerArmyPanel.UpdateSquadsInfo(mapBattleController.playerArmy.squadList.ToArray(), mapBattleController.playerArmy.UnitsCountUpdate(), mapBattleController.playerArmy.ArmyPowerUpdate());
+        enemyArmyPanel.UpdateSquadsInfo(mapBattleController.enemyArmy.squadList.ToArray(), mapBattleController.enemyArmy.UnitsCountUpdate(), mapBattleController.enemyArmy.ArmyPowerUpdate());
+    
 
-        float playerP = mapBattleController.playerArmy.ArmyPowerUpdate();
+
+    float playerP = mapBattleController.playerArmy.ArmyPowerUpdate();
         float enemyP = mapBattleController.enemyArmy.ArmyPowerUpdate();
 
 
 
          vicChanse = playerP / (playerP + enemyP);
 
-        victoryBar.transform.localScale = new Vector3(vicChanse, 0, 0);
+        victoryBar.transform.localScale = new Vector3(vicChanse, 1, 1);
 
         victoryChanseText.text = Mathf.RoundToInt(vicChanse * 100f) + "%";
+        victoryChanseText.color = victoryChanseGradient.Evaluate(vicChanse);
 
+    }
+
+    private IEnumerator SpawnSquadsPanel()
+    {
+        for (int i = 0; i < mapBattleController.playerArmy.squadList.Count; i++)
+        {
+            SquadController squad = mapBattleController.playerArmy.squadList[i];
+            playerArmyPanel.AddSquad(squad.mapUIPanel);
+
+            yield return new WaitForSeconds(0.07f);
+        }
+
+        for (int i = 0; i < mapBattleController.enemyArmy.squadList.Count; i++)
+        {
+            SquadController squad = mapBattleController.enemyArmy.squadList[i];
+            enemyArmyPanel.AddSquad(squad.mapUIPanel);
+
+            yield return new WaitForSeconds(0.07f);
+            //reward += squad.coinsFromDie;
+        }
+
+        playerArmyPanel.UpdateSquadsInfo(mapBattleController.playerArmy.squadList.ToArray(), mapBattleController.playerArmy.UnitsCountUpdate(), mapBattleController.playerArmy.ArmyPowerUpdate());
+        enemyArmyPanel.UpdateSquadsInfo(mapBattleController.enemyArmy.squadList.ToArray(), mapBattleController.enemyArmy.UnitsCountUpdate(), mapBattleController.enemyArmy.ArmyPowerUpdate());
     }
 
 
 
-
-        public void BattlePanelActivate()
+    public void BattlePanelActivate()
     {
         //for (int i = 0; i < mapBattleController.playerArmy.squadList.Count; i++)
         //{
@@ -130,7 +148,7 @@ public class BattleUIPanel : MonoBehaviour
         // playerArmyPanel.UpdateSquadsInfo(mapBattleController.playerArmy.squadList.ToArray(), mapBattleController.playerArmy.UnitsCountUpdate(), mapBattleController.playerArmy.ArmyPowerUpdate());
         // enemyArmyPanel.UpdateSquadsInfo(mapBattleController.enemyArmy.squadList.ToArray(), mapBattleController.enemyArmy.UnitsCountUpdate(), mapBattleController.enemyArmy.ArmyPowerUpdate());
 
-        BattlePanelUpdate();
+        BattlePanelCreate();
 
         toBattleButton.onClick.RemoveAllListeners();
         retreatBattleButton.onClick.RemoveAllListeners();
@@ -149,21 +167,14 @@ public class BattleUIPanel : MonoBehaviour
 
         if (!mapBattleController.inAutoBattle && !mapBattleController.inBattle)
         {
-            
+
             battlePanel.SetActive(true);
             autoBattlePanel.SetActive(false);
 
-            if (mapBattleController.inBattle)
-            {
-                autoBattleButtonObject.SetActive(false);
-            }
-            else
-            {
-               // autoBattleButtonObject.SetActive(true);
-            }
 
 
-            if (vicChanse > 0.75f)
+
+            if (vicChanse > 0.9f)
             {
                 autoBattleButtonObject.SetActive(true);
             }
@@ -179,6 +190,13 @@ public class BattleUIPanel : MonoBehaviour
             if (mapBattleController.inAutoBattle)
             {
                 autoBattlePanel.SetActive(true);
+                autoBattleButtonObject.SetActive(false);
+            }
+            else if (mapBattleController.inBattle)
+            {
+                autoBattlePanel.SetActive(false);
+                autoBattleButtonObject.SetActive(false);
+                battlePanel.SetActive(true);
             }
 
         }

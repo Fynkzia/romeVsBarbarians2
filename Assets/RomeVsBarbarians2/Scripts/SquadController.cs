@@ -216,6 +216,8 @@ public class SquadController : MonoBehaviour {
     [SerializeField] private GameObject lostMoraleFx;
     [SerializeField] private GameObject friendlyFireFx;
     [SerializeField] private GameObject panicFx;
+    [SerializeField] private GameObject lvlUpFx;
+    [SerializeField] public GameObject noAmmoFx;
 
     [SerializeField] private AddCoinsEffect addCoinsEffect;
     [Space(10)]
@@ -359,6 +361,8 @@ public class SquadController : MonoBehaviour {
 
             }
         }
+
+        squadInfo.squadCountAnimator.SetTrigger("Add");
     }
 
         public void InitSquad() {
@@ -2155,7 +2159,7 @@ public class SquadController : MonoBehaviour {
 
                 MoraleChange(addMoraleKillUnit);
 
-                AddXp(1); // 1 xp за одного юнита
+                AddXp(5f); // 1 xp за одного юнита
 
                 
             }
@@ -2199,7 +2203,7 @@ public class SquadController : MonoBehaviour {
         if(inBuildBattle){
             predictBuild.GetDamage((amountUnits * powerSquad)* MoraleEffectIndex());
 
-            AddXp(25f);
+            AddXp(5f);
         }
     }
 
@@ -2377,6 +2381,7 @@ public class SquadController : MonoBehaviour {
         StartCoroutine(DisableUnit(unit, GameOptions.unitsDeadTime));
 
         squadInfo.CountUpdate((int)currentAmountUnits);
+        squadInfo.squadCountAnimator.SetTrigger("Damage");
 
     }
 
@@ -2415,7 +2420,7 @@ public class SquadController : MonoBehaviour {
 
             xpToNextLevel = GameOptions.xpPerlvl[levelSquad];
         }
-
+        Instantiate(lvlUpFx, transform.position, lvlUpFx.transform.rotation);
         UpdateLevelBonus();
     }
 

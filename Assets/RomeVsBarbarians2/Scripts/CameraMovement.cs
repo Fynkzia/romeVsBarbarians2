@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Cinemachine;
 using DG.Tweening;
+using UnityEngine.EventSystems;
 
 public class CameraMovement : MonoBehaviour
 {
@@ -42,6 +43,7 @@ public class CameraMovement : MonoBehaviour
     private float screenHeight;
     private int targetFOVIndex;
     private bool setDeltaTouch = false;
+    private float deltaMagnitudeDiff;
 
 
     [SerializeField] private int prevFovIndex;
@@ -57,9 +59,10 @@ public class CameraMovement : MonoBehaviour
 
     [SerializeField] SquadControlManager squadControlManager;
 
-    private float deltaMagnitudeDiff;
+    
 
     public event Action<int> OnZoomChanged;
+    public GraphicRaycaster raycaster;
 
 
     public void CameraSetEnterPoint()
@@ -125,7 +128,7 @@ public class CameraMovement : MonoBehaviour
 
         Debug.Log("Init - ???");
 
-
+        raycaster = GameObject.Find("UIManager").GetComponent<GraphicRaycaster>();
         //cams[targetFOVIndex].gameObject.SetActive(true);
 
         //        CamToPoint(battleSceneManager.playerSquads[0].transform.position);
@@ -266,10 +269,16 @@ public class CameraMovement : MonoBehaviour
 
     private void HandleCameraMovement()
     {
+        
 
         if (Input.GetMouseButtonDown(0))
         {
             lastMousePosition = Input.mousePosition;
+
+            if (IsPointerClickingOnUI())
+            {
+                return;
+            }
         }
 
 
@@ -281,6 +290,11 @@ public class CameraMovement : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
+            if (IsPointerClickingOnUI())
+            {
+                return;
+            }
+
             Vector3 mouseDelta = Input.mousePosition - lastMousePosition;
             Vector3 panVector = new Vector3(-mouseDelta.x / screenWidth, 0, -mouseDelta.y / screenHeight) * panSpeed[targetFOVIndex] * Time.deltaTime;
 
@@ -292,7 +306,7 @@ public class CameraMovement : MonoBehaviour
             newPosition.x = Mathf.Clamp(newPosition.x, panLimitX[0], panLimitX[1]);
             newPosition.z = Mathf.Clamp(newPosition.z, panLimitZ[0], panLimitZ[1]);
 
-
+            Debug.Log("HandleCameraMovement");
             cinemachineFollowObject.transform.position = newPosition;
 
             lastMousePosition = Input.mousePosition;
@@ -477,10 +491,39 @@ public class CameraMovement : MonoBehaviour
 
     public void CamToPoint(Vector3 point)
     {
-        if(Vector3.Distance(cinemachineFollowObject.transform.position, point) > 10f)
+        if (Vector3.Distance(cinemachineFollowObject.transform.position, point) > 10f)
         {
-            cinemachineFollowObject.transform.position = point;
+            //Debug.Log("point " + point,gameObject);
+            Vector3 newPoint = point;
+            cinemachineFollowObject.transform.position = newPoint;
+            //Debug.Log("point " + cinemachineFollowObject.transform.position, gameObject);
         }
-        
+
+    }
+
+    public bool IsPointerClickingOnUI()
+    {
+
+
+        PointerEventData pointerData = new PointerEventData(EventSystem.current);
+        pointerData.position = Input.mousePosition;
+
+        List<RaycastResult> results = new List<RaycastResult>();
+
+
+        raycaster.Raycast(pointerData, results);
+
+        foreach (var result in results)
+        {
+            // Фильтрация по тегу, имени или типу объекта
+            if (result.gameObject.layer == 5)
+            { // Задай нужным UI объектам этот тег
+              //      Debug.Log("IsPointerClickingOnUI");
+
+                return true;
+            }
+        }
+
+        return false;
     }
 }

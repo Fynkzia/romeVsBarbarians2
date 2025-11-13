@@ -32,11 +32,11 @@ public class MapControlManager : MonoBehaviour
     [SerializeField] private Collider selectedCollider;
 
 
-    [SerializeField] private ArmyController armyController;
-    [SerializeField] private CityController cityController;
+    [SerializeField] public ArmyController armyController;
+    [SerializeField] public CityController cityController;
     [SerializeField] private CityToDoController toDoController;
 
-    [SerializeField] private MapBattleController battleController;
+    [SerializeField] public MapBattleController battleController;
     [SerializeField] private Vector3 battleControllerOffset;
 
     [SerializeField] public UIManager uiManager;

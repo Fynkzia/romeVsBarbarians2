@@ -90,10 +90,17 @@ public class ArmyController : MonoBehaviour
 
 
     [Header("Formation movement")]
-    public float offset = 1.0f;    // Расстояние между сегментами
+    [SerializeField] private float baseSpacing = 2.5f;     // стандартный интервал между отрядами при движении
+    [SerializeField] private float minSpacing = 0.7f;      // минимальное расстояние при остановке
+    [SerializeField] private float minDistanceStep = 0.2f; // шаг записи позиции в историю
+    [SerializeField] private int maxHistoryPoints = 400;
+    [SerializeField] private float smoothSpacingChange = 4f; // скорость сглаживания изменений интервала
 
-    private Vector3[] history;     // История позиций родителя
-    private int historyLength;
+
+    private List<Vector3> pathHistory = new List<Vector3>();
+    private float currentSpacing;
+    private Vector3 lastPosition;
+    private float currentSpeed;
 
     [SerializeField] float minDistance = 2f; // минимальное расстояние между отрядами
     [SerializeField] bool[] isActive;
@@ -189,14 +196,8 @@ public class ArmyController : MonoBehaviour
         SpeedCalculation();
 
 
-        historyLength = squadsOnMap.Count *50; // Чем больше - тем плавнее шаг
-        history = new Vector3[historyLength];
-
-        // Заполняем стартовыми значениями
-        for (int i = 0; i < historyLength; i++)
-        {
-            history[i] = transform.position;
-        }
+        lastPosition = transform.position;
+        currentSpacing = baseSpacing;
 
         grid = mapSceneManager.gridManager;
 
@@ -297,19 +298,51 @@ public class ArmyController : MonoBehaviour
 
         for (int i = 0; i < nearColliders.Length; i++)
         {
-            if(nearColliders[i] == collider || nearColliders[i].gameObject.tag != tag) { return; }
+            if (nearColliders[i].gameObject.layer == 20)
+            {
+                goToBattle = true;
+
+                MapBattleController mapController = nearColliders[i].GetComponent<MapBattleController>();
+                int sceneIndex = mapController.sceneIndex;
+
+                
+               
+
+                if (mapController.inBattle) 
+                {
+                    BattleSceneManager battleScene = SceneLoader.Instance.activeBattleScenes[sceneIndex];
+                    battleScene.ReinfrcementNotification(this);
+                }
+
+                return;
+            }
+
+            if (nearColliders[i] == collider || nearColliders[i].gameObject.tag != tag) { return; }
 
             if (nearColliders[i].gameObject.layer == 19 && gameObject.tag == nearColliders[i].gameObject.tag)
             {
                 goToCity = true;
                 predictCity = nearColliders[i].GetComponent<CityController>();
             }
-            else 
+            else
             if (nearColliders[i].gameObject.layer == 18 && gameObject.tag == nearColliders[i].gameObject.tag)
             {
+                
                 goToJoint = true;
                 jointArmy = nearColliders[i].GetComponent<ArmyController>();
+
+                if (jointArmy.goToJoint)
+                {
+                    if(jointArmy.jointArmy == this)
+                    {
+                        goToJoint = false;
+                        jointArmy = null;
+
+                    }
+                }
             }
+            
+            
             else
             {
                 goToCity = false;
@@ -612,12 +645,37 @@ public class ArmyController : MonoBehaviour
                 if (otherArmy == null) return;
 
 
-                //if (GetInstanceID() > otherArmy.GetInstanceID())
+                //if ((jointArmy == otherArmy && otherArmy.jointArmy == this))
                 //{
+                //    // они действительно идут навстречу друг другу
+                //    // теперь решаем, кто инициатор
+                //    if (gameObject.GetInstanceID() > otherArmy.gameObject.GetInstanceID())
+                //        return;
 
-                   
+                //}
+                //otherArmy.goToJoint = false;
+
+                bool mutualJoint = (jointArmy.jointArmy == this);
+
+                if (mutualJoint)
+                {
+                    // определяем "ведущую" армию
+                    int id0 = gameObject.GetInstanceID();
+                    int id1 = jointArmy.gameObject.GetInstanceID();
+
+                    if (id0 > id1)
+                    {
+                        // эта армия уступает, не инициирует соединение
+                        Debug.Log($"[{name}] уступает соединение {jointArmy.name}");
+                        goToJoint = false;
+                        jointArmy = null;
+                        return;
+                    }
+
+
                     if (other.tag == tag)
                     {
+                        //goToJoint = false;
                         JointToArmy();
                         // SetMoving(false);
                         // jointArmy.SetMoving(false);
@@ -631,13 +689,18 @@ public class ArmyController : MonoBehaviour
 
 
                     }
+                }
+                else
+                {
+                    JointToArmy();
+                }
                 //}
             }
         }
 
-        if (isMoved && !inBattle)
+        if (isMoved && !inBattle )
         {
-            if (other.gameObject.layer == 20) // in battle map
+            if (other.gameObject.layer == 20 && goToBattle) // in battle map
             {
 
                 MapBattleController mapControlManager = other.GetComponent<MapBattleController>();
@@ -654,10 +717,12 @@ public class ArmyController : MonoBehaviour
 
             if (!retreat && !isCapturing && other.tag != tag && other.gameObject.layer == 19) //завахт пустого горада
             {
+                //Debug.Log("CIty trigger");
                 CityController newCity = other.GetComponent<CityController>();
                 if (newCity.armyInCity == null)
                 {
                     SetMoving(false);
+                    SetFormation(moveDirection);
                     isCapturing = true;
                     capturingCity = newCity;
 
@@ -884,6 +949,7 @@ public class ArmyController : MonoBehaviour
         agent.Stop();
 
         collider.enabled = false;
+
         if (selectCollider != null)
         {
             selectCollider.enabled = false;
@@ -911,6 +977,12 @@ public class ArmyController : MonoBehaviour
         SetMoving(true);
 
         collider.enabled = true;
+
+        if (selectCollider != null)
+        {
+            selectCollider.enabled = true;
+        }
+
         armyInfoPanel.SetActive(true);
         targetObject.gameObject.SetActive(true);
 
@@ -1082,75 +1154,35 @@ public class ArmyController : MonoBehaviour
             currentTimeToCaptureGrid = 0;
         }
 
-        // Сдвигаем историю назад и записываем новую позицию в начало
-        for (int i = historyLength - 1; i > 0; i--)
-        {
-            history[i] = history[i - 1];
-        }
-        history[0] = transform.position;
+        UpdateSpeed();
+        UpdatePathHistory();
+        UpdateSquadPositions();
 
-        // Расставляем сегменты по истории с интервалом
-        for (int i = 0; i < squadsOnMap.Count; i++)
-        {
-            int index = Mathf.Min((i + 1) * Mathf.RoundToInt(offset*15f*armySpeed), historyLength - 1);
+        //// Сдвигаем историю
+        //for (int i = historyLength - 1; i > 0; i--)
+        //{
+        //    history[i] = history[i - 1];
+        //    distanceHistory[i] = distanceHistory[i - 1];
+        //}
 
+        //// Новая позиция и накопленное расстояние
+        //history[0] = transform.position;
+        //distanceHistory[0] = 0f;
 
-            if(i > isActive.Length)
-            {
-                isActive = new bool[squadsOnMap.Count];
+        //for (int i = 1; i < historyLength; i++)
+        //{
+        //    distanceHistory[i] = distanceHistory[i - 1] + Vector3.Distance(history[i - 1], history[i]);
+        //}
 
-                    return;
-            }
-
-            if (!isActive[i] && i > 0)
-            {
-                if (isActive[i - 1] == true)
-                {
-
-                    if (Vector3.Distance(lastPositionToOffset, transform.position) >= offset * armySpeed)
-                    {
-                        isActive[i] = true;
-                        lastPositionToOffset = transform.position;
+        //// Расставляем отряды с фиксированным интервалом
+        //for (int i = 0; i < squadsOnMap.Count; i++)
+        //{
+        //    float targetDist = segmentSpacing * (i + 1);
+        //    Vector3 pos = GetPositionAtDistance(targetDist);
+        //    squadsOnMap[i].position = pos;
+        //}   
 
 
-                        
-
-                        return;
-                    }
-                }
-            }
-
-            if (isActive[i])
-            {
-               
-
-                // Поворот к следующей точке истории (просто для вида)
-                //Vector3 dir = history[index - 1] - history[index];
-                //if (dir.sqrMagnitude > 0.001f)
-                //{
-                //    //ssquadsOnMap[i].rotation = Quaternion.LookRotation(dir);
-                //}
-
-                if (Vector3.Distance(squadsOnMap[i].position, targetObject.position) < minDistance)
-                {
-                    squadsOnMap[i].transform.position = formationPoints[i].position;
-                    isActive[i] = false;
-                }
-                else
-                {
-                    squadsOnMap[i].position = history[index];
-                }
-            }
-            else
-            {
-                if (Vector3.Distance(lastPositionToOffset, targetObject.position) > offset)
-                {
-                    squadsOnMap[i].transform.position = Vector3.MoveTowards(squadsOnMap[i].transform.position, lastPositionToOffset, armySpeed / 3 * Time.deltaTime);
-                }
-            }
-
-            
-        }
 
         // Когда хвост близко и агент остановился — выравниваем формацию
 
@@ -1207,70 +1239,159 @@ public class ArmyController : MonoBehaviour
 
     }
 
-
-    public void JointToArmy()
+    void UpdateSpeed()
     {
-        if(jointArmy == null )
+        // текущая скорость по расстоянию между кадрами
+        float dist = Vector3.Distance(transform.position, lastPosition);
+        currentSpeed = Mathf.Lerp(currentSpeed, dist / Time.deltaTime, Time.deltaTime * 4f);
+        lastPosition = transform.position;
+
+        // динамическое изменение отступа в зависимости от скорости
+        float targetSpacing = Mathf.Lerp(minSpacing, baseSpacing, Mathf.InverseLerp(0f, 5f, currentSpeed)); // 5 м/с = макс растяжение
+        currentSpacing = Mathf.Lerp(currentSpacing, targetSpacing, Time.deltaTime * smoothSpacingChange);
+    }
+
+    void UpdatePathHistory()
+    {
+        if (pathHistory.Count == 0)
         {
+            pathHistory.Add(transform.position);
             return;
         }
-        if (jointArmy.goToJoint)
+
+        float dist = Vector3.Distance(pathHistory[0], transform.position);
+        if (dist > minDistanceStep)
         {
-            if (gameObject.GetInstanceID() > jointArmy.gameObject.GetInstanceID())
-            {
-
-                Debug.Log("jointArmy triger " + GetInstanceID() + " + " + jointArmy.GetInstanceID(), gameObject);
-                return; // эта армия проигрывает, ждет
-            }
-        }
-
-
-       
-            Debug.Log("goToJoint " + Vector3.Distance(jointArmy.transform.position, transform.position));
-        if (Vector3.Distance(jointArmy.transform.position, transform.position) <= 7f || (jointArmy.inCity && Vector3.Distance(jointArmy.transform.position, transform.position) <= 15f))
-        {
-
-            // jointArmy.SetMoving(false);
-            
-
-            if (isSelected)
-            {
-
-                mapControlManager.uiManager.UIReset();
-
-
-
-            }
-            int countToDelete = 0;
-            for (int i = 0; i < squadList.Count; i++)
-            {
-                if (jointArmy.squadList.Count < 20)
-                {
-                    jointArmy.AddSquadFromArmy(squadList[i]);
-                    countToDelete++;
-                }
-                else
-                {
-
-                }
-
-            }
-
-            for (int i = 0; i < countToDelete; i++)
-            {
-                RemoveSquad(squadList[0]);
-            }
-
-            goToJoint = false;
-            jointArmy = null;
-        }
-        else
-        {
-            //goToJoint = false;
-            //jointArmy = null;
+            pathHistory.Insert(0, transform.position);
+            if (pathHistory.Count > maxHistoryPoints)
+                pathHistory.RemoveAt(pathHistory.Count - 1);
         }
     }
 
+    void UpdateSquadPositions()
+    {
+        if (pathHistory.Count < 2)
+            return;
+
+        for (int i = 0; i < squadsOnMap.Count; i++)
+        {
+            float targetDist = currentSpacing * (i + 1);
+            squadsOnMap[i].position = GetPositionAlongPath(targetDist);
+        }
+    }
+
+    Vector3 GetPositionAlongPath(float targetDist)
+    {
+        float distSoFar = 0f;
+        for (int i = 0; i < pathHistory.Count - 1; i++)
+        {
+            float segDist = Vector3.Distance(pathHistory[i], pathHistory[i + 1]);
+            if (distSoFar + segDist >= targetDist)
+            {
+                float t = Mathf.InverseLerp(distSoFar, distSoFar + segDist, targetDist);
+                return Vector3.Lerp(pathHistory[i], pathHistory[i + 1], t);
+            }
+            distSoFar += segDist;
+        }
+        return pathHistory[pathHistory.Count - 1];
+    }
+
+    public void JointToArmy()
+    {
+        if (jointArmy == null)
+            return;
+
+        // Проверяем, что обе армии направлены друг на друга
+        
+
+            // только "младший" ID выполняет объединение
+            if (Vector3.Distance(jointArmy.transform.position, transform.position) <= 7f || (jointArmy.inCity && Vector3.Distance(jointArmy.transform.position, transform.position) <= 15f))
+            {
+
+                // jointArmy.gameObject.SetActive(false);
+                //jointArmy.goToJoint = false;
+                //jointArmy.jointArmy = null;
+
+
+                if (isSelected)
+                {
+
+                    mapControlManager.uiManager.UIReset();
+
+
+
+                }
+                int countToDelete = 0;
+                for (int i = 0; i < squadList.Count; i++)
+                {
+                    if (jointArmy.squadList.Count < 20)
+                    {
+                        jointArmy.AddSquadFromArmy(squadList[i]);
+                        countToDelete++;
+                    }
+                    else
+                    {
+
+                    }
+
+                }
+
+                for (int i = 0; i < countToDelete; i++)
+                {
+                    RemoveSquad(squadList[0]);
+                }
+
+               // goToJoint = false;
+               // jointArmy = null;
+            }
+        //}
+        //else
+        //{
+        //    // если только одна сторона движется к другой — позволяем ей продолжать
+        //    if (Vector3.Distance(jointArmy.transform.position, transform.position) <= 7f || (jointArmy.inCity && Vector3.Distance(jointArmy.transform.position, transform.position) <= 15f))
+        //    {
+
+        //        // jointArmy.gameObject.SetActive(false);
+        //        //jointArmy.goToJoint = false;
+        //        //jointArmy.jointArmy = null;
+
+
+        //        if (isSelected)
+        //        {
+
+        //            mapControlManager.uiManager.UIReset();
+
+
+
+        //        }
+        //        int countToDelete = 0;
+        //        for (int i = 0; i < squadList.Count; i++)
+        //        {
+        //            if (jointArmy.squadList.Count < 20)
+        //            {
+        //                jointArmy.AddSquadFromArmy(squadList[i]);
+        //                countToDelete++;
+        //            }
+        //            else
+        //            {
+
+        //            }
+
+        //        }
+
+        //        for (int i = 0; i < countToDelete; i++)
+        //        {
+        //            RemoveSquad(squadList[0]);
+        //        }
+
+        //        goToJoint = false;
+        //        jointArmy = null;
+        //    }
+        //}
+    }
+
+   
+    
 
 
     public void SetMoving(bool move)
@@ -1329,7 +1450,7 @@ public class ArmyController : MonoBehaviour
             {
                 
             }
-            Debug.Log("path.corners " + path.corners.Length);
+            //Debug.Log("path.corners " + path.corners.Length);
 
             lineRenderer.positionCount = path.corners.Length;
             lineRenderer.SetPositions(path.corners);
@@ -1339,6 +1460,11 @@ public class ArmyController : MonoBehaviour
             isActive[0] = true; // первый сразу активен
 
             agent.isStopped = false;
+
+            if(jointArmy == null)
+            {
+                goToJoint = false;
+            }
 
             if (goToJoint && jointArmy != null)
             {
@@ -1397,14 +1523,14 @@ public class ArmyController : MonoBehaviour
 
 
 
-            GridCell c = grid.GetCellAt(transform.position);
-            if (c != null)
-            {
-                if ((!c.isPlayer && isPlayer) || (c.isPlayer && !isPlayer))
-                {
-                    c.Capture(isPlayer);
-                }
-            }
+            //GridCell c = grid.GetCellAt(transform.position);
+            //if (c != null)
+            //{
+            //    if ((!c.isPlayer && isPlayer) || (c.isPlayer && !isPlayer))
+            //    {
+            //        c.Capture(isPlayer);
+            //    }
+            //}
 
         }
 

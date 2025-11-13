@@ -25,6 +25,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] public List<GameObject> alertObject;
     [SerializeField] public Transform activeSceneSprite;
 
+    [SerializeField] private Transform battlePowerBar;
+    [SerializeField] public List<GameObject> reinforcementsPlayer;
+    [SerializeField] public List<GameObject> reinforcementsEnemy;
+
     public Animator transitionAnimation;
     public Animator WinEffect;
     public Animator LoseEffect;
@@ -114,7 +118,15 @@ public class UIManager : MonoBehaviour
         armyUIPanel.Clear();
 
         selectedArmy = army;
+        StartCoroutine(SpawnSquadsPanel(army));
 
+
+
+       
+    }
+
+    private IEnumerator SpawnSquadsPanel(ArmyController army)
+    {
         for (int i = 0; i < army.squadList.Count; i++)
         {
             SquadMapUIPanel newSquadPanel = armyUIPanel.AddSquad(army.squadList[i].mapUIPanel);
@@ -122,6 +134,8 @@ public class UIManager : MonoBehaviour
             int index = i;
             //newSquadPanel.GetComponent<Button>().onClick.AddListener(() => army.SquadSelect(index));
             newSquadPanel.CanShowStats(true, army.squadList[i], this);
+
+            yield return new WaitForSeconds(0.07f);
         }
 
         armyUIPanel.UpdateSquadsInfo(army.squadList.ToArray(), army.UnitsCountUpdate(), army.ArmyPowerUpdate());
@@ -139,7 +153,7 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
         public void BattlePanelActivation(MapBattleController battleController)
     {
-       
+        UIReset();
 
         battleUIPanel.mapBattleController = battleController;
         battleUIPanel.gameObject.SetActive(true) ;
@@ -195,7 +209,46 @@ public class UIManager : MonoBehaviour
         mapUiObject.SetActive(active);
         battleUiObject.SetActive(!active);
         UIReset();
+
+        if(active == false)
+        {
+
+        }
     }
+
+
+    //Battle UI
+
+    public void UpdateBattlePowerBar(float bar)
+    {
+        battlePowerBar.localScale = new Vector3(bar, 1, 1);
+    }
+
+    public void UpdateBattleReinforcementsCount(int player, int enemy)
+    {
+        for (int i = 0; i < reinforcementsPlayer.Count; i++)
+        {
+            reinforcementsPlayer[i].SetActive(false);
+        }
+
+        for (int i = 0; i < reinforcementsEnemy.Count; i++)
+        {
+            reinforcementsEnemy[i].SetActive(false);
+        }
+
+
+        for (int i = 0; i < player; i++)
+        {
+            reinforcementsPlayer[i].SetActive(true);
+        }
+
+        for (int i = 0; i < enemy; i++)
+        {
+            reinforcementsEnemy[i].SetActive(true);
+        }
+    }
+    //Battle UI
+
 
     public void TransitionAnimation(bool active)
     {

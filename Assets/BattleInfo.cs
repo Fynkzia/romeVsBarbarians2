@@ -13,6 +13,7 @@ public class BattleInfo : MonoBehaviour
    
 
     public GameObject toBattleButtonObject;
+    public GameObject battleObject;
     public GameObject autoBattleObject;
 
 
@@ -50,16 +51,24 @@ public class BattleInfo : MonoBehaviour
           
             animator.SetBool("Select",true);
 
-            if (!mapBattleController.inAutoBattle)
-            {
-                toBattleButtonObject.SetActive(false);
-            }
+           autoBattleObject.SetActive(false);
+            toBattleButtonObject.SetActive(false);
+            battleObject.SetActive(false);
+
+
         }
         else
         {
             animator.SetBool("Select", false);
 
-            if (!mapBattleController.inAutoBattle)
+            if (mapBattleController.inAutoBattle)
+            {
+                autoBattleObject.SetActive(true);
+            }
+            else if(mapBattleController.inBattle)
+            {
+                battleObject.SetActive(true);
+            }else
             {
                 toBattleButtonObject.SetActive(true);
             }
@@ -89,6 +98,8 @@ public class BattleInfo : MonoBehaviour
 
 
         startbattleTimer.gameObject.SetActive(false);
+        toBattleButtonObject.SetActive(false);
+       battleObject.SetActive(true);
 
     }
 

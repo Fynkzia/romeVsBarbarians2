@@ -131,17 +131,21 @@ public class MapBattleController : MonoBehaviour
 
     public void StartBattle()
     {
-        mapSceneManager.uIManager.BattlePanelDeactivation();
+        if (SceneLoader.Instance.activeScene == -1)
+        {
+            mapSceneManager.uIManager.BattlePanelDeactivation();
 
 
-        
+
+
             SceneLoader.Instance.EnterBattle(sceneIndex, playerArmy, enemyArmy);
             inBattle = true;
-        
-       
-        battleInfo.BattleStart();
 
-        BattleStart?.Invoke();
+
+            battleInfo.BattleStart();
+
+            BattleStart?.Invoke();
+        }
 
     }
     public void StartAutoBattle()
@@ -211,7 +215,7 @@ public class MapBattleController : MonoBehaviour
                 }
                 else
                 {
-                    return;
+                    //return;
                 }
             }
           
@@ -229,7 +233,7 @@ public class MapBattleController : MonoBehaviour
                 }
                 else
                 {
-                    return;
+                    //return;
                 }
             }
         }
@@ -260,7 +264,7 @@ public class MapBattleController : MonoBehaviour
                 if (enemyArmy.squadList[i].squadDie)
                 {
 
-                    resourceManager.ChangeAmountOfCoins(enemyArmy.squadList[i].coinsFromDie/2);
+                    resourceManager.ChangeAmountOfCoins(enemyArmy.squadList[i].coinsFromDie);
                 }
             }
 
@@ -297,8 +301,8 @@ public class MapBattleController : MonoBehaviour
               
                 currentStartTimeBattle = 0;
 
-                StartAutoBattle();
-
+                //StartAutoBattle();
+                StartBattle();
 
             }
         }

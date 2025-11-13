@@ -32,6 +32,8 @@ public class SceneLoader : MonoBehaviour
     public float battleSceneDelay;
     public float mapSceneDelay;
 
+    public float reinforcementTime;
+
     public int newBattleSceneIndex;
 
     private void Awake()
@@ -170,10 +172,14 @@ public class SceneLoader : MonoBehaviour
 
     private IEnumerator LoadBattleSceneAndEnter(int sceneIndex, ArmyController army, ArmyController enemyArmy)
     {
-        mapSceneManager.ExitMapSceneAnimation();
+        if (mapBattleControllers[sceneIndex].isSelect)
+        {
+            mapSceneManager.ExitMapSceneAnimation();
+        }
 
         yield return new WaitForSeconds(0.5f);
         Instance.LoadBattleScene(sceneIndex, army, enemyArmy);
+
 
 
 
@@ -185,12 +191,18 @@ public class SceneLoader : MonoBehaviour
             {
                 if (Instance.activeBattleScenes[sceneIndex].isInit)
                 {
+                    if (mapBattleControllers[sceneIndex].isSelect)
+                    {
+                        Instance.activeBattleScenes[sceneIndex].EnterBattleScene();
+                        mapSceneManager.uIManager.TransitionAnimation(false);
+                        mapSceneManager.ExitMapScene();
 
-                    Instance.activeBattleScenes[sceneIndex].EnterBattleScene();
-                    mapSceneManager.uIManager.TransitionAnimation(false);
-                    mapSceneManager.ExitMapScene();
-
-                    activeScene = sceneIndex;
+                        activeScene = sceneIndex;
+                    }
+                    else
+                    {
+                        activeBattleScenes[sceneIndex].ExitBattleScene();
+                    }
 
                     UpdateBattleButtons();
                     mapSceneManager.uIManager.UpdateActiveSceneSpritePosition(activeScene);
@@ -198,6 +210,7 @@ public class SceneLoader : MonoBehaviour
                     i = 5;
 
                 }
+                
             }
         }
 
@@ -234,6 +247,7 @@ public class SceneLoader : MonoBehaviour
 
         activeScene = sceneIndex;
         mapSceneManager.uIManager.UpdateActiveSceneSpritePosition(activeScene);
+        UpdateBattleButtons();
 
     }
 
@@ -253,45 +267,158 @@ public class SceneLoader : MonoBehaviour
 
         BattleSceneManager scene = activeBattleScenes[index];
 
-        scene.SpawnNewFormationPoints(army);
+        //scene.SpawnNewFormationPoints(army);
 
-        for (int i = 0; i < squads.Length; i++)
+        ReinforcementEffect reinforcement = null;
+
+        if(scene.reinforcementList.Count > 0)
         {
 
-            GameObject squadGO = squads[i].gameObject;
-            Transform spawn;
-
-            if (squads[0].playerSquad)
+            for (int i = 0; i < scene.reinforcementList.Count; i++)
             {
-                spawn = scene.playerSpawnPoints[scene.playerSquads.Count-1]; // Циклически используем точки
-               
+                if(scene.reinforcementList[i].reinforcementArmy == army)
+                {
+                    reinforcement = scene.reinforcementList[i];
+                }
+            }
 
-                squadGO.transform.parent = scene.playerSquadParent;
-                scene.playerSquads.Add(squadGO);
+        }
+
+        if (reinforcement == null)
+        {
+
+            scene.ReinfrcementNotification(army);
+            reinforcement = scene.reinforcementList[scene.reinforcementList.Count - 1];
+        }
+
+            //for (int i = 0; i < squads.Length; i++)
+            //{
+
+            //    GameObject squadGO = squads[i].gameObject;
+            //    Transform spawn;
+
+            //    if (squads[0].playerSquad)
+            //    {
+            //        spawn = scene.playerSpawnPoints[scene.playerSquads.Count - 1]; // Циклически используем точки
+
+
+            //        squadGO.transform.parent = scene.playerSquadParent;
+            //        scene.playerSquads.Add(squadGO);
+            //    }
+            //    else
+            //    {
+            //        spawn = scene.enemySpawnPoints[scene.enemySquads.Count]; // Циклически используем точки
+
+
+            //        squadGO.transform.parent = scene.enemySquadsParent;
+            //        scene.enemySquads.Add(squadGO);
+            //    }
+
+            //    squadGO.transform.position = spawn.position;
+            //    squadGO.gameObject.SetActive(true);
+
+
+            //    SquadController squad = squadGO.GetComponent<SquadController>();
+
+            //    squad.battleSceneManager = scene;
+
+            //    yield return new WaitForSeconds(0.5f);
+
+            //    squad.InitSquad();
+            //}
+        //}
+        //else
+        //{
+            reinforcement.EnterToBattleInfo(reinforcementTime);
+
+            for (int i = 0; i < squads.Length; i++)
+            {
+
+                GameObject squadGO = squads[i].gameObject;
+                Transform spawn;
+
+                if (squads[0].playerSquad)
+                {
+
+
+
+                    squadGO.transform.parent = scene.playerSquadParent;
+                    scene.playerSquads.Add(squadGO);
+                }
+                else
+                {
+
+
+
+                    squadGO.transform.parent = scene.enemySquadsParent;
+                    scene.enemySquads.Add(squadGO);
+                }
+
+
+                squadGO.transform.position = reinforcement.points[i].position;
+                squadGO.gameObject.SetActive(false);
+
+
+              
+
+               
+            }
+
+
+            if (army.isPlayer)
+            {
+                NotificationManager.Instance.ShowNotification(index, 0, 0,
+                    "Reinforcements deploying",
+                    "" ,
+                    reinforcement.transform);
+
+
             }
             else
             {
-                spawn = scene.enemySpawnPoints[scene.enemySquads.Count]; // Циклически используем точки
-                
-
-                squadGO.transform.parent = scene.enemySquadsParent;
-                scene.enemySquads.Add(squadGO);
+                NotificationManager.Instance.ShowNotification(index, 0, 1,
+                   "Reinforcements deploying",
+                   "" ,
+                   reinforcement.transform);
             }
 
-            squadGO.transform.position = spawn.position;
-            squadGO.gameObject.SetActive(true);
+            yield return new WaitForSeconds(reinforcementTime);
+
+            for (int i = 0; i < squads.Length; i++)
+            {
+
+                GameObject squadGO = squads[i].gameObject;
+
+               
 
 
-            SquadController squad = squadGO.GetComponent<SquadController>();
+                SquadController squad = squadGO.GetComponent<SquadController>();
 
-            squad.battleSceneManager = scene;
+                squad.battleSceneManager = scene;
 
-            yield return new WaitForSeconds(0.5f);
 
-            squad.InitSquad();
+                yield return new WaitForSeconds(0.5f);
+
+                reinforcement.SpawnFx(i);
+
+                squadGO.gameObject.SetActive(true);
+
+                squad.InitSquad();
+            }
+
+            yield return new WaitForSeconds(2f);
+
+           
+
+            scene.reinforcementList.Remove(reinforcement);
+            Destroy(reinforcement.gameObject);
+
+            scene.UpdateUIReinforcementsCount();
+
         }
        
-    }
+    //}
+
 
         private IEnumerator LoadBattleSceneAsync(int index, ArmyController army, ArmyController enemyArmy)
     {
@@ -310,8 +437,18 @@ public class SceneLoader : MonoBehaviour
                 }
                 else
                 {
-                   
-                    newbattle = Instantiate(citiesScenes[Random.RandomRange(0, citiesScenes.Length)], new Vector3(index * 800, 0, 0), battleScenes[0].transform.rotation);
+                    int sceneId = 1;
+
+                    if(army.city.cityName == "Rome")
+                    {
+                        sceneId = 0;
+                    }else 
+                    {
+                        sceneId = Random.RandomRange(1, citiesScenes.Length);
+                    }
+
+
+                    newbattle = Instantiate(citiesScenes[sceneId], new Vector3(index * 800, 0, 0), battleScenes[0].transform.rotation);
                 }
             }
             else if(enemyArmy.inCity)
@@ -325,7 +462,18 @@ public class SceneLoader : MonoBehaviour
                 else
                 {
 
-                    newbattle = Instantiate(citiesScenes[Random.RandomRange(0, citiesScenes.Length)], new Vector3(index * 800, 0, 0), battleScenes[0].transform.rotation);
+                    int sceneId = 1;
+
+                    if (enemyArmy.city.cityName == "Rome")
+                    {
+                        sceneId = 0;
+                    }
+                    else
+                    {
+                        sceneId = Random.RandomRange(1, citiesScenes.Length);
+                    }
+
+                    newbattle = Instantiate(citiesScenes[sceneId], new Vector3(index * 800, 0, 0), battleScenes[0].transform.rotation);
                 }
 
 
@@ -344,7 +492,7 @@ public class SceneLoader : MonoBehaviour
 
             newbattle.playerArmy = army;
             newbattle.enemyArmy = enemyArmy;
-            newbattle.mapBattleController = mapBattleControllers[index];
+            newbattle.mapBattleController = Instance.mapBattleControllers[index];
             newbattle.resourceManager = resourceManager;
 
             
@@ -670,9 +818,9 @@ public class SceneLoader : MonoBehaviour
         GameObject objectInfo = Instantiate(battleInfo, positionPlayerArmy, battleInfo.transform.rotation);
         MapBattleController newBattleController = objectInfo.GetComponent<MapBattleController>();
 
-     
 
-        mapBattleControllers.Add(newBattleController);
+
+        Instance.mapBattleControllers.Add(newBattleController);
 
 
 

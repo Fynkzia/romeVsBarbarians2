@@ -419,23 +419,31 @@ public class ShootingController : MonoBehaviour
             {
                 if (isShootingSquad)
                 {
-                    if (squadController.isMoved && shotRangeManager.enemyColliders.Contains(squadController.predictEnemy))
+                    if (shotAmount > 0)
                     {
-                        squadController.CancelMovement();
+                        if (squadController.isMoved && shotRangeManager.enemyColliders.Contains(squadController.predictEnemy))
+                        {
+                            squadController.CancelMovement();
+                        }
+                        // ShootingSquad();
+                        //rapidityTimer = 0;
+
+                        squadController.squadInfo.ShootingIndicator(true);
+
+                        squadController.animTime = 0;
+
+                        for (int i = 0; i < projectilesPerShotCount; i++) // по фану стразу ставим в анимацию замахивания
+                        {
+                            int index = Random.Range(0, squadController.animatorControllers.Count);
+                            squadController.animatorControllers[index].SpriteAnimationChange(10);
+
+
+                        }
                     }
-                   // ShootingSquad();
-                    //rapidityTimer = 0;
-
-                    squadController.squadInfo.ShootingIndicator(true);
-
-                    squadController.animTime = 0;
-
-                    for (int i = 0; i < projectilesPerShotCount; i++) // по фану стразу ставим в анимацию замахивания
+                    else
                     {
-                        int index = Random.Range(0, squadController.animatorControllers.Count);
-                        squadController.animatorControllers[index].SpriteAnimationChange(10);
-                        
 
+                        Instantiate(squadController.noAmmoFx, transform.position, squadController.noAmmoFx.transform.rotation);
                     }
                 }
             }
