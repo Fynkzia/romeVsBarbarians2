@@ -1,0 +1,113 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: TerrainBattleSceneGeneration
+  m_Shader: {fileID: 4800000, guid: 2ce9a553569b94aa2914b9c18293648e, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 2000
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: _ShadowStrength
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _Control:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _HeightGradient:
+        m_Texture: {fileID: 2800000, guid: 26360b0a59aa44d5789d06c6671caee4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Splat0:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Splat0Normal:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Splat1:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Splat1Normal:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Splat2:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Splat2Normal:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Splat3:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Splat3Normal:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TerrainHolesTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _HeightBrightnessScale: 0.06
+    - _HeightDarknessScale: 0.08
+    - _MaxHeight: 38.35
+    - _Metallic: 0
+    - _MinHeight: 3
+    - _ShadowStrength: 0
+    - _ShadowTransition: 0.1
+    - _Shininess: 1.37
+    - _Smoothness: 0
+    - _SpecularPower: 0.1
+    - _Splat0Metallic: 0.709
+    - _Splat0Smoothness: 1
+    - _Splat1Metallic: 1
+    - _Splat1Smoothness: 1
+    - _Splat2Metallic: 0.465
+    - _Splat2Smoothness: 0.448
+    - _Splat3Metallic: 0
+    - _Splat3Smoothness: 0.328
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _HighColor: {r: 1, g: 1, b: 1, a: 1}
+    - _LightColor: {r: 1, g: 1, b: 1, a: 1}
+    - _LowColor: {r: 1, g: 1, b: 1, a: 1}
+    - _ShadowTintColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SpecColor: {r: 1, g: 1, b: 1, a: 0.07058824}
+    - _Splat0Albedo: {r: 0.47939658, g: 0.5512371, b: 0.5943396, a: 1}
+    - _Splat0Specular: {r: 1, g: 1, b: 1, a: 1}
+    - _Splat0Tiling: {r: 70, g: 70, b: 0, a: 0}
+    - _Splat1Albedo: {r: 0.057199135, g: 0.2264151, b: 0, a: 1}
+    - _Splat1Specular: {r: 1, g: 1, b: 1, a: 1}
+    - _Splat1Tiling: {r: 70, g: 70, b: 70, a: 0}
+    - _Splat2Albedo: {r: 0.6603774, g: 0.64180726, b: 0.56381273, a: 1}
+    - _Splat2Specular: {r: 1, g: 1, b: 1, a: 1}
+    - _Splat2Tiling: {r: 70, g: 70, b: 70, a: 0}
+    - _Splat3Albedo: {r: 0.5451228, g: 0.5635902, b: 0.9245283, a: 1}
+    - _Splat3Specular: {r: 1, g: 1, b: 1, a: 1}
+    - _Splat3Tiling: {r: 20, g: 20, b: 70, a: 0}
+  m_BuildTextureStacks: []

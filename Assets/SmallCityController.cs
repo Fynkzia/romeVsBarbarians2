@@ -243,7 +243,7 @@ public class SmallCityController : MonoBehaviour
             if ((tag == "Player" && hitCollider.gameObject.tag == "Player") || (tag == "Enemy" && hitCollider.gameObject.tag == "Enemy"))
             {
 
-                Debug.Log("SquadsCheck " + hitCollider.gameObject.name);
+                //Debug.Log("SquadsCheck " + hitCollider.gameObject.name);
 
                 SquadController squad = hitCollider.gameObject.GetComponent<SquadController>();
 

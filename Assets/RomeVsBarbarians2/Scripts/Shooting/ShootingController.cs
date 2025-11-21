@@ -313,10 +313,10 @@ public class ShootingController : MonoBehaviour
 
         yield return new WaitForSeconds(shotSpawnDelay);
         float distance = Vector3.Distance(transform.position, enemyPosition);
-        ShotMovement.Create(pfArrow, transform.position + new Vector3(0, shotStartOffset, 0), enemyPosition, shotSpeed, shootingUnitsCouns, shotDamage, (distance / shotRange), gameObject.tag, squadController.TriggerObject.radius);
+        ShotMovement.Create(pfArrow, transform.position + new Vector3(0, shotStartOffset, 0), enemyPosition, shotSpeed, shootingUnitsCouns/2, shotDamage, (distance / shotRange), gameObject.tag, squadController.TriggerObject.radius);
 
         yield return new WaitForSeconds(shotHalfDelay);
-        ShotMovement.Create(pfArrow, transform.position + new Vector3(0, shotStartOffset, 0), enemyPosition, shotSpeed, shootingUnitsCouns, shotDamage, (distance / shotRange), gameObject.tag, squadController.TriggerObject.radius);
+        ShotMovement.Create(pfArrow, transform.position + new Vector3(0, shotStartOffset, 0), enemyPosition, shotSpeed, shootingUnitsCouns/2, shotDamage, (distance / shotRange), gameObject.tag, squadController.TriggerObject.radius);
 
         for (int i = 0; i < shootingUnitsCouns; i++)
         {

@@ -281,6 +281,7 @@ public class MapControlManager : MonoBehaviour
                                 if (cityController.armyInCity != null)
                                 {
                                     armyController = cityController.armyInCity;
+                                    armyController.SelectInCity();
                                     //uiManager.ArmyUIActivation(armyController);
 
 
@@ -307,6 +308,33 @@ public class MapControlManager : MonoBehaviour
                                 cameraMapMovement.Zoom(true);
 
                                 Debug.Log("CITY TAP");
+                            }
+                            else
+                            {
+                                if (cityController.armyInCity != null)
+                                {
+                                    armyController = cityController.armyInCity;
+
+
+
+
+                                    armyController.ArmySelected();
+
+                                    armyController.lineRenderer.gameObject.SetActive(true);
+
+                                    tapArmy = true;
+                                    cameraCentred = false;
+                                    cameraMapMovement.CamToPoint(hit.collider.transform.position, hit.collider.gameObject);
+
+                                    cameraMapMovement.mapFollowObject = armyController.gameObject;
+
+                                    selectedCollider = hit.collider;
+
+                                    cameraMapMovement.Zoom(true);
+
+                                    uiManager.ArmyUIActivation(armyController);
+                                }
+            
                             }
                         }
 
@@ -342,6 +370,11 @@ public class MapControlManager : MonoBehaviour
                         {
                             if (!tapCity)
                             {
+
+                                if (armyController.lineRenderer.positionCount > 2)
+                                {
+                                    armyController.lineRenderer.positionCount = 2;
+                                }
                                 armyController.targetObject.gameObject.SetActive(true);
                                 armyController.lineRenderer.SetPosition(0, armyController.transform.position);
                                 armyController.lineRenderer.SetPosition(1, armyController.targetObject.transform.position);
@@ -487,6 +520,11 @@ public class MapControlManager : MonoBehaviour
         if (tapCity)
         {
             cityController.CityDeselect();
+
+            if(cityController.armyInCity != null)
+            {
+                cityController.armyInCity.DeselectInCity();
+            }
         }
 
 
@@ -592,6 +630,10 @@ public class MapControlManager : MonoBehaviour
             cameraMapMovement.Zoom(true);
 
             Debug.Log("CITY Select");
+        }
+        else
+        {
+            
         }
 
     }

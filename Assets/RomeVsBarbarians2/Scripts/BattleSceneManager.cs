@@ -488,7 +488,7 @@ public class BattleSceneManager : MonoBehaviour
     public void SpawnFormationPoints()
     {
 
-        Vector3 offcetToCenter = new Vector3(200f, 15f, 200f);
+       // Vector3 offcetToCenter = transform.position;
 
         Vector3 dirPlNorm = Quaternion.Euler(0, 90, 0) * (new Vector3(playerArmy.transform.position.x, mapBattleController.transform.position.y, playerArmy.transform.position.z) - mapBattleController.transform.position).normalized;
         Vector3 dirEnNorm = Quaternion.Euler(0, 90, 0) * (new Vector3(enemyArmy.transform.position.x, mapBattleController.transform.position.y, enemyArmy.transform.position.z) - mapBattleController.transform.position).normalized;
@@ -498,8 +498,8 @@ public class BattleSceneManager : MonoBehaviour
 
         Debug.Log("dirEnNorm - " + dirEnNorm);
 
-        Vector3 positionPlayerArmy = (transform.position + offcetToCenter) + dirPlNorm * 120f;
-        Vector3 positionEnemyArmy = (transform.position + offcetToCenter) + dirEnNorm * 120f;
+        Vector3 positionPlayerArmy = transform.position + dirPlNorm * 80f;
+        Vector3 positionEnemyArmy = transform.position  + dirEnNorm * 80f;
 
 
         if ((!playerArmy.inCity || isSmallCity))
@@ -514,6 +514,10 @@ public class BattleSceneManager : MonoBehaviour
             {
                 newFormation.transform.GetChild(i).GetComponent<SpawnPoint>().isPlayer = true;
                 playerSpawnPoints[i] = newFormation.transform.GetChild(i);
+
+                playerSpawnPoints[i].transform.position = new Vector3(playerSpawnPoints[i].transform.position.x, terrain.SampleHeight(playerSpawnPoints[i].transform.position) + 5f, playerSpawnPoints[i].transform.position.z);
+
+                   
             }
 
         }
@@ -535,6 +539,8 @@ public class BattleSceneManager : MonoBehaviour
             {
                 newEnFormation.transform.GetChild(i).GetComponent<SpawnPoint>().isPlayer = false;
                 enemySpawnPoints[i] = newEnFormation.transform.GetChild(i);
+
+                enemySpawnPoints[i].transform.position = new Vector3(enemySpawnPoints[i].transform.position.x, terrain.SampleHeight(enemySpawnPoints[i].transform.position) + 5f, enemySpawnPoints[i].transform.position.z);
             }
         }
         else if (enemyArmy.inCity && !isSmallCity)
@@ -665,21 +671,29 @@ public class BattleSceneManager : MonoBehaviour
 
     public void ReinfrcementNotification(ArmyController army)
     {
-        //SceneLoader.Instance.MapAttackAlert(sceneIndex);
+        for (int i = 0; i < reinforcementList.Count; i++)
+        {
+            if(reinforcementList[i].reinforcementArmy == army)
+            {
+
+                Destroy(reinforcementList[i].gameObject);
+            }
+        }
+            //SceneLoader.Instance.MapAttackAlert(sceneIndex);
 
 
 
-        //Vector3 offcetToCenter = new Vector3(200f, 15f, 200f);
-        //if(army == null)
-        //{
-        //    Debug.LogError("hahah");
-        //}
-        //else if (mapBattleController == null)
-        //{
-        //    Debug.LogError("hihihi");
-        //}
+            //Vector3 offcetToCenter = new Vector3(200f, 15f, 200f);
+            //if(army == null)
+            //{
+            //    Debug.LogError("hahah");
+            //}
+            //else if (mapBattleController == null)
+            //{
+            //    Debug.LogError("hihihi");
+            //}
 
-        Vector3 dirNorm = Quaternion.Euler(0, 90, 0) * (new Vector3(army.transform.position.x, mapBattleController.transform.position.y, army.transform.position.z) - mapBattleController.transform.position).normalized;
+            Vector3 dirNorm = Quaternion.Euler(0, 90, 0) * (new Vector3(army.transform.position.x, mapBattleController.transform.position.y, army.transform.position.z) - mapBattleController.transform.position).normalized;
 
 
         Vector3 spawnPos = GetSpawnOnBorder(dirNorm);
@@ -697,7 +711,12 @@ public class BattleSceneManager : MonoBehaviour
 
         ReinforcementEffect newReinforcementEffect = newFormation.GetComponent<ReinforcementEffect>();
 
-        newReinforcementEffect.CreateEffect(army, this);
+        for (int i = 0; i < newReinforcementEffect.points.Length; i++)
+        {
+            newReinforcementEffect.points[i].transform.position = new Vector3(newReinforcementEffect.points[i].transform.position.x, terrain.SampleHeight(newReinforcementEffect.points[i].transform.position) + 5f, newReinforcementEffect.points[i].transform.position.z);
+        }
+
+            newReinforcementEffect.CreateEffect(army, this);
 
         reinforcementList.Add(newReinforcementEffect);
 
@@ -722,10 +741,10 @@ public class BattleSceneManager : MonoBehaviour
 
     Vector3 GetSpawnOnBorder(Vector3 direction)
     {
-        Vector3 center = new Vector3(200f, 3f, 200f);
+        Vector3 center = transform.position;
         direction.Normalize();
 
-        float halfSize = 170f; // половина стороны (если квадрат 400x400)
+        float halfSize = 220f; // половина стороны (если квадрат 400x400)
         float mapMin = center.x - halfSize; // 0
         float mapMax = center.x + halfSize; // 400
 

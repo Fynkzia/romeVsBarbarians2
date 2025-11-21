@@ -56,6 +56,7 @@ public class ArmyController : MonoBehaviour
 
 
     public Vector3 moveDirection;
+    public Vector3[] movingPositions;
 
     [SerializeField] public NavMeshAgent agent;
 
@@ -294,27 +295,30 @@ public class ArmyController : MonoBehaviour
        
         Collider[] nearColliders = Physics.OverlapSphere(targetObject.position, 3f, checkMask);
 
-        Debug.Log("TargetPointCheck " + nearColliders.Length);  
+       // Debug.Log("TargetPointCheck " + nearColliders.Length);  
 
         for (int i = 0; i < nearColliders.Length; i++)
         {
-            if (nearColliders[i].gameObject.layer == 20)
+            if (!retreat)
             {
-                goToBattle = true;
-
-                MapBattleController mapController = nearColliders[i].GetComponent<MapBattleController>();
-                int sceneIndex = mapController.sceneIndex;
-
-                
-               
-
-                if (mapController.inBattle) 
+                if (nearColliders[i].gameObject.layer == 20)
                 {
-                    BattleSceneManager battleScene = SceneLoader.Instance.activeBattleScenes[sceneIndex];
-                    battleScene.ReinfrcementNotification(this);
-                }
+                    goToBattle = true;
 
-                return;
+                    MapBattleController mapController = nearColliders[i].GetComponent<MapBattleController>();
+                    int sceneIndex = mapController.sceneIndex;
+
+
+
+
+                    if (mapController.inBattle)
+                    {
+                        BattleSceneManager battleScene = SceneLoader.Instance.activeBattleScenes[sceneIndex];
+                        battleScene.ReinfrcementNotification(this);
+                    }
+
+                    return;
+                }
             }
 
             if (nearColliders[i] == collider || nearColliders[i].gameObject.tag != tag) { return; }
@@ -730,17 +734,18 @@ public class ArmyController : MonoBehaviour
                 }
                 else 
                 {
+                    ArmyController armyinCity = newCity.armyInCity;
 
-                    if (!newCity.armyInCity.inBattle)
+                    if (!armyinCity.inBattle)
                     {
                         if (isPlayer)
                         {
 
-                            SceneLoader.Instance.CreateBattleInfo(this, newCity.armyInCity);
+                            SceneLoader.Instance.CreateBattleInfo(this, armyinCity);
                         }
                         else
                         {
-                            SceneLoader.Instance.CreateBattleInfo(newCity.armyInCity, this);
+                            SceneLoader.Instance.CreateBattleInfo(armyinCity, this);
                         }
 
 
@@ -763,7 +768,40 @@ public class ArmyController : MonoBehaviour
     }
 
     //city
-    public void EnterToCity(CityController newCity)
+    public void SelectInCity()
+    {
+        agent.transform.position = city.armySelectPoint.position;
+        SetFormation(Vector3.zero);
+
+        for (int i = 0; i < squadsOnMap.Count; i++)
+        {
+            squadsOnMap[i].gameObject.SetActive(true);
+        }
+
+        //collider.enabled = true;
+        if (selectCollider != null)
+        {
+            selectCollider.enabled = true;
+        }
+    }
+
+    public void DeselectInCity()
+    {
+        
+        agent.transform.position = city.armyPoint.position;
+        for (int i = 0; i < squadsOnMap.Count; i++)
+        {
+            squadsOnMap[i].gameObject.SetActive(false);
+        }
+
+        if (selectCollider != null)
+        {
+            selectCollider.enabled = false;
+            Debug.Log("selectCollider = false");
+        }
+    }
+
+        public void EnterToCity(CityController newCity)
     {
         if (goToCity)
         {
@@ -781,18 +819,18 @@ public class ArmyController : MonoBehaviour
 
             Vector3 offset = new Vector3(0,2,0);
 
-            lineRenderer.positionCount = 2;
-            lineRenderer.SetPosition(0, newCity.armyPoint.position );
-            lineRenderer.SetPosition(1, newCity.transform.position + offset);
-            lineRenderer.gameObject.SetActive(true);
+            //lineRenderer.positionCount = 2;
+            //lineRenderer.SetPosition(0, newCity.armyPoint.position );
+            //lineRenderer.SetPosition(1, newCity.transform.position + offset);
+            lineRenderer.gameObject.SetActive(false);
 
             //armyInfoPanel.transform.parent = newCity.transform;
 
-           // armyInfoPanel.transform.position = newCity.armyInfoPoint.transform.position;
+            // armyInfoPanel.transform.position = newCity.armyInfoPoint.transform.position;
 
             //newCity.armyInfoObject.SetActive(true);
 
-            //collider.enabled = false;
+            
 
             if (newCity.armyInCity == null)
             {
@@ -808,21 +846,43 @@ public class ArmyController : MonoBehaviour
                 //transform.position = city.armyPoint.position;
                 //transform.parent = city.transform;
 
-              
-
-
-                if (isSelected)
+                collider.enabled = false;
+                if (!city.isSmallCity)
                 {
-
-                    mapControlManager.SelectCity(city);
-
-
+                    
+                    if (selectCollider != null)
+                    {
+                        selectCollider.enabled = false;
+                        Debug.Log("selectCollider = false");
+                    }
                 }
+
+
+
 
                 for (int i = 0; i < squadsOnMap.Count; i++)
                 {
-                    //squadsOnMap[i].gameObject.SetActive(false);
+                    squadsOnMap[i].gameObject.SetActive(false);
                 }
+
+                if (!city.isSmallCity)
+                {
+                    if (isSelected)
+                    {
+
+                        mapControlManager.SelectCity(city);
+
+
+                    }
+                }
+                else
+                {
+
+
+
+                }
+
+
             }
             else
             {
@@ -844,12 +904,18 @@ public class ArmyController : MonoBehaviour
 
             Vector3 dir = transform.position - city.transform.position;
 
-           // Debug.Log("dir = " + dir.normalized);
+            // Debug.Log("dir = " + dir.normalized);
             //targetObject.position = targetObject.position + (dir.normalized * 5f);
             //SetMoving(true);
 
             //targetObject.gameObject.SetActive(true);
+            lineRenderer.gameObject.SetActive(true);
+
             collider.enabled = true;
+            if (selectCollider != null)
+            {
+                selectCollider.enabled = true;
+            }
 
             armyInfoPanel.transform.parent = transform;
 
@@ -876,7 +942,7 @@ public class ArmyController : MonoBehaviour
 
             for (int i = 0; i < squadsOnMap.Count; i++)
             {
-                //squadsOnMap[i].gameObject.SetActive(true);
+                squadsOnMap[i].gameObject.SetActive(true);
             }
         }
     }
@@ -1138,21 +1204,7 @@ public class ArmyController : MonoBehaviour
 
        // agent.SetDestination(targetObject.position);
 
-        currentTimeToCaptureGrid += Time.deltaTime;
-
-        if(currentTimeToCaptureGrid > armyTimeToCaptureGrid)
-        {
-            GridCell c = grid.GetCellAt(transform.position);
-            if (c != null)
-            {
-                if ((!c.isPlayer && isPlayer) || (c.isPlayer && !isPlayer))
-                {
-                    c.Capture(isPlayer);
-                }
-            }
-
-            currentTimeToCaptureGrid = 0;
-        }
+       
 
         UpdateSpeed();
         UpdatePathHistory();
@@ -1233,6 +1285,26 @@ public class ArmyController : MonoBehaviour
         if (lineRenderer.positionCount > 0)
         {
             lineRenderer.SetPosition(0, transform.position);
+        }
+
+        if(lineRenderer.positionCount > 2)
+        {
+            if(Vector3.Distance(lineRenderer.GetPosition(1),transform.position) < 0.1f)
+            {
+
+                movingPositions = new Vector3[(int)lineRenderer.positionCount];
+                lineRenderer.GetPositions(movingPositions);
+
+                var pointsList = new List<Vector3>(movingPositions);
+
+
+                pointsList.RemoveAt(1);
+
+                movingPositions = pointsList.ToArray();
+                lineRenderer.SetPositions(movingPositions);
+
+
+            }
         }
        // lineRenderer.SetPosition(1, targetObject.transform.position);
 

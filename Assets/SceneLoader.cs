@@ -236,8 +236,13 @@ public class SceneLoader : MonoBehaviour
 
     private IEnumerator EnterBattleFromMap( int sceneIndex)
     {
+        if (!mapBattleControllers[sceneIndex].isSelect)
+        {
+            mapSceneManager.controlController.SelectBattle(mapBattleControllers[sceneIndex]);
+            yield return new WaitForSeconds(battleSceneDelay);
+        }
 
-         mapSceneManager.ExitMapSceneAnimation();
+        mapSceneManager.ExitMapSceneAnimation();
 
         yield return new WaitForSeconds(battleSceneDelay);
 

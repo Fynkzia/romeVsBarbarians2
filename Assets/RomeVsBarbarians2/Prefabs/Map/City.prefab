@@ -393,7 +393,7 @@ Transform:
   m_GameObject: {fileID: 4970410302435874165}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.78, y: 1.25, z: 2.08}
+  m_LocalPosition: {x: -2.96, y: 1.25, z: -2.39}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -714,6 +714,37 @@ Transform:
   - {fileID: 7323163418893430990}
   m_Father: {fileID: 4313417736240198949}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6242330917584971467
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4143740878397618188}
+  m_Layer: 0
+  m_Name: ArmyPointSelect
+  m_TagString: Untagged
+  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4143740878397618188
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6242330917584971467}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 7, y: 1.25, z: -0.15}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4313417736240198949}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6306791745769156200
 GameObject:
   m_ObjectHideFlags: 0
@@ -917,6 +948,7 @@ Transform:
   - {fileID: 5324014570419116097}
   - {fileID: 5792392810009919282}
   - {fileID: 1728469932917643723}
+  - {fileID: 4143740878397618188}
   - {fileID: 2519586866586703487}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1057,8 +1089,7 @@ MonoBehaviour:
   armyObject: {fileID: 7010444073525371620, guid: d9138f49d563045ec9e9fa019eddcb61, type: 3}
   armyEnemyObject: {fileID: 0}
   armyPoint: {fileID: 1728469932917643723}
-  armyInfoPoint: {fileID: 5792392810009919282}
-  armyInfoObject: {fileID: 9056261143161391697}
+  armySelectPoint: {fileID: 4143740878397618188}
   shakeDuration: 1
   shakeIntensity: 0.6
   decayRate: 1
@@ -1067,6 +1098,7 @@ MonoBehaviour:
   toDoController: {fileID: 3504803160527736035}
   cityInfo: {fileID: 6178763846934290127}
   resourceManager: {fileID: 0}
+  aIController: {fileID: 0}
 --- !u!114 &3504803160527736035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5713,11 +5745,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f60caa9d6a14649b2adc56554252617f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &9056261143161391697 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2776211178853134734, guid: 14c862bf7a6c64e769ab350fa8b0164a, type: 3}
-  m_PrefabInstance: {fileID: 6568879236605328351}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6623599034702137714
 PrefabInstance:
   m_ObjectHideFlags: 0

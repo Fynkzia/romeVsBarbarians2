@@ -49,8 +49,9 @@ public class CityController : MonoBehaviour
     public ArmyController armyEnemyObject;
 
     public Transform armyPoint;
-    public Transform armyInfoPoint;
-    public GameObject armyInfoObject;
+    public Transform armySelectPoint;
+
+
 
     private float currentTime;
 
@@ -74,9 +75,10 @@ public class CityController : MonoBehaviour
 
     public CityInfo cityInfo;
     public ResourceManager resourceManager;
+    public MapAIController aIController;
 
-   // Start is called before the first frame update
-   void Start()
+    // Start is called before the first frame update
+    void Start()
     {
         if(mapControlManager == null)
         {
@@ -120,6 +122,10 @@ public class CityController : MonoBehaviour
             if (isPlayer)
             {
                 resourceManager.ChangeAmountOfCoins((int)coinsAdd);
+            }
+            else
+            {
+                aIController.enemyCoins+=(int)coinsAdd;
             }
 
             currentCoinTime = 0;
@@ -197,19 +203,30 @@ public class CityController : MonoBehaviour
 
     public void GetDamage(int armypower)
     {
-        int multiplayer = 1 + (armypower / 300);
+        int multiplayer = 1 + (armypower / 400);
+        if (cityUnits > 0)
+        {
+           
 
-            cityUnits -= 1 * multiplayer;
+            cityUnits -= 3 * multiplayer;
 
+        }
 
         if (cityBuildings > 0)
         {
+            for (int i = 0; i < multiplayer; i++)
+            {
+                if (cityBuildings > 0)
+                {
+                    cityBuildings--;
 
-            cityBuildings--;
+                    Destroy(buildings[buildings.Count - 1]);
 
-            Destroy(buildings[buildings.Count - 1]);
+                    buildings.RemoveAt(buildings.Count - 1);
+                }
+            }
 
-            buildings.RemoveAt(buildings.Count - 1);
+            
 
             cityInfo.UpdateCounts(cityBuildings, (int)cityUnits, (int)coinsAdd);
 
@@ -252,10 +269,14 @@ public class CityController : MonoBehaviour
         {
             isSelected = true;
 
-        }
        
 
-       
+
+            if (armyInCity != null && armyInCity.isPlayer)
+            {
+               // armyInCity.SelectInCity();
+            }
+        }
 
     }
 
@@ -266,9 +287,13 @@ public class CityController : MonoBehaviour
         if (!isSmallCity)
         {
             isSelected = false;
-        }
 
-      
+
+            if (armyInCity != null && armyInCity.isPlayer)
+            {
+                //armyInCity.DeselectInCity();
+            }
+        }
 
     }
 

@@ -234,8 +234,8 @@ public class CameraMovement : MonoBehaviour
         {
             if (toFadeInColl == null)
             {
-                Debug.Log("Попал в: " + hit.collider.gameObject.name);
-                Debug.DrawLine(origin, hit.point, Color.red); // Визуализация в редакторе
+                //Debug.Log("Попал в: " + hit.collider.gameObject.name);
+                //Debug.DrawLine(origin, hit.point, Color.red); // Визуализация в редакторе
 
                 CloudsFade newCloud = hit.collider.GetComponent<CloudsFade>();
 
@@ -306,7 +306,7 @@ public class CameraMovement : MonoBehaviour
             newPosition.x = Mathf.Clamp(newPosition.x, panLimitX[0], panLimitX[1]);
             newPosition.z = Mathf.Clamp(newPosition.z, panLimitZ[0], panLimitZ[1]);
 
-            Debug.Log("HandleCameraMovement");
+            //Debug.Log("HandleCameraMovement");
             cinemachineFollowObject.transform.position = newPosition;
 
             lastMousePosition = Input.mousePosition;
