@@ -12,6 +12,7 @@ public class CityController : MonoBehaviour
     public bool isSelected;
 
     public bool isSmallCity;
+    public bool inBattle;
 
     public bool isPlayer = true;
     public bool isCampainTarget = false;
@@ -75,7 +76,13 @@ public class CityController : MonoBehaviour
 
     public CityInfo cityInfo;
     public ResourceManager resourceManager;
-    public MapAIController aIController;
+    public MapAIGlobal aIController;
+    public Collider selectCollider;
+
+    public AddCoinsEffect coinFx;
+
+    public float DistanceTo(Vector3 p) => Vector3.Distance(transform.position, p);
+
 
     // Start is called before the first frame update
     void Start()
@@ -85,7 +92,34 @@ public class CityController : MonoBehaviour
             mapControlManager = GameObject.Find("MapControlManager").GetComponent<MapControlManager>();
         }
 
-       
+        if (isPlayer)
+        {
+            playerMainBuild.SetActive(true);
+            enemyMainBuild.SetActive(false);
+
+
+
+            gameObject.tag = "Player";
+            if (!isSmallCity)
+            {
+                toDoController.enabled = true;
+            }
+
+        }
+        else
+        {
+            enemyMainBuild.SetActive(true);
+            playerMainBuild.SetActive(false);
+
+            gameObject.tag = "Enemy";
+
+            if (!isSmallCity)
+            {
+                toDoController.enabled = true;
+            }
+
+        }
+
 
         for (int i = 0; i < cityBuildingsStart; i++)
         {
@@ -107,96 +141,115 @@ public class CityController : MonoBehaviour
         originalPosition = meshObject.transform.localPosition;
         currentShakeDuration = 0;
 
+        
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        currentTime += Time.deltaTime;
-        currentCoinTime += Time.deltaTime;
-
-        if (currentCoinTime > coinTime)
+        if (!inBattle)
         {
+            currentTime += Time.deltaTime;
+            currentCoinTime += Time.deltaTime;
 
-            if (isPlayer)
+            if (currentCoinTime > coinTime)
             {
-                resourceManager.ChangeAmountOfCoins((int)coinsAdd);
+
+                if (isPlayer)
+                {
+                    resourceManager.ChangeAmountOfCoins((int)coinsAdd);
+
+                    AddCoinsEffect coins = Instantiate(coinFx, transform);
+
+                    coins.transform.position = transform.position;
+
+                    coins.transform.rotation = Quaternion.Euler(0,-77,0);
+
+                    coins.SetEffect((int)coinsAdd);
+                }
+                else
+                {
+                    aIController.aICities.enemyCoins += (int)coinsAdd;
+                }
+
+                currentCoinTime = 0;
+
             }
             else
             {
-                aIController.enemyCoins+=(int)coinsAdd;
-            }
-
-            currentCoinTime = 0;
-
-        }
-
-
-        if (currentTime > cityTickTime)
-        {
-            if (cityUnits < cityUnitsMax)
-            {
-                cityUnits += cityBuildings/5f; 
-
-                cityUnitsMax = cityBuildings * 5;
-
-                coinsAdd = cityBuildings * 0.01f + cityUnits * 0.05f;
-
-
-
-
-            }
-
-            if ( cityBuildingsMax > cityBuildings+1)
-            {
-                if (isSmallCity)
+                if (isPlayer)
                 {
-                    AddBuildings();
+                    cityInfo.UpdateCoinBar(currentCoinTime / coinTime);
                 }
             }
 
-            if (cityUnits > 0)
-            {
-                if(armyInCity != null)
-                {
-                    if (armyInCity.RestorUnitsFromCity())
-                    {
 
-                        cityUnits--;
+            if (currentTime > cityTickTime)
+            {
+                if (cityUnits < cityUnitsMax)
+                {
+                    cityUnits += cityBuildings / 5f;
+
+                    cityUnitsMax = cityBuildings * 5;
+
+                    coinsAdd = cityBuildings * 0.01f + cityUnits * 0.05f;
+
+
+
+
+                }
+
+                if (cityBuildingsMax > cityBuildings + 1)
+                {
+                    if (isSmallCity)
+                    {
+                        AddBuildings();
                     }
                 }
 
+                if (cityUnits > 0)
+                {
+                    if (armyInCity != null)
+                    {
+                        if (armyInCity.RestorUnitsFromCity())
+                        {
+
+                            cityUnits--;
+                        }
+                    }
 
 
+
+                }
+
+
+
+
+                cityInfo.UpdateCounts(cityBuildings, (int)cityUnits, (int)coinsAdd);
+
+                currentTime = 0;
             }
 
 
-
-
-            cityInfo.UpdateCounts(cityBuildings, (int)cityUnits, (int)coinsAdd);
-
-            currentTime = 0;
-        }
-
-
-        if (currentShakeDuration > 0)
-        {
-            // Рассчитываем смещение тряски
-            float damping = Mathf.Clamp01(currentShakeDuration / shakeDuration);
-            float offsetX = Random.Range(-1f, 1f) * shakeIntensity * damping;
-            float offsetY = Random.Range(-1f, 1f) * shakeIntensity * damping;
-
-            // Применяем смещение к объекту
-            meshObject.transform.localPosition = originalPosition + new Vector3(offsetX, offsetY, 0f);
-
-            // Уменьшаем время тряски с учетом затухания
-            currentShakeDuration -= Time.deltaTime * decayRate;
-
-            // Если тряска закончилась, возвращаем объект на исходную позицию
-            if (currentShakeDuration <= 0)
+            if (currentShakeDuration > 0)
             {
-                meshObject.transform.localPosition = originalPosition;
+                // Рассчитываем смещение тряски
+                float damping = Mathf.Clamp01(currentShakeDuration / shakeDuration);
+                float offsetX = Random.Range(-1f, 1f) * shakeIntensity * damping;
+                float offsetY = Random.Range(-1f, 1f) * shakeIntensity * damping;
+
+                // Применяем смещение к объекту
+                meshObject.transform.localPosition = originalPosition + new Vector3(offsetX, offsetY, 0f);
+
+                // Уменьшаем время тряски с учетом затухания
+                currentShakeDuration -= Time.deltaTime * decayRate;
+
+                // Если тряска закончилась, возвращаем объект на исходную позицию
+                if (currentShakeDuration <= 0)
+                {
+                    meshObject.transform.localPosition = originalPosition;
+                }
             }
         }
     }
@@ -280,7 +333,34 @@ public class CityController : MonoBehaviour
 
     }
 
+    public void CityInBattle(bool state)
+    {
+        if (state)
+        {
+            inBattle = true;
+            
+            selectCollider.enabled = false;
 
+            if (!isSmallCity)
+            {
+                toDoController.inBattle = true;
+            }
+        }
+        else
+        {
+            inBattle = false;
+            
+            selectCollider.enabled = true;
+
+            if (!isSmallCity)
+            {
+                toDoController.inBattle = false;
+            }
+        }
+
+
+
+    }
 
     public void CityDeselect()
     {
@@ -324,7 +404,7 @@ public class CityController : MonoBehaviour
             gameObject.tag = "Enemy";
 
             if (!isSmallCity) { 
-                toDoController.enabled = false;
+                toDoController.enabled = true;
         }
             isPlayer = false;
         }

@@ -839,11 +839,18 @@ public class SceneLoader : MonoBehaviour
         {
             newBattleController.city = army.city;
             newBattleController.cityBattle = true;
+
+
         }
         if (enemyArmy.inCity)
         {
             newBattleController.city = enemyArmy.city;
             newBattleController.cityBattle = true;
+        }
+
+        if(newBattleController.city != null)
+        {
+            newBattleController.city.CityInBattle(true);
         }
 
         newBattleController.ArmyCheck();

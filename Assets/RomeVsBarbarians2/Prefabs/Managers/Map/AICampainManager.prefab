@@ -1,0 +1,135 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8292332357639519843
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3564887903911359457}
+  - component: {fileID: 7583756273427166916}
+  m_Layer: 0
+  m_Name: AICampainManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3564887903911359457
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8292332357639519843}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -501.28568, y: -24.258146, z: -630.8643}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7583756273427166916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8292332357639519843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94cc57e6cb0bc49628b848bd02e106ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cityActionPatern:
+  - -1
+  - 3
+  - -1
+  - 2
+  - -1
+  - 1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - 2
+  - -1
+  - 3
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  cityIndex: 0
+  cityActionIndex: 0
+  squadHireListInCity:
+  - {fileID: 4272877637183402022, guid: 76cd6464bd93d4265be772539e27adee, type: 3}
+  - {fileID: 4272877637183402022, guid: c5538c34f965a4dad862d13972ed47ad, type: 3}
+  - {fileID: 4272877637183402022, guid: 2dd0bf8bf62ae4f8f81f138fc2550c14, type: 3}
+  armyActionPriority:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  actionArmyQueueArray: []
+  actionCityQueueArray: []
+  allEnemiesList: []
+  allPlayerList: []
+  allEnemiesCityList: []
+  allPlayerCityList: []
+  nearPlayerCityList: []
+  playerNearArmies: []
+  playerFarArmies: []
+  enemyNearArmies: []
+  enemyFarArmies: []
+  bestArmyToAttack: {fileID: 0}
+  bestArmyToHelp: {fileID: 0}
+  bestArmyToStrategyAttack: {fileID: 0}
+  bestArmyToStrategyMove: {fileID: 0}
+  bestArmyToRetret: {fileID: 0}
+  bestArmyToJoint: {fileID: 0}
+  bestCityToRetret: {fileID: 0}
+  bestCityToGo: {fileID: 0}
+  bestCityToAttack: {fileID: 0}
+  bestCityToAttackFromFar: {fileID: 0}
+  allEnemyPower: 0
+  nearEnemyPower: 0
+  nearPlayerPower: 0
+  allPlayerPower: 0
+  armyTimeAction: 0
+  cityTimeAction: 0
+  playerArmyLayer:
+    serializedVersion: 2
+    m_Bits: 262144
+  enemyArmyLayer:
+    serializedVersion: 2
+    m_Bits: 262144
+  playerCityLayer:
+    serializedVersion: 2
+    m_Bits: 524288
+  drawingPrefab: {fileID: 0}
+  timeToGetActions: 6
+  timeToGetCityActions: 4
+  difficulty: 0
+  farRadius: 45
+  nearRadius: 20
+  nearEnemyRadius: 20
+  enemyStartCoins: 500
+  enemyCoins: 0
+  agent: {fileID: 0}
+  mapSceneManager: {fileID: 0}

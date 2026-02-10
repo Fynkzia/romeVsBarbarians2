@@ -25,9 +25,17 @@ public class CityInfo : MonoBehaviour
     [SerializeField] public Color regionPlayerColor;
     [SerializeField] public Color regionEnemyColor;
 
+    public Transform coinBar;
 
-    // Start is called before the first frame update
-    public void UpdateCounts(int buildings, int units, int coins)
+    public void UpdateCoinBar(float bar)
+    {
+
+
+        coinBar.localScale = new Vector3(bar, 1, 1);
+    }
+
+// Start is called before the first frame update
+        public void UpdateCounts(int buildings, int units, int coins)
     {
         unitsCount.text = "" + units;
         buildingsCount.text = "" + buildings;

@@ -63,4 +63,16 @@ public class DebugPanel : MonoBehaviour
 
         }
     }
+
+    public void LoseBattle()
+    {
+        if (SceneLoader.Instance.activeScene >= 0)
+        {
+            SceneLoader.Instance.activeBattleScenes[SceneLoader.Instance.activeScene].Debug_BattleLose();
+
+
+
+
+        }
+    }
 }

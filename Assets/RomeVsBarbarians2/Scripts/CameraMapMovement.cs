@@ -249,6 +249,12 @@ public class CameraMapMovement : MonoBehaviour
 
             if (Input.GetMouseButton(0))
             {
+
+                if (IsPointerClickingOnUI())
+                {
+                    return;
+                }
+
                 Vector3 mouseDelta = Input.mousePosition - lastMousePosition;
                 Vector3 panVector = new Vector3(-mouseDelta.x / screenWidth, 0, -mouseDelta.y / screenHeight) * panSpeed * Time.deltaTime;
 
@@ -520,7 +526,7 @@ public class CameraMapMovement : MonoBehaviour
             // Фильтрация по тегу, имени или типу объекта
             if (result.gameObject.layer == 5) 
             { // Задай нужным UI объектам этот тег
-          //      Debug.Log("IsPointerClickingOnUI");
+               // Debug.Log("IsPointerClickingOnUI");
 
                 return true;
             }

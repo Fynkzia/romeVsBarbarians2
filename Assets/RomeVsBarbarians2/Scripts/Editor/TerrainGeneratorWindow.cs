@@ -291,7 +291,7 @@ public class TerrainGeneratorWindow : EditorWindow
         GenerateGrassPatches(tData,grassAmount,0,1,terrain);
         GenerateGrassPatches(tData, grassAmount/2, 1, 2, terrain);
 
-        terrain.GetComponent<Terrain>().heightmapPixelError = 20;
+        //terrain.GetComponent<Terrain>().heightmapPixelError = 20;
         terrain.GetComponent<Terrain>().heightmapMaximumLOD = 1;
         terrain.layer = 3;
         terrain.tag = "Terrain";

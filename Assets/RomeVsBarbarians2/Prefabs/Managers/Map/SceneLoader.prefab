@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2200472578388092166
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2901914852647505961}
+  - component: {fileID: 3104987398712301223}
+  m_Layer: 0
+  m_Name: SceneLoader
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2901914852647505961
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2200472578388092166}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3104987398712301223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2200472578388092166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7c42ac6153464cc48dfc2554c654819, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  battleScenes:
+  - {fileID: 8209230667875354137, guid: 163af34d446c04134a91d17ce485ff3f, type: 3}
+  - {fileID: 899268922208114042, guid: e35796177bd38482cae01e864a149edb, type: 3}
+  citiesScenes:
+  - {fileID: 4932761659946556884, guid: efbff0d7f913e4f168b526fbe54e10a7, type: 3}
+  - {fileID: 4275788510584166380, guid: 1a7be8cb86db2453c8710e8e2411e2e3, type: 3}
+  mapBattleControllers: []
+  activeBattleScenes: []
+  activeScene: -1
+  battleInfo: {fileID: 8693539133976353873, guid: 9879330dedc1042c5b46309803213472, type: 3}
+  mapSceneManager: {fileID: 0}
+  resourceManager: {fileID: 0}
+  fadeDelay: 1
+  battleSceneDelay: 1
+  mapSceneDelay: 1
+  reinforcementTime: 20
+  newBattleSceneIndex: 0

@@ -65,6 +65,9 @@ public class BattleUIPanel : MonoBehaviour
     public void BattlePanelCreate()
     {
         BattlePanelClear();
+        playerArmyPanel.UpdateArmyInfo( mapBattleController.playerArmy.UnitsCountUpdate(), mapBattleController.playerArmy.ArmyPowerUpdate(),0);
+        enemyArmyPanel.UpdateArmyInfo( mapBattleController.enemyArmy.UnitsCountUpdate(), mapBattleController.enemyArmy.ArmyPowerUpdate(),0);
+
         StartCoroutine(SpawnSquadsPanel());
     }
 
@@ -85,12 +88,14 @@ public class BattleUIPanel : MonoBehaviour
         //enemyArmyPowerText.text = "" + mapBattleController.enemyArmy.ArmyPowerUpdate();
 
         //rewardText.text = "" + reward;
+        playerArmyPanel.UpdateArmyInfo(mapBattleController.playerArmy.UnitsCountUpdate(), mapBattleController.playerArmy.ArmyPowerUpdate(),0);
+        enemyArmyPanel.UpdateArmyInfo(mapBattleController.enemyArmy.UnitsCountUpdate(), mapBattleController.enemyArmy.ArmyPowerUpdate(),0);
 
+        playerArmyPanel.UpdateSquadsInfo(mapBattleController.playerArmy.squadList.ToArray());
+        enemyArmyPanel.UpdateSquadsInfo(mapBattleController.enemyArmy.squadList.ToArray());
 
-        playerArmyPanel.UpdateSquadsInfo(mapBattleController.playerArmy.squadList.ToArray(), mapBattleController.playerArmy.UnitsCountUpdate(), mapBattleController.playerArmy.ArmyPowerUpdate());
-        enemyArmyPanel.UpdateSquadsInfo(mapBattleController.enemyArmy.squadList.ToArray(), mapBattleController.enemyArmy.UnitsCountUpdate(), mapBattleController.enemyArmy.ArmyPowerUpdate());
-    
-
+        playerArmyPanel.UpdateSquadsIndicators(mapBattleController.playerArmy.squadList.ToArray());
+        enemyArmyPanel.UpdateSquadsIndicators(mapBattleController.enemyArmy.squadList.ToArray());
 
     float playerP = mapBattleController.playerArmy.ArmyPowerUpdate();
         float enemyP = mapBattleController.enemyArmy.ArmyPowerUpdate();
@@ -127,8 +132,8 @@ public class BattleUIPanel : MonoBehaviour
 
         if (gameObject.activeSelf == true)
         {
-            playerArmyPanel.UpdateSquadsInfo(mapBattleController.playerArmy.squadList.ToArray(), mapBattleController.playerArmy.UnitsCountUpdate(), mapBattleController.playerArmy.ArmyPowerUpdate());
-            enemyArmyPanel.UpdateSquadsInfo(mapBattleController.enemyArmy.squadList.ToArray(), mapBattleController.enemyArmy.UnitsCountUpdate(), mapBattleController.enemyArmy.ArmyPowerUpdate());
+            playerArmyPanel.UpdateSquadsInfo(mapBattleController.playerArmy.squadList.ToArray());
+            enemyArmyPanel.UpdateSquadsInfo(mapBattleController.enemyArmy.squadList.ToArray());
         }
     }
 

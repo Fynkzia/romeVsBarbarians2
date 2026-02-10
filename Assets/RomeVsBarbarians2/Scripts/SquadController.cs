@@ -121,6 +121,7 @@ public class SquadController : MonoBehaviour {
     [SerializeField] public bool inBuildBattle = false;
 
     [SerializeField] public bool doNotAnimate = false;
+    [SerializeField] public bool damaged = false;
 
 
 
@@ -218,6 +219,7 @@ public class SquadController : MonoBehaviour {
     [SerializeField] private GameObject panicFx;
     [SerializeField] private GameObject lvlUpFx;
     [SerializeField] public GameObject noAmmoFx;
+    [SerializeField] public GameObject addUnitFx;
 
     [SerializeField] private AddCoinsEffect addCoinsEffect;
     [Space(10)]
@@ -363,6 +365,7 @@ public class SquadController : MonoBehaviour {
         }
 
         squadInfo.squadCountAnimator.SetTrigger("Add");
+        Instantiate(addUnitFx, transform.position, transform.rotation);
     }
 
         public void InitSquad() {
@@ -631,6 +634,9 @@ public class SquadController : MonoBehaviour {
 
                     if (currentActionTime >= actionTime) // вписываем экшн юнитс + (0.3f - actionUnits / currentAmountUnits)
                     {
+
+                        damaged = false;
+
                         if (inBuildBattle)
                         {
                             SetBuildDamage();
@@ -699,6 +705,8 @@ public class SquadController : MonoBehaviour {
                     FormationBonusChange(resetDefence * (currentMorale / maxMorale));
 
                 }
+
+               
 
                 restorTime = 0;
             }
@@ -2322,15 +2330,13 @@ public class SquadController : MonoBehaviour {
             }
         }
 
-     
-        
-          
-
-        if (currentUnit == null) { return; }
 
 
-            DeleteUnit(currentUnit);
 
+
+        if (doNotAnimate) {
+            damaged = true;
+        }
 
         float moraleLost = 0;
 
@@ -2348,6 +2354,11 @@ public class SquadController : MonoBehaviour {
 
             RadiusUpdate();
             TryToRetreat();
+
+        if (currentUnit == null) { return; }
+
+
+        DeleteUnit(currentUnit);
 
 
     }

@@ -55,6 +55,7 @@ public class BattleSceneManager : MonoBehaviour
     public bool IsCity;
     public bool isSmallCity;
 
+    public bool IsEnd;
     public bool IsWin;
     public bool IsDraft;
 
@@ -84,7 +85,10 @@ public class BattleSceneManager : MonoBehaviour
 
 
 
-
+    int loses = 0;
+    int kills = 0;
+    int xp = 0;
+    int coins = 0;
 
     public void InitScene()
     {
@@ -126,21 +130,21 @@ public class BattleSceneManager : MonoBehaviour
             { /// тупа для оптимизашки, шоб меньше щелкало ебалом
 
 
-                playerHousesParent.gameObject.SetActive(true);
+                //playerHousesParent.gameObject.SetActive(true);
 
-                for (int i = 0; i < playerHousesParent.childCount; i++)
-                {
-                    playerHousesParent.GetChild(i).gameObject.SetActive(false);
-                }
+                //for (int i = 0; i < playerHousesParent.childCount; i++)
+                //{
+                //    playerHousesParent.GetChild(i).gameObject.SetActive(false);
+                //}
             }
             else
             {
-                enemyHousesParent.gameObject.SetActive(true);
+                //enemyHousesParent.gameObject.SetActive(true);
 
-                for (int i = 0; i < enemyHousesParent.childCount; i++)
-                {
-                    enemyHousesParent.GetChild(i).gameObject.SetActive(false);
-                }
+                //for (int i = 0; i < enemyHousesParent.childCount; i++)
+                //{
+                //    enemyHousesParent.GetChild(i).gameObject.SetActive(false);
+                //}
             }
 
         }
@@ -149,12 +153,12 @@ public class BattleSceneManager : MonoBehaviour
 
             if (!city.isPlayer)
             {
-                enemyHousesParent.gameObject.SetActive(true);
+                //enemyHousesParent.gameObject.SetActive(true);
 
-                for (int i = 0; i < enemyHousesParent.childCount; i++)
-                {
-                    enemyHousesParent.GetChild(i).gameObject.SetActive(false);
-                }
+                //for (int i = 0; i < enemyHousesParent.childCount; i++)
+                //{
+                //    enemyHousesParent.GetChild(i).gameObject.SetActive(false);
+                //}
             }
         }
 
@@ -165,10 +169,10 @@ public class BattleSceneManager : MonoBehaviour
 
             if (city.isPlayer)
             {
-                for (int i = 0; i < housesCount; i++)
-                {
-                    playerHousesParent.GetChild(i).gameObject.SetActive(true);
-                }
+                //for (int i = 0; i < housesCount; i++)
+                //{
+                //    playerHousesParent.GetChild(i).gameObject.SetActive(true);
+                //}
 
                 for (int i = 0; i < fancesParent.childCount; i++)
                 {
@@ -194,10 +198,10 @@ public class BattleSceneManager : MonoBehaviour
             }
             else
             {
-                for (int i = 0; i < housesCount; i++)
-                {
-                    enemyHousesParent.GetChild(i).gameObject.SetActive(true);
-                }
+                //for (int i = 0; i < housesCount; i++)
+                //{
+                //    enemyHousesParent.GetChild(i).gameObject.SetActive(true);
+                //}
 
                 for (int i = 0; i < fancesParent.childCount; i++)
                 {
@@ -248,23 +252,23 @@ public class BattleSceneManager : MonoBehaviour
             smallCity.squadSpawnerController.Init();
 
 
-            int houses = (smallCity.buildCount / 5) + (smallCity.unitCount / 50);
+            //int houses = (smallCity.buildCount / 5) + (smallCity.unitCount / 50);
 
 
-            for (int i = 0; i < houses; i++)
-            {
-                if (i < enemyHousesParent.childCount)
-                {
-                    if (Random.Range(1, 100) > 50)
-                    {
+            //for (int i = 0; i < houses; i++)
+            //{
+            //    if (i < enemyHousesParent.childCount)
+            //    {
+            //        if (Random.Range(1, 100) > 50)
+            //        {
 
 
-                    }
+            //        }
 
-                    enemyHousesParent.GetChild(i).gameObject.SetActive(true);
+            //        enemyHousesParent.GetChild(i).gameObject.SetActive(true);
 
-                }
-            }
+            //    }
+            //}
 
         }
 
@@ -296,9 +300,14 @@ public class BattleSceneManager : MonoBehaviour
         playerArmy.squadList.Remove(squadController);
         squadController.gameObject.SetActive(false);
 
+       
+       loses += (int)squadController.amountUnits;
+        
+
         if (playerArmy.squadList.Count == 0 || enemyArmy.squadList.Count == 0)
         {
-            StartCoroutine(EndBattleSiquence());
+           
+            EndBattle();
         }
         UpdateUIPowerBar(playerArmy.armyPower, enemyArmy.armyPower);
         
@@ -307,10 +316,18 @@ public class BattleSceneManager : MonoBehaviour
     {
         enemyArmy.squadList.Remove(squadController);
 
+        kills += (int)squadController.amountUnits;
+        coins += squadController.coinsFromDie;
+        xp += 1;
+
         squadController.gameObject.SetActive(false);
+        squadController.squadDie = true;
+
+
         if (playerArmy.squadList.Count == 0 || enemyArmy.squadList.Count == 0)
         {
-            StartCoroutine(EndBattleSiquence());
+        
+            EndBattle();
         }
 
         resourceManager.ChangeAmountOfCoins(squadController.coinsFromDie);
@@ -328,91 +345,131 @@ public class BattleSceneManager : MonoBehaviour
 
     private void EndBattle()
     {
-        playerArmy.squadList.Clear();
-        Debug.Log("EndBattleSiquence " + playerSquadParent.childCount);
-        for (int i = 0; i < playerSquadParent.childCount; i++)
+
+
+
+        if (!IsEnd)
         {
-            if (playerSquadParent.GetChild(i).gameObject.activeSelf)
+
+            IsEnd = true;
+
+            playerArmy.squadList.Clear();
+
+
+            for (int i = 0; i < playerSquadParent.childCount; i++)
             {
-                SquadController squad = playerSquadParent.GetChild(i).GetComponent<SquadController>();
-
-
-                if (!squad.squadDie && !squad.helperSquad)
+                if (playerSquadParent.GetChild(i).gameObject.activeSelf)
                 {
+                    SquadController squad = playerSquadParent.GetChild(i).GetComponent<SquadController>();
 
-                    playerArmy.squadList.Add(squad);
+
+                    if (!squad.squadDie && !squad.helperSquad)
+                    {
+
+                        playerArmy.squadList.Add(squad);
+
+
+                    }
 
 
                 }
-
             }
-        }
 
-        for (int i = 0; i < playerArmy.squadList.Count; i++)
-        {
-            playerArmy.squadList[i].Reset();
-            playerArmy.squadList[i].transform.parent = playerArmy.transform;
-            playerArmy.squadList[i].gameObject.SetActive(false);
-        }
-
-        enemyArmy.squadList.Clear();
-
-        for (int i = 0; i < enemySquadsParent.childCount; i++)
-        {
-            if (enemySquadsParent.GetChild(i).gameObject.activeSelf)
+            for (int i = 0; i < playerArmy.squadList.Count; i++)
             {
-                SquadController squad = enemySquadsParent.GetChild(i).GetComponent<SquadController>();
+                playerArmy.squadList[i].Reset();
+                playerArmy.squadList[i].transform.parent = playerArmy.transform;
+                playerArmy.squadList[i].gameObject.SetActive(false);
+            }
 
+            enemyArmy.squadList.Clear();
 
-
-                if (!squad.squadDie && !squad.helperSquad)
+            for (int i = 0; i < enemySquadsParent.childCount; i++)
+            {
+                if (enemySquadsParent.GetChild(i).gameObject.activeSelf)
                 {
-                    enemyArmy.squadList.Add(squad);
+                    SquadController squad = enemySquadsParent.GetChild(i).GetComponent<SquadController>();
+
+
+
+                    if (!squad.squadDie && !squad.helperSquad)
+                    {
+                        enemyArmy.squadList.Add(squad);
+                    }
+                    else if (squad.squadDie)
+                    {
+
+                    }
                 }
             }
+
+            for (int i = 0; i < enemyArmy.squadList.Count; i++)
+            {
+                enemyArmy.squadList[i].Reset();
+                enemyArmy.squadList[i].transform.parent = enemyArmy.transform;
+                enemyArmy.squadList[i].gameObject.SetActive(false);
+            }
+
+
+
+
+            if (playerArmy.squadList.Count == 0)
+            {
+
+                IsWin = false;
+
+
+            }
+            else if (enemyArmy.squadList.Count == 0)
+            {
+
+
+
+                IsWin = true;
+
+
+            }
+            else
+            {
+                IsDraft = true;
+            }
+
         }
 
-        for (int i = 0; i < enemyArmy.squadList.Count; i++)
+        if (sceneIndex == SceneLoader.Instance.activeScene)
         {
-            enemyArmy.squadList[i].Reset();
-            enemyArmy.squadList[i].transform.parent = enemyArmy.transform;
-            enemyArmy.squadList[i].gameObject.SetActive(false);
+
+            mapBattleController.mapSceneManager.uIManager.BattleWinLoose(IsWin,kills,loses,xp,coins);
+
+            mapBattleController.mapSceneManager.uIManager.winScreen.exitButton.onClick.RemoveAllListeners();
+           mapBattleController.mapSceneManager.uIManager.winScreen.exitButton.onClick.AddListener(() => EndBattleButton());
         }
+        else
+        {
+            if (IsWin)
+            {
+                SceneLoader.Instance.BattleWin(sceneIndex);
+            }
+            else
+            {
+                SceneLoader.Instance.BattleLose(sceneIndex);
+            }
+        }
+
+        NotificationManager.Instance.RemoveOldNotification(sceneIndex);
     }
+
+    public void EndBattleButton() {
+        StartCoroutine(EndBattleSiquence());
+    }
+
 
     private IEnumerator EndBattleSiquence()
     {
 
+       
 
-        EndBattle();
-
-        if (playerArmy.squadList.Count == 0)
-        {
-
-            IsWin = false;
-
-
-        }
-        else if (enemyArmy.squadList.Count == 0)
-        {
-
-
-
-            IsWin = true;
-
-
-        }
-        else
-        {
-            IsDraft = true;
-        }
-
-
-        NotificationManager.Instance.RemoveOldNotification(sceneIndex);
-
-        mapBattleController.mapSceneManager.uIManager.BattleWinLoose(IsWin);
-
-        yield return new WaitForSeconds(afterBattleDelay);
+        //yield return new WaitForSeconds(afterBattleDelay);
         ExitBattleSiquence();
 
         yield return new WaitForSeconds(delayFade + 1f);
@@ -498,8 +555,15 @@ public class BattleSceneManager : MonoBehaviour
 
         Debug.Log("dirEnNorm - " + dirEnNorm);
 
-        Vector3 positionPlayerArmy = transform.position + dirPlNorm * 80f;
-        Vector3 positionEnemyArmy = transform.position  + dirEnNorm * 80f;
+        float offcet = 80f;
+
+        if((playerArmy.inCity || enemyArmy.inCity) && !isSmallCity)
+        {
+            offcet = 200;
+        }
+
+        Vector3 positionPlayerArmy = transform.position + dirPlNorm * offcet;
+        Vector3 positionEnemyArmy = transform.position  + dirEnNorm * offcet;
 
 
         if ((!playerArmy.inCity || isSmallCity))
@@ -575,6 +639,8 @@ public class BattleSceneManager : MonoBehaviour
 
         UpdateUIPowerBar(playerArmy.armyPower, enemyArmy.armyPower);
         UpdateUIReinforcementsCount();
+
+      
     }
 
 
@@ -628,6 +694,11 @@ public class BattleSceneManager : MonoBehaviour
 
         cameraController.CameraMoveEnter();
 
+        if (IsEnd)
+        {
+            EndBattle();
+        }
+
 
     }
 
@@ -669,31 +740,38 @@ public class BattleSceneManager : MonoBehaviour
         SceneLoader.Instance.MapAttackAlert(sceneIndex);
     }
 
-    public void ReinfrcementNotification(ArmyController army)
+    public void RemoveReinfrcementNotification(ArmyController army)
     {
         for (int i = 0; i < reinforcementList.Count; i++)
         {
-            if(reinforcementList[i].reinforcementArmy == army)
+            if (reinforcementList[i].reinforcementArmy == army)
             {
 
                 Destroy(reinforcementList[i].gameObject);
+                reinforcementList.RemoveAt(i);
+                return;
             }
         }
-            //SceneLoader.Instance.MapAttackAlert(sceneIndex);
+    }
+
+        public void ReinfrcementNotification(ArmyController army)
+    {
+        RemoveReinfrcementNotification(army);
+             //SceneLoader.Instance.MapAttackAlert(sceneIndex);
 
 
 
-            //Vector3 offcetToCenter = new Vector3(200f, 15f, 200f);
-            //if(army == null)
-            //{
-            //    Debug.LogError("hahah");
-            //}
-            //else if (mapBattleController == null)
-            //{
-            //    Debug.LogError("hihihi");
-            //}
+             //Vector3 offcetToCenter = new Vector3(200f, 15f, 200f);
+             //if(army == null)
+             //{
+             //    Debug.LogError("hahah");
+             //}
+             //else if (mapBattleController == null)
+             //{
+             //    Debug.LogError("hihihi");
+             //}
 
-            Vector3 dirNorm = Quaternion.Euler(0, 90, 0) * (new Vector3(army.transform.position.x, mapBattleController.transform.position.y, army.transform.position.z) - mapBattleController.transform.position).normalized;
+             Vector3 dirNorm = Quaternion.Euler(0, 90, 0) * (new Vector3(army.transform.position.x, mapBattleController.transform.position.y, army.transform.position.z) - mapBattleController.transform.position).normalized;
 
 
         Vector3 spawnPos = GetSpawnOnBorder(dirNorm);
@@ -706,6 +784,7 @@ public class BattleSceneManager : MonoBehaviour
         GameObject newFormation = Instantiate(reinforcementEffectPrefab.gameObject, spawnPos, Quaternion.identity, transform);
 
         newFormation.transform.rotation = Quaternion.LookRotation(dirNorm);
+        newFormation.transform.localPosition = spawnPos;
 
         //playerSpawnPoints = new Transform[newFormation.transform.childCount];
 
@@ -741,12 +820,12 @@ public class BattleSceneManager : MonoBehaviour
 
     Vector3 GetSpawnOnBorder(Vector3 direction)
     {
-        Vector3 center = transform.position;
-        direction.Normalize();
+        Vector3 center = new Vector3(0,0,0);
+       // direction.Normalize();
 
         float halfSize = 220f; // половина стороны (если квадрат 400x400)
-        float mapMin = center.x - halfSize; // 0
-        float mapMax = center.x + halfSize; // 400
+        float mapMin = -220; // 0
+        float mapMax = 220; // 400
 
         float tMin = float.MaxValue;
 
@@ -784,21 +863,48 @@ public class BattleSceneManager : MonoBehaviour
         public void Debug_BattleWin()
     {
 
-        for (int i = 0; i < enemyArmy.squadList.Count; i++)
+        for (int i = 0; i < enemySquadsParent.childCount; i++)
         {
-            enemyArmy.squadList[i].squadDie = true;
-            enemyArmy.squadList[i].gameObject.SetActive(false);
+            if (enemySquadsParent.GetChild(i).gameObject.activeSelf)
+            {
+                SquadController squad = enemySquadsParent.GetChild(i).GetComponent<SquadController>();
+
+
+
+                DieEnemySquad(squad);
+            }
+        }
+
+       
+
+            //enemyArmy.squadList.Clear();
+
+            //StartCoroutine(EndBattleSiquence());
+
+            // EndBattle();
+
+
+
 
         }
 
-        enemyArmy.squadList.Clear();
+    public void Debug_BattleLose()
+    {
 
-    StartCoroutine(EndBattleSiquence());
-            
+        for (int i = 0; i < playerSquadParent.childCount; i++)
+        {
+            if (playerSquadParent.GetChild(i).gameObject.activeSelf)
+            {
+                SquadController squad = playerSquadParent.GetChild(i).GetComponent<SquadController>();
 
-            
 
-           
-        
+
+                DiePlayerSquad(squad);
+            }
+        }
+
+
     }
+
+
 }

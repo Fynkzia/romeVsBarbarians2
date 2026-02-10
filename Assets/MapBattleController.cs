@@ -19,6 +19,10 @@ public class MapBattleController : MonoBehaviour
 
     public float battleTickTime;
 
+    public float uiPanelUpdateTime;
+    float uiTime;
+ 
+
     public bool playerTick;
     public bool inBattle;
     public bool inAutoBattle;
@@ -46,11 +50,13 @@ public class MapBattleController : MonoBehaviour
         mapSceneManager = GameObject.Find("MapSceneManager").GetComponent<MapSceneManager>();
     }
 
+    
 
-    public void ArmyCheck()
+
+        public void ArmyCheck()
     {
         BoxCollider coll = GetComponent<BoxCollider>();
-        Collider[] hitColliders = Physics.OverlapBox(transform.position + coll.center, coll.size*2, transform.rotation, armyMask);
+        Collider[] hitColliders = Physics.OverlapBox(coll.center, coll.size, transform.rotation, armyMask);
 
 
 
@@ -83,6 +89,8 @@ public class MapBattleController : MonoBehaviour
 
 
             }
+
+            Debug.Log("ArmyCheck");
 
         }
         //cencelInfoObject.gameObject.SetActive(false);
@@ -165,6 +173,10 @@ public class MapBattleController : MonoBehaviour
         {
             enemyArmy.city.CityCaptured(true);
         }
+        if (city != null)
+        {
+            city.CityInBattle(false);
+        }
 
 
         enemyArmy.ArmyDestroy();
@@ -180,6 +192,11 @@ public class MapBattleController : MonoBehaviour
             playerArmy.city.CityCaptured(false);
         }
 
+        if (city != null)
+        {
+            city.CityInBattle(false);
+        }
+
         playerArmy.ArmyDestroy();
         enemyArmy.ResetAfterBattle();
         Destroy(gameObject);
@@ -187,6 +204,11 @@ public class MapBattleController : MonoBehaviour
 
     public void PlayerRetreat()
     {
+
+        if (city != null)
+        {
+            city.CityInBattle(false);
+        }
 
         SceneLoader.Instance.ArmyRetreat(sceneIndex);
         mapSceneManager.uIManager.BattlePanelDeactivation();
@@ -281,7 +303,8 @@ public class MapBattleController : MonoBehaviour
             playerTick = true;
             
         }
-        
+
+
     }
 
     // Update is called once per frame
@@ -343,5 +366,23 @@ public class MapBattleController : MonoBehaviour
             }
             
         }
+
+        if (isSelect)
+        {
+            uiTime += Time.deltaTime;
+
+            if (uiTime > uiPanelUpdateTime)
+            {
+
+                mapSceneManager.uIManager.battleUIPanel.BattlePanelUpdate();
+                uiTime = 0;
+
+              
+            }
+        }
     }
+
+    //UI
+
+   
 }

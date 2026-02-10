@@ -18,6 +18,8 @@ public class ArmyUIPanel : MonoBehaviour
 
     [SerializeField] public Button leavTheCityButton;
 
+    [SerializeField] public TextMeshProUGUI armySquadCountText;
+
     public void PanelInit(ArmyController amry)
     {
         if (amry.inCity)
@@ -44,10 +46,21 @@ public class ArmyUIPanel : MonoBehaviour
         return newSquad;
     }
 
-    public void UpdateSquadsInfo(SquadController[] squadList, float unitsCount, float powerCount)
+    public void UpdateArmyInfo( float unitsCount, float powerCount, float squadCount)
     {
-        Debug.Log("squadList count - " + squadList.Length);
-        for (int i = 0; i < squadList.Length; i++)
+
+
+        armyUnitsCountText.text = "" + unitsCount;
+        armyPowerCountText.text = "" + powerCount;
+        armySquadCountText.text = "" + squadCount + "/20";
+
+    }
+
+
+    public void UpdateSquadsInfo(SquadController[] squadList)
+    {
+//        Debug.Log("squadList count - " + squadList.Length);
+        for (int i = 0; i < squadMapUIPanelList.Count; i++)
         {
             if(squadList.Length <= i) { return; }
             if (squadList[i] == null) { return; }
@@ -55,12 +68,22 @@ public class ArmyUIPanel : MonoBehaviour
             squadMapUIPanelList[i].UpdateSquadUiPanel(squadList[i]);
         }
 
-        armyUnitsCountText.text = "" + unitsCount;
-        armyPowerCountText.text = "" + powerCount;
+       
+    }
+    public void UpdateSquadsIndicators(SquadController[] squadList)
+    {
+        for (int i = 0; i < squadMapUIPanelList.Count; i++)
+        {
+            if (squadList.Length <= i) { return; }
+            if (squadList[i] == null) { return; }
+            if (squadMapUIPanelList.Count == 0) { return; }
+            squadMapUIPanelList[i].UpdateBattleIndicators(squadList[i]);
 
+
+        }
     }
 
-    public void Clear()
+        public void Clear()
     {
         for (int i = 0; i < squadMapUIPanelList.Count; i++)
         {

@@ -199,6 +199,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4847372606858403785}
   - component: {fileID: 8772501314555669792}
+  - component: {fileID: 576093505294970744}
   m_Layer: 0
   m_Name: AIManager
   m_TagString: Untagged
@@ -286,6 +287,8 @@ MonoBehaviour:
   attackFormation: []
   defenceFormation: []
   strategyMove: 0
+  defenceMove: 0
+  attackMove: 0
   squadFormationIndex: 0
   enemyObject: {fileID: 0}
   playerObject: {fileID: 0}
@@ -299,6 +302,32 @@ MonoBehaviour:
   agent: {fileID: 2491290919740657867}
   targettt: {fileID: 0}
   battleSceneManager: {fileID: 0}
+--- !u!114 &576093505294970744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1785264402487988784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 696a0d73f882148f595c13b2da1fa963, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeAction: 0
+  timeToGetActions: 0
+  groupDist: 0
+  actionPriority: []
+  allEnemiesList: []
+  allPlayerList: []
+  allEnemyPower: 0
+  avgEnemyGropPower: 0
+  allPlayerPower: 0
+  avgPlayerGropPower: 0
+  agent: {fileID: 0}
+  battleSceneManager: {fileID: 0}
+  enemyObject: {fileID: 0}
+  playerObject: {fileID: 0}
 --- !u!1 &1893651375045248655
 GameObject:
   m_ObjectHideFlags: 0

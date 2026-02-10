@@ -20,6 +20,9 @@ public class SquadMapUIPanel : MonoBehaviour
     [SerializeField] public Image moraleBarImage;
     [SerializeField] private Gradient moraleGradient;
 
+    [SerializeField] public Image retreatIndicator;
+    [SerializeField] public Image damageIndicator;
+
     [SerializeField] public Image createProgressBar;
 
     [SerializeField] public Image[] unitIcons;
@@ -50,10 +53,31 @@ public class SquadMapUIPanel : MonoBehaviour
         moraleBar.localScale = new Vector3(1f, squad.currentMorale / squad.maxMorale, 1f);
         moraleBarImage.color = moraleGradient.Evaluate(squad.currentMorale / squad.maxMorale);
 
-
+       
     }
 
-    public void CanShowStats(bool canShow, SquadController squad,UIManager uimanager)
+    public void UpdateBattleIndicators(SquadController squad)
+    {
+        if(squad.currentMorale/squad.maxMorale < 0.35)
+        {
+            retreatIndicator.gameObject.SetActive(true);
+        }
+        else
+        {
+            retreatIndicator.gameObject.SetActive(false);
+        }
+
+        if (squad.damaged)
+        {
+            damageIndicator.gameObject.SetActive(true);
+        }
+        else
+        {
+            damageIndicator.gameObject.SetActive(false);
+        }
+    }
+
+        public void CanShowStats(bool canShow, SquadController squad,UIManager uimanager)
     {
         if(button == null)
         {

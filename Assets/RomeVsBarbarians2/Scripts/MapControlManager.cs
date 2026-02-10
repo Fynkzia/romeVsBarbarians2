@@ -53,6 +53,9 @@ public class MapControlManager : MonoBehaviour
     private Vector3 mousePosSum = Vector3.zero;
     private int roundIndex = 0;
 
+    private float screenWidth;
+    private float screenHeight;
+
     private float currentLineLength = 0;
 
     private const string PLAYER_TAG = "Player";
@@ -62,7 +65,8 @@ public class MapControlManager : MonoBehaviour
 
     void Start()
     {
-       
+        screenHeight = Screen.height;
+        screenWidth = Screen.width;
     }
 
 
@@ -383,9 +387,12 @@ public class MapControlManager : MonoBehaviour
 
                                 currentUnzoomDistance = Vector3.Distance(armyController.targetObject.transform.position, armyController.transform.position);
 
-                                if (currentUnzoomDistance >= unzoomDistance)
+                                if (Input.mousePosition.x > screenWidth*0.9f || Input.mousePosition.y > screenHeight * 0.9f
+                                    ||
+                                    Input.mousePosition.x < screenWidth * 0.1f || Input.mousePosition.y < screenHeight * 0.1f
+                                    )
                                 {
-                                    //cameraMapMovement.Zoom(false);
+                                    cameraMapMovement.Zoom(false);
 
 
                                     //cameraMapMovement.CamToPoint(armyController.targetObject.transform.position, null);

@@ -12,6 +12,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] public HireUIPanel hireUIPanel;
     [SerializeField] public BattleUIPanel battleUIPanel;
     [SerializeField] public SquadStatsUIPanel squadStatsUIPanel;
+    [SerializeField] public WinScreenUIPanel winScreen;
+    [SerializeField] public GameObject pausePanel;
 
     [SerializeField] public CoinsInfo coinsUIPanel;
     [SerializeField] public GameObject mapUiObject;
@@ -127,6 +129,8 @@ public class UIManager : MonoBehaviour
 
     private IEnumerator SpawnSquadsPanel(ArmyController army)
     {
+        armyUIPanel.UpdateArmyInfo(army.UnitsCountUpdate(), army.ArmyPowerUpdate(), army.squadList.Count);
+
         for (int i = 0; i < army.squadList.Count; i++)
         {
             SquadMapUIPanel newSquadPanel = armyUIPanel.AddSquad(army.squadList[i].mapUIPanel);
@@ -138,16 +142,17 @@ public class UIManager : MonoBehaviour
             yield return new WaitForSeconds(0.07f);
         }
 
-        armyUIPanel.UpdateSquadsInfo(army.squadList.ToArray(), army.UnitsCountUpdate(), army.ArmyPowerUpdate());
+        armyUIPanel.UpdateSquadsInfo(army.squadList.ToArray());
+        
     }
 
 
     public void ArmyUIListUpdate(ArmyController army)
     {
 
-        armyUIPanel.Clear();
-        armyUIPanel.UpdateSquadsInfo(army.squadList.ToArray(), army.UnitsCountUpdate(), army.ArmyPowerUpdate());
-
+        //armyUIPanel.Clear();
+        armyUIPanel.UpdateSquadsInfo(army.squadList.ToArray());
+        armyUIPanel.UpdateArmyInfo(army.UnitsCountUpdate(), army.ArmyPowerUpdate(), army.squadList.Count);
     }
 
     // Update is called once per frame
@@ -200,8 +205,7 @@ public class UIManager : MonoBehaviour
             selectedArmy.ArmyDeselect();
         }
 
-        WinEffect.gameObject.SetActive(false);
-        LoseEffect.gameObject.SetActive(false);
+        winScreen.gameObject.SetActive(false);
     }
 
     public void MapUiActivation(bool active)
@@ -273,15 +277,45 @@ public class UIManager : MonoBehaviour
             campainLoseScreen.SetActive(true);
         }
     }
-    public void BattleWinLoose(bool win)
+    public void BattleWinLoose(bool win,int kills, int loses, int xp, int coins)
     {
         if (win)
         {
-            WinEffect.gameObject.SetActive(true);
+            //WinEffect.gameObject.SetActive(true);
+            winScreen.PanelInit(win,kills, loses, xp, coins);
         }
         else
         {
-            LoseEffect.gameObject.SetActive(true);
+            //LoseEffect.gameObject.SetActive(true);
+
+            winScreen.PanelInit(win, kills, loses, xp, coins);
         }
+
+       
+    }
+
+    public void PausePanelActvation(bool pause)
+    {
+
+        if (pause)
+        {
+            pausePanel.gameObject.SetActive(true);
+
+            Time.timeScale = 0;
+        }
+        else
+        {
+            pausePanel.gameObject.SetActive(false);
+
+            Time.timeScale = 1;
+        }
+    }
+
+    public void GoToMenuButton()
+    {
+        Time.timeScale = 1;
+        UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+
+
     }
 }

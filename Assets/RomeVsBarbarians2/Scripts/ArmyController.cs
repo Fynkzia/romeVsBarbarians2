@@ -109,6 +109,9 @@ public class ArmyController : MonoBehaviour
     [Header("Ai Settings")]
     [Space(10)]
     public int ai_currentState;
+    public int ai_currentPriority;
+    public bool ai_needHelp;
+    public bool ai_dangerArmy;
 
     [Header("Other")]
     [Space(10)]
@@ -133,7 +136,9 @@ public class ArmyController : MonoBehaviour
     [SerializeField] public LineRenderer lineRendererPrefab;
     [SerializeField] public LineRenderer lineRenderer;
 
-    
+    [SerializeField] public GameObject addUnitFx;
+
+
 
     public List<Transform> squadsOnMap;  
                                          
@@ -143,11 +148,12 @@ public class ArmyController : MonoBehaviour
     Vector3 infoLocalPosition;
 
     Vector3 lastPositionToOffset;
+    BattleSceneManager battleToAdd;
 
     private Queue<Vector3> leaderPositions = new Queue<Vector3>();
 
     [SerializeField] MapControlManager mapControlManager;
-    [SerializeField] GridManager grid;
+   
     [SerializeField] public MapSceneManager mapSceneManager;
     public BoxCollider collider;
     public SphereCollider selectCollider;
@@ -155,8 +161,7 @@ public class ArmyController : MonoBehaviour
 
     public event Action<ArmyController> OnArmyDestroyed;
 
-
-
+    public float DistanceTo(Vector3 p) => Vector3.Distance(transform.position, p);
     // Start is called before the first frame update
     void Start()
     {
@@ -200,7 +205,7 @@ public class ArmyController : MonoBehaviour
         lastPosition = transform.position;
         currentSpacing = baseSpacing;
 
-        grid = mapSceneManager.gridManager;
+       
 
         infoLocalPosition = armyInfoPanel.transform.localPosition;
     }
@@ -231,7 +236,10 @@ public class ArmyController : MonoBehaviour
 
         moraleBarImage.ChangeProgress(armyMorale,armyMoraleMax);
 
-       
+        if (isSelected)
+        {
+            mapControlManager.uiManager.ArmyUIListUpdate(this);
+        }
     }
 
     
@@ -308,13 +316,21 @@ public class ArmyController : MonoBehaviour
                     MapBattleController mapController = nearColliders[i].GetComponent<MapBattleController>();
                     int sceneIndex = mapController.sceneIndex;
 
-
+                    
 
 
                     if (mapController.inBattle)
                     {
                         BattleSceneManager battleScene = SceneLoader.Instance.activeBattleScenes[sceneIndex];
+
+                        if (battleToAdd != null && battleToAdd != battleScene)
+                        {
+                            battleToAdd.RemoveReinfrcementNotification(this);
+                        }
+
                         battleScene.ReinfrcementNotification(this);
+
+                        battleToAdd = battleScene;
                     }
 
                     return;
@@ -327,6 +343,12 @@ public class ArmyController : MonoBehaviour
             {
                 goToCity = true;
                 predictCity = nearColliders[i].GetComponent<CityController>();
+
+                if (battleToAdd != null )
+                {
+                    battleToAdd.RemoveReinfrcementNotification(this);
+                    battleToAdd = null;
+                }
             }
             else
             if (nearColliders[i].gameObject.layer == 18 && gameObject.tag == nearColliders[i].gameObject.tag)
@@ -343,6 +365,12 @@ public class ArmyController : MonoBehaviour
                         jointArmy = null;
 
                     }
+                }
+
+                if (battleToAdd != null)
+                {
+                    battleToAdd.RemoveReinfrcementNotification(this);
+                    battleToAdd = null;
                 }
             }
             
@@ -704,18 +732,18 @@ public class ArmyController : MonoBehaviour
 
         if (isMoved && !inBattle )
         {
-            if (other.gameObject.layer == 20 && goToBattle) // in battle map
+            if (other.gameObject.layer == 20 ) // in battle map
             {
 
                 MapBattleController mapControlManager = other.GetComponent<MapBattleController>();
 
                 if (mapControlManager.playerArmy.squadList.Count < 20)
                 {
-                    SetMoving(false);
+                   
 
                     mapControlManager.AddSquadsToArmy(isPlayer, this);
                 }
-               
+                SetMoving(false);
 
             }
 
@@ -949,7 +977,7 @@ public class ArmyController : MonoBehaviour
 
     public bool RestorUnitsFromCity()
     {
-
+        
         for (int i = 0; i < squadList.Count; i++)
         {
             SquadController squad = squadList[Random.Range(0, squadList.Count)];
@@ -957,9 +985,12 @@ public class ArmyController : MonoBehaviour
             if (squad.amountUnits > squad.currentAmountUnits)
             {
                 squad.currentAmountUnits++;
+                Instantiate(addUnitFx, transform.position, transform.rotation);
                 return true;
             }
         }
+
+        
         return false;
     }
 
@@ -1173,20 +1204,40 @@ public class ArmyController : MonoBehaviour
             {
                 for (int i = 0; i < squadList.Count; i++)
                 {
-                    squadList[i].MoraleChange(-squadList[i].lostMoraleThenRun*4f);
+                    squadList[i].MoraleChange(-squadList[i].lostMoraleThenRun*2f);
                 }
                 UpdateArmyInfo();
+                SpeedCalculation();
+
+                if (armyMorale / armyMoraleMax < 0.15f)
+                {
+                    SetMoving(false);
+                }
             }
             else if(!inBattle)
             {
                 if (armyMorale <= armyMoraleMax)
                 {
+                    float m = 2f;
+
+                    if (inCity)
+                    {
+                        m = 5f;
+                    }
                     for (int i = 0; i < squadList.Count; i++)
                     {
-                        squadList[i].MoraleChange(squadList[i].recoveryMoraleSpeed * 4f);
+                        squadList[i].MoraleChange(squadList[i].recoveryMoraleSpeed * m);
                     }
                     
                     UpdateArmyInfo();
+
+                    if(!isFormated)
+                    {
+                        if (armyMorale / armyMoraleMax < 0.3f)
+                        {
+                            SetMoving(true);
+                        }
+                    }
                 }
             }
 
@@ -1210,30 +1261,7 @@ public class ArmyController : MonoBehaviour
         UpdatePathHistory();
         UpdateSquadPositions();
 
-        //// Сдвигаем историю
-        //for (int i = historyLength - 1; i > 0; i--)
-        //{
-        //    history[i] = history[i - 1];
-        //    distanceHistory[i] = distanceHistory[i - 1];
-        //}
-
-        //// Новая позиция и накопленное расстояние
-        //history[0] = transform.position;
-        //distanceHistory[0] = 0f;
-
-        //for (int i = 1; i < historyLength; i++)
-        //{
-        //    distanceHistory[i] = distanceHistory[i - 1] + Vector3.Distance(history[i - 1], history[i]);
-        //}
-
-        //// Расставляем отряды с фиксированным интервалом
-        //for (int i = 0; i < squadsOnMap.Count; i++)
-        //{
-        //    float targetDist = segmentSpacing * (i + 1);
-        //    Vector3 pos = GetPositionAtDistance(targetDist);
-        //    squadsOnMap[i].position = pos;
-        //}   
-
+        
 
 
         // Когда хвост близко и агент остановился — выравниваем формацию
@@ -1571,8 +1599,9 @@ public class ArmyController : MonoBehaviour
             agent.isStopped = true;
             targetObject.gameObject.SetActive(false);
             baseObject.gameObject.SetActive(true);
+            ai_currentState = 0;
+            ai_currentPriority = 0;
 
-            
             //if (goToJoint && jointArmy != null)
             //{
             //    JointToArmy();
@@ -1616,8 +1645,13 @@ public class ArmyController : MonoBehaviour
     {
         float t = 1f - (squadList.Count / 20f);
         t = t * t;
-        armySpeed = Mathf.Lerp(armySpeedMin, armySpeedMax, t);
+        armySpeed = Mathf.Lerp(armySpeedMin, armySpeedMax + armyMorale / armyMoraleMax, t)  ;
+
+        
+
         agent.speed = armySpeed;
+
+        
     }
 
     //formation

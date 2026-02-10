@@ -79,13 +79,14 @@ MonoBehaviour:
   capturingCity: {fileID: 0}
   armySpeed: 0.5
   armyTimeToCaptureGrid: 1
-  armySpeedMin: 1
-  armySpeedMax: 2
+  armySpeedMin: 0.8
+  armySpeedMax: 1.5
   targetObjectPrefab: {fileID: 2069937190925148166, guid: c0db4d2bf6ec347d580ef4d4fb439f81, type: 3}
   targetObject: {fileID: 0}
   moveDirection: {x: 0, y: 0, z: 0}
+  movingPositions: []
   agent: {fileID: 3860714907935432885}
-  moraleUpdateTime: 2
+  moraleUpdateTime: 1
   currentMoraleUpdateTime: 0
   inBattle: 0
   enemyArmy: {fileID: 0}
@@ -132,9 +133,9 @@ MonoBehaviour:
   moraleBarImage: {fileID: 2140629349425618752}
   lineRendererPrefab: {fileID: 4183207509487935791, guid: e799705aa2f824567b05802faef0ffa0, type: 3}
   lineRenderer: {fileID: 0}
+  addUnitFx: {fileID: 7281708689598759387, guid: df97ed9cb0dc04daba1f7f794aeee91e, type: 3}
   squadsOnMap: []
   mapControlManager: {fileID: 0}
-  grid: {fileID: 0}
   mapSceneManager: {fileID: 0}
   collider: {fileID: 0}
   selectCollider: {fileID: 0}

@@ -987,6 +987,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isSelected: 0
   isSmallCity: 0
+  inBattle: 0
   isPlayer: 1
   isCampainTarget: 1
   cityName: Rome
@@ -995,7 +996,7 @@ MonoBehaviour:
   cityBuildings: 0
   cityUnits: 150
   coinsAdd: 0
-  coinTime: 20
+  coinTime: 60
   cityBuildingsMax: 0
   cityUnitsMax: 500
   playerMainBuild: {fileID: 3497993961179278018}
@@ -1099,6 +1100,8 @@ MonoBehaviour:
   cityInfo: {fileID: 6178763846934290127}
   resourceManager: {fileID: 0}
   aIController: {fileID: 0}
+  selectCollider: {fileID: 5042200731457609300}
+  coinFx: {fileID: 1532882434809049373, guid: 42b76643cf2c9436897bcaee0205a644, type: 3}
 --- !u!114 &3504803160527736035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1112,6 +1115,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isSelected: 0
+  inBattle: 0
+  city: {fileID: 7282161847926186055}
   resourceManager: {fileID: 0}
   doQueue: 
   doCount: 0

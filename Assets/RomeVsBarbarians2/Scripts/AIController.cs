@@ -1186,7 +1186,7 @@ public void DeleteSquads() {
             float t = (float)i / (unitCount - 1);
             float angle = Mathf.Lerp(startAngle, endAngle, t);
 
-            Vector3 pos = center + new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * radius;
+            Vector3 pos = center + new Vector3(Mathf.Cos(angle), 5, Mathf.Sin(angle)) * radius;
             positions.Add(pos);
         }
 
